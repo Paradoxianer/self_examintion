@@ -25,7 +25,7 @@ class HomeScreen extends StatelessWidget {
                   MaterialPageRoute(
                     builder: (context) => AssessmentScreen(
                       localStorage: LocalStorage(),
-                      questionSet: SelfAssessmentQuestions.questionSets.first,
+                      questionSet: SelfAssessmentQuestions.questionMap.entries.first.value
                     ),
                   ),
                 );
