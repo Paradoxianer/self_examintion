@@ -69,7 +69,6 @@ class _AssessmentScreenState extends State<AssessmentScreen> {
                 Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (context) => ChartScreen( assessmentHistory:assessmentHistory ),
-
                   ),
                 );
               } else {
@@ -80,7 +79,7 @@ class _AssessmentScreenState extends State<AssessmentScreen> {
                 );
               }
             },
-            child: Text('Commit'),
+            child: Text('Fertig'),
           )
         ],
       ),
@@ -92,11 +91,13 @@ class _AssessmentScreenState extends State<AssessmentScreen> {
     AssessmentEntry assessmentEntry = AssessmentEntry(
       timestamp: DateTime.now(),
       questionSet: widget.questionSet,
-      answers: Map.fromEntries(
+      answers: questionCards.asMap().entries.map((entry) => entry.value.question.answer).toList()
+
+      /*Map.fromEntries(
         questionCards.asMap().entries.map(
               (entry) => MapEntry(entry.key, entry.value.question.answer),
         ),
-      ),
+      ),*/
     );
     await widget.localStorage.saveAssessmentEntry(assessmentEntry);
     ScaffoldMessenger.of(context).showSnackBar(
