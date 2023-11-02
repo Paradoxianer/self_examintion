@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:self_examintion/data/self_assesment_questions.dart';
 import 'package:self_examintion/screens/assessment_screen.dart';
+import 'package:self_examintion/screens/chart_screen.dart';
 import 'package:self_examintion/screens/settings_screen.dart';
 import 'package:self_examintion/utils/local_storage.dart';
 
@@ -31,6 +32,16 @@ class HomeScreen extends StatelessWidget {
                 );
               },
               child: Text('Starten'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => ChartScreen(),
+                  ),
+                );
+              },
+              child: Text('Ergebnisse'),
             ),
             ElevatedButton(
               onPressed: () {
