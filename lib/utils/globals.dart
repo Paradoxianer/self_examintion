@@ -27,3 +27,10 @@ const Map<int, Color> globalColorMap = {
   24: Color(0xFF8D6E63), // Brown
   25: Color(0xFF455A64), // Blue Grey
 };
+
+const Map<int, String> answers = {
+  1: "Gar nicht",
+  2: "Wenig",
+  3: "Meistens",
+  4: "Voll und ganz",
+};

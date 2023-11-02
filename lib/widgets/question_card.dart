@@ -18,31 +18,31 @@ class _QuestionCardState extends State<QuestionCard> {
   @override
   Widget build(BuildContext context) {
     Color sliderColor = widget.question.isNegative
-        ? Color.lerp(Colors.green, Colors.red, _sliderValue / 4)  ?? Colors.green
-        : Color.lerp(Colors.red, Colors.green, _sliderValue / 4)  ?? Colors.red;
+        ? Color.lerp(Colors.green, Colors.red, _sliderValue / 4) ?? Colors.green
+        : Color.lerp(Colors.red, Colors.green, _sliderValue / 4) ?? Colors.red;
+
 
     return Card(
       margin: EdgeInsets.all(8.0),
-      color: Color.alphaBlend(Colors.white, globalColorMap[widget.cardNumber+1]!),
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Row(
           children: <Widget>[
             Card(
-
-              margin: EdgeInsets.all(2.0),
-              child:
-              Text(
-                widget.cardNumber.toString(),
-                    style:TextStyle(fontSize: 32)
+              color: globalColorMap[widget.cardNumber + 1]!.withOpacity(0.50),
+              margin: EdgeInsets.fromLTRB(2.0, 2.0, 16, 2.0),
+              child: Center(
+                child: Text(
+                  widget.cardNumber.toString(),
+                  style: TextStyle(fontSize: 32),
+                ),
               ),
             ),
-      Expanded(
-        child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children:<Widget>[Text(
-              widget.question.text,
-              style: TextStyle(fontSize: 16.0),
+            Expanded(
+              child: Text(
+                widget.question.text,
+                style: TextStyle(fontSize: 16.0),
+              ),
             ),
             Slider(
               value: _sliderValue,
@@ -58,10 +58,8 @@ class _QuestionCardState extends State<QuestionCard> {
               divisions: 3,
               activeColor: sliderColor,
               inactiveColor: sliderColor.withOpacity(0.5),
-              label: _sliderValue.round().toString(),
+              label: answers[_sliderValue]
             ),
-                ]
-        ))
           ],
         ),
       ),
