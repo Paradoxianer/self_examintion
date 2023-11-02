@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:self_examintion/data/self_assesment_questions.dart';
 import 'package:self_examintion/models/assessment_entry.dart';
-import 'package:self_examintion/models/question.dart';
 import 'package:self_examintion/screens/chart_screen.dart';
 import 'package:self_examintion/utils/local_storage.dart';
 import 'package:self_examintion/widgets/question_card.dart';
@@ -19,15 +18,14 @@ class AssessmentScreen extends StatefulWidget {
 
 class _AssessmentScreenState extends State<AssessmentScreen> {
   List<QuestionCard> questionCards = [];
-  List<AssessmentEntry> assessmentHistory = [];
 
   bool allQuestionsAnswered = false;
 
   @override
   void initState() {
     super.initState();
-    for (Question question in widget.questionSet.questions) {
-      questionCards.add(QuestionCard(question: question));
+    for(var i = 0; i < widget.questionSet.questions.length; i++){
+      questionCards.add(QuestionCard(cardNumber: i,question: widget.questionSet.questions[i]));
     }
   }
 
@@ -68,7 +66,7 @@ class _AssessmentScreenState extends State<AssessmentScreen> {
                 await saveAssessmentResults(); // Speichere die Ergebnisse
                 Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: (context) => ChartScreen( assessmentHistory:assessmentHistory ),
+                    builder: (context) => ChartScreen(),
                   ),
                 );
               } else {
