@@ -4,7 +4,9 @@ import 'package:crypto/crypto.dart';
 class Question {
   final String id; // Eindeutige ID der Frage, generiert aus dem Text
   final String text; // Der Text der Frage
+  final String? description = null;
   final bool isNegative;
+  final String? tipps = null;
   int answer; // Die vom Benutzer gegebene Antwort (1-4)
 
   Question({
