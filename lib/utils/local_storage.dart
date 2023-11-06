@@ -54,6 +54,20 @@ class LocalStorage {
     }
   }
 
+  // Methode zum Abrufen eines String aus SharedPreferences
+  String? getString(String key) {
+    if (_prefs != null) {
+      return _prefs!.getString(key);
+    }
+    return null;
+  }
+
+  Future<void> setString(String key, String value) async {
+    if (_prefs != null) {
+      await _prefs!.setString(key, value);
+    }
+  }
+
   // Methode zum Abrufen eines Double aus SharedPreferences
   double? getDouble(String key) {
     if (_prefs != null) {
