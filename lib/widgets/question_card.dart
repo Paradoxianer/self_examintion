@@ -32,9 +32,12 @@ class _QuestionCardState extends State<QuestionCard> {
               color: globalColorMap[widget.cardNumber + 1]!.withOpacity(0.50),
               margin: EdgeInsets.fromLTRB(2.0, 2.0, 16, 2.0),
               child: Center(
-                child: Text(
-                  widget.cardNumber.toString(),
-                  style: TextStyle(fontSize: 32),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    widget.cardNumber.toString(),
+                    style: TextStyle(fontSize: 32),
+                  ),
                 ),
               ),
             ),
