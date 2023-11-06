@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:self_examintion/data/self_assesment_questions.dart';
 import 'package:self_examintion/models/assessment_entry.dart';
 import 'package:self_examintion/screens/chart_screen.dart';
+import 'package:self_examintion/screens/settings_screen.dart';
 import 'package:self_examintion/utils/local_storage.dart';
 import 'package:self_examintion/widgets/question_card.dart';
 
@@ -25,7 +26,7 @@ class _AssessmentScreenState extends State<AssessmentScreen> {
   @override
   void initState() {
     super.initState();
-    questionSet = SelfAssessmentQuestions.questionMap[widget.localStorage.getCurrentAuthor()]!;
+    questionSet = SelfAssessmentQuestions.questionMap[widget.localStorage.getCurrentAuthor()]?? SelfAssessmentQuestions.questionMap.values.first;
     for(var i = 0; i < questionSet.questions.length; i++){
       questionCards.add(QuestionCard(cardNumber: i+1,question: questionSet.questions[i]));
     }
@@ -46,6 +47,18 @@ class _AssessmentScreenState extends State<AssessmentScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Self-Assessment'),
+        actions: [
+          IconButton(
+              onPressed:  () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => SettingsScreen(),
+                  ),
+                );
+              },
+              icon:  Icon(
+                Icons.settings))
+        ],
       ),
       body: Column(
         children: <Widget>[

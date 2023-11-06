@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:self_examintion/models/assessment_entry.dart';
+import 'package:self_examintion/screens/settings_screen.dart';
 import 'package:self_examintion/widgets/chart_widget.dart';
 import 'package:self_examintion/utils/local_storage.dart';
 
@@ -36,6 +37,18 @@ class _ChartScreenState extends State<ChartScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Entwicklungsdiagramm'),
+        actions: [
+          IconButton(
+              onPressed:  () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => SettingsScreen(),
+                  ),
+                );
+              },
+              icon:  Icon(
+                  Icons.settings))
+        ],
       ),
       body: assessmentHistory.isEmpty
           ? Center(child: Text('No assessment history available.'))
