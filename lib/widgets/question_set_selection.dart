@@ -72,7 +72,6 @@ class _QuestionSetSelectionState extends State<QuestionSetSelection> {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Text("Fragenset wählen: "),
         DropdownButton<String>(
           value: selectedSet,
           items: questionSets.map((String authorName) {
