@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:self_examintion/utils/local_storage.dart';
+import 'package:self_examintion/widgets/dsgvo_dialog.dart';
 import 'package:self_examintion/widgets/question_set_selection.dart';
 
 class SettingsScreen extends StatefulWidget {
@@ -9,6 +10,8 @@ class SettingsScreen extends StatefulWidget {
 
 class _SettingsScreenState extends State<SettingsScreen> {
   final LocalStorage localStorage = LocalStorage();
+  final DSGVODialog _dsgvoDialog = DSGVODialog();
+
   bool reminderEnabled = false;
   String reminderFrequency = 'daily';
 
@@ -75,6 +78,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 });
                 saveSettings();
               },
+            ),
+          ),
+          ListTile(
+            leading: Text("DSGVO Dialog"),
+            title: IconButton(
+              icon: Icon(Icons.info),
+              onPressed: (){_dsgvoDialog.showDSGVODialog(context);},
             ),
           ),
           // Weitere Einstellungen
