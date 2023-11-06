@@ -14,25 +14,65 @@ class QuestionSetSelection extends StatefulWidget {
 class _QuestionSetSelectionState extends State<QuestionSetSelection> {
   String? selectedSet;
   List<String> questionSets = SelfAssessmentQuestions.questionMap.keys.toList();
+  bool isExpanded = false;
 
   @override
   void initState() {
     super.initState();
     selectedSet = LocalStorage().getCurrentAuthor();
-    if (selectedSet == null || SelfAssessmentQuestions.questionMap[selectedSet]== null || selectedSet =="none"){
+    if (selectedSet == null ||
+        SelfAssessmentQuestions.questionMap[selectedSet] == null ||
+        selectedSet == "none") {
       //just set it to the first set as default
-      selectedSet=questionSets[0];
+      selectedSet = questionSets[0];
       // and save it :)
       LocalStorage().setCurrentAuthor(selectedSet!);
     }
-
+  }
+  void showSetInfoDialog() {
+    SelfAssessmentQuestionSet questionSet = SelfAssessmentQuestions.questionMap[selectedSet]!;
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title:
+            ListTile(
+                title: Text(questionSet.authorName,
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)
+            ),
+                subtitle:Text(questionSet.description)
+            ),
+          content: Container(
+            width: double.maxFinite,
+            child: ListView.builder(
+              itemCount: SelfAssessmentQuestions.questionMap[selectedSet]!.questions.length,
+              itemBuilder: (context, index) {
+                final question = SelfAssessmentQuestions.questionMap[selectedSet]!.questions[index];
+                return ListTile(
+                  leading: Text((index + 1).toString()),
+                  title: Text(question.text),
+                );
+              },
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('Close'),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Text("Select Question Set: "),
+        Text("Fragenset wählen: "),
         DropdownButton<String>(
           value: selectedSet,
           items: questionSets.map((String authorName) {
@@ -63,7 +103,11 @@ class _QuestionSetSelectionState extends State<QuestionSetSelection> {
             }
           },
         ),
-      ],
+        IconButton(
+          icon: Icon(Icons.info),
+          onPressed: showSetInfoDialog,
+        ),
+      ]
     );
   }
 }
