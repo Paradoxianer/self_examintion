@@ -25,7 +25,7 @@ class _AssessmentScreenState extends State<AssessmentScreen> {
   void initState() {
     super.initState();
     for(var i = 0; i < widget.questionSet.questions.length; i++){
-      questionCards.add(QuestionCard(cardNumber: i,question: widget.questionSet.questions[i]));
+      questionCards.add(QuestionCard(cardNumber: i+1,question: widget.questionSet.questions[i]));
     }
   }
 
