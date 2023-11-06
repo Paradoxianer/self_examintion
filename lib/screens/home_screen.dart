@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:self_examintion/data/self_assesment_questions.dart';
 import 'package:self_examintion/screens/assessment_screen.dart';
 import 'package:self_examintion/screens/chart_screen.dart';
 import 'package:self_examintion/screens/settings_screen.dart';
@@ -25,8 +24,7 @@ class HomeScreen extends StatelessWidget {
                 Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (context) => AssessmentScreen(
-                      localStorage: LocalStorage(),
-                      questionSet: SelfAssessmentQuestions.questionMap.entries.first.value
+                      localStorage: LocalStorage()
                     ),
                   ),
                 );

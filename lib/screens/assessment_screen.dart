@@ -7,10 +7,9 @@ import 'package:self_examintion/widgets/question_card.dart';
 
 
 class AssessmentScreen extends StatefulWidget {
-  final SelfAssessmentQuestionSet questionSet;
   final LocalStorage localStorage;
 
-  AssessmentScreen({required this.localStorage,required this.questionSet});
+  AssessmentScreen({required this.localStorage});
 
   @override
   _AssessmentScreenState createState() => _AssessmentScreenState();
@@ -18,14 +17,17 @@ class AssessmentScreen extends StatefulWidget {
 
 class _AssessmentScreenState extends State<AssessmentScreen> {
   List<QuestionCard> questionCards = [];
+  SelfAssessmentQuestionSet questionSet=SelfAssessmentQuestions.questionMap.values.first;
+
 
   bool allQuestionsAnswered = false;
 
   @override
   void initState() {
     super.initState();
-    for(var i = 0; i < widget.questionSet.questions.length; i++){
-      questionCards.add(QuestionCard(cardNumber: i+1,question: widget.questionSet.questions[i]));
+    questionSet = SelfAssessmentQuestions.questionMap[widget.localStorage.getCurrentAuthor()]!;
+    for(var i = 0; i < questionSet.questions.length; i++){
+      questionCards.add(QuestionCard(cardNumber: i+1,question: questionSet.questions[i]));
     }
   }
 
@@ -88,7 +90,7 @@ class _AssessmentScreenState extends State<AssessmentScreen> {
   Future<void> saveAssessmentResults() async {
     AssessmentEntry assessmentEntry = AssessmentEntry(
       timestamp: DateTime.now(),
-      questionSet: widget.questionSet,
+      questionSet: questionSet,
       answers: questionCards.asMap().entries.map((entry) => entry.value.question.answer).toList()
 
       /*Map.fromEntries(
