@@ -6,7 +6,6 @@ import 'package:self_examintion/screens/settings_screen.dart';
 import 'package:self_examintion/utils/local_storage.dart';
 import 'package:self_examintion/widgets/question_card.dart';
 
-
 class AssessmentScreen extends StatefulWidget {
   final LocalStorage localStorage;
 
@@ -18,17 +17,29 @@ class AssessmentScreen extends StatefulWidget {
 
 class _AssessmentScreenState extends State<AssessmentScreen> {
   List<QuestionCard> questionCards = [];
-  SelfAssessmentQuestionSet questionSet=SelfAssessmentQuestions.questionMap.values.first;
-
+  SelfAssessmentQuestionSet questionSet =
+      SelfAssessmentQuestions.questionMap.values.first;
 
   bool allQuestionsAnswered = false;
 
   @override
   void initState() {
     super.initState();
-    questionSet = SelfAssessmentQuestions.questionMap[widget.localStorage.getCurrentAuthor()]?? SelfAssessmentQuestions.questionMap.values.first;
-    for(var i = 0; i < questionSet.questions.length; i++){
-      questionCards.add(QuestionCard(cardNumber: i+1,question: questionSet.questions[i]));
+    questionSet = SelfAssessmentQuestions.questionMap[
+    widget.localStorage.getCurrentAuthor()] ??
+        SelfAssessmentQuestions.questionMap.values.first;
+
+    for (var i = 0; i < questionSet.questions.length; i++) {
+      questionCards.add(QuestionCard(
+          cardNumber: i + 1,
+          question: questionSet.questions[i],
+          // Pass the slider values to the QuestionCard
+          onSliderChanged: (double value) {
+            setState(() {
+              questionSet.questions[i].answer = value.toInt();
+              // Update the Question object
+            });
+          }));
     }
   }
 
@@ -41,6 +52,7 @@ class _AssessmentScreenState extends State<AssessmentScreen> {
     }
     return true;
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -105,12 +117,6 @@ class _AssessmentScreenState extends State<AssessmentScreen> {
       timestamp: DateTime.now(),
       questionSet: questionSet,
       answers: questionCards.asMap().entries.map((entry) => entry.value.question.answer).toList()
-
-      /*Map.fromEntries(
-        questionCards.asMap().entries.map(
-              (entry) => MapEntry(entry.key, entry.value.question.answer),
-        ),
-      ),*/
     );
     await widget.localStorage.saveAssessmentEntry(assessmentEntry);
     ScaffoldMessenger.of(context).showSnackBar(

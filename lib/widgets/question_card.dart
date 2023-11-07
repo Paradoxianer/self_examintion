@@ -5,15 +5,29 @@ import 'package:self_examintion/utils/globals.dart';
 class QuestionCard extends StatefulWidget {
   final Question question;
   final int cardNumber;
+  final ValueChanged<double> onSliderChanged; // Receive callback
 
-  QuestionCard({required this.cardNumber, required this.question});
+  QuestionCard(
+      {required this.cardNumber,
+        required this.question,
+        required this.onSliderChanged}) // Receive callback
+      : super(key: ValueKey<int>(cardNumber)); // Use a key to maintain widget identity
 
   @override
   _QuestionCardState createState() => _QuestionCardState();
 }
 
 class _QuestionCardState extends State<QuestionCard> {
-  double _sliderValue = 2; // Standardwert für den Slider
+  double _sliderValue =2.0;
+
+  @override
+  void initState() {
+    super.initState();
+    _sliderValue = widget.question.answer.toDouble() ;
+    if (_sliderValue == 0)
+      _sliderValue =2.0;
+
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,14 +62,13 @@ class _QuestionCardState extends State<QuestionCard> {
               ),
             ),
             Slider(
-              value: _sliderValue,
-              onChanged: (newValue) {
-                setState(() {
-                  _sliderValue = newValue;
-                  // Speichere den Wert im Question-Objekt
-                  widget.question.answer = _sliderValue.toInt();
-                });
-              },
+                value: _sliderValue,
+                onChanged: (newValue) {
+                  setState(() {
+                    _sliderValue = newValue;
+                    widget.onSliderChanged(newValue); // Call the callback to update slider value
+                  });
+                },
               min: 1,
               max: 4,
               divisions: 3,
