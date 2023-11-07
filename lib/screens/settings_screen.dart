@@ -33,6 +33,33 @@ class _SettingsScreenState extends State<SettingsScreen> {
     localStorage.setString('notificationFrequency',reminderFrequency);
   }
 
+  void clearAllAssesmentEntries(BuildContext context) async {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Warnung'),
+          content: Text('Alle gespeicherten Fortschritte für ${localStorage.getCurrentAuthor()} werden gelöscht und für immer verloren gehen. Möchten Sie fortfahren?'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                localStorage.clearAllAssesmentEntries();
+                Navigator.of(context).pop(); // User confirmed the delete
+              },
+              child: Text('Ja'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // User canceled the delete
+              },
+              child: Text('Nein'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,6 +77,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
               },
             ),
           ),
+        ListTile(
+          leading: Text("Daten löschen"),
+          title: IconButton(
+              onPressed: (){clearAllAssesmentEntries(context);},
+              icon: Icon(Icons.delete_forever,color: Colors.red,)
+          )),
           ListTile(
             leading: Text("Enable Reminder"),
             title: Switch(

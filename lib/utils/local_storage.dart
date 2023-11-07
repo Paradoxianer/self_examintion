@@ -86,7 +86,22 @@ class LocalStorage {
     await _prefs?.setString(key, entryJson);
   }
 
-  Future<List<AssessmentEntry>> loadAssessmentEntries() async {
+  Future<void> clearAllAssesmentEntries() async {
+    if (_currentAuthor == null) {
+      throw Exception('Author not set. Please set the author before loading.');
+    }
+    final keys = _prefs?.getKeys();
+    if (keys != null) {
+      for (final key in keys) {
+        if (key.startsWith('$_currentAuthor')) {
+          _prefs!.remove(key);
+        }
+      }
+    }
+  }
+
+
+    Future<List<AssessmentEntry>> loadAssessmentEntries() async {
     if (_currentAuthor == null) {
       throw Exception('Author not set. Please set the author before loading.');
     }
@@ -105,7 +120,6 @@ class LocalStorage {
         }
       }
     }
-
     return entries;
   }
 }
