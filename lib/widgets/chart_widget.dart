@@ -31,7 +31,36 @@ class ChartWidget extends StatelessWidget {
                 color: globalColorMap[i + 1], // Use the globalColorMap for other answers
               ),
           ],
-          titlesData: FlTitlesData(show: false),
+          titlesData: FlTitlesData(
+            rightTitles: AxisTitles(
+              sideTitles: SideTitles(
+                showTitles: false
+              )
+            ),
+            topTitles: AxisTitles(
+                sideTitles: SideTitles(
+                    showTitles: false
+                )
+            ),
+            bottomTitles: AxisTitles(
+              drawBelowEverything: true,
+              sideTitles: SideTitles(
+                showTitles: true,
+                getTitlesWidget: (value, meta) {
+                  final timestamp = DateTime.fromMillisecondsSinceEpoch(value.toInt());
+                  return FittedBox(
+                      fit: BoxFit.fitHeight,
+                    child: Column(
+                    children: [
+                      Text('${timestamp.day}.${timestamp.month}.${timestamp.year.toString().substring(timestamp.year.toString().length - 2)}'),
+                      Text('${timestamp.hour}:${timestamp.minute}')
+                    ],
+                ),
+                  );
+                },
+              )
+            ),
+          ),
           borderData: FlBorderData(show: true),
         ),
       ),
