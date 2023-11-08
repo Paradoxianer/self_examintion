@@ -6,21 +6,38 @@ class LocalStorage {
   static final LocalStorage _singleton = LocalStorage._internal();
   SharedPreferences? _prefs;
   String _currentAuthor = "none";
+  List<Function> _assessmentDataChangedCallbacks = [];
 
-  factory LocalStorage() {
+
+  factory LocalStorage([Function? callback = null]) {
+    if (callback!=null)
+      _singleton.addAssessmentDataChangedCallback(callback);
     return _singleton;
   }
 
-  LocalStorage._internal();
+  LocalStorage._internal() {
+    // Try to load the current author on creation
+    loadCurrentAutor();
+  }
 
   Future<void> initialize() async {
     _prefs = await SharedPreferences.getInstance();
+  }
+
+  // Set a callback function for assessment data changes
+  void addAssessmentDataChangedCallback(Function callback) {
+    _assessmentDataChangedCallbacks.add(callback);
+  }
+
+  void removeAssessmentDataChangedCallback(Function callback) {
+    _assessmentDataChangedCallbacks.remove(callback);
   }
 
   void setCurrentAuthor(String authorName) {
     //ToDo check if it is a valid Name
     _currentAuthor = authorName;
     _prefs?.setString('currentAuthor', authorName);
+    _notifyAssessmentDataChanged();
   }
 
   String getCurrentAuthor(){
@@ -28,6 +45,7 @@ class LocalStorage {
   }
 
   loadCurrentAutor(){
+    //ToDO check if we need tocall notifyAssement
     String? tmpStr= _prefs?.getString('currentAuthor');
     if (tmpStr != null)
       _currentAuthor = tmpStr;
@@ -84,6 +102,7 @@ class LocalStorage {
     final key = '$_currentAuthor${entry.timestamp.millisecondsSinceEpoch}';
     final entryJson = jsonEncode(entry.toMap());
     await _prefs?.setString(key, entryJson);
+    _notifyAssessmentDataChanged();
   }
 
   Future<void> clearAllAssesmentEntries() async {
@@ -97,7 +116,9 @@ class LocalStorage {
           _prefs!.remove(key);
         }
       }
+      _notifyAssessmentDataChanged();
     }
+
   }
 
 
@@ -124,5 +145,10 @@ class LocalStorage {
     // Sort the entries by timestamp
     entries.sort((entry1, entry2) => entry1.timestamp.compareTo(entry2.timestamp));
     return entries;
+  }
+  void _notifyAssessmentDataChanged() {
+    for (var callback in _assessmentDataChangedCallbacks) {
+      callback();
+    }
   }
 }
