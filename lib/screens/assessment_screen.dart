@@ -17,6 +17,14 @@ class AssessmentScreen extends StatefulWidget {
 
 class _AssessmentScreenState extends State<AssessmentScreen> {
   List<QuestionCard> questionCards = [];
+  final noteController = TextEditingController();
+
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is disposed.
+    noteController.dispose();
+    super.dispose();
+  }
   SelfAssessmentQuestionSet questionSet =
       SelfAssessmentQuestions.questionMap.values.first;
 
@@ -85,6 +93,7 @@ class _AssessmentScreenState extends State<AssessmentScreen> {
               decoration: InputDecoration(
                 hintText: 'Add notes...',
               ),
+              controller: noteController,
             ),
           ),
           TextButton(
@@ -116,7 +125,8 @@ class _AssessmentScreenState extends State<AssessmentScreen> {
     AssessmentEntry assessmentEntry = AssessmentEntry(
       timestamp: DateTime.now(),
       questionSet: questionSet,
-      answers: questionCards.asMap().entries.map((entry) => entry.value.question.answer).toList()
+      answers: questionCards.asMap().entries.map((entry) => entry.value.question.answer).toList(),
+      note: noteController.text.length>1 ?  noteController.text : null
     );
     await widget.localStorage.saveAssessmentEntry(assessmentEntry);
     ScaffoldMessenger.of(context).showSnackBar(
