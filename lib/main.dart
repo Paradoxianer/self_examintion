@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:self_examintion/localizations/app_localizations.dart';
 import 'package:self_examintion/screens/home_screen.dart';
 import 'package:self_examintion/utils/local_storage.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+
 
 
 void main() async {
@@ -18,6 +20,8 @@ class MyApp extends StatelessWidget {
       localizationsDelegates: [
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+        AppLocalizations.delegate,
         // Add your custom localization delegates here if needed.
       ],
       supportedLocales: [

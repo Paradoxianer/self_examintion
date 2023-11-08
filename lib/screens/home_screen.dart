@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:self_examintion/localizations/app_localizations.dart';
 import 'package:self_examintion/screens/assessment_screen.dart';
 import 'package:self_examintion/screens/chart_screen.dart';
 import 'package:self_examintion/screens/settings_screen.dart';
 import 'package:self_examintion/utils/local_storage.dart';
 
 class HomeScreen extends StatelessWidget {
-
 
   @override
   Widget build(BuildContext context) {
@@ -14,8 +14,7 @@ class HomeScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
-              'Willkommen zum Selbstprüfungs-Tool',
+            Text(AppLocalizations.of(context)!.greetings,
               style: TextStyle(fontSize: 20),
             ),
             SizedBox(height: 20),
@@ -29,7 +28,7 @@ class HomeScreen extends StatelessWidget {
                   ),
                 );
               },
-              child: Text('Starten'),
+              child: Text(AppLocalizations.of(context)!.start),
             ),
             ElevatedButton(
               onPressed: () {
@@ -39,7 +38,7 @@ class HomeScreen extends StatelessWidget {
                   ),
                 );
               },
-              child: Text('Ergebnisse'),
+              child: Text(AppLocalizations.of(context)!.results),
             ),
             ElevatedButton(
               onPressed: () {
@@ -49,7 +48,7 @@ class HomeScreen extends StatelessWidget {
                   ),
                 );
               },
-              child: Text('Einstellungen'),
+              child: Text(AppLocalizations.of(context)!.settings),
             ),
           ],
         ),
