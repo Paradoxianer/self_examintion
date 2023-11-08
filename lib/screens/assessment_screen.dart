@@ -58,7 +58,7 @@ class _AssessmentScreenState extends State<AssessmentScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Self-Assessment'),
+        title: Text('Selbst-Prüfung'),
         actions: [
           IconButton(
               onPressed:  () {

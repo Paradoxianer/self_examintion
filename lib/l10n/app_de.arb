@@ -1,0 +1,9 @@
+{
+    "greetings": "Willkommen zum Selbstprüfungs-Tool",
+    "@greetings": {
+        "description": "The greeting shown at the home screen"
+        },
+    "start": "Starten",
+    "results": "Ergebnisse",
+    "settings": "Einstellungen"
+}
