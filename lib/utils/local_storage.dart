@@ -101,7 +101,7 @@ class LocalStorage {
   }
 
 
-    Future<List<AssessmentEntry>> loadAssessmentEntries() async {
+  Future<List<AssessmentEntry>> loadAssessmentEntries() async {
     if (_currentAuthor == null) {
       throw Exception('Author not set. Please set the author before loading.');
     }
@@ -113,13 +113,16 @@ class LocalStorage {
         if (key.startsWith('$_currentAuthor')) {
           final entryJson = _prefs?.getString(key);
           if (entryJson != null) {
-            final entryMap = jsonDecode(entryJson!);
+            final entryMap = jsonDecode(entryJson);
             final entry = AssessmentEntry.fromMap(entryMap);
             entries.add(entry);
           }
         }
       }
     }
+
+    // Sort the entries by timestamp
+    entries.sort((entry1, entry2) => entry1.timestamp.compareTo(entry2.timestamp));
     return entries;
   }
 }
