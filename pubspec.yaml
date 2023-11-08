@@ -38,6 +38,8 @@ dependencies:
   crypto: ^3.0.3
   shared_preferences: ^2.2.2
   fl_chart: ^0.64.0
+  flutter_localization: ^0.1.14
+  intl: any
 
 dev_dependencies:
   flutter_test:
