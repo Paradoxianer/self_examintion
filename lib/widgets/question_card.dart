@@ -74,7 +74,7 @@ class _QuestionCardState extends State<QuestionCard> {
               divisions: 3,
               activeColor: sliderColor,
               inactiveColor: sliderColor.withOpacity(0.5),
-              label: answers[_sliderValue]
+              label: answers[_sliderValue.toInt()-1]
             ),
           ],
         ),

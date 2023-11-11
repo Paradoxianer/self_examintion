@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:self_examintion/data/self_assesment_questions.dart';
+import 'package:self_examintion/localizations/app_localizations.dart';
 import 'package:self_examintion/models/assessment_entry.dart';
 import 'package:self_examintion/screens/chart_screen.dart';
 import 'package:self_examintion/screens/settings_screen.dart';
@@ -25,30 +26,13 @@ class _AssessmentScreenState extends State<AssessmentScreen> {
     noteController.dispose();
     super.dispose();
   }
-  SelfAssessmentQuestionSet questionSet =
-      SelfAssessmentQuestions.questionMap.values.first;
+  SelfAssessmentQuestionSet? questionSet = null;
 
   bool allQuestionsAnswered = false;
 
   @override
   void initState() {
     super.initState();
-    questionSet = SelfAssessmentQuestions.questionMap[
-    widget.localStorage.getCurrentAuthor()] ??
-        SelfAssessmentQuestions.questionMap.values.first;
-
-    for (var i = 0; i < questionSet.questions.length; i++) {
-      questionCards.add(QuestionCard(
-          cardNumber: i + 1,
-          question: questionSet.questions[i],
-          // Pass the slider values to the QuestionCard
-          onSliderChanged: (double value) {
-            setState(() {
-              questionSet.questions[i].answer = value.toInt();
-              // Update the Question object
-            });
-          }));
-    }
   }
 
   // Check if all questions are answered
@@ -61,12 +45,32 @@ class _AssessmentScreenState extends State<AssessmentScreen> {
     return true;
   }
 
+  loadQuestionSet(BuildContext context){
+    questionSet = AppLocalizations.of(context)!.questionMap[
+    widget.localStorage.getCurrentAuthor()] ??
+        AppLocalizations.of(context)!.questionMap.values.first;
+    if (questionSet!=null) {
+      for (var i = 0; i < questionSet!.questions.length; i++) {
+        questionCards.add(QuestionCard(
+            cardNumber: i + 1,
+            question: questionSet!.questions[i],
+            // Pass the slider values to the QuestionCard
+            onSliderChanged: (double value) {
+              setState(() {
+                questionSet!.questions[i].answer = value.toInt();
+                // Update the Question object
+              });
+            }));
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    if (questionSet== null) loadQuestionSet(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text('Selbst-Prüfung'),
+        title: Text(AppLocalizations.of(context)!.examinTitle),
         actions: [
           IconButton(
               onPressed:  () {
@@ -91,7 +95,7 @@ class _AssessmentScreenState extends State<AssessmentScreen> {
             padding: const EdgeInsets.all(16.0),
             child: TextField(
               decoration: InputDecoration(
-                hintText: 'Add notes...',
+                hintText: AppLocalizations.of(context)!.noteHint,
               ),
               controller: noteController,
             ),
@@ -108,12 +112,12 @@ class _AssessmentScreenState extends State<AssessmentScreen> {
               } else {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
-                    content: Text('Bitte beantworten Sie alle Fragen.'),
+                    content: Text(AppLocalizations.of(context)!.pleasAnswer),
                   ),
                 );
               }
             },
-            child: Text('Fertig'),
+            child: Text(AppLocalizations.of(context)!.commit),
           )
         ],
       ),
@@ -124,15 +128,11 @@ class _AssessmentScreenState extends State<AssessmentScreen> {
   Future<void> saveAssessmentResults() async {
     AssessmentEntry assessmentEntry = AssessmentEntry(
       timestamp: DateTime.now(),
-      questionSet: questionSet,
+      questionSet: questionSet!.authorName,
       answers: questionCards.asMap().entries.map((entry) => entry.value.question.answer).toList(),
       note: noteController.text.length>1 ?  noteController.text : null
     );
-    await widget.localStorage.saveAssessmentEntry(assessmentEntry);
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Daten gespeichert.'),
-      ),
-    );
+      await widget.localStorage.saveAssessmentEntry(assessmentEntry);
+      print("Data saved");
   }
 }

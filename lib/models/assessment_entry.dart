@@ -1,8 +1,7 @@
-import 'package:self_examintion/data/self_assesment_questions.dart';
 
 class AssessmentEntry {
   final DateTime timestamp;
-  final SelfAssessmentQuestionSet questionSet;
+  final String questionSet;
   final List<int> answers; // Map mit Frage-IDs und den dazugehörigen Antworten
   final String? note;
 
@@ -15,7 +14,7 @@ class AssessmentEntry {
   Map<String, dynamic> toMap() {
     return {
       'timestamp': timestamp.toIso8601String(),
-      'authorName': questionSet.authorName,
+      'authorName': questionSet,
       'answers': answers,
       'note': note
     };
@@ -26,9 +25,9 @@ class AssessmentEntry {
     final List<int> answers = List<int>.from(answerList);
     return AssessmentEntry(
         timestamp: DateTime.parse(map['timestamp']),
-        questionSet:
-            SelfAssessmentQuestions.questionMap[map['authorName'].toString()] ??
-                SelfAssessmentQuestions.questionMap.entries.first.value,
+        questionSet: map['authorName'].toString(),
+  //todo fix this          SelfAssessmentQuestions.questionMap[map['authorName'].toString()] ??
+  //              SelfAssessmentQuestions.questionMap.entries.first.value,
         answers: answers,
         note: map['note']);
   }

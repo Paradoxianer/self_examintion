@@ -5,5 +5,50 @@
         },
     "start": "Starten",
     "results": "Ergebnisse",
-    "settings": "Einstellungen"
+    "settings": "Einstellungen",
+    "examinTitle": "Selbst-Prüfung",
+    "noteHint": "Notizen hinzufügen..",
+    "pleasAnswer": "Bitte beantworten sie alle Fragen.",
+    "commit": "Fertig",
+    "saved": "Daten gespeichert",
+    "chartTitle": "Entwicklungsdiagramm",
+    "noHistory": "Keine Daten von vergangenen Selbstprüfungfragen gefunden. Bitte wähle ein anderes Fragenset aus oder füllle die Fragen aus.",
+    "warningTitle": "Warnung",
+    "warningDel": "Alle gespeicherten Fortschritte für {autor} werden gelöscht und für immer verloren gehen. Möchten Sie fortfahren?",
+    "@warningDel": {
+      "description": "A warning dialog that all answers for the questions of this author will be deleted",
+      "placeholders": {
+        "autor": {
+          "type": "String",
+          "example": "William Booth"
+        }
+       }
+      },
+    "settingsTitle": "Einstellungen",
+    "chooseQuestionSet": "Fragenset wählen",
+    "delete": "Daten löschen",
+    "notification": "Erinnere mich daran",
+    "notificationFrequency": "Häufigkeit",
+    "daily" : "täglich",
+    "weekly": "wöchentlich",
+    "monthly": "monatlich",
+    "datasecurityDialog": "DSGVO Dialog",
+    "dsgvoNo": "Zustimmung verweigert",
+    "dsgvoNoInfo": "Die App kann leider nur funktionieren, wenn Sie zustimmen.",
+    "ok": "ok",
+    "cancel": "cancel",
+    "dsgvoTitle": "Datenschutz und Zustimmung",
+    "dsgvo1": "Um Ihre persönliche geistliche Entwicklung zu verfolgen, speichern wir Ihre Antworten auf die gestellten Fragen. Diese Daten werden anonymisiert und lokal auf Ihrem Gerät gespeichert.",
+    "dsgvo2": "Bitte beachten Sie, dass Personen, die Zugriff auf Ihr Gerät und die App haben, möglicherweise auf diese Daten zugreifen können.",
+    "dsgvo3": "Indem Sie unten auf \"Zustimmen\" klicken, erklären Sie sich damit einverstanden, dass Ihre Daten wie oben beschrieben gespeichert werden. Wenn Sie nicht zustimmen, werden keine Daten erfasst, aber die App kann auch nicht funktionieren.",
+    "dsgvoOK": "Zustimmen",
+    "dsgvoCancel": "Widersprechen",
+    "dsgvoYes": "Zustimmung erteilt",
+
+    "close": "Schließen",
+
+    "answer1": "Gar nicht",
+    "answer2": "Wenig",
+    "answer3": "Meistens",
+    "answer4": "Voll und ganz"
 }

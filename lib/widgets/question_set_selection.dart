@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:self_examintion/data/self_assesment_questions.dart';
+import 'package:self_examintion/localizations/app_localizations.dart';
 import 'package:self_examintion/utils/local_storage.dart';
 
 class QuestionSetSelection extends StatefulWidget {
@@ -29,11 +30,13 @@ class _QuestionSetSelectionState extends State<QuestionSetSelection> {
       LocalStorage().setCurrentAuthor(selectedSet!);
     }
   }
+
+
   void showSetInfoDialog() {
-    SelfAssessmentQuestionSet questionSet = SelfAssessmentQuestions.questionMap[selectedSet]!;
     showDialog(
       context: context,
       builder: (context) {
+        SelfAssessmentQuestionSet questionSet = AppLocalizations.of(context)!.questionMap[selectedSet]!;
         return AlertDialog(
           title:
             ListTile(
@@ -45,9 +48,9 @@ class _QuestionSetSelectionState extends State<QuestionSetSelection> {
           content: Container(
             width: double.maxFinite,
             child: ListView.builder(
-              itemCount: SelfAssessmentQuestions.questionMap[selectedSet]!.questions.length,
+              itemCount: AppLocalizations.of(context)!.questionMap[selectedSet]!.questions.length,
               itemBuilder: (context, index) {
-                final question = SelfAssessmentQuestions.questionMap[selectedSet]!.questions[index];
+                final question = AppLocalizations.of(context)!.questionMap[selectedSet]!.questions[index];
                 return ListTile(
                   leading: Text((index + 1).toString()),
                   title: Text(question.text),

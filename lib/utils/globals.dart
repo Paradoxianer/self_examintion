@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+
 const Map<int, Color> globalColorMap = {
   1: Color(0xFF4285F4), // Blue
   2: Color(0xFF0F9D58), // Green
@@ -28,9 +29,4 @@ const Map<int, Color> globalColorMap = {
   25: Color(0xFF455A64), // Blue Grey
 };
 
-const Map<int, String> answers = {
-  1: "Gar nicht",
-  2: "Wenig",
-  3: "Meistens",
-  4: "Voll und ganz",
-};
+const List<String> answers = ["answer1", "answer2", "answer3","answer4"];
