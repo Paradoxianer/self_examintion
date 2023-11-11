@@ -10,6 +10,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final localStorage = LocalStorage();
   await localStorage.initialize();
+  localStorage.loadCurrentAutor();
   runApp(MyApp());
 }
 
