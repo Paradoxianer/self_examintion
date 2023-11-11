@@ -12,6 +12,7 @@ class SelfAssessmentQuestionSet {
   });
 }
 
+//todo get rid of this class :)
 class SelfAssessmentQuestions {
 
   static Map <String, SelfAssessmentQuestionSet> questionMap = {
@@ -19,8 +20,7 @@ class SelfAssessmentQuestions {
       authorName: "William Booth",
       description: "Selbstverleugnungsfragen von William Booth",
       questions: [
-        Question(
-            text: "Bin ich einer Gewohnheitssünde schuldig? Sündige ich vorsätzlich oder nachlässig in Gedanken, Worten oder Werken, wohl wissend, dass ich Unrecht tue?",
+        Question(text: "--Bin ich einer Gewohnheitssünde schuldig? Sündige ich vorsätzlich oder nachlässig in Gedanken, Worten oder Werken, wohl wissend, dass ich Unrecht tue?",
             isNegative: true),
         Question(
             text: "Habe ich mein körperliches Verlangen so unter Kontrolle, dass ich mich nicht schuldig mache? Lasse ich irgendeiner Neigung freien Lauf, die meine Heiligung, mein Wachstum in Erkenntnis, meinen Gehorsam und meine Brauchbarkeit beeinträchtigt?"),
