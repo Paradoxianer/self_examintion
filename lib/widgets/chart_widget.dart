@@ -1,5 +1,6 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:self_examintion/localizations/app_localizations.dart';
 import 'package:self_examintion/models/assessment_entry.dart';
 import 'package:self_examintion/utils/globals.dart';
 
@@ -16,7 +17,7 @@ class ChartWidget extends StatelessWidget {
         LineChartData(
           lineBarsData: [
             LineChartBarData(
-              spots: getOverallScores(),
+              spots: getOverallScores(context),
               isCurved: true,
               isStrokeCapRound: true,
               belowBarData: BarAreaData(show: false),
@@ -24,7 +25,7 @@ class ChartWidget extends StatelessWidget {
             ),
             for (int i = 0; i < assessmentHistory[0].answers.length; i++)
               LineChartBarData(
-                spots: getQuestionScores(i),
+                spots: getQuestionScores(context,i),
                 isCurved: true,
                 isStrokeCapRound: true,
                 belowBarData: BarAreaData(show: false),
@@ -67,11 +68,11 @@ class ChartWidget extends StatelessWidget {
     );
   }
 
-  List<FlSpot> getOverallScores() {
+  List<FlSpot> getOverallScores(BuildContext context) {
     List<FlSpot> spots = [];
 
     for (int i = 0; i < assessmentHistory.length; i++) {
-      int totalScore = calculateTotalScore(assessmentHistory[i]);
+      int totalScore = calculateTotalScore(context,assessmentHistory[i]);
       DateTime timestamp = assessmentHistory[i].timestamp;
       spots.add(FlSpot(timestamp.millisecondsSinceEpoch.toDouble(), totalScore.toDouble()));
     }
@@ -79,13 +80,13 @@ class ChartWidget extends StatelessWidget {
     return spots;
   }
 
-  List<FlSpot> getQuestionScores(int questionIndex) {
+  List<FlSpot> getQuestionScores(BuildContext context,int questionIndex) {
     List<FlSpot> spots = [];
 
     for (int i = 0; i < assessmentHistory.length; i++) {
       int answer = assessmentHistory[i].answers[questionIndex];
       int convertedAnswer = answer;
-      if (assessmentHistory[i].questionSet.questions[questionIndex].isNegative) {
+      if (AppLocalizations.of(context)!.questionMap[assessmentHistory[i].questionSet]!.questions[questionIndex].isNegative) {
         convertedAnswer = 4 - answer; // Invert the values
       }
       DateTime timestamp = assessmentHistory[i].timestamp;
@@ -95,17 +96,15 @@ class ChartWidget extends StatelessWidget {
     return spots;
   }
 
-  int calculateTotalScore(AssessmentEntry assessmentEntry) {
+  int calculateTotalScore(BuildContext context,AssessmentEntry assessmentEntry) {
     int totalScore = 0;
-
     for (int i = 0; i < assessmentEntry.answers.length; i++) {
       int answer = assessmentEntry.answers[i];
-      if (assessmentEntry.questionSet.questions[i].isNegative) {
+      if (AppLocalizations.of(context)!.questionMap[assessmentHistory[i].questionSet]!.questions[i].isNegative) {
         answer = 4 - answer; // Invert the values
       }
       totalScore += answer;
     }
-
     return totalScore;
   }
 }

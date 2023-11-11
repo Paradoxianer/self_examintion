@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:self_examintion/localizations/app_localizations.dart';
 import 'package:self_examintion/models/assessment_entry.dart';
 import 'package:self_examintion/screens/settings_screen.dart';
 import 'package:self_examintion/widgets/chart_widget.dart';
@@ -36,7 +37,7 @@ class _ChartScreenState extends State<ChartScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Entwicklungsdiagramm'),
+        title: Text(AppLocalizations.of(context)!.chartTitle),
         actions: [
           IconButton(
               onPressed:  () {
@@ -51,7 +52,7 @@ class _ChartScreenState extends State<ChartScreen> {
         ],
       ),
       body: assessmentHistory.isEmpty
-          ? Center(child: Text('No assessment history available.'))
+          ? Center(child: Text(AppLocalizations.of(context)!.noHistory))
           : ChartWidget(assessmentHistory: assessmentHistory),
     );
   }
