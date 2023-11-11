@@ -4,8 +4,8 @@ import 'package:self_examintion/models/question.dart';
 import 'app_localizations.dart';
 
 /// The translations for English (`en`).
-class AppLocalizationsKr extends AppLocalizations {
-  AppLocalizationsKr([String locale = 'en']) : super(locale);
+class AppLocalizationsKo extends AppLocalizations {
+  AppLocalizationsKo([String locale = 'ko']) : super(locale);
 
   @override
   String get greetings => '자가평가 도구에 오신 것을 환영합니다';
