@@ -14,7 +14,8 @@ class HomeScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(AppLocalizations.of(context)!.greetings,
+            Text(
+              AppLocalizations.of(context)!.greetings,
               style: TextStyle(fontSize: 20),
             ),
             SizedBox(height: 20),
@@ -30,6 +31,7 @@ class HomeScreen extends StatelessWidget {
               },
               child: Text(AppLocalizations.of(context)!.start),
             ),
+            SizedBox(height: 8),
             ElevatedButton(
               onPressed: () {
                 Navigator.of(context).push(
@@ -40,6 +42,7 @@ class HomeScreen extends StatelessWidget {
               },
               child: Text(AppLocalizations.of(context)!.results),
             ),
+            SizedBox(height: 8),
             ElevatedButton(
               onPressed: () {
                 Navigator.of(context).push(
