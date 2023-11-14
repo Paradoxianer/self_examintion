@@ -100,7 +100,7 @@ class ChartWidget extends StatelessWidget {
     int totalScore = 0;
     for (int i = 0; i < assessmentEntry.answers.length; i++) {
       int answer = assessmentEntry.answers[i];
-      if (AppLocalizations.of(context)!.questionMap[assessmentHistory[i].questionSet]!.questions[i].isNegative) {
+      if (AppLocalizations.of(context)!.questionMap[assessmentHistory[0].questionSet]!.questions[i].isNegative) {
         answer = 4 - answer; // Invert the values
       }
       totalScore += answer;
