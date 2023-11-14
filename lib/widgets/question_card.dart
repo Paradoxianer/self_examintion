@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:self_examintion/localizations/app_localizations.dart';
 import 'package:self_examintion/models/question.dart';
 import 'package:self_examintion/utils/globals.dart';
 
@@ -74,7 +75,7 @@ class _QuestionCardState extends State<QuestionCard> {
               divisions: 3,
               activeColor: sliderColor,
               inactiveColor: sliderColor.withOpacity(0.5),
-              label: answers[_sliderValue.toInt()-1]
+              label: AppLocalizations.of(context)!.answers[_sliderValue.toInt()-1]
             ),
           ],
         ),

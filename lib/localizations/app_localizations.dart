@@ -300,29 +300,8 @@ abstract class AppLocalizations {
   /// **'Schließen'**
   String get close;
 
-  /// No description provided for @answer1.
-  ///
-  /// In de, this message translates to:
-  /// **'Gar nicht'**
-  String get answer1;
-
-  /// No description provided for @answer2.
-  ///
-  /// In de, this message translates to:
-  /// **'Wenig'**
-  String get answer2;
-
-  /// No description provided for @answer3.
-  ///
-  /// In de, this message translates to:
-  /// **'Meistens'**
-  String get answer3;
-
-  /// No description provided for @answer4.
-  ///
-  /// In de, this message translates to:
-  /// **'Voll und ganz'**
-  String get answer4;
+  //returns a localized List of the wighted anservalues
+  List<String> get answers;
 
   //returns a localized Mag of SelfassementQuestions
   Map<String, SelfAssessmentQuestionSet> get questionMap;

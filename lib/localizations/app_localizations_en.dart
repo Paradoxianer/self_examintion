@@ -115,17 +115,8 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get close => 'Close';
 
-  @override
-  String get answer1 => 'Not at all';
 
-  @override
-  String get answer2 => 'Little';
-
-  @override
-  String get answer3 => 'Mostly';
-
-  @override
-  String get answer4 => 'Completely';
+  List<String> get answers => ["Not at all","Little", "Mostly","Completely"];
 
   Map<String, SelfAssessmentQuestionSet> get questionMap {
     Map<String, SelfAssessmentQuestionSet> _questionMap = {

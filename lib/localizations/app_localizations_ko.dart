@@ -115,17 +115,7 @@ class AppLocalizationsKo extends AppLocalizations {
   @override
   String get close => '닫기';
 
-  @override
-  String get answer1 => '전혀 아님';
-
-  @override
-  String get answer2 => '조금';
-
-  @override
-  String get answer3 => '대부분';
-
-  @override
-  String get answer4 => '완전히';
+  List<String> get answers => ["전혀 아님","조금", "대부분","완전히"];
 
   Map<String, SelfAssessmentQuestionSet> get questionMap {
     Map<String, SelfAssessmentQuestionSet> _questionMap = {
