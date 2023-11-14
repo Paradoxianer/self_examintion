@@ -67,7 +67,7 @@ class _AssessmentScreenState extends State<AssessmentScreen> {
 
   @override
   Widget build(BuildContext context) {
-    if (questionSet== null) loadQuestionSet(context);
+    loadQuestionSet(context);
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.examinTitle),
