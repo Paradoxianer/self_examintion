@@ -30,3 +30,8 @@ const Map<int, Color> globalColorMap = {
 };
 
 const List<String> answers = ["answer1", "answer2", "answer3","answer4"];
+
+
+const List<String>  examineFrequenze = ["daily","weekly","montly","anual"];
+
+
