@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:self_examintion/localizations/app_localizations.dart';
+import 'package:self_examintion/utils/globals.dart';
 import 'package:self_examintion/utils/local_storage.dart';
 import 'package:self_examintion/widgets/dsgvo_dialog.dart';
 import 'package:self_examintion/widgets/question_set_selection.dart';
@@ -101,10 +102,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
             title: DropdownButton<String>(
               value: reminderFrequency,
               //todo somehow localize this one
-              items: ['daily', 'weekly', 'monthly'].map((String frequency) {
+              items: examineFrequenze.map((String frequency) {
                 return DropdownMenuItem<String>(
                   value: frequency,
-                  child: Text(frequency),
+                  child: Text(AppLocalizations.of(context)!.frequenze[examineFrequenze.indexOf(frequency)]),
                 );
               }).toList(),
               onChanged: (String? newValue) {
