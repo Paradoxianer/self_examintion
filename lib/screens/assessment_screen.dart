@@ -46,6 +46,7 @@ class _AssessmentScreenState extends State<AssessmentScreen> {
   }
 
   loadQuestionSet(BuildContext context){
+
     questionSet = AppLocalizations.of(context)!.questionMap[
     widget.localStorage.getCurrentAuthor()] ??
         AppLocalizations.of(context)!.questionMap.values.first;
@@ -67,7 +68,7 @@ class _AssessmentScreenState extends State<AssessmentScreen> {
 
   @override
   Widget build(BuildContext context) {
-    loadQuestionSet(context);
+    if  (questionCards.isEmpty)  loadQuestionSet(context);
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.examinTitle),
