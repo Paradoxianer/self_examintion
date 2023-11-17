@@ -117,6 +117,8 @@ class AppLocalizationsKo extends AppLocalizations {
 
   List<String> get answers => ["전혀 아님","조금", "대부분","완전히"];
 
+  List<String> get frequenze => ["매일", "주간", "월간", "연간"];
+
   Map<String, SelfAssessmentQuestionSet> get questionMap {
     Map<String, SelfAssessmentQuestionSet> _questionMap = {
       "William Booth": SelfAssessmentQuestionSet(

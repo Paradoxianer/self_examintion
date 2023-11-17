@@ -118,6 +118,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   List<String> get answers => ["Not at all","Little", "Mostly","Completely"];
 
+  List<String> get frequenze => ["daily","weekly","montly","anual"];
+
+
   Map<String, SelfAssessmentQuestionSet> get questionMap {
     Map<String, SelfAssessmentQuestionSet> _questionMap = {
       "William Booth": SelfAssessmentQuestionSet(

@@ -116,19 +116,10 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get close => 'Schließen';
 
-  @override
-  String get answer1 => 'Gar nicht';
-
-  @override
-  String get answer2 => 'Wenig';
-
-  @override
-  String get answer3 => 'Meistens';
-
-  @override
-  String get answer4 => 'Voll und ganz';
-
   List<String> get answers => ["Gar nicht","Wenig", "Meistens","Voll und ganz"];
+
+  List<String> get frequenze => ["täglich","wöchentlich","monatlich","jährlich"];
+
 
   Map<String, SelfAssessmentQuestionSet> get questionMap {
     Map<String, SelfAssessmentQuestionSet> _questionMap = {

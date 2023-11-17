@@ -9,6 +9,7 @@ import 'package:self_examintion/data/self_assesment_questions.dart';
 import 'app_localizations_de.dart';
 import 'app_localizations_en.dart';
 import 'app_localizations_ko.dart';
+import 'app_localizations_es.dart';
 
 /// Callers can lookup localized strings with an instance of AppLocalizations
 /// returned by `AppLocalizations.of(context)`.
@@ -93,7 +94,8 @@ abstract class AppLocalizations {
   static const List<Locale> supportedLocales = <Locale>[
     Locale('de'),
     Locale('en'),
-    Locale('ko')
+    Locale('ko'),
+    Locale('es'),
   ];
 
   /// The greeting shown at the home screen
@@ -303,6 +305,9 @@ abstract class AppLocalizations {
   //returns a localized List of the wighted anservalues
   List<String> get answers;
 
+  List<String> get frequenze;
+
+
   //returns a localized Mag of SelfassementQuestions
   Map<String, SelfAssessmentQuestionSet> get questionMap;
 }
@@ -330,6 +335,7 @@ AppLocalizations lookupAppLocalizations(Locale locale) {
     case 'de': return AppLocalizationsDe();
     case 'en': return AppLocalizationsEn();
     case 'ko': return AppLocalizationsKo();
+    case 'es': return AppLocalizationsEs();
   }
 
   throw FlutterError(
