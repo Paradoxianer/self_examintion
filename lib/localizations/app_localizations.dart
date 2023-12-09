@@ -321,7 +321,7 @@ class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> 
   }
 
   @override
-  bool isSupported(Locale locale) => <String>['de', 'en', 'ko'].contains(locale.languageCode);
+  bool isSupported(Locale locale) => <String>['de', 'en', 'ko', 'es'].contains(locale.languageCode);
 
   @override
   bool shouldReload(_AppLocalizationsDelegate old) => false;
