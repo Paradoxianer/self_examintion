@@ -115,6 +115,10 @@ class AppLocalizationsKo extends AppLocalizations {
   @override
   String get close => '닫기';
 
+  @override
+  String get total => '전체';
+
+
   List<String> get answers => ["전혀 아님","조금", "대부분","완전히"];
 
   List<String> get frequenze => ["매일", "주간", "월간", "연간"];
@@ -128,7 +132,7 @@ class AppLocalizationsKo extends AppLocalizations {
           Question(
               text:
               "내가 습관적으로 어떤 알려진 죄에 유죄인가? 나는 나에게나 남에게 틀린 생각, 말 또는 행동을 허락하거나 연습하는가?",
-              isNegative: true),
+              isPositive: true),
           Question(
               text:
               "나는 내 몸의 욕망에 대해 그 정점을 통제하여 나에게 어떤 비난도 없는가? 내가 나의 거룩함, 지식, 복종 또는 유용성에 해로운 품위를 허락하거나 연습하는가?"),
@@ -138,11 +142,11 @@ class AppLocalizationsKo extends AppLocalizations {
           Question(
               text:
               "세상의 영향은 그리스도와 다르게 행동하거나 말하게 만들어 나는가?",
-              isNegative: true),
+              isPositive: true),
           Question(
               text:
               "내 기분이 나를 주변 사람들에게 항상 나와 주변 사람들에게 항상 나와 주변 사람들에게 항상 나와 주변 사람들에게 나와 동일하지 않다고 나타내도록 만드는가?",
-              isNegative: true),
+              isPositive: true),
           Question(
               text:
               "나는 죄인들의 구원을 위해 내 능력의 전부를 다하고 있나요? 나는 그들의 위험에 대해 걱정하고 그들의 구원을 위해 기도하고 일하는가 마치 그들이 내 자녀인 것처럼?"),
@@ -155,14 +159,14 @@ class AppLocalizationsKo extends AppLocalizations {
           Question(
               text:
               "내 태도나 행동에서 무의도 또는 거만함을 느끼는가?",
-              isNegative: true),
+              isPositive: true),
           Question(
               text:
               "나는 세상의 패션과 관습에 순응하거나 나는 그것들을 경멸하는 것으로 나타내고 있나요?"),
           Question(
               text:
               "나는 부자 또는 존경받기를 원하는 세속적 욕망에 휩쓸리기 위험이 있나요?",
-              isNegative: true),
+              isPositive: true),
           // William Booth의 다른 질문들 여기에 추가
         ],
       ),

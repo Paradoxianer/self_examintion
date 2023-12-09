@@ -114,6 +114,10 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get close => 'Cerrar';
 
+  @override
+  String get total => 'Total';
+
+
   List<String> get answers => ["En absoluto", "Poco", "Mayormente", "Completamente"];
 
   List<String> get frequenze => ["diario", "semanal", "mensual", "anual"];
@@ -127,7 +131,7 @@ class AppLocalizationsEs extends AppLocalizations {
           Question(
               text:
               "¿Soy habitualmente culpable de algún pecado conocido? ¿Practico o permito algún pensamiento, palabra o acción que sé que está mal?",
-              isNegative: true),
+              isPositive: true),
           Question(
               text:
               "¿Soy el amo de mis apetitos corporales hasta el punto de no tener condena? ¿Me permito alguna indulgencia que sea perjudicial para mi santidad, crecimiento en conocimiento, obediencia o utilidad?"),
@@ -137,11 +141,11 @@ class AppLocalizationsEs extends AppLocalizations {
           Question(
               text:
               "¿La influencia del mundo me hace hacer o decir cosas que son diferentes a las de Cristo?",
-              isNegative: true),
+              isPositive: true),
           Question(
               text:
               "¿Mis malhumores me hacen actuar, o sentir, o decir cosas que veo después que son contrarias al amor que debería [mostrar] siempre a quienes me rodean?",
-              isNegative: true),
+              isPositive: true),
           Question(
               text:
               "¿Estoy haciendo todo en mi poder por la salvación de los pecadores? ¿Siento preocupación por su peligro y rezo y trabajo por su salvación como si fueran mis hijos?"),
@@ -154,14 +158,14 @@ class AppLocalizationsEs extends AppLocalizations {
           Question(
               text:
               "¿Soy consciente de algún orgullo o altivez en mi manera de ser o de comportarme?",
-              isNegative: true),
+              isPositive: true),
           Question(
               text:
               "¿Me conformo con las modas y costumbres del mundo, o demuestro que las desprecio?"),
           Question(
               text:
               "¿Estoy en peligro de dejarme llevar por el deseo mundano de ser rico o admirado?",
-              isNegative: true),
+              isPositive: true),
           // Weitere Fragen von William Booth hier hinzufügen
         ],
       ),

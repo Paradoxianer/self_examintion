@@ -302,6 +302,11 @@ abstract class AppLocalizations {
   /// **'Schließen'**
   String get close;
 
+  /// In de, this message translates to:
+  /// **'Gesamt'**
+  String get total;
+
+
   //returns a localized List of the wighted anservalues
   List<String> get answers;
 

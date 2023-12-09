@@ -115,6 +115,9 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get close => 'Close';
 
+  @override
+  String get total => 'total';
+
 
   List<String> get answers => ["Not at all","Little", "Mostly","Completely"];
 
@@ -130,7 +133,7 @@ class AppLocalizationsEn extends AppLocalizations {
           Question(
               text:
                   "Am I habitually guilty of any known sin? Do I practice or allow myself any thought, word or deed that I know to be wrong?",
-              isNegative: true),
+              isPositive: true),
           Question(
               text:
                   "Am I so the master of my bodily appetites as to have no condemnation? Do I allow myself any indulgence that is injurious to my holiness, growth in knowledge, obedience, or usefulness?"),
@@ -140,11 +143,11 @@ class AppLocalizationsEn extends AppLocalizations {
           Question(
               text:
                   "Does the influence of the world cause me to do or say things that are unlike Christ?",
-              isNegative: true),
+              isPositive: true),
           Question(
               text:
                   "Do my tempers cause me to act, or feel, or say things that I see afterward are contrary to that love that I ought to [show] always to those about me?",
-              isNegative: true),
+              isPositive: true),
           Question(
               text:
                   "Am I doing all in my power for the salvation of sinners? Do I feel concern about their danger and pray and work for their salvation as if they were my children?"),
@@ -157,14 +160,14 @@ class AppLocalizationsEn extends AppLocalizations {
           Question(
               text:
                   "Am I conscious of any pride or haughtiness in my manner or bearing?",
-              isNegative: true),
+              isPositive: true),
           Question(
               text:
                   "Do I conform to the fashions and customs of the world, or do I show that I despise them?"),
           Question(
               text:
                   "Am I in danger of being carried away with worldly desire to be rich or admired?",
-              isNegative: true),
+              isPositive: true),
           // Weitere Fragen von William Booth hier hinzufügen
         ],
       ),
