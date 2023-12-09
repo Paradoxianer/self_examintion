@@ -37,8 +37,8 @@ class MonthChartWidget extends StatelessWidget {
                 ),
             ],
             //calculate minX and maxX according to the month today the minx should be the first day in this month the maxX should be last day in the current month
-            minX: calculateMinX(),
-            maxX: calculateMaxX(),
+            /*minX: calculateMinX(),
+            maxX: calculateMaxX(),*/
             titlesData: FlTitlesData(
               rightTitles: AxisTitles(
                   sideTitles: SideTitles(
@@ -101,7 +101,7 @@ class MonthChartWidget extends StatelessWidget {
       int answer = assessmentHistory[i].answers[questionIndex];
       int convertedAnswer = answer;
       if (AppLocalizations.of(context)!.questionMap[assessmentHistory[i]
-          .questionSet]!.questions[questionIndex].isNegative) {
+          .questionSet]!.questions[questionIndex].isPositive) {
         convertedAnswer = 4 - answer; // Invert the values
       }
       DateTime timestamp = assessmentHistory[i].timestamp;
@@ -118,7 +118,7 @@ class MonthChartWidget extends StatelessWidget {
     for (int i = 0; i < assessmentEntry.answers.length; i++) {
       int answer = assessmentEntry.answers[i];
       if (AppLocalizations.of(context)!.questionMap[assessmentHistory[0]
-          .questionSet]!.questions[i].isNegative) {
+          .questionSet]!.questions[i].isPositive) {
         answer = 4 - answer; // Invert the values
       }
       totalScore += answer;
@@ -138,48 +138,49 @@ class MonthChartWidget extends StatelessWidget {
     Widget title;
     switch (freq) {
       case "daily":
-        title = dailyTitles(value,meta,context);
+        title = dailyTitles(value, meta, context);
         break;
       case "weekly":
-        title = weeklyTitles(value,meta,context);
+        title = weeklyTitles(value, meta, context);
         break;
-      case "montly":
-        title = monthlyTitles(value,meta,context);
+      case "monthly":
+        title = monthlyTitles(value, meta, context);
         break;
-      case  "anual":
-        title = annualTitles(value,meta,context);
+      case "annual":
+        title = annualTitles(value, meta, context);
         break;
       default:
         title = Container();
         break;
     }
-    return SideTitleWidget(
-      axisSide: meta.axisSide,
-      child: title,
-    );
+    return title; // Änderung: Direkt das Widget zurückgeben, nicht in ein SideTitleWidget einbetten
   }
+
+
   Widget dailyTitles(double value, TitleMeta meta, BuildContext context) {
-    final timestamp = DateTime.fromMillisecondsSinceEpoch(
-        value.toInt());
+    final timestamp = DateTime.fromMillisecondsSinceEpoch(value.toInt());
     const style = TextStyle(
       fontWeight: FontWeight.bold,
       fontSize: 16,
     );
+
+    // Prüfe, ob der Tag ungerade ist (alle zwei Tage anzeigen)
+    if (timestamp.day % 2 != 0) {
+      return Container(); // Zeige nichts an
+    }
+
     return FittedBox(
       fit: BoxFit.fitHeight,
       child: Column(
         children: [
-          Text('${timestamp.day}.${timestamp.month}.${timestamp.year.toString().substring(timestamp.year.toString().length - 2)}',style: style,),
-          Text('${timestamp.hour}:${timestamp.minute}',style: style,)
+          Text(
+            '${timestamp.day}.${timestamp.month}.${timestamp.year.toString().substring(timestamp.year.toString().length - 2)}',
+            style: style,
+          ),
+          Text('${timestamp.hour}:${timestamp.minute}', style: style),
         ],
       ),
     );
-   /*return  Column(
-      children: [
-        Text('${timestamp.day}.${timestamp.month}.${timestamp.year.toString().substring(timestamp.year.toString().length - 2)}',style: style,),
-        Text('${timestamp.hour}:${timestamp.minute}',style: style,)
-      ],
-    );*/
   }
 
   Widget weeklyTitles(double value, TitleMeta meta, BuildContext context) {
