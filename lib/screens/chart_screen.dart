@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:self_examintion/localizations/app_localizations.dart';
 import 'package:self_examintion/models/assessment_entry.dart';
 import 'package:self_examintion/screens/settings_screen.dart';
-import 'package:self_examintion/widgets/chart_widget.dart';
+import 'package:self_examintion/widgets/month_chart_widget.dart';
 import 'package:self_examintion/utils/local_storage.dart';
 
 class ChartScreen extends StatefulWidget {
@@ -53,7 +53,7 @@ class _ChartScreenState extends State<ChartScreen> {
       ),
       body: assessmentHistory.isEmpty
           ? Center(child: Text(AppLocalizations.of(context)!.noHistory))
-          : ChartWidget(assessmentHistory: assessmentHistory),
+          : MonthChartWidget(assessmentHistory: assessmentHistory),
     );
   }
 }

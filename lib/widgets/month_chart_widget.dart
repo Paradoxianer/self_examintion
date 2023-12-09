@@ -5,10 +5,10 @@ import 'package:self_examintion/models/assessment_entry.dart';
 import 'package:self_examintion/utils/globals.dart';
 import 'package:self_examintion/utils/local_storage.dart';
 
-class ChartWidget extends StatelessWidget {
+class MonthChartWidget extends StatelessWidget {
   final List<AssessmentEntry> assessmentHistory;
 
-  ChartWidget({required this.assessmentHistory});
+  MonthChartWidget({required this.assessmentHistory});
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +23,7 @@ class ChartWidget extends StatelessWidget {
                 spots: getOverallScores(context),
                 isCurved: true,
                 isStrokeCapRound: true,
-                belowBarData: BarAreaData(show: false),
+                belowBarData: BarAreaData(show: true),
                 color: Colors.red, // Use red for the calculated score
               ),
               for (int i = 0; i < assessmentHistory[0].answers.length; i++)
@@ -31,11 +31,14 @@ class ChartWidget extends StatelessWidget {
                   spots: getQuestionScores(context, i),
                   isCurved: true,
                   isStrokeCapRound: true,
-                  belowBarData: BarAreaData(show: false),
+                  belowBarData: BarAreaData(show: true),
                   color: globalColorMap[i +
-                      1], // Use the globalColorMap for other answers
+                      1],
                 ),
             ],
+            //calculate minX and maxX according to the month today the minx should be the first day in this month the maxX should be last day in the current month
+            minX: calculateMinX(),
+            maxX: calculateMaxX(),
             titlesData: FlTitlesData(
               rightTitles: AxisTitles(
                   sideTitles: SideTitles(
@@ -52,17 +55,7 @@ class ChartWidget extends StatelessWidget {
                   sideTitles: SideTitles(
                     showTitles: true,
                     getTitlesWidget: (value, meta) {
-                      final timestamp = DateTime.fromMillisecondsSinceEpoch(
-                          value.toInt());
-                      return FittedBox(
-                        fit: BoxFit.fitHeight,
-                        child: Column(
-                          children: [
-                              Text('${timestamp.day}.${timestamp.month}.${timestamp.year.toString().substring(timestamp.year.toString().length - 2)}'),
-                              Text('${timestamp.hour}:${timestamp.minute}')
-                          ],
-                        ),
-                      );
+                      return bottomTitleWidgets(value,meta,context);
                     },
                   )
               ),
@@ -72,6 +65,20 @@ class ChartWidget extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  // Funktion zum Berechnen des minimalen x-Werts (erster Tag des aktuellen Monats)
+  double calculateMinX() {
+    DateTime now = DateTime.now();
+    DateTime firstDayOfMonth = DateTime(now.year, now.month, 1);
+    return firstDayOfMonth.millisecondsSinceEpoch.toDouble();
+  }
+
+  // Funktion zum Berechnen des maximalen x-Werts (letzter Tag des aktuellen Monats)
+  double calculateMaxX() {
+    DateTime now = DateTime.now();
+    DateTime lastDayOfMonth = DateTime(now.year, now.month + 1, 0);
+    return lastDayOfMonth.millisecondsSinceEpoch.toDouble();
   }
 
   List<FlSpot> getOverallScores(BuildContext context) {
@@ -152,15 +159,63 @@ class ChartWidget extends StatelessWidget {
     );
   }
   Widget dailyTitles(double value, TitleMeta meta, BuildContext context) {
-    return Container();
+    final timestamp = DateTime.fromMillisecondsSinceEpoch(
+        value.toInt());
+    const style = TextStyle(
+      fontWeight: FontWeight.bold,
+      fontSize: 16,
+    );
+    return FittedBox(
+      fit: BoxFit.fitHeight,
+      child: Column(
+        children: [
+          Text('${timestamp.day}.${timestamp.month}.${timestamp.year.toString().substring(timestamp.year.toString().length - 2)}',style: style,),
+          Text('${timestamp.hour}:${timestamp.minute}',style: style,)
+        ],
+      ),
+    );
+   /*return  Column(
+      children: [
+        Text('${timestamp.day}.${timestamp.month}.${timestamp.year.toString().substring(timestamp.year.toString().length - 2)}',style: style,),
+        Text('${timestamp.hour}:${timestamp.minute}',style: style,)
+      ],
+    );*/
   }
 
   Widget weeklyTitles(double value, TitleMeta meta, BuildContext context) {
-    return Container();
+    final timestamp = DateTime.fromMillisecondsSinceEpoch(
+        value.toInt());
+    return Text('${timestamp.day}.${timestamp.month}.${timestamp.year.toString().substring(timestamp.year.toString().length - 2)}');
   }
 
   Widget monthlyTitles(double value, TitleMeta meta, BuildContext context) {
-    return Container();
+    final timestamp = DateTime.fromMillisecondsSinceEpoch(
+        value.toInt());
+    final month =timestamp.month;
+    const style = TextStyle(
+      fontWeight: FontWeight.bold,
+      fontSize: 16,
+    );
+    Widget text;
+    switch (month) {
+      case 2:
+        text = const Text('MAR', style: style);
+        break;
+      case 5:
+        text = const Text('JUN', style: style);
+        break;
+      case 8:
+        text = const Text('SEP', style: style);
+        break;
+      default:
+        text = const Text('', style: style);
+        break;
+    }
+
+    return SideTitleWidget(
+      axisSide: meta.axisSide,
+      child: text,
+    );
   }
 
   Widget annualTitles(double value, TitleMeta meta, BuildContext context) {
