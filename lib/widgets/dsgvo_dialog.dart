@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:self_examintion/utils/local_storage.dart';
 
@@ -50,7 +52,7 @@ class _DSGVODialogState extends State<DSGVODialog> {
                   // This can be achieved by calling exit(0) from the dart:io library
                   // Ensure you have 'dart:io' in your imports
                   // import 'dart:io';
-                  // exit(0);
+                  exit(0);
                 },
                 child: Text('Ok'),
               ),
@@ -87,7 +89,7 @@ class _DSGVODialogState extends State<DSGVODialog> {
                   ElevatedButton(
                     onPressed: () {
                       saveAgreement(true);
-                      Navigator.of(context).pop();
+                      Navigator.of(context).pop(true);
                     },
                     child: Text('Zustimmen'),
                   ),

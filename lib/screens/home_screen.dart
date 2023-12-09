@@ -4,11 +4,15 @@ import 'package:self_examintion/screens/assessment_screen.dart';
 import 'package:self_examintion/screens/chart_screen.dart';
 import 'package:self_examintion/screens/settings_screen.dart';
 import 'package:self_examintion/utils/local_storage.dart';
+import 'package:self_examintion/widgets/dsgvo_dialog.dart';
 
 class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool agreedToDSGVO = LocalStorage().getBool('agreedToDSGVO');
+    if (agreedToDSGVO == false)
+      Future.delayed(Duration.zero, () => DSGVODialog().showDSGVODialog(context));
     return Scaffold(
       body: Center(
         child: Column(
