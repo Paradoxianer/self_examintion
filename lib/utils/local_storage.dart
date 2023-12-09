@@ -7,11 +7,14 @@ class LocalStorage {
   SharedPreferences? _prefs;
   String _currentAuthor = "none";
   List<Function> _assessmentDataChangedCallbacks = [];
+  List<Function> _settingsChangedCallbacks = [];
 
 
-  factory LocalStorage([Function? callback = null]) {
-    if (callback!=null)
-      _singleton.addAssessmentDataChangedCallback(callback);
+  factory LocalStorage([Function? assessmentCallback = null,Function? settingsCallback = null]) {
+    if (assessmentCallback !=null)
+      _singleton.addAssessmentDataChangedCallback(assessmentCallback);
+    if (settingsCallback !=null)
+      _singleton.addSettingsChangedCallback(settingsCallback);
     return _singleton;
   }
 
@@ -22,6 +25,7 @@ class LocalStorage {
 
   Future<void> initialize() async {
     _prefs = await SharedPreferences.getInstance();
+    await loadCurrentAutor();
   }
 
   // Set a callback function for assessment data changes
@@ -31,6 +35,15 @@ class LocalStorage {
 
   void removeAssessmentDataChangedCallback(Function callback) {
     _assessmentDataChangedCallbacks.remove(callback);
+  }
+
+  // Set a callback function for settings data changes
+  void addSettingsChangedCallback(Function callback) {
+    _settingsChangedCallbacks.add(callback);
+  }
+
+  void removeSettingsChangedCallback(Function callback) {
+    _settingsChangedCallbacks.remove(callback);
   }
 
   void setCurrentAuthor(String authorName) {
@@ -44,11 +57,15 @@ class LocalStorage {
     return _currentAuthor;
   }
 
-  loadCurrentAutor(){
+  loadCurrentAutor() async{
     //ToDO check if we need tocall notifyAssement
-    String? tmpStr= _prefs?.getString('currentAuthor');
-    if (tmpStr != null)
+    String? tmpStr= await _prefs?.getString('currentAuthor');
+    if (tmpStr != null) {
+      if (tmpStr!= _currentAuthor) _notifyAssessmentDataChanged();
       _currentAuthor = tmpStr;
+    }
+    else
+      _currentAuthor = "William Booth";
   }
   // Methode zum Speichern eines Booleans in SharedPreferences
   Future<void> setBool(String key, bool value) async {
@@ -146,8 +163,15 @@ class LocalStorage {
     entries.sort((entry1, entry2) => entry1.timestamp.compareTo(entry2.timestamp));
     return entries;
   }
+
   void _notifyAssessmentDataChanged() {
     for (var callback in _assessmentDataChangedCallbacks) {
+      callback();
+    }
+  }
+
+  void _notifySettingsChanged() {
+    for (var callback in _settingsChangedCallbacks) {
       callback();
     }
   }
