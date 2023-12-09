@@ -1,72 +1,117 @@
-import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:fl_chart/fl_chart.dart';
 import 'package:self_examintion/localizations/app_localizations.dart';
 import 'package:self_examintion/models/assessment_entry.dart';
 import 'package:self_examintion/utils/globals.dart';
 import 'package:self_examintion/utils/local_storage.dart';
 
-class MonthChartWidget extends StatelessWidget {
+class MonthChartWidget extends StatefulWidget {
   final List<AssessmentEntry> assessmentHistory;
 
   MonthChartWidget({required this.assessmentHistory});
 
   @override
-  Widget build(BuildContext context) {
-    return AspectRatio(
-      aspectRatio: 1.70,
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: LineChart(
-          LineChartData(
-            lineBarsData: [
-              LineChartBarData(
-                spots: getOverallScores(context),
-                isCurved: true,
-                isStrokeCapRound: true,
-                belowBarData: BarAreaData(show: true),
-                color: Colors.red, // Use red for the calculated score
-              ),
-              for (int i = 0; i < assessmentHistory[0].answers.length; i++)
-                LineChartBarData(
-                  spots: getQuestionScores(context, i),
-                  isCurved: true,
-                  isStrokeCapRound: true,
-                  belowBarData: BarAreaData(show: true),
-                  color: globalColorMap[i +
-                      1],
-                ),
-            ],
-            //calculate minX and maxX according to the month today the minx should be the first day in this month the maxX should be last day in the current month
-            /*minX: calculateMinX(),
-            maxX: calculateMaxX(),*/
-            titlesData: FlTitlesData(
-              rightTitles: AxisTitles(
-                  sideTitles: SideTitles(
-                      showTitles: false
-                  )
-              ),
-              topTitles: AxisTitles(
-                  sideTitles: SideTitles(
-                      showTitles: false
-                  )
-              ),
-              bottomTitles: AxisTitles(
-                  drawBelowEverything: true,
-                  sideTitles: SideTitles(
-                    showTitles: true,
-                    getTitlesWidget: (value, meta) {
-                      return bottomTitleWidgets(value,meta,context);
-                    },
-                  )
-              ),
-            ),
-            borderData: FlBorderData(show: true),
-          ),
-        ),
-      ),
+  _MonthChartWidgetState createState() => _MonthChartWidgetState();
+}
+
+class _MonthChartWidgetState extends State<MonthChartWidget> {
+  List<bool> selectedQuestions = [];
+
+  @override
+  void initState() {
+    super.initState();
+    // Initialize the selectedQuestions list with all questions selected
+    selectedQuestions = List.generate(
+      widget.assessmentHistory[0].answers.length,
+          (index) => true,
     );
   }
 
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Expanded(
+          child: AspectRatio(
+            aspectRatio: 1.70,
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: LineChart(
+                LineChartData(
+                  lineBarsData: [
+                    LineChartBarData(
+                      spots: getOverallScores(context),
+                      isCurved: true,
+                      isStrokeCapRound: true,
+                      belowBarData: BarAreaData(show: true),
+                      color: Colors.red, // Use red for the calculated score
+                    ),
+                    for (int i = 0;
+                    i < widget.assessmentHistory[0].answers.length;
+                    i++)
+                      if (selectedQuestions[i])
+                        LineChartBarData(
+                          spots: getQuestionScores(context, i),
+                          isCurved: true,
+                          isStrokeCapRound: true,
+                          belowBarData: BarAreaData(show: true),
+                          color: globalColorMap[i + 1],
+                        ),
+                  ],
+                  titlesData: FlTitlesData(
+                    rightTitles: AxisTitles(
+                      sideTitles: SideTitles(showTitles: false),
+                    ),
+                    topTitles: AxisTitles(
+                      sideTitles: SideTitles(showTitles: false),
+                    ),
+                    bottomTitles: AxisTitles(
+                      drawBelowEverything: true,
+                      sideTitles: SideTitles(
+                        showTitles: true,
+                        getTitlesWidget: (value, meta) {
+                          return bottomTitleWidgets(value, meta, context);
+                        },
+                      ),
+                    ),
+                  ),
+                  borderData: FlBorderData(show: true),
+                ),
+              ),
+            ),
+          ),
+        ),
+        SizedBox(height: 16),
+        // Checkbox list for selecting questions
+        Expanded(
+                child: ListView.builder(
+                  itemCount: selectedQuestions.length,
+                  itemBuilder: (context, index) {
+                    return Card(
+                      child: ListTile(
+                        contentPadding: EdgeInsets.zero,
+                        leading: Card(
+                          color: globalColorMap[index+1],
+                          child: Checkbox(
+                            value: selectedQuestions[index],
+                            onChanged: (value) {
+                              setState(() {
+                                selectedQuestions[index] = value!;
+                              });
+                            },
+                          ),
+                        ),
+                        title: Text(
+                          '${AppLocalizations.of(context)!.questionMap[LocalStorage().getCurrentAuthor()]!.questions[index].text}'
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+      ],
+    );
+  }
   // Funktion zum Berechnen des minimalen x-Werts (erster Tag des aktuellen Monats)
   double calculateMinX() {
     DateTime now = DateTime.now();
@@ -84,9 +129,9 @@ class MonthChartWidget extends StatelessWidget {
   List<FlSpot> getOverallScores(BuildContext context) {
     List<FlSpot> spots = [];
 
-    for (int i = 0; i < assessmentHistory.length; i++) {
-      int totalScore = calculateTotalScore(context, assessmentHistory[i]);
-      DateTime timestamp = assessmentHistory[i].timestamp;
+    for (int i = 0; i < widget.assessmentHistory.length; i++) {
+      int totalScore = calculateTotalScore(context,  widget.assessmentHistory[i]);
+      DateTime timestamp =  widget.assessmentHistory[i].timestamp;
       spots.add(FlSpot(
           timestamp.millisecondsSinceEpoch.toDouble(), totalScore.toDouble()));
     }
@@ -97,14 +142,14 @@ class MonthChartWidget extends StatelessWidget {
   List<FlSpot> getQuestionScores(BuildContext context, int questionIndex) {
     List<FlSpot> spots = [];
 
-    for (int i = 0; i < assessmentHistory.length; i++) {
-      int answer = assessmentHistory[i].answers[questionIndex];
+    for (int i = 0; i <  widget.assessmentHistory.length; i++) {
+      int answer =  widget.assessmentHistory[i].answers[questionIndex];
       int convertedAnswer = answer;
-      if (AppLocalizations.of(context)!.questionMap[assessmentHistory[i]
+      if (AppLocalizations.of(context)!.questionMap[ widget.assessmentHistory[i]
           .questionSet]!.questions[questionIndex].isPositive) {
-        convertedAnswer = 4 - answer; // Invert the values
+        convertedAnswer = 5 - answer; // Invert the values
       }
-      DateTime timestamp = assessmentHistory[i].timestamp;
+      DateTime timestamp =  widget.assessmentHistory[i].timestamp;
       spots.add(FlSpot(timestamp.millisecondsSinceEpoch.toDouble(),
           convertedAnswer.toDouble()));
     }
@@ -117,9 +162,9 @@ class MonthChartWidget extends StatelessWidget {
     int totalScore = 0;
     for (int i = 0; i < assessmentEntry.answers.length; i++) {
       int answer = assessmentEntry.answers[i];
-      if (AppLocalizations.of(context)!.questionMap[assessmentHistory[0]
+      if (AppLocalizations.of(context)!.questionMap[ widget.assessmentHistory[0]
           .questionSet]!.questions[i].isPositive) {
-        answer = 4 - answer; // Invert the values
+        answer = 5 - answer; // Invert the values
       }
       totalScore += answer;
     }
@@ -130,11 +175,7 @@ class MonthChartWidget extends StatelessWidget {
   //build the main axis...
   Widget bottomTitleWidgets(double value, TitleMeta meta, BuildContext context) {
     String? freq = LocalStorage().getString("notificationFrequency");
-
-    const style = TextStyle(
-      fontWeight: FontWeight.bold,
-      fontSize: 16,
-    );
+    
     Widget title;
     switch (freq) {
       case "daily":
