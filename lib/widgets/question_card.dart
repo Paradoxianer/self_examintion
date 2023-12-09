@@ -32,7 +32,7 @@ class _QuestionCardState extends State<QuestionCard> {
 
   @override
   Widget build(BuildContext context) {
-    Color sliderColor = widget.question.isNegative
+    Color sliderColor = widget.question.isPositive
         ? Color.lerp(Colors.green, Colors.red, _sliderValue / 4) ?? Colors.green
         : Color.lerp(Colors.red, Colors.green, _sliderValue / 4) ?? Colors.red;
 

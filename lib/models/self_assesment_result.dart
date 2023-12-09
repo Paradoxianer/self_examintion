@@ -36,7 +36,7 @@ class SelfAssessmentResult {
     int totalScore = 0;
     for (Question question in answers) {
       int answerValue = question.answer;
-      if (question.isNegative) {
+      if (question.isPositive) {
         // Wenn die Frage "negativ" bewertet wird, kehre die Bewertung um
         answerValue = 5 - answerValue;
       }

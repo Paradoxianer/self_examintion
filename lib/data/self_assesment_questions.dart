@@ -21,29 +21,29 @@ class SelfAssessmentQuestions {
       description: "Selbstverleugnungsfragen von William Booth",
       questions: [
         Question(text: "--Bin ich einer Gewohnheitssünde schuldig? Sündige ich vorsätzlich oder nachlässig in Gedanken, Worten oder Werken, wohl wissend, dass ich Unrecht tue?",
-            isNegative: true),
+            isPositive: true),
         Question(
             text: "Habe ich mein körperliches Verlangen so unter Kontrolle, dass ich mich nicht schuldig mache? Lasse ich irgendeiner Neigung freien Lauf, die meine Heiligung, mein Wachstum in Erkenntnis, meinen Gehorsam und meine Brauchbarkeit beeinträchtigt?"),
         Question(
             text: "Sind alle meine Gedanken und Gefühle so beschaffen, dass ich mich nicht zu schämen brauche, wenn sie vor Gott offenbar werden?"),
         Question(
             text: "Verleitet mich weltlicher Einfluss dazu, Dinge zu tun oder zu sagen, die nicht zu Christus passen?",
-            isNegative: true),
+            isPositive: true),
         Question(
             text: "Verleitet mich meine Veranlagung, etwas zu fühlen, zu tun oder zu sagen, von dem ich hinterher feststelle, dass es im Gegensatz zu der Liebe steht, die ich immer für meine Mitmenschen haben sollte?",
-            isNegative: true),
+            isPositive: true),
         Question(
             text: "Tue ich alles, was in meiner Macht steht, damit Sünder gerettet werden? Kümmert es mich, dass sie in Gefahr sind? Bete ich für sie, kämpfe ich für ihr Heil, als ob sie meine eigenen Kinder wären?"),
         Question(
             text: "Erfülle ich meine Gelübde, die ich vor Gott einmal im Akt der Hingabe oder an der Bußbank gemacht habe?"),
         Question(text: "Steht mein Vorbild im Einklang mit meinem Wort?",),
         Question(text: "Bin ich im Wesen und Auftreten stolz oder arrogant?",
-            isNegative: true),
+            isPositive: true),
         Question(
             text: "Richte ich mich nach den Sitten und Gebräuchen der Welt oder habe ich den Mut, gegen den Strom zu schwimmen?"),
         Question(
             text: "Stehe ich in Gefahr, mich hinreißen zu lassen von dem weltlichen Verlangen, reich oder bewundert zu sein?",
-            isNegative: true),
+            isPositive: true),
         // Weitere Fragen von William Booth hier hinzufügen
       ],
     ),
