@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:self_examintion/localizations/app_localizations.dart';
 import 'package:self_examintion/utils/local_storage.dart';
 
 class DSGVODialog extends StatefulWidget {
@@ -39,11 +40,11 @@ class _DSGVODialogState extends State<DSGVODialog> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Zustimmung verweigert'),
+          title: Text(AppLocalizations.of(context)!.dsgvoNo),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              Text('Die App kann leider nur funktionieren, wenn Sie zustimmen.'),
+              Text(AppLocalizations.of(context)!.dsgvoNoInfo),
               SizedBox(height: 16),
               ElevatedButton(
                 onPressed: () {
@@ -54,7 +55,7 @@ class _DSGVODialogState extends State<DSGVODialog> {
                   // import 'dart:io';
                   exit(0);
                 },
-                child: Text('Ok'),
+                child: Text(AppLocalizations.of(context)!.ok),
               ),
             ],
           ),
@@ -66,20 +67,20 @@ class _DSGVODialogState extends State<DSGVODialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text('Datenschutz und Zustimmung'),
+      title: Text(AppLocalizations.of(context)!.dsgvoTitle),
       content: SingleChildScrollView(
         child: Column(
           children: <Widget>[
             Text(
-              'Um Ihre persönliche geistliche Entwicklung zu verfolgen, speichern wir Ihre Antworten auf die gestellten Fragen. Diese Daten werden anonymisiert und lokal auf Ihrem Gerät gespeichert.',
+              AppLocalizations.of(context)!.dsgvo1,
             ),
             SizedBox(height: 16),
             Text(
-              'Bitte beachten Sie, dass Personen, die Zugriff auf Ihr Gerät und die App haben, möglicherweise auf diese Daten zugreifen können.',
+              AppLocalizations.of(context)!.dsgvo2,
             ),
             SizedBox(height: 16),
             Text(
-              'Indem Sie unten auf "Zustimmen" klicken, erklären Sie sich damit einverstanden, dass Ihre Daten wie oben beschrieben gespeichert werden. Wenn Sie nicht zustimmen, werden keine Daten erfasst.',
+              AppLocalizations.of(context)!.dsgvo3,
             ),
             SizedBox(height: 16),
             if (!agreedToDSGVO)  // Show buttons only if not agreed
@@ -91,14 +92,14 @@ class _DSGVODialogState extends State<DSGVODialog> {
                       saveAgreement(true);
                       Navigator.of(context).pop(true);
                     },
-                    child: Text('Zustimmen'),
+                    child: Text(AppLocalizations.of(context)!.dsgvoOK),
                   ),
                   SizedBox(width: 16),
                   ElevatedButton(
                     onPressed: () {
                       showDisagreeDialog(context);
                     },
-                    child: Text('Widersprechen'),
+                    child: Text(AppLocalizations.of(context)!.dsgvoCancel),
                   ),
                 ],
               ),
@@ -111,14 +112,14 @@ class _DSGVODialogState extends State<DSGVODialog> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Text(
-                'Zustimmung erteilt',
+                AppLocalizations.of(context)!.dsgvoYes,
                 style: TextStyle(color: Colors.green),
               ),
               TextButton(
                 onPressed: () {
                   saveAgreement(false);
                 },
-                child: Text('Widersprechen'),
+                child: Text(AppLocalizations.of(context)!.dsgvoCancel),
               ),
             ],
           ),

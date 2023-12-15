@@ -107,7 +107,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get dsgvoOK => 'Agree';
 
   @override
-  String get dsgvoCancel => 'Object';
+  String get dsgvoCancel => 'Reject';
 
   @override
   String get dsgvoYes => 'Consent given';
