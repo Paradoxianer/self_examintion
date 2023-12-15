@@ -118,6 +118,11 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get total => 'total';
 
+  @override
+  String get compareChart => 'compare chart';
+
+  @override
+  String get timeChart => 'time chart';
 
   List<String> get answers => ["Not at all","Little", "Mostly","Completely"];
 

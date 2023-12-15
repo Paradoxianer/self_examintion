@@ -118,6 +118,12 @@ class AppLocalizationsKo extends AppLocalizations {
   @override
   String get total => '전체';
 
+  @override
+  String get compareChart => '비교 차트';
+
+  @override
+  String get timeChart => '시간 차트';
+
 
   List<String> get answers => ["전혀 아님","조금", "대부분","완전히"];
 

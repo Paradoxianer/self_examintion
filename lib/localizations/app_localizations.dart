@@ -306,6 +306,9 @@ abstract class AppLocalizations {
   /// **'Gesamt'**
   String get total;
 
+  String get compareChart;
+
+  String get timeChart;
 
   //returns a localized List of the wighted anservalues
   List<String> get answers;

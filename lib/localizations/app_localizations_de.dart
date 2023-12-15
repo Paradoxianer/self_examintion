@@ -119,6 +119,11 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get total => 'Gesamt';
 
+  @override
+  String get compareChart => 'Vergleichsdiagramm';
+
+  @override
+  String get timeChart => 'Timediagram';
 
   List<String> get answers => ["Gar nicht","Wenig", "Meistens","Voll und ganz"];
 
