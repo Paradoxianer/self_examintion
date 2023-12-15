@@ -38,6 +38,8 @@ class _MonthChartWidgetState extends State<MonthChartWidget> {
               padding: const EdgeInsets.all(16.0),
               child: LineChart(
                 LineChartData(
+                 // minX: calculateMinX(),
+                  //minY: calculateMaxX(),
                   lineBarsData: [
                     LineChartBarData(
                       spots: getOverallScores(context),
@@ -54,6 +56,7 @@ class _MonthChartWidgetState extends State<MonthChartWidget> {
                           spots: getQuestionScores(context, i),
                           isCurved: true,
                           isStrokeCapRound: true,
+                          preventCurveOverShooting: true,
                           belowBarData: BarAreaData(show: true),
                           color: globalColorMap[i + 1],
                         ),
@@ -175,7 +178,7 @@ class _MonthChartWidgetState extends State<MonthChartWidget> {
   //build the main axis...
   Widget bottomTitleWidgets(double value, TitleMeta meta, BuildContext context) {
     String? freq = LocalStorage().getString("notificationFrequency");
-    
+
     Widget title;
     switch (freq) {
       case "daily":
@@ -191,10 +194,30 @@ class _MonthChartWidgetState extends State<MonthChartWidget> {
         title = annualTitles(value, meta, context);
         break;
       default:
-        title = Container();
+        title = defaultTitles(value, meta, context);
         break;
     }
     return title; // Änderung: Direkt das Widget zurückgeben, nicht in ein SideTitleWidget einbetten
+  }
+
+  Widget defaultTitles(double value, TitleMeta meta, BuildContext context) {
+    final timestamp = DateTime.fromMillisecondsSinceEpoch(value.toInt());
+    const style = TextStyle(
+      fontWeight: FontWeight.bold,
+      fontSize: 16,
+    );
+    return FittedBox(
+      fit: BoxFit.fitHeight,
+      child: Column(
+        children: [
+          Text(
+            '${timestamp.day}.${timestamp.month}.${timestamp.year.toString().substring(timestamp.year.toString().length - 2)}',
+            style: style,
+          ),
+          Text('${timestamp.hour}:${timestamp.minute}', style: style),
+        ],
+      ),
+    );
   }
 
 
