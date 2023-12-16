@@ -124,6 +124,8 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get timeChart => 'time chart';
 
+  List<String> get rating => ["Excellent", "Good path", "Not so good", "Needs work"];
+
   List<String> get answers => ["Not at all","Little", "Mostly","Completely"];
 
   List<String> get frequenze => ["daily","weekly","montly","anual"];

@@ -310,6 +310,8 @@ abstract class AppLocalizations {
 
   String get timeChart;
 
+  List<String> get rating;
+
   //returns a localized List of the wighted anservalues
   List<String> get answers;
 

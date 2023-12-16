@@ -123,6 +123,7 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get timeChart => 'Gráfico de tiempo';
 
+  List<String> get rating => ["Excelente", "Buen camino", "No tan bueno", "Necesita trabajo"];
 
   List<String> get answers => ["En absoluto", "Poco", "Mayormente", "Completamente"];
 

@@ -27,7 +27,7 @@ class ComparisonChartWidget extends StatelessWidget {
                     int rodIndex,
                     ) {
                   return BarTooltipItem(
-                    AppLocalizations.of(context)!.answers[rod.toY.toInt()-1],
+                    AppLocalizations.of(context)!.rating[rod.toY.toInt()-1],
                     TextStyle(
                       color: Colors.white,
                       fontSize: 8.0,
@@ -198,8 +198,11 @@ class ComparisonChartWidget extends StatelessWidget {
   }
 
   Widget leftTitleWidgets(double value, TitleMeta meta, BuildContext context) {
-    if (value % 1 == 0 && value >= 1 && value <= 4) {
-      String answerText = AppLocalizations.of(context)!.answers[value.toInt()-1];
+    print(value);
+    print(value % 1) ;
+    if (double.parse(value.toStringAsFixed(2)) % 1 == 0 && value >= 1 && value <= 5) {
+      print("===="+ value.toInt().toString());
+      String answerText = AppLocalizations.of(context)!.rating[value.toInt()-1];
       const style = TextStyle(
         fontWeight: FontWeight.bold,
         fontSize: 9,

@@ -124,6 +124,7 @@ class AppLocalizationsKo extends AppLocalizations {
   @override
   String get timeChart => '시간 차트';
 
+  List<String> get rating => ["매우 좋음", "좋은 길", "그리 좋지 않음", "개선이 필요함"];
 
   List<String> get answers => ["전혀 아님","조금", "대부분","완전히"];
 

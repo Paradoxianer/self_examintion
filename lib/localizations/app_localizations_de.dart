@@ -125,6 +125,9 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get timeChart => 'Timediagram';
 
+  List<String> get rating => ["Sehr gut", "Guter weg","nicht so gut","dringen dran arbeiten"];
+
+
   List<String> get answers => ["Gar nicht","Wenig", "Meistens","Voll und ganz"];
 
   List<String> get frequenze => ["täglich","wöchentlich","monatlich","jährlich"];
