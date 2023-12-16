@@ -5,16 +5,16 @@ import 'package:self_examintion/models/assessment_entry.dart';
 import 'package:self_examintion/utils/globals.dart';
 import 'package:self_examintion/utils/local_storage.dart';
 
-class MonthChartWidget extends StatefulWidget {
+class TimeChartWidget extends StatefulWidget {
   final List<AssessmentEntry> assessmentHistory;
 
-  MonthChartWidget({required this.assessmentHistory});
+  TimeChartWidget({required this.assessmentHistory});
 
   @override
-  _MonthChartWidgetState createState() => _MonthChartWidgetState();
+  _TimeChartWidgetState createState() => _TimeChartWidgetState();
 }
 
-class _MonthChartWidgetState extends State<MonthChartWidget> {
+class _TimeChartWidgetState extends State<TimeChartWidget> {
   List<bool> selectedQuestions = [];
 
   @override
@@ -284,7 +284,9 @@ class _MonthChartWidgetState extends State<MonthChartWidget> {
   }
 
   Widget annualTitles(double value, TitleMeta meta, BuildContext context) {
-    return Container();
+    final timestamp = DateTime.fromMillisecondsSinceEpoch(
+        value.toInt());
+    return Text('${timestamp.year.toString().substring(timestamp.year.toString().length - 2)}');
   }
 
 }
