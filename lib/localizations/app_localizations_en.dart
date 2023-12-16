@@ -135,7 +135,7 @@ class AppLocalizationsEn extends AppLocalizations {
     Map<String, SelfAssessmentQuestionSet> _questionMap = {
       "William Booth": SelfAssessmentQuestionSet(
         authorName: "William Booth",
-        description: "Selbstverleugnungsfragen von William Booth",
+        description: "Self-denial questions by William Booth",
         questions: [
           Question(
               text:
