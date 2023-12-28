@@ -131,6 +131,52 @@ class AppLocalizationsEs extends AppLocalizations {
 
   Map<String, SelfAssessmentQuestionSet> get questionMap {
     Map<String, SelfAssessmentQuestionSet> _questionMap = {
+      "Diez Mandamientos": SelfAssessmentQuestionSet(
+        authorName: "Ejército de Salvación Chemnitz",
+        description: "Preguntas de autoevaluación desarrolladas por el Ejército de Salvación Chemnitz basadas en los Diez Mandamientos.",
+        questions: [
+          Question(
+              text: "¿Hasta qué punto evito poner otras cosas junto al único Dios verdadero?",
+              description: "No tendrás otros dioses delante de mí. (Éxodo 20:2-6)"
+          ),
+          Question(
+              text: "¿Con qué consistencia me abstengo de hacer o adorar una imagen de Dios?",
+              description: "No te harás imagen, ni ninguna semejanza de lo que esté arriba en el cielo, ni abajo en la tierra, ni en las aguas debajo de la tierra. (Éxodo 20:4)"
+          ),
+          Question(
+              text: "¿Cuánto he evitado usar el nombre del SEÑOR, mi Dios, sin pensar?",
+              description: "No tomarás el nombre del SEÑOR tu Dios en vano, porque el SEÑOR no tendrá por inocente al que tome su nombre en vano. (Éxodo 20:7)"
+          ),
+          Question(
+              text: "¿Me tomo un día libre cada seis días para honrar a Dios?",
+              description: "Acuérdate del día de reposo para santificarlo. (Éxodo 20:8-11)"
+          ),
+          Question(
+              text: "¿Hasta qué punto honro a mis padres y les muestro respeto?",
+              description: "Honra a tu padre y a tu madre, para que tus días se alarguen en la tierra que el SEÑOR tu Dios te da. (Éxodo 20:12)"
+          ),
+          Question(
+              text: "¿Con qué consistencia evito hacer daño a los demás en pensamientos, palabras o acciones?",
+              description: "No matarás. (Éxodo 20:13)"
+          ),
+          Question(
+              text: "¿Hasta qué punto me alejo del adulterio y preservo el matrimonio como una institución sagrada?",
+              description: "No cometerás adulterio. (Éxodo 20:14)"
+          ),
+          Question(
+              text: "¿Con qué fiabilidad me abstengo de tomar lo que no me pertenece y practico la honestidad?",
+              description: "No hurtarás. (Éxodo 20:15)"
+          ),
+          Question(
+              text: "¿Hasta qué punto evito difundir información falsa o chismes sobre los demás?",
+              description: "No darás falso testimonio contra tu prójimo. (Éxodo 20:16)"
+          ),
+          Question(
+              text: "¿Cuánto evito sentir envidia de lo que pertenece a los demás o de cómo viven los demás?",
+              description: "No codiciarás la casa de tu prójimo, no codiciarás la mujer de tu prójimo, ni su siervo, ni su criada, ni su buey, ni su asno, ni cosa alguna de tu prójimo. (Éxodo 20:17)"
+          ),
+        ],
+      ),
       "William Booth": SelfAssessmentQuestionSet(
         authorName: "William Booth",
         description: "Preguntas de autonegación de William Booth",

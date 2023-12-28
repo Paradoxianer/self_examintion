@@ -133,6 +133,52 @@ class AppLocalizationsEn extends AppLocalizations {
 
   Map<String, SelfAssessmentQuestionSet> get questionMap {
     Map<String, SelfAssessmentQuestionSet> _questionMap = {
+      "Ten Commandments": SelfAssessmentQuestionSet(
+        authorName: "Salvation Army Chemnitz",
+        description: "Self-assessment questions developed by the Salvation Army Chemnitz based on the Ten Commandments.",
+        questions: [
+          Question(
+              text: "To what extent do I avoid putting other things beside the one true God?",
+              description: "You shall have no other gods before me! (Exodus 20:2-6)"
+          ),
+          Question(
+              text: "How consistently do I refrain from making or worshiping an image of God?",
+              description: "You shall not make for yourself an image in the form of anything in heaven above or on the earth beneath or in the waters below. (Exodus 20:4)"
+          ),
+          Question(
+              text: "How much have I avoided using the name of the LORD, my God, thoughtlessly?",
+              description: "You shall not misuse the name of the LORD your God, for the LORD will not hold anyone guiltless who misuses his name. (Exodus 20:7)"
+          ),
+          Question(
+              text: "Do I take a day off every six days to honor God?",
+              description: "But the seventh day is a sabbath to the LORD your God. On it you shall not do any work. (Exodus 20:8-11)"
+          ),
+          Question(
+              text: "To what extent do I honor my parents and show them respect?",
+              description: "Honor your father and your mother, so that you may live long in the land the LORD your God is giving you. (Exodus 20:12)"
+          ),
+          Question(
+              text: "How consistently do I avoid harming others in thoughts, words, or actions?",
+              description: "You shall not murder. (Exodus 20:13)"
+          ),
+          Question(
+              text: "To what extent do I stay away from adultery and preserve marriage as a sacred institution?",
+              description: "You shall not commit adultery. (Exodus 20:14)"
+          ),
+          Question(
+              text: "How reliably do I refrain from taking what does not belong to me and practice honesty?",
+              description: "You shall not steal. (Exodus 20:15)"
+          ),
+          Question(
+              text: "To what extent do I avoid spreading false information or gossip about others?",
+              description: "You shall not give false testimony against your neighbor. (Exodus 20:16)"
+          ),
+          Question(
+              text: "How much do I avoid being envious of what belongs to others or how others live?",
+              description: "You shall not covet your neighbor's house, you shall not covet your neighbor's wife, nor his manservant, nor his maidservant, nor his ox, nor his ass, nor any thing that is your neighbor's. (Exodus 20:17)"
+          ),
+        ],
+      ),
       "William Booth": SelfAssessmentQuestionSet(
         authorName: "William Booth",
         description: "Self-denial questions by William Booth",

@@ -136,6 +136,46 @@ class AppLocalizationsDe extends AppLocalizations {
 
   Map<String, SelfAssessmentQuestionSet> get questionMap {
     Map<String, SelfAssessmentQuestionSet> _questionMap = {
+      "Zehn Gebote": SelfAssessmentQuestionSet(
+        authorName: "Heilsarmee Chemnitz",
+        description: "Selbstprüfungsfragen entwickelt von der Heilsarmee Chemnitz basierend auf den zehn Geboten.",
+        questions: [
+          Question(
+              text: "Inwieweit vermeide ich es, andere Dinge / Sachen neben dem einen wahren Gott zu setzen?",
+              description:"Du sollst keine anderen Götter haben neben mir!  (2. Mose 2, 1-6)"),
+          Question(
+              text: "Wie konsequent vermeide ich es, mir ein Bild von Gott zu machen oder anzufertigen?",
+              description: "Du sollst dir kein Gottesbild anfertigen! (2. Mose 2, 4)"),
+          Question(
+              text: "Wie sehr habe ich es vermieden Gottes Namen bedenkenlos zu gebrauchen?",
+              description:
+              "Du sollst den Namen des HERRN, deines Gottes, nicht mißbrauchen! (2. Mose  2, 7)"),
+          Question(
+              text: "Nehme ich mir einmal aller sechs Tage einen Tag Auszeit, um Gott zu ehren?",
+              description:
+              "Aber der siebte Tag ist ein Feiertag zu Ehren des HERRN, deines Gottes! (2. Mose 2, 8-11)"),
+          Question(
+              text: "Inwiefern ehre ich meine Eltern und zeige ihnen Respekt?",
+              description: "Ehre deinen Vater und deine Mutter! (2. Mose 2, 12)"),
+          Question(
+              text: "Wie konsequent vermeide ich es andere Menschen in Gedanken mit Worten oder gar mit Taten Schaden zu zu fügen?",
+              description:
+              "Du sollst nicht töten! (2. Mose 2, 13)"),
+          Question(
+              text: "Inwieweit halte ich mich von Ehebruch fern und bewahre die Ehe als heilige Institution?",
+              description:
+              "Du sollst nicht ehebrechen! (2. Mose 2, 14)"),
+          Question(
+              text: "Wie zuverlässig lasse ich die Finger von fremdem Eigentum und praktiziere Ehrlichkeit?" ,
+              description: "Du sollst nicht stehlen! (2. Mose 2, 15)"),
+          Question(
+              text: "In welchem Maße vermeide ich es, falsches Dinge über andere Menschen zu verbreiten oder zu lästern?",
+              description: "Du sollst kein falsches Zeugnis ablegen gegen deinen Nächsten! (2. Mose 2, 16)"),
+          Question(
+              text: "Wie sehr vermeide ich es neidisch zu sein auf das was anderen Menschen gehört bzw. wie andere Menschen leben?",
+              description: "Du sollst nicht begehren deines Nächsten Haus! Du sollst nicht begehren deines Nächsten Weib, noch seinen Knecht, noch seine Magd, noch sein Rind, noch seinen Esel, noch irgend etwas, was deinem Nächsten gehört. (2. Mose 2, 16)")
+        ],
+      ),
       "William Booth": SelfAssessmentQuestionSet(
         authorName: "William Booth",
         description: "Selbstverleugnungsfragen von William Booth",
@@ -230,7 +270,7 @@ class AppLocalizationsDe extends AppLocalizations {
           Question(text: "Murre oder beschwere ich mich ständig?"),
           Question(text: "Ist Christus für mich real?")
         ],
-      )
+      ),
     };
     return _questionMap;
   }

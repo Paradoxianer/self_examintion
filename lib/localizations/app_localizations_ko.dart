@@ -132,6 +132,52 @@ class AppLocalizationsKo extends AppLocalizations {
 
   Map<String, SelfAssessmentQuestionSet> get questionMap {
     Map<String, SelfAssessmentQuestionSet> _questionMap = {
+      "십계명": SelfAssessmentQuestionSet(
+        authorName: "헤일스아미 켐니츠",
+        description: "헤일스아미 켐니츠에서 만든 십계명을 기반으로 한 자가진단 질문.",
+        questions: [
+          Question(
+              text: "내가 다른 것을 하나의 참된 하나님과 함께 두지 않도록 어느 정도로 피하고 있나요?",
+              description: "너는 나의 앞에 다른 신들이 있어서는 안 된다! (출애굽기 20:2-6)"
+          ),
+          Question(
+              text: "나는 어느 정도로 하나님의 형상을 만들거나 숭배하지 않기 위해 노력하고 있나요?",
+              description: "너는 자기에게 너무나도 비슷한 무엇이든지의 형상을 만들지 말며 또 그 안에 있거나 그 위에 있는 하늘에나 땅에 있는 무엇이든지의 형상을 만들지 말지니라. (출애굽기 20:4)"
+          ),
+          Question(
+              text: "내가 여호와 나의 하나님의 이름을 경배하지 않고 남용하는 것을 얼마나 피했나요?",
+              description: "너는 여호와 너의 하나님의 이름을 거룩하게 하지 말지니 네 하나님 여호와가 무죄로 여기지 않게 하려니와 이를 남용하는 자는 무죄로 여기지 않으시리라. (출애굽기 20:7)"
+          ),
+          Question(
+              text: "나는 매 여섯 일마다 쉬어서 하나님을 존경하기 위해 한 날 쉬고 있나요?",
+              description: "그러나 일곱째 날은 너의 하나님 여호와를 공경하는 안식일이로다. (출애굽기 20:8-11)"
+          ),
+          Question(
+              text: "나는 부모를 존경하고 존경하는 정도는 어느 정도인가요?",
+              description: "네 부모를 공경하라 그리하면 네 하나님 여호와가 네게 주는 땅에서 네 날을 길게 살리라. (출애굽기 20:12)"
+          ),
+          Question(
+              text: "내가 다른 사람들에게 생각, 말 또는 행동으로 피해를 주지 않도록 어느 정도로 노력하고 있나요?",
+              description: "네가 살인하지 말라. (출애굽기 20:13)"
+          ),
+          Question(
+              text: "나는 간통을 멀리하고 결혼을 거룩한 제도로 유지하는 데 어느 정도로 노력하고 있나요?",
+              description: "네가 간통하지 말라. (출애굽기 20:14)"
+          ),
+          Question(
+              text: "남의 것을 가져가지 않고 정직을 실천하는 데 얼마나 신뢰할 수 있나요?",
+              description: "네가 도둑질하지 말라. (출애굽기 20:15)"
+          ),
+          Question(
+              text: "나는 다른 사람에 대해 거짓말이나 중상을 퍼뜨리지 않도록 어느 정도로 피하고 있나요?",
+              description: "네 이웃에 대한 거짓 증거를 네가 삼가야 할지니라. (출애굽기 20:16)"
+          ),
+          Question(
+              text: "나는 다른 사람들이 소유한 것이나 다른 사람들이 어떻게 살고 있는 것에 대해 부러워하지 않도록 어느 정도로 피하고 있나요?",
+              description: "네 이웃의 집을 탐내지 말라. 네 이웃의 아내나 종이나 여종나 소나 나귀나 그의 소유 중 어떠한 것이라도 탐내지 말라. (출애굽기 20:17)"
+          ),
+        ],
+      ),
       "William Booth": SelfAssessmentQuestionSet(
         authorName: "William Booth",
         description: "William Booth의 자기부인 질문",
