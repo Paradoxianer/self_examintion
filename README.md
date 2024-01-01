@@ -27,6 +27,14 @@ Die **Self Examination App** ist eine Flutter-Anwendung, die es Benutzern ermög
    git clone https://github.com/dein-benutzername/self-examination-app.git
    cd self-examination-app
 
+3. **Abhängigkeiten installieren:**
+   ```bash
+    flutter pub get
+
+4. **Anwendung starten:**
+    ```bash
+   flutter run
+
 ## Struktur des Projekts
    - lib/: Enthält den Quellcode der Anwendung.
      - localizations/: Hier sind Dateien für die Lokalisierung.
