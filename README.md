@@ -1,16 +1,56 @@
-# self_examintion
+# Self Examination App
 
-A Tool to examine your state of holiness
+Die **Self Examination App** ist eine Flutter-Anwendung, die es Benutzern ermöglicht, Selbstbewertungen anhand einer Reihe von Fragen durchzuführen, die auf den Zehn Geboten basieren.
 
-## Getting Started
+## Inhaltsverzeichnis
 
-This project is a starting point for a Flutter application.
+- [Technologien](#technologien)
+- [Installation](#installation)
+- [Struktur des Projekts](#struktur-des-projekts)
+- [Funktionalitäten](#funktionalitäten)
+- [Lokalisierung](#lokalisierung)
+- [Autoren](#autoren)
+- [Lizenz](#lizenz)
 
-A few resources to get you started if this is your first Flutter project:
+## Technologien
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+- Flutter
+- Dart
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Installation
+
+1. **Flutter installieren:**
+    - [Anleitung zur Flutter-Installation](https://flutter.dev/docs/get-started/install)
+
+2. **Projekt klonen:**
+   ```bash
+   git clone https://github.com/dein-benutzername/self-examination-app.git
+   cd self-examination-app
+
+3. **Struktur des Projekts**
+   - lib/: Enthält den Quellcode der Anwendung.
+     - localizations/: Hier sind Dateien für die Lokalisierung.
+     - models/: beinhaltet alle wichtigen modelle (AssesmentEntry, AssementData, Question und SelfAssementResult)
+     - screens/: Enthält Flutter-Widgets für verschiedene Bildschirme.
+     - utils/:
+     - widgets/:
+
+4. **Funktionalitäten**
+Selbstbewertung: Benutzer können Selbstbewertungen anhand von verschiedenen Selbstprüfungsfragen durchführen.
+Die Ergebnisse werden lokal gespeichert.
+Die persönliche Entwicklung kann in verschiedenen Diagrammen dargestellt werden. .
+Lokalisierung: Die Anwendung unterstützt mehrere Sprachen.
+
+5. **Lokalisierung**
+    Die App unterstützt verschiedene Sprachen. Derzeit unterstützte Sprachen:
+        Englisch (en)
+        Deutsch (de)
+        Spanisch (es)
+        Koreanisch (ko)
+    Die Sprachlokalisierung erfolgt in der lib/localizations/-Ordner.
+
+6. **Autoren**
+Matthias Lindner (@Paradoxianer)
+
+7. **Lizenz**
+   Dieses Projekt ist unter der MIT-Lizenz lizenziert. Siehe die LICENSE-Datei für weitere Informationen.
