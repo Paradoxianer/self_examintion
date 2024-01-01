@@ -19,6 +19,8 @@ class AssessmentScreen extends StatefulWidget {
 class _AssessmentScreenState extends State<AssessmentScreen> {
   List<QuestionCard> questionCards = [];
   final noteController = TextEditingController();
+  SelfAssessmentQuestionSet? questionSet = null;
+  bool allQuestionsAnswered = false;
 
   @override
   void dispose() {
@@ -26,13 +28,15 @@ class _AssessmentScreenState extends State<AssessmentScreen> {
     noteController.dispose();
     super.dispose();
   }
-  SelfAssessmentQuestionSet? questionSet = null;
-
-  bool allQuestionsAnswered = false;
 
   @override
   void initState() {
     super.initState();
+    widget.localStorage.addAssessmentDataChangedCallback(questionsetChanged);
+  }
+
+  questionsetChanged(){
+    questionCards.clear();
   }
 
   // Check if all questions are answered
@@ -45,8 +49,9 @@ class _AssessmentScreenState extends State<AssessmentScreen> {
     return true;
   }
 
-  loadQuestionSet(BuildContext context){
 
+
+  loadQuestionSet(BuildContext context){
     questionSet = AppLocalizations.of(context)!.questionMap[
     widget.localStorage.getCurrentAuthor()] ??
         AppLocalizations.of(context)!.questionMap.values.first;
@@ -71,7 +76,8 @@ class _AssessmentScreenState extends State<AssessmentScreen> {
     if  (questionCards.isEmpty)  loadQuestionSet(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppLocalizations.of(context)!.examinTitle),
+        title:
+            Text("${AppLocalizations.of(context)!.examinTitle} - ${widget.localStorage.getCurrentAuthor()}", overflow: TextOverflow.ellipsis),
         actions: [
           IconButton(
               onPressed:  () {
@@ -105,7 +111,7 @@ class _AssessmentScreenState extends State<AssessmentScreen> {
             onPressed: () async {
               if (areAllQuestionsAnswered()) {
                 await saveAssessmentResults(); // Speichere die Ergebnisse
-                Navigator.of(context).push(
+                Navigator.of(context).pushReplacement(
                   MaterialPageRoute(
                     builder: (context) => ChartScreen(),
                   ),
