@@ -132,7 +132,7 @@ class AppLocalizationsKo extends AppLocalizations {
 
   Map<String, SelfAssessmentQuestionSet> get questionMap {
     Map<String, SelfAssessmentQuestionSet> _questionMap = {
-      "십계명": SelfAssessmentQuestionSet(
+      "헤일스아미 켐니츠": SelfAssessmentQuestionSet(
         authorName: "헤일스아미 켐니츠",
         description: "헤일스아미 켐니츠에서 만든 십계명을 기반으로 한 자가진단 질문.",
         questions: [
@@ -180,7 +180,7 @@ class AppLocalizationsKo extends AppLocalizations {
       ),
       "William Booth": SelfAssessmentQuestionSet(
         authorName: "William Booth",
-        description: "William Booth의 자기부인 질문",
+        description: "William Booth 의 자기부인 질문",
         questions: [
           Question(
               text:

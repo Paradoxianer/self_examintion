@@ -131,7 +131,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   Map<String, SelfAssessmentQuestionSet> get questionMap {
     Map<String, SelfAssessmentQuestionSet> _questionMap = {
-      "Diez Mandamientos": SelfAssessmentQuestionSet(
+      "Ejército de Salvación Chemnitz": SelfAssessmentQuestionSet(
         authorName: "Ejército de Salvación Chemnitz",
         description: "Preguntas de autoevaluación desarrolladas por el Ejército de Salvación Chemnitz basadas en los Diez Mandamientos.",
         questions: [

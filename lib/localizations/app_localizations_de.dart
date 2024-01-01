@@ -136,7 +136,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   Map<String, SelfAssessmentQuestionSet> get questionMap {
     Map<String, SelfAssessmentQuestionSet> _questionMap = {
-      "Zehn Gebote": SelfAssessmentQuestionSet(
+      "Heilsarmee Chemnitz": SelfAssessmentQuestionSet(
         authorName: "Heilsarmee Chemnitz",
         description: "Selbstprüfungsfragen entwickelt von der Heilsarmee Chemnitz basierend auf den zehn Geboten.",
         questions: [
