@@ -38,78 +38,47 @@ class _ChartScreenState extends State<ChartScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Row(
-            children : [ Text(AppLocalizations.of(context)!.chartTitle),
-        Expanded(
-          child: Center(
-            child: DropdownButton(
-              value: _selectedChartIndex,
-              items: [
-                DropdownMenuItem(
-                  child: Text(AppLocalizations.of(context)!.compareChart),
-                  value: 0,
-                ),
-                DropdownMenuItem(
-                  child: Text(AppLocalizations.of(context)!.timeChart),
-                  value: 1,
-                ),
-              ],
-              onChanged: (value) {
-                setState(() {
-                  _selectedChartIndex = value as int;
-                  _pageController.animateToPage(
-                    _selectedChartIndex,
-                    duration: Duration(milliseconds: 500),
-                    curve: Curves.ease,
-                  );
-                });
+    return DefaultTabController(
+      length: 2,
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text("${AppLocalizations.of(context)!.chartTitle} - ${LocalStorage().getCurrentAuthor()}",overflow: TextOverflow.ellipsis,),
+     /*     actions: [
+            IconButton(
+              onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => SettingsScreen(),
+                  ),
+                );
               },
+              icon: Icon(Icons.settings),
             ),
+          ],*/
+          bottom: TabBar(
+            tabs: [
+              Tab(text: AppLocalizations.of(context)!.compareChart),
+              Tab(text: AppLocalizations.of(context)!.compareChart)
+            ],
           ),
-        )]),
-        actions: [
-          IconButton(
-            onPressed: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => SettingsScreen(),
-                ),
-              );
-            },
-            icon: Icon(Icons.settings),
-          ),
-        ],
-      ),
-      body: assessmentHistory.isEmpty
-          ? Center(child: Text(AppLocalizations.of(context)!.noHistory))
-          : Column(
-        children: [
-          // Dropdown-Menü für die Auswahl des Charts
-          // Anzeige des ausgewählten Charts im PageView
-          Expanded(
-            child: PageView(
-              allowImplicitScrolling: true,
-              scrollDirection: Axis.horizontal,
-              controller: _pageController,
-              onPageChanged: (index) {
-                setState(() {
-                  _selectedChartIndex = index;
-                });
-              },
-              children: [
-                ComparisonChartWidget(
-                  assessmentHistory: assessmentHistory,
-                ),
-                TimeChartWidget(
-                  assessmentHistory: assessmentHistory,
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
+        ),
+        body:
+             TabBarView(
+                children: [
+        assessmentHistory.isEmpty ?
+                Center(child: Text(AppLocalizations.of(context)!.noHistory))
+                 :  ComparisonChartWidget(
+                    assessmentHistory: assessmentHistory,
+                  ),
+    assessmentHistory.isEmpty ?
+    Center(child: Text(AppLocalizations.of(context)!.noHistory))
+        :TimeChartWidget(
+                    assessmentHistory: assessmentHistory,
+                  ),
+                ],
+          )
+    )
     );
+
   }
 }
