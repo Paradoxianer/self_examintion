@@ -3,7 +3,6 @@ import 'package:self_examintion/data/self_assesment_questions.dart';
 import 'package:self_examintion/localizations/app_localizations.dart';
 import 'package:self_examintion/models/assessment_entry.dart';
 import 'package:self_examintion/screens/chart_screen.dart';
-import 'package:self_examintion/screens/settings_screen.dart';
 import 'package:self_examintion/utils/local_storage.dart';
 import 'package:self_examintion/widgets/question_card.dart';
 
@@ -78,7 +77,7 @@ class _AssessmentScreenState extends State<AssessmentScreen> {
       appBar: AppBar(
         title:
             Text("${AppLocalizations.of(context)!.examinTitle} - ${widget.localStorage.getCurrentAuthor()}", overflow: TextOverflow.ellipsis),
-        actions: [
+     /*   actions: [
           IconButton(
               onPressed:  () {
                 Navigator.of(context).push(
@@ -89,7 +88,7 @@ class _AssessmentScreenState extends State<AssessmentScreen> {
               },
               icon:  Icon(
                 Icons.settings))
-        ],
+        ],*/
       ),
       body: Column(
         children: <Widget>[
