@@ -48,9 +48,11 @@ class LocalStorage {
 
   void setCurrentAuthor(String authorName) {
     //ToDo check if it is a valid Name
-    _currentAuthor = authorName;
-    _prefs?.setString('currentAuthor', authorName);
-    _notifyAssessmentDataChanged();
+    if (authorName.compareTo(_currentAuthor) !=0) {
+      _currentAuthor = authorName;
+      _prefs?.setString('currentAuthor', authorName);
+      _notifyAssessmentDataChanged();
+    }
   }
 
   String getCurrentAuthor(){
@@ -119,7 +121,7 @@ class LocalStorage {
     final key = '$_currentAuthor${entry.timestamp.millisecondsSinceEpoch}';
     final entryJson = jsonEncode(entry.toMap());
     await _prefs?.setString(key, entryJson);
-    _notifyAssessmentDataChanged();
+   //disable for now _notifyAssessmentDataChanged();
   }
 
   Future<void> clearAllAssesmentEntries() async {
