@@ -27,7 +27,7 @@ Die **Self Examination App** ist eine Flutter-Anwendung, die es Benutzern ermög
    git clone https://github.com/dein-benutzername/self-examination-app.git
    cd self-examination-app
 
-3. **Struktur des Projekts**
+## Struktur des Projekts
    - lib/: Enthält den Quellcode der Anwendung.
      - localizations/: Hier sind Dateien für die Lokalisierung.
      - models/: beinhaltet alle wichtigen modelle (AssesmentEntry, AssementData, Question und SelfAssementResult)
@@ -35,13 +35,13 @@ Die **Self Examination App** ist eine Flutter-Anwendung, die es Benutzern ermög
      - utils/:
      - widgets/:
 
-4. **Funktionalitäten**
+## Funktionalitäten
 Selbstbewertung: Benutzer können Selbstbewertungen anhand von verschiedenen Selbstprüfungsfragen durchführen.
 Die Ergebnisse werden lokal gespeichert.
 Die persönliche Entwicklung kann in verschiedenen Diagrammen dargestellt werden. .
 Lokalisierung: Die Anwendung unterstützt mehrere Sprachen.
 
-5. **Lokalisierung**
+## Lokalisierung
     Die App unterstützt verschiedene Sprachen. Derzeit unterstützte Sprachen:
         Englisch (en)
         Deutsch (de)
@@ -49,8 +49,8 @@ Lokalisierung: Die Anwendung unterstützt mehrere Sprachen.
         Koreanisch (ko)
     Die Sprachlokalisierung erfolgt in der lib/localizations/-Ordner.
 
-6. **Autoren**
+## Autoren
 Matthias Lindner (@Paradoxianer)
 
-7. **Lizenz**
+## Lizenz
    Dieses Projekt ist unter der MIT-Lizenz lizenziert. Siehe die LICENSE-Datei für weitere Informationen.
