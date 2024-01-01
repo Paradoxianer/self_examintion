@@ -37,7 +37,7 @@ class ComparisonChartWidget extends StatelessWidget {
               )
             ),
             minY: 0,
-            maxY: 5,
+            maxY: 6,
             barGroups: getComparisonData(context),
             borderData: FlBorderData(show: true),
             gridData: FlGridData(show: true,horizontalInterval: 1.0,drawVerticalLine: false),
@@ -198,11 +198,8 @@ class ComparisonChartWidget extends StatelessWidget {
   }
 
   Widget leftTitleWidgets(double value, TitleMeta meta, BuildContext context) {
-    print(value);
-    print(value % 1) ;
-    if (double.parse(value.toStringAsFixed(2)) % 1 == 0 && value >= 1 && value <= 5) {
-      print("===="+ value.toInt().toString());
-      String answerText = AppLocalizations.of(context)!.rating[value.toInt()-1];
+    if (double.parse(value.toStringAsFixed(2)) % 1 == 0 && value >= 1 && value < 5) {
+      String answerText = AppLocalizations.of(context)!.rating[5-value.toInt()-1];
       const style = TextStyle(
         fontWeight: FontWeight.bold,
         fontSize: 9,
