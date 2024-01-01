@@ -38,14 +38,14 @@ class _TimeChartWidgetState extends State<TimeChartWidget> {
               padding: const EdgeInsets.all(16.0),
               child: LineChart(
                 LineChartData(
-                 // minX: calculateMinX(),
-                  //minY: calculateMaxX(),
+                  minX: calculateMinX(),
+                  maxX: calculateMaxX(),
                   lineBarsData: [
                     LineChartBarData(
                       spots: getOverallScores(context),
                       isCurved: true,
                       isStrokeCapRound: true,
-                      belowBarData: BarAreaData(show: true),
+                      //belowBarData: BarAreaData(show: true),
                       color: Colors.red, // Use red for the calculated score
                     ),
                     for (int i = 0;
@@ -69,7 +69,6 @@ class _TimeChartWidgetState extends State<TimeChartWidget> {
                       sideTitles: SideTitles(showTitles: false),
                     ),
                     bottomTitles: AxisTitles(
-                      drawBelowEverything: true,
                       sideTitles: SideTitles(
                         showTitles: true,
                         getTitlesWidget: (value, meta) {
@@ -78,7 +77,9 @@ class _TimeChartWidgetState extends State<TimeChartWidget> {
                       ),
                     ),
                   ),
-                  borderData: FlBorderData(show: true),
+                  borderData: FlBorderData(
+                      show: true
+                  ),
                 ),
               ),
             ),
@@ -118,15 +119,59 @@ class _TimeChartWidgetState extends State<TimeChartWidget> {
   // Funktion zum Berechnen des minimalen x-Werts (erster Tag des aktuellen Monats)
   double calculateMinX() {
     DateTime now = DateTime.now();
-    DateTime firstDayOfMonth = DateTime(now.year, now.month, 1);
-    return firstDayOfMonth.millisecondsSinceEpoch.toDouble();
+    String? freq = LocalStorage().getString("notificationFrequency");
+    switch (freq) {
+      case "daily":
+      case "weekly":
+        DateTime firstDayOfMonth = DateTime(now.year, now.month, 1);
+        return firstDayOfMonth.millisecondsSinceEpoch.toDouble();
+      case "monthly":
+        DateTime firstDayOfYear = DateTime(now.year, 1, 1);
+        return firstDayOfYear.millisecondsSinceEpoch.toDouble();
+      case "annual":
+        DateTime firstDayOfYear = DateTime(now.year, 1, 1);
+        return firstDayOfYear.subtract(Duration(days: (365*2))).millisecondsSinceEpoch.toDouble();
+      default:
+        DateTime firstDayOfMonth = DateTime(now.year, now.month, 1);
+        return firstDayOfMonth.millisecondsSinceEpoch.toDouble();
+    }
   }
 
-  // Funktion zum Berechnen des maximalen x-Werts (letzter Tag des aktuellen Monats)
+  // Funktion zum Berechnen des maximalen x-Werts
   double calculateMaxX() {
     DateTime now = DateTime.now();
-    DateTime lastDayOfMonth = DateTime(now.year, now.month + 1, 0);
-    return lastDayOfMonth.millisecondsSinceEpoch.toDouble();
+    String? freq = LocalStorage().getString("notificationFrequency");
+    switch (freq) {
+      case "daily":
+      case "weekly":
+        DateTime lastDayOfMonth = DateTime(now.year, now.month+1, 0);
+        return lastDayOfMonth.millisecondsSinceEpoch.toDouble();
+      case "monthly":
+        DateTime lastDayOfYear = DateTime(now.year, 12, 31);
+        return lastDayOfYear.subtract(Duration(days: 1)).millisecondsSinceEpoch.toDouble();
+      case "annual":
+        DateTime lastDayOfYear = DateTime(now.year, 1, 1);
+        return lastDayOfYear.add(Duration(days: (365*3))).subtract(Duration(days: 1)).millisecondsSinceEpoch.toDouble();
+      default:
+        DateTime lastDayOfMonth = DateTime(now.year, now.month+1, 0);
+        return lastDayOfMonth.millisecondsSinceEpoch.toDouble();
+    }
+  }
+
+  double calculateIntervall() {
+    String? freq = LocalStorage().getString("notificationFrequency");
+    switch (freq) {
+      case "daily":
+        return 5.0;
+      case "weekly":
+        return 7.0;
+      case "monthly":
+        return 12;
+      case "annual":
+        return 1.0;
+      default:
+        return 2.0;
+    }
   }
 
   List<FlSpot> getOverallScores(BuildContext context) {
@@ -178,19 +223,18 @@ class _TimeChartWidgetState extends State<TimeChartWidget> {
   //build the main axis...
   Widget bottomTitleWidgets(double value, TitleMeta meta, BuildContext context) {
     String? freq = LocalStorage().getString("notificationFrequency");
-
     Widget title;
     switch (freq) {
-      case "daily":
+      case 'daily':
         title = dailyTitles(value, meta, context);
         break;
-      case "weekly":
+      case 'weekly':
         title = weeklyTitles(value, meta, context);
         break;
-      case "monthly":
+      case 'monthly':
         title = monthlyTitles(value, meta, context);
         break;
-      case "annual":
+      case 'annual':
         title = annualTitles(value, meta, context);
         break;
       default:
@@ -202,46 +246,29 @@ class _TimeChartWidgetState extends State<TimeChartWidget> {
 
   Widget defaultTitles(double value, TitleMeta meta, BuildContext context) {
     final timestamp = DateTime.fromMillisecondsSinceEpoch(value.toInt());
-    const style = TextStyle(
-      fontWeight: FontWeight.bold,
-      fontSize: 16,
-    );
-    return FittedBox(
-      fit: BoxFit.fitHeight,
-      child: Column(
-        children: [
+    return SideTitleWidget(
+      axisSide: meta.axisSide,
+      child:
           Text(
-            '${timestamp.day}.${timestamp.month}.${timestamp.year.toString().substring(timestamp.year.toString().length - 2)}',
-            style: style,
-          ),
-          Text('${timestamp.hour}:${timestamp.minute}', style: style),
-        ],
+            '${timestamp.day}.${timestamp.month}.${timestamp.year.toString().substring(timestamp.year.toString().length - 2)}',style: TextStyle(fontSize: 7.0),
       ),
     );
   }
 
-
   Widget dailyTitles(double value, TitleMeta meta, BuildContext context) {
     final timestamp = DateTime.fromMillisecondsSinceEpoch(value.toInt());
-    const style = TextStyle(
-      fontWeight: FontWeight.bold,
-      fontSize: 16,
-    );
-
     // Prüfe, ob der Tag ungerade ist (alle zwei Tage anzeigen)
-    if (timestamp.day % 2 != 0) {
+    if (timestamp.day % 5 != 0) {
       return Container(); // Zeige nichts an
     }
-
-    return FittedBox(
-      fit: BoxFit.fitHeight,
+    return SideTitleWidget(
+      axisSide: meta.axisSide,
       child: Column(
         children: [
           Text(
             '${timestamp.day}.${timestamp.month}.${timestamp.year.toString().substring(timestamp.year.toString().length - 2)}',
-            style: style,
           ),
-          Text('${timestamp.hour}:${timestamp.minute}', style: style),
+          Text('${timestamp.hour}:${timestamp.minute}'),
         ],
       ),
     );
@@ -250,7 +277,9 @@ class _TimeChartWidgetState extends State<TimeChartWidget> {
   Widget weeklyTitles(double value, TitleMeta meta, BuildContext context) {
     final timestamp = DateTime.fromMillisecondsSinceEpoch(
         value.toInt());
-    return Text('${timestamp.day}.${timestamp.month}.${timestamp.year.toString().substring(timestamp.year.toString().length - 2)}');
+    return SideTitleWidget(
+        axisSide: meta.axisSide,
+        child: Text('${timestamp.day}.${timestamp.month}.${timestamp.year.toString().substring(timestamp.year.toString().length - 2)}'));
   }
 
   Widget monthlyTitles(double value, TitleMeta meta, BuildContext context) {
@@ -272,6 +301,9 @@ class _TimeChartWidgetState extends State<TimeChartWidget> {
       case 8:
         text = const Text('SEP', style: style);
         break;
+      case 11:
+        text = const Text('NOV', style: style);
+        break;
       default:
         text = const Text('', style: style);
         break;
@@ -286,7 +318,10 @@ class _TimeChartWidgetState extends State<TimeChartWidget> {
   Widget annualTitles(double value, TitleMeta meta, BuildContext context) {
     final timestamp = DateTime.fromMillisecondsSinceEpoch(
         value.toInt());
-    return Text('${timestamp.year.toString().substring(timestamp.year.toString().length - 2)}');
+    return SideTitleWidget(
+        axisSide: meta.axisSide,
+        child:Text('${timestamp.year.toString()}')
+    );
   }
 
 }
