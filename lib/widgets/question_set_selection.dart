@@ -20,37 +20,28 @@ class _QuestionSetSelectionState extends State<QuestionSetSelection> {
   @override
   void initState() {
     super.initState();
+    //this will not work since we should only use the localized Applocalizations map
     selectedSet = LocalStorage().getCurrentAuthor();
-    if (selectedSet == null ||
-        SelfAssessmentQuestions.questionMap[selectedSet] == null ||
-        selectedSet == "none") {
-      //just set it to the first set as default
-      selectedSet = questionSets[0];
-      // and save it :)
-      LocalStorage().setCurrentAuthor(selectedSet!);
-    }
   }
 
-
-  void showSetInfoDialog() {
+  void showSetInfoDialog(BuildContext context) {
+    questionSets =AppLocalizations.of(context)!.questionMap.keys.toList();
     showDialog(
       context: context,
       builder: (context) {
-        SelfAssessmentQuestionSet questionSet = AppLocalizations.of(context)!.questionMap[selectedSet]!;
+        SelfAssessmentQuestionSet questionSet =
+        AppLocalizations.of(context)!.questionMap[selectedSet]!;
         return AlertDialog(
-          title:
-            ListTile(
-                title: Text(questionSet.authorName,
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)
-            ),
-                subtitle:Text(questionSet.description)
-            ),
+          title: ListTile(
+              title: Text(questionSet.authorName,
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+              subtitle: Text(questionSet.description)),
           content: Container(
             width: double.maxFinite,
             child: ListView.builder(
-              itemCount: AppLocalizations.of(context)!.questionMap[selectedSet]!.questions.length,
+              itemCount: questionSet.questions.length,
               itemBuilder: (context, index) {
-                final question = AppLocalizations.of(context)!.questionMap[selectedSet]!.questions[index];
+                final question = questionSet.questions[index];
                 return ListTile(
                   leading: Text((index + 1).toString()),
                   title: Text(question.text),
@@ -73,6 +64,7 @@ class _QuestionSetSelectionState extends State<QuestionSetSelection> {
 
   @override
   Widget build(BuildContext context) {
+    questionSets =AppLocalizations.of(context)!.questionMap.keys.toList();
     return Row(
       children: [
         DropdownButton<String>(
@@ -95,6 +87,7 @@ class _QuestionSetSelectionState extends State<QuestionSetSelection> {
             );
           }).toList(),
           onChanged: (String? newValue) {
+            print("geändert zu $newValue\n");
             if (newValue != selectedSet) {
               setState(() {
                 selectedSet = newValue;
@@ -107,9 +100,11 @@ class _QuestionSetSelectionState extends State<QuestionSetSelection> {
         ),
         IconButton(
           icon: Icon(Icons.info),
-          onPressed: showSetInfoDialog,
+          onPressed: () {
+            showSetInfoDialog(context);
+          },
         ),
-      ]
+      ],
     );
   }
 }
