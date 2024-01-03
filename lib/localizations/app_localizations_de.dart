@@ -123,7 +123,11 @@ class AppLocalizationsDe extends AppLocalizations {
   String get compareChart => 'Vergleichsdiagramm';
 
   @override
-  String get timeChart => 'Timediagram';
+  String get timeChart => 'Zeitdiagram';
+
+  String get reminderTitle => 'Selbst Prüfungsfragen';
+
+  String get reminderBody => 'Hey - Zeit für dein regelmäßiige Selbstreflektion';
 
   List<String> get rating => ["Sehr gut", "Guter weg","nicht so gut","dringen dran arbeiten"];
 

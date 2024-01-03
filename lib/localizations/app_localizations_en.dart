@@ -124,6 +124,13 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get timeChart => 'time chart';
 
+  @override
+  String get reminderTitle => 'Self-Assessment Questions';
+
+  @override
+  String get reminderBody => 'Hey - Time for your regular self-reflection';
+
+
   List<String> get rating => ["Excellent", "Good path", "Not so good", "Needs work"];
 
   List<String> get answers => ["Not at all","Little", "Mostly","Completely"];

@@ -123,6 +123,13 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get timeChart => 'Gráfico de tiempo';
 
+  @override
+  String get reminderTitle => 'Preguntas de Autoevaluación';
+
+  @override
+  String get reminderBody => '¡Hola! Es hora de tu autorreflexión regular';
+
+
   List<String> get rating => ["Excelente", "Buen camino", "No tan bueno", "Necesita trabajo"];
 
   List<String> get answers => ["En absoluto", "Poco", "Mayormente", "Completamente"];

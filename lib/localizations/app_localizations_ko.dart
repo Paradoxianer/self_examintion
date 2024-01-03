@@ -124,6 +124,13 @@ class AppLocalizationsKo extends AppLocalizations {
   @override
   String get timeChart => '시간 차트';
 
+  @override
+  String get reminderTitle => '자가 평가 문제';
+
+  @override
+  String get reminderBody => '안녕하세요 - 정기적인 자기 반성 시간입니다.';
+
+
   List<String> get rating => ["매우 좋음", "좋은 길", "그리 좋지 않음", "개선이 필요함"];
 
   List<String> get answers => ["전혀 아님","조금", "대부분","완전히"];

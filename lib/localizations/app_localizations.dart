@@ -310,13 +310,16 @@ abstract class AppLocalizations {
 
   String get timeChart;
 
+  String get reminderTitle;
+
+  String get reminderBody;
+
   List<String> get rating;
 
   //returns a localized List of the wighted anservalues
   List<String> get answers;
 
   List<String> get frequenze;
-
 
   //returns a localized Mag of SelfassementQuestions
   Map<String, SelfAssessmentQuestionSet> get questionMap;
