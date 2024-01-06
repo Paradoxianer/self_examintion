@@ -76,7 +76,7 @@ class _AssessmentScreenState extends State<AssessmentScreen> {
     return Scaffold(
       appBar: AppBar(
         title:
-            Text("${AppLocalizations.of(context)!.examinTitle} - ${widget.localStorage.getCurrentAuthor()}", overflow: TextOverflow.ellipsis),
+            Text("${AppLocalizations.of(context)!.examinTitle} - ${getCurrentAuthorName(context)}", overflow: TextOverflow.ellipsis),
      /*   actions: [
           IconButton(
               onPressed:  () {
@@ -146,5 +146,15 @@ class _AssessmentScreenState extends State<AssessmentScreen> {
     );
       await widget.localStorage.saveAssessmentEntry(assessmentEntry);
       print("Data saved");
+  }
+
+  String getCurrentAuthorName(BuildContext context) {
+    String currentAuthorKey = widget.localStorage.getCurrentAuthor();
+    var questionMap = AppLocalizations.of(context)!.questionMap;
+    if (questionMap.containsKey(currentAuthorKey)) {
+      return questionMap[currentAuthorKey]!.authorName;
+    } else {
+      return ""; // Gibt einen Leerstring zurück, wenn der Schlüssel ungültig ist
+    }
   }
 }

@@ -14,7 +14,7 @@ class QuestionSetSelection extends StatefulWidget {
 
 class _QuestionSetSelectionState extends State<QuestionSetSelection> {
   String? selectedSet;
-  List<String>? questionSets;
+  Map<String, SelfAssessmentQuestionSet>? questionSets;
   bool isExpanded = false;
 
   @override
@@ -25,7 +25,7 @@ class _QuestionSetSelectionState extends State<QuestionSetSelection> {
   }
 
   void showSetInfoDialog(BuildContext context) {
-    questionSets =AppLocalizations.of(context)!.questionMap.keys.toList();
+    questionSets =AppLocalizations.of(context)!.questionMap;
     showDialog(
       context: context,
       builder: (context) {
@@ -62,51 +62,62 @@ class _QuestionSetSelectionState extends State<QuestionSetSelection> {
     );
   }
 
+  void authorChanged(){
+    LocalStorage().setCurrentAuthor(selectedSet!);
+    widget.onSetSelected(selectedSet!);
+  }
+
   @override
   Widget build(BuildContext context) {
-    questionSets =AppLocalizations.of(context)!.questionMap.keys.toList();
-    return Expanded(
-      child: Row(
-        children: [
-          DropdownButton<String>(
-            value: selectedSet,
-            items: questionSets!.map((String authorName) {
-              return DropdownMenuItem<String>(
-                value: authorName,
-                child: Row(
-                  children: <Widget>[
-                    Icon(
-                      Icons.menu_book,
-                      color: authorName == selectedSet
-                          ? Theme.of(context).primaryColor
-                          : null,
+    questionSets =AppLocalizations.of(context)!.questionMap;
+    if (!questionSets!.keys.contains(selectedSet)){
+      selectedSet = questionSets!.keys.first;
+      authorChanged();
+    }
+    return Row(
+      children: [
+        DropdownButton<String>(
+          value: selectedSet,
+          items: questionSets!.entries.map((entry) {
+            return DropdownMenuItem<String>(
+              value: entry.key,
+              child: Row(
+                children: <Widget>[
+                  Icon(
+                    Icons.menu_book,
+                    color: entry.key == selectedSet
+                        ? Theme.of(context).primaryColor
+                        : null,
+                  ),
+                  FittedBox(
+                    fit: BoxFit.fitWidth,
+                    child: Text(
+                      entry.value.authorName,
+                      overflow: TextOverflow.ellipsis,
                     ),
-                    SizedBox(width: 8),
-                    Text(authorName,overflow: TextOverflow.ellipsis),
-                  ],
-                ),
-              );
-            }).toList(),
-            onChanged: (String? newValue) {
-              print("geändert zu $newValue\n");
-              if (newValue != selectedSet) {
-                setState(() {
-                  selectedSet = newValue;
-                });
-                // Update the selected author in LocalStorage
-                LocalStorage().setCurrentAuthor(selectedSet!);
-                widget.onSetSelected(selectedSet!);
-              }
-            },
-          ),
-          IconButton(
-            icon: Icon(Icons.info),
-            onPressed: () {
-              showSetInfoDialog(context);
-            },
-          ),
-        ],
-      ),
+                  ),
+                ],
+              ),
+            );
+          }).toList(),
+          onChanged: (String? newValue) {
+            print("geändert zu $newValue\n");
+            if (newValue != selectedSet) {
+              setState(() {
+                selectedSet = newValue;
+              });
+              // Update the selected author in LocalStorage
+              authorChanged();
+            }
+          },
+        ),
+        IconButton(
+          icon: Icon(Icons.info),
+          onPressed: () {
+            showSetInfoDialog(context);
+          },
+        ),
+      ],
     );
   }
 }

@@ -136,13 +136,14 @@ class AppLocalizationsDe extends AppLocalizations {
 
   Map<String, SelfAssessmentQuestionSet> get questionMap {
     Map<String, SelfAssessmentQuestionSet> _questionMap = {
-      "Heilsarmee Chemnitz": SelfAssessmentQuestionSet(
+      "Salvation Army Chemnitz": SelfAssessmentQuestionSet(
         authorName: "Heilsarmee Chemnitz",
         description: "Selbstprüfungsfragen entwickelt von der Heilsarmee Chemnitz basierend auf den zehn Geboten.",
         questions: [
           Question(
               text: "Inwieweit vermeide ich es, andere Dinge / Sachen neben dem einen wahren Gott zu setzen?",
-              description:"Du sollst keine anderen Götter haben neben mir!  (2. Mose 2, 1-6)"),
+              description:"Du sollst keine anderen Götter haben neben mir!  (2. Mose 2, 1-6)",
+              tips: "Les mal die bibel z.b. unter www.bibelserver.de" ),
           Question(
               text: "Wie konsequent vermeide ich es, mir ein Bild von Gott zu machen oder anzufertigen?",
               description: "Du sollst dir kein Gottesbild anfertigen! (2. Mose 2, 4)"),

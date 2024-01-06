@@ -132,7 +132,7 @@ class AppLocalizationsKo extends AppLocalizations {
 
   Map<String, SelfAssessmentQuestionSet> get questionMap {
     Map<String, SelfAssessmentQuestionSet> _questionMap = {
-      "헤일스아미 켐니츠": SelfAssessmentQuestionSet(
+      "Salvation Army Chemnitz": SelfAssessmentQuestionSet(
         authorName: "헤일스아미 켐니츠",
         description: "헤일스아미 켐니츠에서 만든 십계명을 기반으로 한 자가진단 질문.",
         questions: [
