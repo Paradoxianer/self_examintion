@@ -10,6 +10,8 @@ import 'app_localizations_de.dart';
 import 'app_localizations_en.dart';
 import 'app_localizations_ko.dart';
 import 'app_localizations_es.dart';
+import 'app_localizations_lt.dart';
+import 'app_localizations_pl.dart';
 
 /// Callers can lookup localized strings with an instance of AppLocalizations
 /// returned by `AppLocalizations.of(context)`.
@@ -331,21 +333,22 @@ class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> 
   }
 
   @override
-  bool isSupported(Locale locale) => <String>['de', 'en', 'ko', 'es'].contains(locale.languageCode);
+  bool isSupported(Locale locale) => <String>['de', 'en', 'ko', 'es', 'pl', 'lt'].contains(locale.languageCode);
 
   @override
   bool shouldReload(_AppLocalizationsDelegate old) => false;
 }
 
 AppLocalizations lookupAppLocalizations(Locale locale) {
-
-
   // Lookup logic when only language code is specified.
   switch (locale.languageCode) {
     case 'de': return AppLocalizationsDe();
     case 'en': return AppLocalizationsEn();
     case 'ko': return AppLocalizationsKo();
     case 'es': return AppLocalizationsEs();
+    case 'pl': return AppLocalizationsPl(); // Polnisch
+    case 'lt': return AppLocalizationsLt(); // Litauisch
+  // ... andere Sprachen ...
   }
 
   throw FlutterError(
