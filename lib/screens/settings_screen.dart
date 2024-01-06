@@ -85,7 +85,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
               onPressed: (){clearAllAssesmentEntries(context);},
               icon: Icon(Icons.delete_forever,color: Colors.red,)
           )),
-          ListTile(
+          //ToDo implement notification
+          /*ListTile(
             leading: Text(AppLocalizations.of(context)!.notification),
             title: Switch(
               value: reminderEnabled,
@@ -96,7 +97,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 saveSettings();
               },
             ),
-          ),
+          ),*/
           ListTile(
             leading: Text(AppLocalizations.of(context)!.notificationFrequency),
             title: DropdownButton<String>(
