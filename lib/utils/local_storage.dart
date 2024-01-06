@@ -47,7 +47,7 @@ class LocalStorage {
   }
 
   void setCurrentAuthor(String authorName) {
-    //ToDo check if it is a valid Name
+    //ToDo check if it is a valid Name)
     if (authorName.compareTo(_currentAuthor) !=0) {
       _currentAuthor = authorName;
       _prefs?.setString('currentAuthor', authorName);
@@ -67,7 +67,7 @@ class LocalStorage {
       _currentAuthor = tmpStr;
     }
     else
-      _currentAuthor = "William Booth";
+      _currentAuthor = "Salvation Army Chemnitz";
   }
   // Methode zum Speichern eines Booleans in SharedPreferences
   Future<void> setBool(String key, bool value) async {
@@ -117,7 +117,6 @@ class LocalStorage {
     if (_currentAuthor == null) {
       throw Exception('Author not set. Please set the author before saving.');
     }
-
     final key = '$_currentAuthor${entry.timestamp.millisecondsSinceEpoch}';
     final entryJson = jsonEncode(entry.toMap());
     await _prefs?.setString(key, entryJson);
