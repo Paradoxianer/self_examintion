@@ -140,7 +140,7 @@ class _AssessmentScreenState extends State<AssessmentScreen> {
   Future<void> saveAssessmentResults() async {
     AssessmentEntry assessmentEntry = AssessmentEntry(
       timestamp: DateTime.now(),
-      questionSet: questionSet!.authorName,
+      questionSet: widget.localStorage.getCurrentAuthor(),
       answers: questionCards.asMap().entries.map((entry) => entry.value.question.answer).toList(),
       note: noteController.text.length>1 ?  noteController.text : null
     );
