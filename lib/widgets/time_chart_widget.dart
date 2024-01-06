@@ -40,6 +40,8 @@ class _TimeChartWidgetState extends State<TimeChartWidget> {
                 LineChartData(
                   minX: calculateMinX(),
                   maxX: calculateMaxX(),
+                  minY: 0,
+                  maxY: 6,
                   lineBarsData: [
                     LineChartBarData(
                       spots: getOverallScores(context),
@@ -76,6 +78,13 @@ class _TimeChartWidgetState extends State<TimeChartWidget> {
                         },
                       ),
                     ),
+                      leftTitles: AxisTitles(
+                          sideTitles: SideTitles(
+                            showTitles: true,
+                            getTitlesWidget: (value, meta) {
+                              return leftTitleWidgets(value, meta, context);
+                            },
+                          ))  
                   ),
                   borderData: FlBorderData(
                       show: true
@@ -178,10 +187,10 @@ class _TimeChartWidgetState extends State<TimeChartWidget> {
     List<FlSpot> spots = [];
 
     for (int i = 0; i < widget.assessmentHistory.length; i++) {
-      int totalScore = calculateTotalScore(context,  widget.assessmentHistory[i]);
+      double averageScore = calculateAverageScore(context,  widget.assessmentHistory[i]);
       DateTime timestamp =  widget.assessmentHistory[i].timestamp;
       spots.add(FlSpot(
-          timestamp.millisecondsSinceEpoch.toDouble(), totalScore.toDouble()));
+          timestamp.millisecondsSinceEpoch.toDouble(), averageScore));
     }
 
     return spots;
@@ -205,18 +214,19 @@ class _TimeChartWidgetState extends State<TimeChartWidget> {
     return spots;
   }
 
-  int calculateTotalScore(BuildContext context,
+  double calculateAverageScore(BuildContext context,
       AssessmentEntry assessmentEntry) {
-    int totalScore = 0;
+    double averageScore = 0;
     for (int i = 0; i < assessmentEntry.answers.length; i++) {
       int answer = assessmentEntry.answers[i];
-      if (AppLocalizations.of(context)!.questionMap[ widget.assessmentHistory[0]
+      if (AppLocalizations.of(context)!.questionMap[widget.assessmentHistory[0]
           .questionSet]!.questions[i].isPositive) {
         answer = 5 - answer; // Invert the values
       }
-      totalScore += answer;
+      averageScore += answer;
     }
-    return totalScore;
+    averageScore=averageScore/assessmentEntry.answers.length;
+    return averageScore;
   }
 
 
@@ -323,5 +333,17 @@ class _TimeChartWidgetState extends State<TimeChartWidget> {
         child:Text('${timestamp.year.toString()}')
     );
   }
-
+  Widget leftTitleWidgets(double value, TitleMeta meta, BuildContext context) {
+    if (double.parse(value.toStringAsFixed(2)) % 1 == 0 && value >= 1 && value < 5) {
+      String answerText = AppLocalizations.of(context)!.rating[5-value.toInt()-1];
+      const style = TextStyle(
+        fontWeight: FontWeight.bold,
+        fontSize: 9,
+      );
+      return Flexible(
+        child: Text(answerText, style: style, softWrap: true, maxLines: 2, overflow: TextOverflow.ellipsis,),
+      );
+    }
+    return Container();
+  }
 }
