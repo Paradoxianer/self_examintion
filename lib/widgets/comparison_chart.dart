@@ -12,7 +12,15 @@ class ComparisonChartWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AspectRatio(
+    return
+      Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+      Card(child: Text(assessmentHistory[assessmentHistory.length-2].timestamp.toString()),color: Colors.brown),
+      Card(child: Text(assessmentHistory.last.timestamp.toString()),color: Colors.green),
+    const SizedBox(height: 14),
+      AspectRatio(
       aspectRatio: 1.70,
       child: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -20,20 +28,9 @@ class ComparisonChartWidget extends StatelessWidget {
           BarChartData(
             barTouchData: BarTouchData(
               touchTooltipData: BarTouchTooltipData(
-                getTooltipItem: (
-                    BarChartGroupData group,
-                    int groupIndex,
-                    BarChartRodData rod,
-                    int rodIndex,
-                    ) {
-                  return BarTooltipItem(
-                    AppLocalizations.of(context)!.rating[rod.toY.toInt()-1],
-                    TextStyle(
-                      color: Colors.white,
-                      fontSize: 8.0,
-                    ),
-                  );
-                },
+               getTooltipItem: ( group, groupIndex,  rod,  rodIndex,) {
+                 return tooltipItem(group,groupIndex,rod,rodIndex,context);
+               }
               )
             ),
             minY: 0,
@@ -64,7 +61,7 @@ class ComparisonChartWidget extends StatelessWidget {
           ),
         ),
       ),
-    );
+    )]);
   }
 
   List<BarChartGroupData> getComparisonData(BuildContext context) {
@@ -107,7 +104,7 @@ class ComparisonChartWidget extends StatelessWidget {
           barRods: [
             BarChartRodData(
               toY: convertedLatestAnswer.toDouble(),
-              color: Colors.blue,
+              color: Colors.brown,
             ),
           ],
         ),
@@ -162,12 +159,12 @@ class ComparisonChartWidget extends StatelessWidget {
             BarChartRodData(
               toY: averageLatestScore,
               width: 20, // Adjust the width as needed
-              color: Colors.red, // Use your preferred color
+              color: Colors.brown, // Use your preferred color
             ),
             BarChartRodData(
               toY: averagePreviousScore,
               width: 20, // Adjust the width as needed
-              color: Colors.yellow, // Use your preferred color
+              color: Colors.green, // Use your preferred color
             ),
           ],
         ),
@@ -212,5 +209,18 @@ class ComparisonChartWidget extends StatelessWidget {
       );
     }
     return Container();
+  }
+
+  BarTooltipItem tooltipItem( BarChartGroupData group,  int groupIndex,  BarChartRodData rod,  int rodIndex, BuildContext context )  {
+    SelfAssessmentQuestionSet questionSet = AppLocalizations.of(context)!
+        .questionMap[LocalStorage().getCurrentAuthor()] ??
+        AppLocalizations.of(context)!.questionMap.values.first;
+      return BarTooltipItem(
+        questionSet.questions[groupIndex].text,
+        TextStyle(
+          color: Colors.white,
+          fontSize: 8.0,
+        ),
+      );
   }
 }

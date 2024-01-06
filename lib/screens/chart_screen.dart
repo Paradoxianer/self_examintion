@@ -28,7 +28,7 @@ class _ChartScreenState extends State<ChartScreen> {
       await _localStorage.initialize();
       final history = await _localStorage.loadAssessmentEntries();
       setState(() {
-        assessmentHistory = history;
+        assessmentHistory = history.reversed.toList();
       });
     } catch (e) {
       // Handle any errors when loading data
