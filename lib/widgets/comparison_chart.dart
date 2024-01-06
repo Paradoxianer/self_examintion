@@ -80,6 +80,9 @@ class ComparisonChartWidget extends StatelessWidget {
     // Variables for calculating overall average
     int totalLatestScore = 0;
 
+    //check if the
+    if (!AppLocalizations.of(context)!.questionMap.containsKey(latestAssessment.questionSet))
+      return barGroups;
     // Iterate through questions and get the answers
     for (int i = 0; i < latestAssessment.answers.length; i++) {
       int latestAnswer = latestAssessment.answers[i];
