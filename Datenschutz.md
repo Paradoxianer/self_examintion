@@ -1,11 +1,33 @@
 # Datesecurity für die Self Examination App
 
-## Inhaltsverzeichnis
+## Table of Contents
 
 - [English](#English)
 - [German](#Deutsch)
 - [Español](#Español)
   [한국어](#Korean)
+
+## English
+1. **Introduction**  
+   This Privacy Policy informs you about our practices regarding the collection, use, and disclosure of information that you may provide through the Self Examination App.
+
+2. **Data Collection and Use**  
+   The Self Examination App stores all user data exclusively locally on your device. This data includes your responses to self-examination questions and any notes or comments you leave in the app. Since this information is not stored or processed on our servers, we do not have access to it.
+
+3. **Links to External Websites**  
+   Our app may contain links to external websites. We are not responsible for the privacy practices of these other websites and advise you to read their privacy policies.
+
+4. **Data Security**  
+   The security of your data is important to us. However, please note that no method of transmission over the Internet or method of electronic storage is 100% secure. While we strive to protect your personal data, we cannot guarantee its absolute security.
+
+5. **Your Privacy Rights**  
+   Since we do not store or process any of your personal data, there are no data for you to view, update, or delete. All data you enter in the app remains under your control on your device.
+
+6. **Changes to This Privacy Policy**  
+   We may update our Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy in this app.
+
+7. **Contact Us**  
+   If you have any questions about this Privacy Policy, please contact us.
 
 ## Deutsch
 1.  **Einleitung**
@@ -28,3 +50,4 @@ Wir können unsere Datenschutzerklärung von Zeit zu Zeit aktualisieren. Wir wer
 
 7. **Kontaktieren Sie uns**
 Wenn Sie Fragen zu dieser Datenschutzerklärung haben, kontaktieren Sie uns bitte.
+
