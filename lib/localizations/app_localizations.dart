@@ -4,7 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:intl/intl.dart' as intl;
-import 'package:self_examintion/data/self_assesment_questions.dart';
+import 'package:self_examination/data/self_assesment_questions.dart';
 
 import 'app_localizations_de.dart';
 import 'app_localizations_en.dart';

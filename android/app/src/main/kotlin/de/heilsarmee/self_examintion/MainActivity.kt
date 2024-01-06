@@ -1,4 +1,4 @@
-package de.heilsarmee.self_examintion
+package de.heilsarmee.self_examination
 
 import io.flutter.embedding.android.FlutterActivity
 

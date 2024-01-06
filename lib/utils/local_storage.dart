@@ -1,4 +1,4 @@
-import 'package:self_examintion/models/assessment_entry.dart';
+import 'package:self_examination/models/assessment_entry.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 

@@ -1,4 +1,4 @@
-import 'package:self_examintion/models/question.dart';
+import 'package:self_examination/models/question.dart';
 
 class SelfAssessmentResult {
   final String id; // Eindeutige ID für das Ergebnis

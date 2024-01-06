@@ -90,12 +90,12 @@ BEGIN
         BLOCK "040904e4"
         BEGIN
             VALUE "CompanyName", "de.heilsarmee" "\0"
-            VALUE "FileDescription", "self_examintion" "\0"
+            VALUE "FileDescription", "self_examination" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "self_examintion" "\0"
+            VALUE "InternalName", "self_examination" "\0"
             VALUE "LegalCopyright", "Copyright (C) 2023 de.heilsarmee. All rights reserved." "\0"
-            VALUE "OriginalFilename", "self_examintion.exe" "\0"
-            VALUE "ProductName", "self_examintion" "\0"
+            VALUE "OriginalFilename", "self_examination.exe" "\0"
+            VALUE "ProductName", "self_examination" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END

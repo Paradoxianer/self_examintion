@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:self_examintion/localizations/app_localizations.dart';
-import 'package:self_examintion/models/question.dart';
-import 'package:self_examintion/utils/globals.dart';
+import 'package:self_examination/localizations/app_localizations.dart';
+import 'package:self_examination/models/question.dart';
+import 'package:self_examination/utils/globals.dart';
 
 class QuestionCard extends StatefulWidget {
   final Question question;

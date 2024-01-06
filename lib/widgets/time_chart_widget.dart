@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
-import 'package:self_examintion/localizations/app_localizations.dart';
-import 'package:self_examintion/models/assessment_entry.dart';
-import 'package:self_examintion/utils/globals.dart';
-import 'package:self_examintion/utils/local_storage.dart';
+import 'package:self_examination/localizations/app_localizations.dart';
+import 'package:self_examination/models/assessment_entry.dart';
+import 'package:self_examination/utils/globals.dart';
+import 'package:self_examination/utils/local_storage.dart';
 
 class TimeChartWidget extends StatefulWidget {
   final List<AssessmentEntry> assessmentHistory;

@@ -1,6 +1,6 @@
 {
-    "name": "self_examintion",
-    "short_name": "self_examintion",
+    "name": "self_examination",
+    "short_name": "self_examination",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

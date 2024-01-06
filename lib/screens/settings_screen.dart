@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:self_examintion/localizations/app_localizations.dart';
-import 'package:self_examintion/utils/globals.dart';
-import 'package:self_examintion/utils/local_storage.dart';
-import 'package:self_examintion/widgets/dsgvo_dialog.dart';
-import 'package:self_examintion/widgets/question_set_selection.dart';
+import 'package:self_examination/localizations/app_localizations.dart';
+import 'package:self_examination/utils/globals.dart';
+import 'package:self_examination/utils/local_storage.dart';
+import 'package:self_examination/widgets/dsgvo_dialog.dart';
+import 'package:self_examination/widgets/question_set_selection.dart';
 
 class SettingsScreen extends StatefulWidget {
   @override
@@ -101,7 +101,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
             leading: Text(AppLocalizations.of(context)!.notificationFrequency),
             title: DropdownButton<String>(
               value: reminderFrequency,
-              //todo somehow localize this one
               items: examineFrequenze.map((String frequency) {
                 return DropdownMenuItem<String>(
                   value: frequency,

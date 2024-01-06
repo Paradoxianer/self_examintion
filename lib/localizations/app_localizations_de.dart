@@ -1,5 +1,5 @@
-import 'package:self_examintion/data/self_assesment_questions.dart';
-import 'package:self_examintion/models/question.dart';
+import 'package:self_examination/data/self_assesment_questions.dart';
+import 'package:self_examination/models/question.dart';
 
 import 'app_localizations.dart';
 

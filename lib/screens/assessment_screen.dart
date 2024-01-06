@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:self_examintion/data/self_assesment_questions.dart';
-import 'package:self_examintion/localizations/app_localizations.dart';
-import 'package:self_examintion/models/assessment_entry.dart';
-import 'package:self_examintion/screens/chart_screen.dart';
-import 'package:self_examintion/utils/local_storage.dart';
-import 'package:self_examintion/widgets/question_card.dart';
+import 'package:self_examination/data/self_assesment_questions.dart';
+import 'package:self_examination/localizations/app_localizations.dart';
+import 'package:self_examination/models/assessment_entry.dart';
+import 'package:self_examination/screens/chart_screen.dart';
+import 'package:self_examination/utils/local_storage.dart';
+import 'package:self_examination/widgets/question_card.dart';
 
 class AssessmentScreen extends StatefulWidget {
   final LocalStorage localStorage;

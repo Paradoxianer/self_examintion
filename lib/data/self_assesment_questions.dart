@@ -1,4 +1,4 @@
-import 'package:self_examintion/models/question.dart';
+import 'package:self_examination/models/question.dart';
 
 class SelfAssessmentQuestionSet {
   final String authorName; // Name des Autors des Fragebogens
