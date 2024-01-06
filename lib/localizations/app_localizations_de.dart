@@ -143,7 +143,7 @@ class AppLocalizationsDe extends AppLocalizations {
           Question(
               text: "Inwieweit vermeide ich es, andere Dinge / Sachen neben dem einen wahren Gott zu setzen?",
               description:"Du sollst keine anderen Götter haben neben mir!  (2. Mose 2, 1-6)",
-              tips: "Les mal die bibel z.b. unter www.bibelserver.de" ),
+              tips: "Les mal die Bibel z.b. unter [www.bibelserver.com](https://bibelserver.com/)" ),
           Question(
               text: "Wie konsequent vermeide ich es, mir ein Bild von Gott zu machen oder anzufertigen?",
               description: "Du sollst dir kein Gottesbild anfertigen! (2. Mose 2, 4)"),
