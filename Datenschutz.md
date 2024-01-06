@@ -5,7 +5,7 @@
 - [English](#English)
 - [German](#Deutsch)
 - [Español](#Español)
-  [Korean(#한국어)](#한국어)
+- [Korean(#한국어)](#한국어)
 
 ## English
 1. **Introduction**  
