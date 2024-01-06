@@ -108,7 +108,7 @@ class _AssessmentScreenState extends State<AssessmentScreen> {
           ),
           TextButton(
             onPressed: () async {
-              if (areAllQuestionsAnswered()) {
+             /* if (areAllQuestionsAnswered()) {
                 await saveAssessmentResults(); // Speichere die Ergebnisse
                 Navigator.of(context).pushReplacement(
                   MaterialPageRoute(
@@ -121,7 +121,13 @@ class _AssessmentScreenState extends State<AssessmentScreen> {
                     content: Text(AppLocalizations.of(context)!.pleasAnswer),
                   ),
                 );
-              }
+              }*/
+              await saveAssessmentResults(); // Speichere die Ergebnisse
+              Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(
+                    builder: (context) => ChartScreen(),
+                  ),
+              );
             },
             child: Text(AppLocalizations.of(context)!.commit),
           )
