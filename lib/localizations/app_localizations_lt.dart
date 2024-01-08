@@ -228,20 +228,25 @@ class AppLocalizationsLt extends AppLocalizations {
         questions: [
           Question(
               text:
-              "Ar sąmoningai ar nesąmoningai sukeliau įspūdį, kad esu geresnis nei iš tikrųjų esu? Kitaip tariant, ar aš veidmainis?"),
+              "Ar sąmoningai ar nesąmoningai sukeliau įspūdį, kad esu geresnis nei iš tikrųjų esu? Kitaip tariant, ar aš veidmainis?",
+              isPositive: true),
           Question(
               text:
-              "Ar esu sąžiningas visuose savo veiksmuose ir žodžiuose, ar perdėliojau?"),
+              "Ar esu sąžiningas visuose savo veiksmuose ir žodžiuose, ar perdėliojau?",
+              isPositive: true),
           Question(
               text:
-              "Ar pasitikiu kitais konfidencialia informacija, kuri man buvo patikėta pasitikėjimu?"),
+              "Ar pasitikiu kitais konfidencialia informacija, kuri man buvo patikėta pasitikėjimu?",
+              isPositive: true),
           Question(text: "Ar manimi galima pasitikėti?"),
           Question(
               text:
-              "Ar esu savo drabužių, draugų, darbo ar įpročių vergas?"),
+              "Ar esu savo drabužių, draugų, darbo ar įpročių vergas?",
+              isPositive: true),
           Question(
               text:
-              "Ar esu pasipūtęs, užuojautos sau ieškantis ar pateisinu save?"),
+              "Ar esu pasipūtęs, užuojautos sau ieškantis ar pateisinu save?",
+              isPositive: true),
           Question(text: "Ar šiandien Biblija gyvavo manyje?"),
           Question(
               text: "Ar kasdien skiriu laiko bendrauti su Biblija?"),
@@ -252,26 +257,36 @@ class AppLocalizationsLt extends AppLocalizations {
           Question(text: "Ar meldžiuosi dėl pinigų, kuriuos išleidžiu?"),
           Question(
               text: "Ar einu miegoti laiku ir keliuosi laiku?"),
-          Question(text: "Ar priešinuosi Dievui kokiu nors klausimu?"),
+          Question(text: "Ar priešinuosi Dievui kokiu nors klausimu?",
+              isPositive: true),
           Question(
               text:
-              "Ar atkakliai darau tai, kas trikdo mano sąžinę?"),
-          Question(text: "Ar esu silpnas kuriame nors gyvenimo aspekte?"),
+              "Ar atkakliai darau tai, kas trikdo mano sąžinę?",
+              isPositive: true),
+          Question(text: "Ar esu silpnas kuriame nors gyvenimo aspekte?",
+              isPositive: true),
           Question(
               text:
-              "Ar esu pavydus, netyras, kritiškas, įniršęs, jautrus ar nepasitikintis?"),
-          Question(text: "Kaip leidžiu savo laisvalaikį?"),
-          Question(text: "Ar esu išdidus?"),
+              "Ar esu pavydus, netyras, kritiškas, įniršęs, jautrus ar nepasitikintis?",
+              isPositive: true),
+          Question(text: "Kaip leidžiu savo laisvalaikį?",
+              isPositive: true),
+          Question(text: "Ar esu išdidus?",
+              isPositive: true),
           Question(
               text:
-              "Ar dėkoju Dievui, kad nesu kaip kiti žmonės, ypač kaip fariziejai, kurie niekino muitininką?"),
+              "Ar dėkoju Dievui, kad nesu kaip kiti žmonės, ypač kaip fariziejai, kurie niekino muitininką?",
+              isPositive: true),
           Question(
               text:
-              "Ar yra kas nors, ko bijau, nepakenčiu, atstumiu, kritikuoju, nekenčiu ar ignoruoju? Jei taip, ką dėl to darau?"),
-          Question(text: "Ar nuolat murmėju ar skundžiuosi?"),
+              "Ar yra kas nors, ko bijau, nepakenčiu, atstumiu, kritikuoju, nekenčiu ar ignoruoju? Jei taip, ką dėl to darau?",
+              isPositive: true),
+          Question(text: "Ar nuolat murmėju ar skundžiuosi?",
+              isPositive: true),
           Question(text: "Ar Kristus man yra tikras?")
         ],
       ),
+
 
     };
     return _questionMap;

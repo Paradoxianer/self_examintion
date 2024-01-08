@@ -230,43 +230,59 @@ class AppLocalizationsEn extends AppLocalizations {
         questions: [
           Question(
               text:
-                  "Am I consciously or unconsciously creating the impression that I am better than I really am? In other words, am I a hypocrite?"),
+              "Am I consciously or unconsciously creating the impression that I am better than I really am? In other words, am I a hypocrite?",
+              isPositive: true),
           Question(
               text:
-                  "Am I honest in all my acts and words, or do I exaggerate?"),
+              "Am I honest in all my acts and words, or do I exaggerate?",
+              isPositive: true),
           Question(
               text:
-                  "Do I confidentially pass on to others what has been said to me in confidence?"),
+              "Do I confidentially pass on to others what has been said to me in confidence?",
+              isPositive: true),
           Question(text: "Can I be trusted?"),
-          Question(text: "Am I a slave to dress, friends, work or habits?"),
           Question(
-              text: "Am I self-conscious, self-pitying, or self-justifying?"),
+              text: "Am I a slave to dress, friends, work or habits?",
+              isPositive: true),
+          Question(
+              text: "Am I self-conscious, self-pitying, or self-justifying?",
+              isPositive: true),
           Question(text: "Did the Bible live in me today?"),
           Question(text: "Do I give the Bible time to speak to me every day?"),
           Question(text: "Am I enjoying prayer?"),
           Question(text: "When did I last speak to someone else of my faith?"),
           Question(text: "Do I pray about the money I spend?"),
           Question(text: "Do I get to bed on time and get up on time?"),
-          Question(text: "Do I disobey God in anything?"),
+          Question(text: "Do I disobey God in anything?",
+              isPositive: true),
           Question(
               text:
-                  "Do I insist upon doing something about which my conscience is uneasy?"),
-          Question(text: "Am I defeated in any part of my life?"),
+              "Do I insist upon doing something about which my conscience is uneasy?",
+              isPositive: true),
+          Question(text: "Am I defeated in any part of my life?",
+              isPositive: true),
           Question(
               text:
-                  "Am I jealous, impure, critical, irritable, touchy or distrustful?"),
-          Question(text: "How do I spend my spare time?"),
-          Question(text: "Am I proud?"),
+              "Am I jealous, impure, critical, irritable, touchy or distrustful?",
+              isPositive: true),
+          Question(text: "How do I spend my spare time?",
+              isPositive: true),
+          Question(text: "Am I proud?",
+              isPositive: true),
           Question(
               text:
-                  "Do I thank God that I am not as other people, especially as the Pharisees who despised the publican?"),
+              "Do I thank God that I am not as other people, especially as the Pharisees who despised the publican?",
+              isPositive: true),
           Question(
               text:
-                  "Is there anyone whom I fear, dislike, disown, criticize, hold a resentment toward or disregard? If so, what am I doing about it?"),
-          Question(text: "Do I grumble or complain constantly?"),
+              "Is there anyone whom I fear, dislike, disown, criticize, hold a resentment toward or disregard? If so, what am I doing about it?",
+              isPositive: true),
+          Question(text: "Do I grumble or complain constantly?",
+              isPositive: true),
           Question(text: "Is Christ real to me?")
         ],
-      )
+      ),
+
     };
     return _questionMap;
   }

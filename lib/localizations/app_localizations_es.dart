@@ -228,43 +228,58 @@ class AppLocalizationsEs extends AppLocalizations {
         questions: [
           Question(
               text:
-              "¿Estoy creando consciente o inconscientemente la impresión de que soy mejor de lo que realmente soy? En otras palabras, ¿soy un hipócrita?"),
+              "¿Estoy creando consciente o inconscientemente la impresión de que soy mejor de lo que realmente soy? En otras palabras, ¿soy un hipócrita?",
+              isPositive: true),
           Question(
               text:
-              "¿Soy honesto en todos mis actos y palabras, o exagero?"),
+              "¿Soy honesto en todos mis actos y palabras, o exagero?",
+              isPositive: true),
           Question(
               text:
-              "¿Paso confidencialmente a otros lo que se me ha dicho en confianza?"),
+              "¿Paso confidencialmente a otros lo que se me ha dicho en confianza?",
+              isPositive: true),
           Question(text: "¿Puedo confiar en mí?"),
-          Question(text: "¿Soy esclavo del vestir, amigos, trabajo o hábitos?"),
           Question(
-              text: "¿Soy autoconsciente, autocompasivo o autojustificativo?"),
+              text: "¿Soy esclavo del vestir, amigos, trabajo o hábitos?",
+              isPositive: true),
+          Question(
+              text: "¿Soy autoconsciente, autocompasivo o autojustificativo?",
+              isPositive: true),
           Question(text: "¿Vivió la Biblia en mí hoy?"),
           Question(text: "¿Le doy tiempo a la Biblia para que me hable todos los días?"),
           Question(text: "¿Disfruto de la oración?"),
           Question(text: "¿Cuándo fue la última vez que hablé a alguien más acerca de mi fe?"),
           Question(text: "¿Rezo por el dinero que gasto?"),
           Question(text: "¿Me acuesto a tiempo y me levanto a tiempo?"),
-          Question(text: "¿Desobedezco a Dios en algo?"),
+          Question(text: "¿Desobedezco a Dios en algo?",
+              isPositive: true),
           Question(
               text:
-              "¿Insisto en hacer algo sobre lo que mi conciencia está inquieta?"),
-          Question(text: "¿Soy derrotado en alguna parte de mi vida?"),
+              "¿Insisto en hacer algo sobre lo que mi conciencia está inquieta?",
+              isPositive: true),
+          Question(text: "¿Soy derrotado en alguna parte de mi vida?",
+              isPositive: true),
           Question(
               text:
-              "¿Soy celoso, impuro, crítico, irritable, quisquilloso o desconfiado?"),
-          Question(text: "¿Cómo paso mi tiempo libre?"),
-          Question(text: "¿Soy orgulloso?"),
+              "¿Soy celoso, impuro, crítico, irritable, quisquilloso o desconfiado?",
+              isPositive: true),
+          Question(text: "¿Cómo paso mi tiempo libre?",
+              isPositive: true),
+          Question(text: "¿Soy orgulloso?",
+              isPositive: true),
           Question(
               text:
-              "¿Agradezco a Dios que no soy como otras personas, especialmente como los fariseos que despreciaban al publicano?"),
+              "¿Agradezco a Dios que no soy como otras personas, especialmente como los fariseos que despreciaban al publicano?",
+              isPositive: true),
           Question(
               text:
-              "¿Hay alguien a quien tema, no me guste, reniegue, critique, guarde rencor o desconsidere? Si es así, ¿qué estoy haciendo al respecto?"),
-          Question(text: "¿Me quejo constantemente?"),
+              "¿Hay alguien a quien tema, no me guste, reniegue, critique, guarde rencor o desconsidere? Si es así, ¿qué estoy haciendo al respecto?",
+              isPositive: true),
+          Question(text: "¿Me quejo constantemente?",
+              isPositive: true),
           Question(text: "¿Cristo es real para mí?")
         ],
-      )
+      ),
     };
     return _questionMap;
   }

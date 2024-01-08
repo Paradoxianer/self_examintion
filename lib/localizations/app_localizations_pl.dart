@@ -226,52 +226,48 @@ class AppLocalizationsPl extends AppLocalizations {
         "John Wesley, założyciel Metodystów, codziennie dokładnie badał siebie, zadając sobie następujące 22 pytania:",
         questions: [
           Question(
-              text:
-              "Czy świadomie czy nieświadomie sprawiam wrażenie, że jestem lepszy, niż jestem w rzeczywistości? Innymi słowy: czy jestem hipokrytą?"),
+              text: "Czy świadomie czy nieświadomie sprawiam wrażenie, że jestem lepszy, niż jestem w rzeczywistości? Innymi słowy: czy jestem hipokrytą?",
+              isPositive: true),
           Question(
-              text:
-              "Czy jestem uczciwy we wszystkich moich działaniach i słowach, czy przesadzam?"),
+              text: "Czy jestem uczciwy we wszystkich moich działaniach i słowach, czy przesadzam?",
+              isPositive: true),
           Question(
-              text:
-              "Czy przekazuję innym poufne informacje, które powierzono mi w zaufaniu?"),
+              text: "Czy przekazuję innym poufne informacje, które powierzono mi w zaufaniu?",
+              isPositive: true),
           Question(text: "Czy można mi ufać?"),
           Question(
-              text:
-              "Czy jestem niewolnikiem mojego ubioru, przyjaciół, pracy lub nawyków?"),
+              text: "Czy jestem niewolnikiem mojego ubioru, przyjaciół, pracy lub nawyków?",
+              isPositive: true),
           Question(
-              text:
-              "Czy jestem pewny siebie, użalam się nad sobą lub usprawiedliwiam?"),
+              text: "Czy jestem pewny siebie, użalam się nad sobą lub usprawiedliwiam?",
+              isPositive: true),
           Question(text: "Czy Biblia żyje we mnie dzisiaj?"),
-          Question(
-              text: "Czy codziennie poświęcam czas na rozmowę z Biblią?"),
+          Question(text: "Czy codziennie poświęcam czas na rozmowę z Biblią?"),
           Question(text: "Czy cieszę się z modlitwy?"),
-          Question(
-              text:
-              "Kiedy ostatnio rozmawiałem z kimś o mojej wierze?"),
+          Question(text: "Kiedy ostatnio rozmawiałem z kimś o mojej wierze?"),
           Question(text: "Czy modlę się nad pieniędzmi, które wydaję?"),
-          Question(
-              text: "Czy kładę się spać na czas i wstaję na czas?"),
-          Question(text: "Czy sprzeciwiam się Bogu w czymkolwiek?"),
-          Question(
-              text:
-              "Czy upieram się przy robieniu czegoś, co niepokoi moje sumienie?"),
-          Question(text: "Czy jestem słaby w jakiejś części mojego życia?"),
-          Question(
-              text:
-              "Czy jestem zazdrosny, nieczysty, krytyczny, drażliwy, przewrażliwiony lub podejrzliwy?"),
-          Question(text: "Jak spędzam swój wolny czas?"),
-          Question(text: "Czy jestem dumny?"),
-          Question(
-              text:
-              "Czy dziękuję Bogu, że nie jestem jak inni ludzie, zwłaszcza jak Faryzeusze, którzy pogardzali celnikiem?"),
-          Question(
-              text:
-              "Czy jest ktoś, kogo się boję, nie znoszę, odrzucam, krytykuję, mam do niego urazę lub ignoruję? Jeśli tak, co robię w tej sprawie?"),
-          Question(text: "Czy ciągle narzekam lub skarżę się?"),
+          Question(text: "Czy kładę się spać na czas i wstaję na czas?"),
+          Question(text: "Czy sprzeciwiam się Bogu w czymkolwiek?",
+              isPositive: true),
+          Question(text: "Czy upieram się przy robieniu czegoś, co niepokoi moje sumienie?",
+              isPositive: true),
+          Question(text: "Czy jestem słaby w jakiejś części mojego życia?",
+              isPositive: true),
+          Question(text: "Czy jestem zazdrosny, nieczysty, krytyczny, drażliwy, przewrażliwiony lub podejrzliwy?",
+              isPositive: true),
+          Question(text: "Jak spędzam swój wolny czas?",
+              isPositive: true),
+          Question(text: "Czy jestem dumny?",
+              isPositive: true),
+          Question(text: "Czy dziękuję Bogu, że nie jestem jak inni ludzie, zwłaszcza jak Faryzeusze, którzy pogardzali celnikiem?",
+              isPositive: true),
+          Question(text: "Czy jest ktoś, kogo się boję, nie znoszę, odrzucam, krytykuję, mam do niego urazę lub ignoruję? Jeśli tak, co robię w tej sprawie?",
+              isPositive: true),
+          Question(text: "Czy ciągle narzekam lub skarżę się?",
+              isPositive: true),
           Question(text: "Czy Chrystus jest dla mnie rzeczywisty?")
         ],
       )
-      // Dodaj tłumaczenie dla SelfAssessmentQuestionSet
     };
     return _questionMap;
   }

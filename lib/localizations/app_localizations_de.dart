@@ -224,51 +224,65 @@ class AppLocalizationsDe extends AppLocalizations {
       "John Wesley": SelfAssessmentQuestionSet(
         authorName: "John Wesley",
         description:
-            "John Wesley, Gründer der Methodisten überprüfte sich täglich rigoros selbst, indem er sich folgenden 22 Fragen stellte:",
+        "John Wesley, Gründer der Methodisten überprüfte sich täglich rigoros selbst, indem er sich folgenden 22 Fragen stellte:",
         questions: [
           Question(
               text:
-                  "Erwecke ich bewusst oder unbewusst den Eindruck, dass ich besser bin, als ich in Wirklichkeit bin? Mit anderen Worten: Bin ich ein Heuchler?"),
+              "Erwecke ich bewusst oder unbewusst den Eindruck, dass ich besser bin, als ich in Wirklichkeit bin? Mit anderen Worten: Bin ich ein Heuchler?",
+              isPositive: true),
           Question(
               text:
-                  "Bin ich in all meinen Handlungen und Worten ehrlich, oder übertreibe ich?"),
+              "Bin ich in all meinen Handlungen und Worten ehrlich, oder übertreibe ich?",
+              isPositive: true),
           Question(
               text:
-                  "Gebe ich vertraulich an andere weiter, was mir im Vertrauen gesagt wurde?"),
+              "Gebe ich vertraulich an andere weiter, was mir im Vertrauen gesagt wurde?",
+              isPositive: true),
           Question(text: "Kann man mir vertrauen?"),
           Question(
               text:
-                  "Bin ich ein Sklave meiner Kleidung, Freunde, Arbeit oder Gewohnheiten?"),
+              "Bin ich ein Sklave meiner Kleidung, Freunde, Arbeit oder Gewohnheiten?",
+              isPositive: true),
           Question(
               text:
-                  "Bin ich selbstbewusst, selbstmitleidig oder rechtfertige ich mich selbst?"),
+              "Bin ich selbstbewusst, selbstmitleidig oder rechtfertige ich mich selbst?",
+              isPositive: true),
           Question(text: "Hat die Bibel heute in mir gelebt?"),
           Question(
               text: "Gebe ich der Bibel jeden Tag Zeit, zu mir zu sprechen?"),
           Question(text: "Genieße ich das Gebet?"),
           Question(
               text:
-                  "Wann habe ich zuletzt mit jemandem über meinen Glauben gesprochen?"),
+              "Wann habe ich zuletzt mit jemandem über meinen Glauben gesprochen?"),
           Question(text: "Bete ich über das Geld, das ich ausgebe?"),
           Question(
               text: "Gehe ich rechtzeitig zu Bett und stehe rechtzeitig auf?"),
-          Question(text: "Widersetze ich mich Gott in irgendetwas?"),
+          Question(text: "Widersetze ich mich Gott in irgendetwas?",
+              isPositive: true),
           Question(
               text:
-                  "Bestehe ich darauf, etwas zu tun, das mein Gewissen beunruhigt?"),
-          Question(text: "Bin ich in einem Teil meines Lebens unterlegen?"),
+              "Bestehe ich darauf, etwas zu tun, das mein Gewissen beunruhigt?",
+              isPositive: true),
+          Question(text: "Bin ich in einem Teil meines Lebens unterlegen?",
+              isPositive: true),
           Question(
               text:
-                  "Bin ich eifersüchtig, unrein, kritisch, reizbar, empfindlich oder misstrauisch?"),
-          Question(text: "Wie verbringe ich meine Freizeit?"),
-          Question(text: "Bin ich stolz?"),
+              "Bin ich eifersüchtig, unrein, kritisch, reizbar, empfindlich oder misstrauisch?",
+              isPositive: true),
+          Question(text: "Wie verbringe ich meine Freizeit?",
+              isPositive: true),
+          Question(text: "Bin ich stolz?",
+              isPositive: true),
           Question(
               text:
-                  "Dank ich Gott, dass ich nicht wie andere Menschen bin, besonders wie die Pharisäer, die den Zöllner verachteten?"),
+              "Dank ich Gott, dass ich nicht wie andere Menschen bin, besonders wie die Pharisäer, die den Zöllner verachteten?",
+              isPositive: true),
           Question(
               text:
-                  "Gibt es jemanden, den ich fürchte, nicht leiden kann, den ich ablehne, kritisiere, gegen den ich Groll hege oder den ich ignoriere? Wenn ja, was unternehme ich dagegen?"),
-          Question(text: "Murre oder beschwere ich mich ständig?"),
+              "Gibt es jemanden, den ich fürchte, nicht leiden kann, den ich ablehne, kritisiere, gegen den ich Groll hege oder den ich ignoriere? Wenn ja, was unternehme ich dagegen?",
+              isPositive: true),
+          Question(text: "Murre oder beschwere ich mich ständig?",
+              isPositive: true),
           Question(text: "Ist Christus für mich real?")
         ],
       ),

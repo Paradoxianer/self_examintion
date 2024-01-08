@@ -229,43 +229,58 @@ class AppLocalizationsKo extends AppLocalizations {
         questions: [
           Question(
               text:
-              "나는 내가 실제로 있는 것보다 나은 인상을 의도적 또는 무의식적으로 만들어 내고 있나요? 다시 말해서 나는 위선자인가요?"),
+              "나는 내가 실제로 있는 것보다 나은 인상을 의도적 또는 무의식적으로 만들어 내고 있나요? 다시 말해서 나는 위선자인가요?",
+              isPositive: true),
           Question(
               text:
-              "내 모든 행위와 말은 정직한가요, 아니면 과장하는가요?"),
+              "내 모든 행위와 말은 정직한가요, 아니면 과장하는가요?",
+              isPositive: true),
           Question(
               text:
-              "내게 기밀로 전해진 것을 다른 사람에게 신뢰할 수 있게 전달하나요?"),
+              "내게 기밀로 전해진 것을 다른 사람에게 신뢰할 수 있게 전달하나요?",
+              isPositive: true),
           Question(text: "내게 신뢰할 수 있나요?"),
-          Question(text: "나는 드레스, 친구, 일 또는 습관에 노예입니까?"),
           Question(
-              text: "나는 자의식이 있거나 자기 불쌍하게 여기거나 자기 정당화를 하는가?"),
+              text: "나는 드레스, 친구, 일 또는 습관에 노예입니까?",
+              isPositive: true),
+          Question(
+              text: "나는 자의식이 있거나 자기 불쌍하게 여기거나 자기 정당화를 하는가?",
+              isPositive: true),
           Question(text: "오늘 성경이 나 안에 살았나요?"),
           Question(text: "내가 매일 성경에게 말할 시간을 드리나요?"),
           Question(text: "나는 기도를 즐기고 있나요?"),
           Question(text: "내 신앙에 대해 다른 사람에게 언제 마지막으로 말했나요?"),
           Question(text: "내가 지출하는 돈에 대해 기도하나요?"),
           Question(text: "나는 제시간에 자러 가고 일어납니까?"),
-          Question(text: "나는 하나님께 어떤 부분에서든 순종하지 않나요?"),
+          Question(text: "나는 하나님께 어떤 부분에서든 순종하지 않나요?",
+              isPositive: true),
           Question(
               text:
-              "내 양심이 불편한 상태에서 무언가를 강제로 하겠다고 요구하나요?"),
-          Question(text: "내 삶의 어떤 부분에서 패배당한 적이 있나요?"),
+              "내 양심이 불편한 상태에서 무언가를 강제로 하겠다고 요구하나요?",
+              isPositive: true),
+          Question(text: "내 삶의 어떤 부분에서 패배당한 적이 있나요?",
+              isPositive: true),
           Question(
               text:
-              "나는 시기, 부정, 비판, 불쾌, 투기 또는 불신을 느끼고 있나요?"),
-          Question(text: "여가 시간을 어떻게 보내고 있나요?"),
-          Question(text: "나는 자부심이 있나요?"),
+              "나는 시기, 부정, 비판, 불쾌, 투기 또는 불신을 느끼고 있나요?",
+              isPositive: true),
+          Question(text: "여가 시간을 어떻게 보내고 있나요?",
+              isPositive: true),
+          Question(text: "나는 자부심이 있나요?",
+              isPositive: true),
           Question(
               text:
-              "내가 다른 사람들과 특히 대중세례자를 멸시한 바리새인처럼 다른 사람들처럼 되지 않아 감사하나요?"),
+              "내가 다른 사람들과 특히 대중세례자를 멸시한 바리새인처럼 다른 사람들처럼 되지 않아 감사하나요?",
+              isPositive: true),
           Question(
               text:
-              "내가 두려워하거나 싫어하거나 거부하거나 비난하거나 원망하거나 무시하는 사람이 있나요? 있다면 그에 대해 어떻게 대처하고 있나요?"),
-          Question(text: "나는 끊임없이 불평하거나 불평하는가?"),
+              "내가 두려워하거나 싫어하거나 거부하거나 비난하거나 원망하거나 무시하는 사람이 있나요? 있다면 그에 대해 어떻게 대처하고 있나요?",
+              isPositive: true),
+          Question(text: "나는 끊임없이 불평하거나 불평하는가?",
+              isPositive: true),
           Question(text: "나에게 그리스도는 실재인가요?")
         ],
-      )
+      ),
     };
     return _questionMap;
   }
