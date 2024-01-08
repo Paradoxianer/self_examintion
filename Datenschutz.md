@@ -6,6 +6,8 @@
 - [German](#Deutsch)
 - [Español](#Español)
 - [Korean(#한국어)](#한국어)
+- [Lithuanian](#Lithuanian)
+- [Polish](#Polish)
 
 ## English
 1. **Introduction**  
@@ -94,3 +96,49 @@ Wenn Sie Fragen zu dieser Datenschutzerklärung haben, kontaktieren Sie uns bitt
 
 7. **문의하기**  
    본 개인정보 처리방침에 대해 질문이 있으시면 저희에게 연락해 주십시오.
+
+## Lithuanian
+1. **Įvadas**
+   Ši privatumo politika informuoja jus apie mūsų praktiką, susijusią su informacijos rinkimu, naudojimu ir atskleidimu, kurią galite pateikti naudodamiesi „Self Examination“ programa.
+
+2. **Duomenų rinkimas ir naudojimas**
+   „Self Examination“ programa visus vartotojų duomenis saugo išskirtinai vietiniame įrenginyje. Šie duomenys apima jūsų atsakymus į savęs analizės klausimus ir bet kokias pastabas ar komentarus, kuriuos paliekate programoje. Kadangi ši informacija nėra saugoma ar apdorojama mūsų serveriuose, mes neturime prie jos prieigos.
+
+3. **Nuorodos į išorines svetaines**
+   Mūsų programoje gali būti nuorodų į išorines svetaines. Mes neatsakome už šių kitų svetainių privatumo praktiką ir patariame perskaityti jų privatumo politiką.
+
+4. **Duomenų saugumas**
+   Jūsų duomenų saugumas mums yra svarbus. Tačiau atkreipkite dėmesį, kad joks perdavimo internetu ar elektroninio saugojimo metodas nėra 100% saugus. Nors stengiamės apsaugoti jūsų asmeninius duomenis, negalime garantuoti jų absoliučios saugos.
+
+5. **Jūsų privatumo teisės**
+   Kadangi mes nesaugome ir neapdorojame jokių jūsų asmeninių duomenų, nėra duomenų, kuriuos galėtumėte peržiūrėti, atnaujinti ar ištrinti. Visi duomenys, kuriuos įvedate programoje, lieka jūsų kontroloje jūsų įrenginyje.
+
+6. **Šios privatumo politikos pakeitimai**
+   Mes galime laikas nuo laiko atnaujinti mūsų privatumo politiką. Apie bet kokius pakeitimus informuosime jus paskelbdami naują privatumo politiką šioje programoje.
+
+7. **Susisiekite su mumis**
+   Jei turite klausimų dėl šios privatumo politikos, prašome susisiekti su mumis.
+
+## Polish
+1. **Wstęp**
+   Niniejsza Polityka Prywatności informuje o naszych praktykach związanych z gromadzeniem, wykorzystywaniem i ujawnianiem informacji, które możesz podać za pośrednictwem aplikacji Self Examination.
+
+2. **Zbieranie i wykorzystanie danych**
+   Aplikacja Self Examination przechowuje wszystkie dane użytkowników wyłącznie lokalnie na urządzeniu. Dane te obejmują Twoje odpowiedzi na pytania do samobadania oraz wszelkie notatki lub komentarze, które zostawiasz w aplikacji. Ponieważ te informacje nie są przechowywane ani przetwarzane na naszych serwerach, nie mamy do nich dostępu.
+
+3. **Linki do zewnętrznych witryn internetowych**
+   Nasza aplikacja może zawierać linki do zewnętrznych witryn internetowych. Nie jesteśmy odpowiedzialni za praktyki dotyczące prywatności tych innych witryn i radzimy zapoznać się z ich polityką prywatności.
+
+4. **Bezpieczeństwo danych**
+   Bezpieczeństwo Twoich danych jest dla nas ważne. Jednakże zwróć uwagę, że żadna metoda transmisji przez Internet ani metoda przechowywania elektronicznego nie jest w 100% bezpieczna. Chociaż staramy się chronić Twoje dane osobowe, nie możemy zagwarantować ich absolutnego bezpieczeństwa.
+
+5. **Twoje prawa do prywatności**
+   Ponieważ nie przechowujemy ani nie przetwarzamy żadnych Twoich danych osobowych, nie ma danych, które możesz przeglądać, aktualizować lub usuwać. Wszystkie dane wprowadzone do aplikacji pozostają pod Twoją kontrolą na Twoim urządzeniu.
+
+6. **Zmiany w Polityce Prywatności**
+   Możemy od czasu do czasu aktualizować naszą Politykę Prywatności. O wszelkich zmianach poinformujemy Cię, publikując nową Politykę Prywatności w tej aplikacji.
+
+7. **Skontaktuj się z nami**
+   Jeśli masz jakiekolwiek pytania dotyczące tej Polityki Prywatności, skontaktuj się z nami.
+
+
