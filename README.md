@@ -1,64 +1,69 @@
 # Self Examination App
 
-Die **Self Examination App** ist eine Flutter-Anwendung, die es Benutzern ermöglicht, Selbstbewertungen anhand einer Reihe von Fragen durchzuführen, die auf den Zehn Geboten basieren.
+The **Self Examination App** is a Flutter application that allows users to conduct self-assessments regularly based on a set of questions. The results are graphically presented in various charts, enabling users to track their personal progress. It follows the tradition of William Booth and John Wesley, who regularly asked themselves such self-examination questions. The app currently includes three different sets of self-examination questions:
 
-## Inhaltsverzeichnis
+- Set 1 based on the Ten Commandments
+- Set 2 self-examination questions by William Booth
+- Set 3 self-examination questions by John Wesley
 
-- [Technologien](#technologien)
+## Table of Contents
+
+- [Technologies](#technologies)
 - [Installation](#installation)
-- [Struktur des Projekts](#struktur-des-projekts)
-- [Funktionalitäten](#funktionalitäten)
-- [Lokalisierung](#lokalisierung)
-- [Autoren](#autoren)
-- [Lizenz](#lizenz)
+- [Project Structure](#project-structure)
+- [Features](#features)
+- [Localization](#localization)
+- [Authors](#authors)
+- [License](#license)
 
-## Technologien
+## Technologies
 
 - Flutter
 - Dart
 
 ## Installation
 
-1. **Flutter installieren:**
-    - [Anleitung zur Flutter-Installation](https://flutter.dev/docs/get-started/install)
+1. **Install Flutter:**
+    - [Flutter Installation Guide](https://flutter.dev/docs/get-started/install)
 
-2. **Projekt klonen:**
+2. **Clone the Project:**
    ```bash
-   git clone https://github.com/dein-benutzername/self-examination-app.git
+   git clone https://github.com/Paradoxianer/self_examintion.git
    cd self-examination-app
 
-3. **Abhängigkeiten installieren:**
+3. **Install Dependencies:**
    ```bash
     flutter pub get
 
-4. **Anwendung starten:**
+4. **Run the Application:**
     ```bash
    flutter run
 
-## Struktur des Projekts
-   - lib/: Enthält den Quellcode der Anwendung.
-     - localizations/: Hier sind Dateien für die Lokalisierung.
-     - models/: beinhaltet alle wichtigen modelle (AssesmentEntry, AssementData, Question und SelfAssementResult)
-     - screens/: Enthält Flutter-Widgets für verschiedene Bildschirme.
-     - utils/:
-     - widgets/:
+## Project Structure
+   - localizations/: Contains files for localization. 
+     - models/: Contains all important models (AssessmentEntry, AssessmentData, Question, and SelfAssessmentResult). 
+     - screens/: Contains Flutter widgets for various screens. 
+     - utils/: Contains utility functions. 
+     - widgets/: Contains custom widgets.
 
-## Funktionalitäten
-Selbstbewertung: Benutzer können Selbstbewertungen anhand von verschiedenen Selbstprüfungsfragen durchführen.
-Die Ergebnisse werden lokal gespeichert.
-Die persönliche Entwicklung kann in verschiedenen Diagrammen dargestellt werden. .
-Lokalisierung: Die Anwendung unterstützt mehrere Sprachen.
+## Features
+Self-assessment: Users can perform self-assessments based on various self-examination questions.
+The results are stored locally.
+Personal development can be visualized in various charts.
+Localization: The application supports multiple languages.
 
-## Lokalisierung
-    Die App unterstützt verschiedene Sprachen. Derzeit unterstützte Sprachen:
-        Englisch (en)
-        Deutsch (de)
-        Spanisch (es)
-        Koreanisch (ko)
-    Die Sprachlokalisierung erfolgt in der lib/localizations/-Ordner.
+## Localization
+    The app supports various languages. Currently supported languages:
+        English (en)
+        German (de)
+        Spanish (es)
+        Korean (ko)
+        Lithuanian (lt)
+        Polish (pl)
+    Language localization is done in the lib/localizations/ folder.
 
-## Autoren
+## Authors
 Matthias Lindner (@Paradoxianer)
 
-## Lizenz
-   Dieses Projekt ist unter der MIT-Lizenz lizenziert. Siehe die LICENSE-Datei für weitere Informationen.
+## License
+    This project is licensed under the MIT License. See the LICENSE file for more information.
