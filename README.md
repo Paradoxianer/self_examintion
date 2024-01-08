@@ -67,3 +67,5 @@ Matthias Lindner (@Paradoxianer)
 
 ## License
     This project is licensed under the MIT License. See the LICENSE file for more information.
+
+![Screenshot](.assets/screenshots/Screenshot_self_examination.png)
