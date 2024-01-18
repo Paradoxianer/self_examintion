@@ -18,51 +18,55 @@ class ComparisonChartWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           if (assessmentHistory.length > 1)
-            Card(child: Text(assessmentHistory[assessmentHistory.length-2].timestamp.toString()),color: Colors.brown),
-      Card(child: Text(assessmentHistory.last.timestamp.toString()),color: Colors.green),
+            Center(child: Card(child: Text(assessmentHistory[assessmentHistory.length-2].timestamp.toString()),color: Colors.brown)),
+      Center(child: Card(child: Text(assessmentHistory.last.timestamp.toString()),color: Colors.green)),
     const SizedBox(height: 14),
-      AspectRatio(
-      aspectRatio: 1.70,
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: BarChart(
-          BarChartData(
-            barTouchData: BarTouchData(
-              touchTooltipData: BarTouchTooltipData(
-               getTooltipItem: ( group, groupIndex,  rod,  rodIndex,) {
-                 return tooltipItem(group,groupIndex,rod,rodIndex,context);
-               }
-              )
-            ),
-            minY: 0,
-            maxY: 6,
-            barGroups: getComparisonData(context),
-            borderData: FlBorderData(show: true),
-            gridData: FlGridData(show: true,horizontalInterval: 1.0,drawVerticalLine: false),
-            titlesData: FlTitlesData(
-                rightTitles:
-                    AxisTitles(sideTitles: SideTitles(showTitles: false)),
-                topTitles:
-                    AxisTitles(sideTitles: SideTitles(showTitles: false)),
-                bottomTitles: AxisTitles(
-                    drawBelowEverything: true,
-                    sideTitles: SideTitles(
+      Flexible(
+        child: Center(
+          child: AspectRatio(
+          aspectRatio: 1.70,
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: BarChart(
+              BarChartData(
+                barTouchData: BarTouchData(
+                  touchTooltipData: BarTouchTooltipData(
+                   getTooltipItem: ( group, groupIndex,  rod,  rodIndex,) {
+                     return tooltipItem(group,groupIndex,rod,rodIndex,context);
+                   }
+                  )
+                ),
+                minY: 0,
+                maxY: 6,
+                barGroups: getComparisonData(context),
+                borderData: FlBorderData(show: true),
+                gridData: FlGridData(show: true,horizontalInterval: 1.0,drawVerticalLine: false),
+                titlesData: FlTitlesData(
+                    rightTitles:
+                        AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                    topTitles:
+                        AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                    bottomTitles: AxisTitles(
+                        drawBelowEverything: true,
+                        sideTitles: SideTitles(
+                          showTitles: true,
+                          getTitlesWidget: (value, meta) {
+                            return bottomTitleWidgets(value, meta, context);
+                          },
+                        )),
+                    leftTitles: AxisTitles(
+                        sideTitles: SideTitles(
                       showTitles: true,
                       getTitlesWidget: (value, meta) {
-                        return bottomTitleWidgets(value, meta, context);
+                        return leftTitleWidgets(value, meta, context);
                       },
-                    )),
-                leftTitles: AxisTitles(
-                    sideTitles: SideTitles(
-                  showTitles: true,
-                  getTitlesWidget: (value, meta) {
-                    return leftTitleWidgets(value, meta, context);
-                  },
-                ))),
+                    ))),
+              ),
+            ),
           ),
+              ),
         ),
-      ),
-    )]);
+      )]);
   }
 
   List<BarChartGroupData> getComparisonData(BuildContext context) {
