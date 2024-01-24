@@ -312,6 +312,14 @@ abstract class AppLocalizations {
 
   String get timeChart;
 
+  String get fullDateAndTime;
+
+  String get fullDate;
+
+  String get shortDate;
+
+  String get shortTime;
+
   List<String> get rating;
 
   //returns a localized List of the wighted anservalues

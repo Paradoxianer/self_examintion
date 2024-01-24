@@ -37,6 +37,15 @@ class AppLocalizationsKo extends AppLocalizations {
   @override
   String get chartTitle => '개발 차트';
 
+  String get fullDateAndTime => 'yyyy년 MMM dd일 EEE H시 mm분';
+
+  String get fullDate => 'yyyy년 MMM dd일';
+
+  String get shortDate => 'yy년 MM월 dd일';
+
+  String get shortTime => 'H시 mm분';
+
+
   @override
   String get noHistory =>
       '지난 자가평가 질문에서 찾을 수 있는 데이터가 없습니다. 다른 질문 세트를 선택하거나 질문에 답해주세요.';

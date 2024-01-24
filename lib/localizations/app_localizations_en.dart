@@ -124,6 +124,15 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get timeChart => 'time chart';
 
+  String get fullDateAndTime => 'EEE, MMM dd, yyyy h:mm a';
+
+  String get fullDate => 'MMM dd, yyyy';
+
+  String get shortDate => 'MM/dd/yy';
+
+  String get shortTime => 'h:mm a';
+
+
   List<String> get rating => ["Excellent", "Good path", "Not so good", "Needs work"];
 
   List<String> get answers => ["Not at all","Little", "Mostly","Completely"];

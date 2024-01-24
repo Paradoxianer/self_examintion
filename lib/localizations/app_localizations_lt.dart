@@ -125,6 +125,14 @@ class AppLocalizationsLt extends AppLocalizations {
   @override
   String get timeChart => 'Laiko diagrama';
 
+  String get fullDateAndTime => 'EEE, yyyy-MM-dd HH:mm';
+
+  String get fullDate => 'yyyy-MM-dd';
+
+  String get shortDate => 'yy-MM-dd';
+
+  String get shortTime => 'HH:mm';
+
   List<String> get rating => ["Labai gerai", "Gerai","Neblogai","Reikia tobulėti"];
 
 

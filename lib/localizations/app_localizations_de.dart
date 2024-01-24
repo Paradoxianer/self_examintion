@@ -125,6 +125,15 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get timeChart => 'Timediagram';
 
+  String get fullDateAndTime =>'EEE dd.MMM.yyyy h:mm';
+
+  String get fullDate =>'dd.MMM.yyyy';
+
+  String get shortDate =>'dd.MM.yy';
+
+  String get shortTime =>'h:mm';
+
+
   List<String> get rating => ["Sehr gut", "Guter weg","nicht so gut","dringen dran arbeiten"];
 
 

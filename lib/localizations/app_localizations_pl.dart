@@ -131,7 +131,13 @@ class AppLocalizationsPl extends AppLocalizations {
 
   List<String> get frequenze => ["codziennie","tygodniowo","miesięcznie","rocznie"];
 
+  String get fullDateAndTime => 'EEE, dd MMM yyyy HH:mm';
 
+  String get fullDate => 'dd MMM yyyy';
+
+  String get shortDate => 'dd.MM.yy';
+
+  String get shortTime => 'HH:mm';
 
   Map<String, SelfAssessmentQuestionSet> get questionMap {
     Map<String, SelfAssessmentQuestionSet> _questionMap = {
