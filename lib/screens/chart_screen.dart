@@ -28,7 +28,7 @@ class _ChartScreenState extends State<ChartScreen> {
       await _localStorage.initialize();
       final history = await _localStorage.loadAssessmentEntries();
       setState(() {
-        assessmentHistory = history.reversed.toList();
+        assessmentHistory = history;
       });
     } catch (e) {
       // Handle any errors when loading data
@@ -42,7 +42,7 @@ class _ChartScreenState extends State<ChartScreen> {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
-          title: Text("${AppLocalizations.of(context)!.chartTitle} - ${LocalStorage().getCurrentAuthor()}",overflow: TextOverflow.ellipsis,),
+          title: Text("${AppLocalizations.of(context)!.chartTitle} - ${getCurrentAuthorName(context)}",overflow: TextOverflow.ellipsis,),
      /*     actions: [
             IconButton(
               onPressed: () {
@@ -80,5 +80,14 @@ class _ChartScreenState extends State<ChartScreen> {
     )
     );
 
+  }
+  String getCurrentAuthorName(BuildContext context) {
+    String currentAuthorKey = _localStorage.getCurrentAuthor();
+    var questionMap = AppLocalizations.of(context)!.questionMap;
+    if (questionMap.containsKey(currentAuthorKey)) {
+      return questionMap[currentAuthorKey]!.authorName;
+    } else {
+      return ""; // Gibt einen Leerstring zurück, wenn der Schlüssel ungültig ist
+    }
   }
 }
