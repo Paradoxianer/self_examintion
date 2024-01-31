@@ -17,7 +17,8 @@ class ComparisonChartWidget extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-      Card(child: Text(assessmentHistory[assessmentHistory.length-2].timestamp.toString()),color: Colors.brown),
+          if (assessmentHistory.length > 1)
+            Card(child: Text(assessmentHistory[assessmentHistory.length-2].timestamp.toString()),color: Colors.brown),
       Card(child: Text(assessmentHistory.last.timestamp.toString()),color: Colors.green),
     const SizedBox(height: 14),
       AspectRatio(
@@ -104,7 +105,7 @@ class ComparisonChartWidget extends StatelessWidget {
           barRods: [
             BarChartRodData(
               toY: convertedLatestAnswer.toDouble(),
-              color: Colors.brown,
+              color: Colors.green,
             ),
           ],
         ),
@@ -137,10 +138,10 @@ class ComparisonChartWidget extends StatelessWidget {
         totalPreviousScore += convertedPreviousAnswer;
 
         // Add the comparison data to the existing BarChartGroupData
-        barGroups[i].barRods.add(
+        barGroups[i].barRods.insert(0,
           BarChartRodData(
             toY: convertedPreviousAnswer.toDouble(),
-            color: Colors.green,
+            color: Colors.brown,
           ),
         );
       }
@@ -157,12 +158,12 @@ class ComparisonChartWidget extends StatelessWidget {
           x: latestAssessment.answers.length, // Position it at the end
           barRods: [
             BarChartRodData(
-              toY: averageLatestScore,
+              toY: averagePreviousScore,
               width: 20, // Adjust the width as needed
               color: Colors.brown, // Use your preferred color
             ),
             BarChartRodData(
-              toY: averagePreviousScore,
+              toY: averageLatestScore,
               width: 20, // Adjust the width as needed
               color: Colors.green, // Use your preferred color
             ),
