@@ -3,7 +3,6 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:self_examination/localizations/app_localizations.dart';
 import 'package:self_examination/models/assessment_entry.dart';
 import 'package:self_examination/utils/globals.dart';
-import 'package:self_examination/utils/local_storage.dart';
 
 class RadarChartWidget extends StatefulWidget {
   final List<AssessmentEntry> assessmentHistory;
