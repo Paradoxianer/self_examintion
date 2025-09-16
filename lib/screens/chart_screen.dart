@@ -3,6 +3,7 @@ import 'package:self_examination/localizations/app_localizations.dart';
 import 'package:self_examination/models/assessment_entry.dart';
 import 'package:self_examination/screens/settings_screen.dart';
 import 'package:self_examination/widgets/comparison_chart.dart';
+import 'package:self_examination/widgets/radar_chart_widget.dart';
 import 'package:self_examination/widgets/time_chart_widget.dart';
 import 'package:self_examination/utils/local_storage.dart';
 
@@ -39,26 +40,15 @@ class _ChartScreenState extends State<ChartScreen> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 2,
+      length: 3,
       child: Scaffold(
         appBar: AppBar(
           title: Text("${AppLocalizations.of(context)!.chartTitle} - ${getCurrentAuthorName(context)}",overflow: TextOverflow.ellipsis,),
-     /*     actions: [
-            IconButton(
-              onPressed: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => SettingsScreen(),
-                  ),
-                );
-              },
-              icon: Icon(Icons.settings),
-            ),
-          ],*/
           bottom: TabBar(
             tabs: [
               Tab(text: AppLocalizations.of(context)!.compareChart),
-              Tab(text: AppLocalizations.of(context)!.timeChart)
+              Tab(text: AppLocalizations.of(context)!.timeChart),
+              Tab(text: "Radar Char"),
             ],
           ),
         ),
@@ -73,6 +63,11 @@ class _ChartScreenState extends State<ChartScreen> {
     assessmentHistory.isEmpty ?
     Center(child: Text(AppLocalizations.of(context)!.noHistory))
         :TimeChartWidget(
+                    assessmentHistory: assessmentHistory,
+                  ),
+                  assessmentHistory.isEmpty ?
+                  Center(child: Text(AppLocalizations.of(context)!.noHistory))
+                      :RadarChartWidget(
                     assessmentHistory: assessmentHistory,
                   ),
                 ],
