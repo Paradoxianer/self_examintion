@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:self_examination/localizations/app_localizations.dart';
 import 'package:self_examination/models/assessment_entry.dart';
-import 'package:self_examination/screens/settings_screen.dart';
 import 'package:self_examination/widgets/comparison_chart.dart';
 import 'package:self_examination/widgets/radar_chart_widget.dart';
 import 'package:self_examination/widgets/time_chart_widget.dart';
@@ -15,8 +14,6 @@ class ChartScreen extends StatefulWidget {
 class _ChartScreenState extends State<ChartScreen> {
   List<AssessmentEntry> assessmentHistory = [];
   final LocalStorage _localStorage = LocalStorage();
-  PageController _pageController = PageController();
-  int _selectedChartIndex = 0;
 
   @override
   void initState() {
