@@ -56,6 +56,8 @@ class _RadarChartWidgetState extends State<RadarChartWidget> {
   List<RadarDataSet> latestAnswerScore(BuildContext context){
 
     List<RadarDataSet> radarSet = [];
+    List<RadarEntry> idealEntries = [];
+    List<RadarEntry> currentEntries = [];
     // Check if there are assessments for comparison
     if (widget.assessmentHistory.isEmpty) {
       return radarSet;
@@ -63,13 +65,7 @@ class _RadarChartWidgetState extends State<RadarChartWidget> {
 
     AssessmentEntry latestAssessment = widget.assessmentHistory.last;
     //add ideal Dataset
-    radarSet.add(RadarDataSet(
-        borderColor: Colors.red,
-    ));
-    //add current Dataset
-    radarSet.add(RadarDataSet(
-      borderColor: Colors.green
-    ));
+
     //check if the
     if (!AppLocalizations.of(context)!.questionMap.containsKey(latestAssessment.questionSet))
       return radarSet;
@@ -85,9 +81,18 @@ class _RadarChartWidgetState extends State<RadarChartWidget> {
           .isPositive) {
         convertedLatestAnswer = 5 - latestAnswer;
       }
-      radarSet[0].dataEntries.add(RadarEntry(value: maxAnswer.toDouble()));
-      radarSet[1].dataEntries.add(RadarEntry(value: convertedLatestAnswer.toDouble()));
+      idealEntries.add(RadarEntry(value: maxAnswer.toDouble()));
+      currentEntries.add(RadarEntry(value: convertedLatestAnswer.toDouble()));
     }
+    radarSet.add(RadarDataSet(
+      borderColor: Colors.red,
+      dataEntries: idealEntries,
+    ));
+    //add current Dataset
+    radarSet.add(RadarDataSet(
+        borderColor: Colors.green,
+      dataEntries: currentEntries,
+    ));
     return radarSet;
 
   }
