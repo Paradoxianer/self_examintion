@@ -40,6 +40,10 @@ migrate_working_dir/
 # Android
 android/app/src/main/java/io/flutter/plugins/GeneratedPluginRegistrant.java
 android/app/src/main/kotlin/io/flutter/plugins/GeneratedPluginRegistrant.kt
+android/.gradle/
+android/local.properties
+android/app/build/
+.gradle/
 # android/app/build/ # Bereits abgedeckt durch /build/ oder spezifischer, falls nötig
 # android/.gradle/ # Abgedeckt durch generelle Build-Ordner Regeln, aber explizit ist auch ok
 # android/local.properties # Sollte immer ignoriert werden, da es lokale Pfade enthält
@@ -48,6 +52,11 @@ android/app/src/main/kotlin/io/flutter/plugins/GeneratedPluginRegistrant.kt
 ios/Flutter/Generated.xcconfig
 ios/Flutter/FlutterPluginRegistrant/Classes/GeneratedPluginRegistrant.[hm]
 ios/Runner/GeneratedPluginRegistrant.[hm]
+ios/Pods/
+ios/.symlinks/
+ios/Flutter/Flutter.framework
+ios/Flutter/Flutter.podspec
+DerivedData/
 # ios/Pods/ # CocoaPods, oft ignoriert
 # ios/Flutter/App.framework # und andere Frameworks im Flutter-Ordner (oft Teil von .flutter-plugins-dependencies)
 ios/Flutter/ephemeral/ # Wichtig für Desktop und einige Build-Prozesse

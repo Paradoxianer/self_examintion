@@ -184,21 +184,19 @@ class ComparisonChartWidget extends StatelessWidget {
     SelfAssessmentQuestionSet questionSet = AppLocalizations.of(context)!
             .questionMap[LocalStorage().getCurrentAuthor()] ??
         AppLocalizations.of(context)!.questionMap.values.first;
-    if (questionSet != null) {
-      const style = TextStyle(
-        fontWeight: FontWeight.bold,
-        fontSize: 16,
-      );
-      if (value.toInt() < questionSet.questions.length)
-      return Tooltip(
-        message: questionSet.questions[value.toInt()].text,
-        child: Text((value.toInt()+1).toString(),
-          softWrap: true, style: style, maxLines: 10, overflow: TextOverflow.ellipsis,),
-      );
-      else
-        return Text(AppLocalizations.of(context)!.total);
-    }
-
+    const style = TextStyle(
+      fontWeight: FontWeight.bold,
+      fontSize: 16,
+    );
+    if (value.toInt() < questionSet.questions.length)
+    return Tooltip(
+      message: questionSet.questions[value.toInt()].text,
+      child: Text((value.toInt()+1).toString(),
+        softWrap: true, style: style, maxLines: 10, overflow: TextOverflow.ellipsis,),
+    );
+    else
+      return Text(AppLocalizations.of(context)!.total);
+  
     return Container();
   }
 

@@ -38,14 +38,13 @@ class _QuestionCardState extends State<QuestionCard> {
         : Color.lerp(Colors.red, Colors.green, _sliderValue / 4) ?? Colors.red;
 
     return Card(
-      margin: EdgeInsets.all(8.0),
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
+      clipBehavior: Clip.antiAlias,
+      child: IntrinsicHeight(
         child: Row(
           children: <Widget>[
-            Card(
+            Container(
+              width: 50,
               color: globalColorMap[widget.cardNumber + 1]!.withOpacity(0.50),
-              margin: EdgeInsets.fromLTRB(2.0, 2.0, 16, 2.0),
               child: Center(
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -56,30 +55,37 @@ class _QuestionCardState extends State<QuestionCard> {
                 ),
               ),
             ),
+            const SizedBox(width: 16),
             Expanded(
               flex: 2,
-              child: Tooltip(
-                message: widget.question.description ?? '',
-                child: Text(
-                  widget.question.text,
-                  style: TextStyle(fontSize: 16.0),
-                ),
-              ),
-            ),
-            Flexible(
-              child: Wrap(
-                spacing: 9.0,
-                children: [
-                  widget.question.tips != null ? Center(
-                    child: IconButton(
-                      icon: Icon(Icons.info),
-                      onPressed: () {
-                        _showTipsDialog(context, widget.question.tips ?? '');
-                      },
+              child: Padding(
+                padding: const EdgeInsets.only(top: 8.0, bottom: 4.0, right: 4.0),
+                child: Column(
+                  children: [
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Tooltip(
+                            message: widget.question.description ?? '',
+                            child: Text(
+
+                              widget.question.text,
+                              style: TextStyle(fontSize: 16.0),
+                            ),
+                          ),
+                        ),
+                        widget.question.tips != null ? Center(
+                          child: IconButton(
+                            icon: Icon(Icons.info),
+                            onPressed: () {
+                              _showTipsDialog(context, widget.question.tips ?? '');
+                            },
+                          ),
+                        ) : Container(),
+                      ],
                     ),
-                  ) : Container(),
-                  SliderTheme(
-                    child: Slider(
+                    SliderTheme(
+                      child: Slider(
                         value: _sliderValue,
                         onChanged: (newValue) {
                           setState(() {
@@ -94,13 +100,15 @@ class _QuestionCardState extends State<QuestionCard> {
                         inactiveColor: sliderColor,
                         label: AppLocalizations.of(context)!.answers[_sliderValue.toInt() - 1],
                       ),
-                    data: SliderTheme.of(context).copyWith(
-                      trackHeight: 5.0
+                      data: SliderTheme.of(context).copyWith(
+                          trackHeight: 5.0
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
+        
           ],
         ),
       ),

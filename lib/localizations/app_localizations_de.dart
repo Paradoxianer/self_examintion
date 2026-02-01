@@ -295,6 +295,7 @@ class AppLocalizationsDe extends AppLocalizations {
           Question(text: "Ist Christus für mich real?")
         ],
       ),
+
     };
     return _questionMap;
   }

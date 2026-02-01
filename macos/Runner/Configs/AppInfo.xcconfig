@@ -8,7 +8,7 @@
 PRODUCT_NAME = self_examination
 
 // The application's bundle identifier
-PRODUCT_BUNDLE_IDENTIFIER = de.heilsarmee.selfExamintion
+PRODUCT_BUNDLE_IDENTIFIER = com.example.selfExamination
 
 // The copyright displayed in application information
-PRODUCT_COPYRIGHT = Copyright © 2023 de.heilsarmee. All rights reserved.
+PRODUCT_COPYRIGHT = Copyright © 2026 com.example. All rights reserved.
