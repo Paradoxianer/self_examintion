@@ -257,7 +257,7 @@ class _TimeChartWidgetState extends State<TimeChartWidget> {
   Widget defaultTitles(double value, TitleMeta meta, BuildContext context) {
     final timestamp = DateTime.fromMillisecondsSinceEpoch(value.toInt());
     return SideTitleWidget(
-      axisSide: meta.axisSide,
+      meta: meta,
       child:
           Text(
             '${timestamp.day}.${timestamp.month}.${timestamp.year.toString().substring(timestamp.year.toString().length - 2)}',style: TextStyle(fontSize: 7.0),
@@ -272,7 +272,7 @@ class _TimeChartWidgetState extends State<TimeChartWidget> {
       return Container(); // Zeige nichts an
     }
     return SideTitleWidget(
-      axisSide: meta.axisSide,
+      meta: meta,
       child: Column(
         children: [
           Text(
@@ -288,7 +288,7 @@ class _TimeChartWidgetState extends State<TimeChartWidget> {
     final timestamp = DateTime.fromMillisecondsSinceEpoch(
         value.toInt());
     return SideTitleWidget(
-        axisSide: meta.axisSide,
+        meta: meta,
         child: Text('${timestamp.day}.${timestamp.month}.${timestamp.year.toString().substring(timestamp.year.toString().length - 2)}'));
   }
 
@@ -320,7 +320,7 @@ class _TimeChartWidgetState extends State<TimeChartWidget> {
     }
 
     return SideTitleWidget(
-      axisSide: meta.axisSide,
+      meta: meta,
       child: text,
     );
   }
@@ -329,7 +329,7 @@ class _TimeChartWidgetState extends State<TimeChartWidget> {
     final timestamp = DateTime.fromMillisecondsSinceEpoch(
         value.toInt());
     return SideTitleWidget(
-        axisSide: meta.axisSide,
+        meta: meta,
         child:Text('${timestamp.year.toString()}')
     );
   }
