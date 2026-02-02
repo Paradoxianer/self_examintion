@@ -44,7 +44,7 @@ class _QuestionCardState extends State<QuestionCard> {
           children: <Widget>[
             Container(
               width: 60,
-              color: globalColorMap[widget.cardNumber + 1]!.withOpacity(0.50),
+              color: globalColorMap[widget.cardNumber + 1]!.withValues(alpha: 0.50)
               child: Center(
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
