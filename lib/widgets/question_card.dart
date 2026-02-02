@@ -43,7 +43,7 @@ class _QuestionCardState extends State<QuestionCard> {
         child: Row(
           children: <Widget>[
             Container(
-              width: 50,
+              width: 60,
               color: globalColorMap[widget.cardNumber + 1]!.withOpacity(0.50),
               child: Center(
                 child: Padding(
