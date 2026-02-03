@@ -3,58 +3,65 @@ import 'package:self_examination/data/self_assesment_questions.dart';
 import 'package:self_examination/localizations/app_localizations.dart';
 import 'package:self_examination/utils/local_storage.dart';
 
-class QuestionSetSelection extends StatefulWidget {
-  final Function(String) onSetSelected;
+class QuestionSetSelection extends StatelessWidget {
+  final Function(String)? onSetSelected;
 
-  QuestionSetSelection({required this.onSetSelected});
-
-  @override
-  _QuestionSetSelectionState createState() => _QuestionSetSelectionState();
-}
-
-class _QuestionSetSelectionState extends State<QuestionSetSelection> {
-  String? selectedSet;
-  Map<String, SelfAssessmentQuestionSet>? questionSets;
-  bool isExpanded = false;
+  QuestionSetSelection({this.onSetSelected});
 
   @override
-  void initState() {
-    super.initState();
-    //this will not work since we should only use the localized Applocalizations map
-    selectedSet = LocalStorage().getCurrentAuthor();
-  }
+  Widget build(BuildContext context) {
+    final localStorage = LocalStorage();
+    final questionSets = AppLocalizations.of(context)!.questionMap;
 
-  void showSetInfoDialog(BuildContext context) {
-    questionSets =AppLocalizations.of(context)!.questionMap;
-    showDialog(
-      context: context,
-      builder: (context) {
-        SelfAssessmentQuestionSet questionSet =
-        AppLocalizations.of(context)!.questionMap[selectedSet]!;
-        return AlertDialog(
-          title: ListTile(
-              title: Text(questionSet.authorName,
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-              subtitle: Text(questionSet.description)),
-          content: Container(
-            width: double.maxFinite,
-            child: ListView.builder(
-              itemCount: questionSet.questions.length,
-              itemBuilder: (context, index) {
-                final question = questionSet.questions[index];
-                return ListTile(
-                  leading: Text((index + 1).toString()),
-                  title: Text(question.text),
+    return ListenableBuilder(
+      listenable: localStorage.assessmentNotifier,
+      builder: (context, _) {
+        String selectedSet = localStorage.getCurrentAuthor();
+
+        // Ensure selectedSet is valid
+        if (!questionSets.containsKey(selectedSet)) {
+          selectedSet = questionSets.keys.first;
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            localStorage.setCurrentAuthor(selectedSet);
+          });
+        }
+
+        return Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            DropdownButton<String>(
+              value: selectedSet,
+              underline: Container(),
+              items: questionSets.entries.map((entry) {
+                return DropdownMenuItem<String>(
+                  value: entry.key,
+                  child: Row(
+                    children: <Widget>[
+                      Icon(
+                        Icons.menu_book,
+                        color: entry.key == selectedSet
+                            ? Theme.of(context).primaryColor
+                            : null,
+                      ),
+                      const SizedBox(width: 8),
+                      Text(
+                        entry.value.authorName,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ],
+                  ),
                 );
+              }).toList(),
+              onChanged: (String? newValue) {
+                if (newValue != null && newValue != selectedSet) {
+                  localStorage.setCurrentAuthor(newValue);
+                  if (onSetSelected != null) onSetSelected!(newValue);
+                }
               },
             ),
-          ),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text('Close'),
+            IconButton(
+              icon: Icon(Icons.info_outline),
+              onPressed: () => _showSetInfoDialog(context, selectedSet, questionSets),
             ),
           ],
         );
@@ -62,62 +69,33 @@ class _QuestionSetSelectionState extends State<QuestionSetSelection> {
     );
   }
 
-  void authorChanged(){
-    LocalStorage().setCurrentAuthor(selectedSet!);
-    widget.onSetSelected(selectedSet!);
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    questionSets =AppLocalizations.of(context)!.questionMap;
-    if (!questionSets!.keys.contains(selectedSet)){
-      selectedSet = questionSets!.keys.first;
-      authorChanged();
-    }
-    return Row(
-      children: [
-        DropdownButton<String>(
-          value: selectedSet,
-          items: questionSets!.entries.map((entry) {
-            return DropdownMenuItem<String>(
-              value: entry.key,
-              child: Row(
-                children: <Widget>[
-                  Icon(
-                    Icons.menu_book,
-                    color: entry.key == selectedSet
-                        ? Theme.of(context).primaryColor
-                        : null,
-                  ),
-                  FittedBox(
-                    fit: BoxFit.fitWidth,
-                    child: Text(
-                      entry.value.authorName,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
-                ],
-              ),
-            );
-          }).toList(),
-          onChanged: (String? newValue) {
-            print("geändert zu $newValue\n");
-            if (newValue != selectedSet) {
-              setState(() {
-                selectedSet = newValue;
-              });
-              // Update the selected author in LocalStorage
-              authorChanged();
-            }
-          },
-        ),
-        IconButton(
-          icon: Icon(Icons.info),
-          onPressed: () {
-            showSetInfoDialog(context);
-          },
-        ),
-      ],
+  void _showSetInfoDialog(BuildContext context, String selectedKey, Map<String, SelfAssessmentQuestionSet> questionSets) {
+    final questionSet = questionSets[selectedKey]!;
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text(questionSet.authorName),
+          content: Container(
+            width: double.maxFinite,
+            child: ListView.builder(
+              itemCount: questionSet.questions.length,
+              itemBuilder: (context, index) {
+                return ListTile(
+                  leading: Text("${index + 1}"),
+                  title: Text(questionSet.questions[index].text),
+                );
+              },
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: Text('Schließen'),
+            ),
+          ],
+        );
+      },
     );
   }
 }
