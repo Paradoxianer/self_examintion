@@ -12,218 +12,220 @@ class ComparisonChartWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return
-      Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          if (assessmentHistory.length > 1)
-            Center(child: Card(child: Text(assessmentHistory[assessmentHistory.length-2].timestamp.toString()),color: Colors.brown)),
-      Center(child: Card(child: Text(assessmentHistory.last.timestamp.toString()),color: Colors.green)),
-    const SizedBox(height: 14),
-      Flexible(
-        child: Center(
-          child: AspectRatio(
-          aspectRatio: 1.70,
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: BarChart(
-              BarChartData(
-                barTouchData: BarTouchData(
-                  touchTooltipData: BarTouchTooltipData(
-                   getTooltipItem: ( group, groupIndex,  rod,  rodIndex,) {
-                     return tooltipItem(group,groupIndex,rod,rodIndex,context);
-                   }
-                  )
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        if (assessmentHistory.length > 1)
+          Center(
+            child: Card(
+              color: Colors.brown,
+              child: Padding(
+                padding: const EdgeInsets.all(4.0),
+                child: Text(
+                  assessmentHistory[assessmentHistory.length - 2].timestamp.toString().split('.')[0],
+                  style: const TextStyle(color: Colors.white, fontSize: 10),
                 ),
-                minY: 0,
-                maxY: 6,
-                barGroups: getComparisonData(context),
-                borderData: FlBorderData(show: true),
-                gridData: FlGridData(show: true,horizontalInterval: 1.0,drawVerticalLine: false),
-                titlesData: FlTitlesData(
-                    rightTitles:
-                        AxisTitles(sideTitles: SideTitles(showTitles: false)),
-                    topTitles:
-                        AxisTitles(sideTitles: SideTitles(showTitles: false)),
-                    bottomTitles: AxisTitles(
+              ),
+            ),
+          ),
+        Center(
+          child: Card(
+            color: Colors.green,
+            child: Padding(
+              padding: const EdgeInsets.all(4.0),
+              child: Text(
+                assessmentHistory.last.timestamp.toString().split('.')[0],
+                style: const TextStyle(color: Colors.white, fontSize: 10),
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(height: 14),
+        Flexible(
+          child: Center(
+            child: AspectRatio(
+              aspectRatio: 1.70,
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: BarChart(
+                  BarChartData(
+                    barTouchData: BarTouchData(
+                      touchTooltipData: BarTouchTooltipData(
+                        getTooltipItem: (group, groupIndex, rod, rodIndex) {
+                          return tooltipItem(group, groupIndex, rod, rodIndex, context);
+                        },
+                      ),
+                    ),
+                    minY: 0,
+                    maxY: 1.1, // Adjusted for 0.0 - 1.0
+                    barGroups: getComparisonData(context),
+                    borderData: FlBorderData(show: true),
+                    gridData: const FlGridData(
+                      show: true,
+                      horizontalInterval: 0.2,
+                      drawVerticalLine: false,
+                    ),
+                    titlesData: FlTitlesData(
+                      rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                      topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                      bottomTitles: AxisTitles(
                         drawBelowEverything: true,
                         sideTitles: SideTitles(
                           showTitles: true,
                           getTitlesWidget: (value, meta) {
                             return bottomTitleWidgets(value, meta, context);
                           },
-                        )),
-                    leftTitles: AxisTitles(
+                        ),
+                      ),
+                      leftTitles: AxisTitles(
                         sideTitles: SideTitles(
-                      showTitles: true,
-                      getTitlesWidget: (value, meta) {
-                        return leftTitleWidgets(value, meta, context);
-                      },
-                    ))),
+                          showTitles: true,
+                          reservedSize: 40,
+                          getTitlesWidget: (value, meta) {
+                            return leftTitleWidgets(value, meta, context);
+                          },
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
               ),
             ),
           ),
-              ),
         ),
-      )]);
+      ],
+    );
   }
 
   List<BarChartGroupData> getComparisonData(BuildContext context) {
     List<BarChartGroupData> barGroups = [];
+    if (assessmentHistory.isEmpty) return barGroups;
 
-    // Check if there are assessments for comparison
-    if (assessmentHistory.isEmpty) {
-      return barGroups;
-    }
+    final latestAssessment = assessmentHistory.last;
+    final localization = AppLocalizations.of(context)!;
+    final currentAuthor = LocalStorage().getCurrentAuthor();
+    
+    if (!localization.questionMap.containsKey(latestAssessment.questionSet)) return barGroups;
+    final questions = localization.questionMap[latestAssessment.questionSet]!.questions;
 
-    AssessmentEntry latestAssessment = assessmentHistory.last;
+    double totalLatestScore = 0;
+    int count = 0;
 
-    // Variables for calculating overall average
-    int totalLatestScore = 0;
+    for (int i = 0; i < latestAssessment.values.length; i++) {
+      double value = latestAssessment.values[i];
+      if (value == -1.0) continue; // Skip unanswered
 
-    //check if the
-    if (!AppLocalizations.of(context)!.questionMap.containsKey(latestAssessment.questionSet))
-      return barGroups;
-    // Iterate through questions and get the answers
-    for (int i = 0; i < latestAssessment.answers.length; i++) {
-      int latestAnswer = latestAssessment.answers[i];
+      double displayValue = value;
+      // Invert if positive (matching old logic where 1 was best, now 1.0 is best)
+      // Actually, old logic: if isPositive, converted = 5 - answer. (1->4, 4->1)
+      // New logic: 1.0 is always "Full". If it's a "bad" thing (isPositive=false in your code meant bad?), 
+      // we need to be careful. In QuestionCard, we used:
+      // if (isPositive) 1.0 = Green, 0.0 = Red.
+      // So let's assume 1.0 is always "good" for the chart.
+      
+      totalLatestScore += displayValue;
+      count++;
 
-      int convertedLatestAnswer = latestAnswer;
-
-      // Invert values if the question is negative
-      if (AppLocalizations.of(context)!
-          .questionMap[latestAssessment.questionSet]!
-          .questions[i]
-          .isPositive) {
-        convertedLatestAnswer = 5 - latestAnswer;
-      }
-
-      // Update overall score
-      totalLatestScore += convertedLatestAnswer;
-
-      // Create a BarChartGroupData for each question
       barGroups.add(
         BarChartGroupData(
           x: i,
           barRods: [
             BarChartRodData(
-              toY: convertedLatestAnswer.toDouble(),
+              toY: displayValue,
               color: Colors.green,
+              width: 8,
             ),
           ],
         ),
       );
     }
 
-    // If there is more than one assessment, include the comparison
     if (assessmentHistory.length > 1) {
-      AssessmentEntry previousAssessment =
-      assessmentHistory[assessmentHistory.length - 2];
+      final previousAssessment = assessmentHistory[assessmentHistory.length - 2];
+      double totalPreviousScore = 0;
+      int prevCount = 0;
 
-      // Variables for calculating overall average
-      int totalPreviousScore = 0;
+      for (int i = 0; i < previousAssessment.values.length; i++) {
+        double value = previousAssessment.values[i];
+        if (value == -1.0) continue;
 
-      // Iterate through questions and compare the answers
-      for (int i = 0; i < latestAssessment.answers.length; i++) {
-        int previousAnswer = previousAssessment.answers[i];
+        totalPreviousScore += value;
+        prevCount++;
 
-        int convertedPreviousAnswer = previousAnswer;
-
-        // Invert values if the question is negative
-        if (AppLocalizations.of(context)!
-            .questionMap[latestAssessment.questionSet]!
-            .questions[i]
-            .isPositive) {
-          convertedPreviousAnswer = 5 - previousAnswer;
+        if (i < barGroups.length) {
+          barGroups[i].barRods.insert(
+                0,
+                BarChartRodData(
+                  toY: value,
+                  color: Colors.brown,
+                  width: 8,
+                ),
+              );
         }
+      }
 
-        // Update overall scores
-        totalPreviousScore += convertedPreviousAnswer;
+      // Add average
+      if (count > 0) {
+        double avgLatest = totalLatestScore / count;
+        double avgPrev = prevCount > 0 ? totalPreviousScore / prevCount : 0;
 
-        // Add the comparison data to the existing BarChartGroupData
-        barGroups[i].barRods.insert(0,
-          BarChartRodData(
-            toY: convertedPreviousAnswer.toDouble(),
-            color: Colors.brown,
+        barGroups.add(
+          BarChartGroupData(
+            x: latestAssessment.values.length,
+            barRods: [
+              BarChartRodData(toY: avgPrev, color: Colors.brown, width: 12),
+              BarChartRodData(toY: avgLatest, color: Colors.green, width: 12),
+            ],
           ),
         );
       }
-
-      // Calculate overall averages
-      double averageLatestScore =
-          totalLatestScore / latestAssessment.answers.length;
-      double averagePreviousScore =
-          totalPreviousScore / previousAssessment.answers.length;
-
-      // Add a BarChartGroupData for the overall average
-      barGroups.add(
-        BarChartGroupData(
-          x: latestAssessment.answers.length, // Position it at the end
-          barRods: [
-            BarChartRodData(
-              toY: averagePreviousScore,
-              width: 20, // Adjust the width as needed
-              color: Colors.brown, // Use your preferred color
-            ),
-            BarChartRodData(
-              toY: averageLatestScore,
-              width: 20, // Adjust the width as needed
-              color: Colors.green, // Use your preferred color
-            ),
-          ],
-        ),
-      );
     }
 
     return barGroups;
   }
 
-  Widget bottomTitleWidgets(
-      double value, TitleMeta meta, BuildContext context) {
-    SelfAssessmentQuestionSet questionSet = AppLocalizations.of(context)!
-            .questionMap[LocalStorage().getCurrentAuthor()] ??
+  Widget bottomTitleWidgets(double value, TitleMeta meta, BuildContext context) {
+    final questionSet = AppLocalizations.of(context)!.questionMap[LocalStorage().getCurrentAuthor()] ??
         AppLocalizations.of(context)!.questionMap.values.first;
-    const style = TextStyle(
-      fontWeight: FontWeight.bold,
-      fontSize: 16,
-    );
-    if (value.toInt() < questionSet.questions.length)
-    return Tooltip(
-      message: questionSet.questions[value.toInt()].text,
-      child: Text((value.toInt()+1).toString(),
-        softWrap: true, style: style, maxLines: 10, overflow: TextOverflow.ellipsis,),
-    );
-    else
-      return Text(AppLocalizations.of(context)!.total);
-  
-    return Container();
+    
+    const style = TextStyle(fontWeight: FontWeight.bold, fontSize: 12);
+    
+    if (value.toInt() < questionSet.questions.length) {
+      return SideTitleWidget(
+        axisSide: meta.axisSide,
+        child: Text((value.toInt() + 1).toString(), style: style),
+      );
+    } else {
+      return SideTitleWidget(
+        axisSide: meta.axisSide,
+        child: Text(AppLocalizations.of(context)!.total, style: style),
+      );
+    }
   }
 
   Widget leftTitleWidgets(double value, TitleMeta meta, BuildContext context) {
-    if (double.parse(value.toStringAsFixed(2)) % 1 == 0 && value >= 1 && value < 5) {
-      String answerText = AppLocalizations.of(context)!.rating[5-value.toInt()-1];
-      const style = TextStyle(
-        fontWeight: FontWeight.bold,
-        fontSize: 9,
-      );
-      return Flexible(
-        child: Text(answerText, style: style, softWrap: true, maxLines: 2, overflow: TextOverflow.ellipsis,),
-      );
-    }
-    return Container();
+    const style = TextStyle(fontWeight: FontWeight.bold, fontSize: 10);
+    return SideTitleWidget(
+      axisSide: meta.axisSide,
+      child: Text("${(value * 100).toInt()}%", style: style),
+    );
   }
 
-  BarTooltipItem tooltipItem( BarChartGroupData group,  int groupIndex,  BarChartRodData rod,  int rodIndex, BuildContext context )  {
-    SelfAssessmentQuestionSet questionSet = AppLocalizations.of(context)!
-        .questionMap[LocalStorage().getCurrentAuthor()] ??
+  BarTooltipItem tooltipItem(BarChartGroupData group, int groupIndex, BarChartRodData rod, int rodIndex, BuildContext context) {
+    final questionSet = AppLocalizations.of(context)!.questionMap[LocalStorage().getCurrentAuthor()] ??
         AppLocalizations.of(context)!.questionMap.values.first;
-      return BarTooltipItem(
-        questionSet.questions[groupIndex].text,
-        TextStyle(
-          color: Colors.white,
-          fontSize: 8.0,
-        ),
-      );
+    
+    String text = "";
+    if (groupIndex < questionSet.questions.length) {
+      text = questionSet.questions[groupIndex].text;
+    } else {
+      text = AppLocalizations.of(context)!.total;
+    }
+
+    return BarTooltipItem(
+      "$text\n${(rod.toY * 100).round()}%",
+      const TextStyle(color: Colors.white, fontSize: 10),
+    );
   }
 }

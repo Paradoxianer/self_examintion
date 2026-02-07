@@ -20,15 +20,20 @@ class _TimeChartWidgetState extends State<TimeChartWidget> {
   @override
   void initState() {
     super.initState();
-    // Initialize the selectedQuestions list with all questions selected
-    selectedQuestions = List.generate(
-      widget.assessmentHistory[0].answers.length,
-          (index) => true,
-    );
+    if (widget.assessmentHistory.isNotEmpty) {
+      selectedQuestions = List.generate(
+        widget.assessmentHistory[0].values.length,
+        (index) => true,
+      );
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    if (widget.assessmentHistory.isEmpty) {
+      return const Center(child: Text("No data available"));
+    }
+
     return Column(
       children: [
         Expanded(
@@ -41,309 +46,131 @@ class _TimeChartWidgetState extends State<TimeChartWidget> {
                   minX: calculateMinX(),
                   maxX: calculateMaxX(),
                   minY: 0,
-                  maxY: 6,
+                  maxY: 1.1,
                   lineBarsData: [
                     LineChartBarData(
                       spots: getOverallScores(context),
                       isCurved: true,
-                      isStrokeCapRound: true,
-                      //belowBarData: BarAreaData(show: true),
-                      color: Colors.red, // Use red for the calculated score
+                      color: Colors.red,
+                      barWidth: 3,
+                      dotData: const FlDotData(show: false),
                     ),
-                    for (int i = 0;
-                    i < widget.assessmentHistory[0].answers.length;
-                    i++)
+                    for (int i = 0; i < selectedQuestions.length; i++)
                       if (selectedQuestions[i])
                         LineChartBarData(
                           spots: getQuestionScores(context, i),
                           isCurved: true,
-                          isStrokeCapRound: true,
-                          preventCurveOverShooting: true,
-                          belowBarData: BarAreaData(show: true),
-                          color: globalColorMap[i + 1],
+                          color: globalColorMap[i + 1] ?? Colors.blue,
+                          barWidth: 2,
+                          dotData: const FlDotData(show: false),
                         ),
                   ],
                   titlesData: FlTitlesData(
-                    rightTitles: AxisTitles(
-                      sideTitles: SideTitles(showTitles: false),
-                    ),
-                    topTitles: AxisTitles(
-                      sideTitles: SideTitles(showTitles: false),
-                    ),
+                    rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                    topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
                     bottomTitles: AxisTitles(
                       sideTitles: SideTitles(
                         showTitles: true,
-                        getTitlesWidget: (value, meta) {
-                          return bottomTitleWidgets(value, meta, context);
-                        },
+                        getTitlesWidget: (value, meta) => bottomTitleWidgets(value, meta, context),
                       ),
                     ),
-                      leftTitles: AxisTitles(
-                          sideTitles: SideTitles(
-                            showTitles: true,
-                            getTitlesWidget: (value, meta) {
-                              return leftTitleWidgets(value, meta, context);
-                            },
-                          ))  
+                    leftTitles: AxisTitles(
+                      sideTitles: SideTitles(
+                        showTitles: true,
+                        getTitlesWidget: (value, meta) => leftTitleWidgets(value, meta, context),
+                      ),
+                    ),
                   ),
-                  borderData: FlBorderData(
-                      show: true
-                  ),
+                  borderData: FlBorderData(show: true),
+                  gridData: const FlGridData(show: true, horizontalInterval: 0.2),
                 ),
               ),
             ),
           ),
         ),
-        SizedBox(height: 16),
-        // Checkbox list for selecting questions
+        const SizedBox(height: 16),
         Expanded(
-                child: ListView.builder(
-                  itemCount: selectedQuestions.length,
-                  itemBuilder: (context, index) {
-                    return Card(
-                      child: ListTile(
-                        contentPadding: EdgeInsets.zero,
-                        leading: Card(
-                          color: globalColorMap[index+1],
-                          child: Checkbox(
-                            value: selectedQuestions[index],
-                            onChanged: (value) {
-                              setState(() {
-                                selectedQuestions[index] = value!;
-                              });
-                            },
-                          ),
-                        ),
-                        title: Text(
-                          '${AppLocalizations.of(context)!.questionMap[LocalStorage().getCurrentAuthor()]!.questions[index].text}'
-                        ),
-                      ),
-                    );
-                  },
+          child: ListView.builder(
+            itemCount: selectedQuestions.length,
+            itemBuilder: (context, index) {
+              final authorKey = LocalStorage().getCurrentAuthor();
+              final questionSet = AppLocalizations.of(context)!.questionMap[authorKey];
+              return Card(
+                child: ListTile(
+                  leading: Checkbox(
+                    value: selectedQuestions[index],
+                    activeColor: globalColorMap[index + 1],
+                    onChanged: (value) {
+                      setState(() {
+                        selectedQuestions[index] = value!;
+                      });
+                    },
+                  ),
+                  title: Text(
+                    questionSet?.questions[index].text ?? 'Question ${index + 1}',
+                    style: const TextStyle(fontSize: 12),
+                  ),
                 ),
-              ),
+              );
+            },
+          ),
+        ),
       ],
     );
   }
-  // Funktion zum Berechnen des minimalen x-Werts (erster Tag des aktuellen Monats)
+
   double calculateMinX() {
-    DateTime now = DateTime.now();
-    String? freq = LocalStorage().getString("notificationFrequency");
-    switch (freq) {
-      case "daily":
-      case "weekly":
-        DateTime firstDayOfMonth = DateTime(now.year, now.month, 1);
-        return firstDayOfMonth.millisecondsSinceEpoch.toDouble();
-      case "monthly":
-        DateTime firstDayOfYear = DateTime(now.year, 1, 1);
-        return firstDayOfYear.millisecondsSinceEpoch.toDouble();
-      case "annual":
-        DateTime firstDayOfYear = DateTime(now.year, 1, 1);
-        return firstDayOfYear.subtract(Duration(days: (365*2))).millisecondsSinceEpoch.toDouble();
-      default:
-        DateTime firstDayOfMonth = DateTime(now.year, now.month, 1);
-        return firstDayOfMonth.millisecondsSinceEpoch.toDouble();
-    }
+    if (widget.assessmentHistory.isEmpty) return 0;
+    return widget.assessmentHistory.first.timestamp.millisecondsSinceEpoch.toDouble();
   }
 
-  // Funktion zum Berechnen des maximalen x-Werts
   double calculateMaxX() {
-    DateTime now = DateTime.now();
-    String? freq = LocalStorage().getString("notificationFrequency");
-    switch (freq) {
-      case "daily":
-      case "weekly":
-        DateTime lastDayOfMonth = DateTime(now.year, now.month+1, 0);
-        return lastDayOfMonth.millisecondsSinceEpoch.toDouble();
-      case "monthly":
-        DateTime lastDayOfYear = DateTime(now.year, 12, 31);
-        return lastDayOfYear.subtract(Duration(days: 1)).millisecondsSinceEpoch.toDouble();
-      case "annual":
-        DateTime lastDayOfYear = DateTime(now.year, 1, 1);
-        return lastDayOfYear.add(Duration(days: (365*3))).subtract(Duration(days: 1)).millisecondsSinceEpoch.toDouble();
-      default:
-        DateTime lastDayOfMonth = DateTime(now.year, now.month+1, 0);
-        return lastDayOfMonth.millisecondsSinceEpoch.toDouble();
-    }
-  }
-
-  double calculateIntervall() {
-    String? freq = LocalStorage().getString("notificationFrequency");
-    switch (freq) {
-      case "daily":
-        return 5.0;
-      case "weekly":
-        return 7.0;
-      case "monthly":
-        return 12;
-      case "annual":
-        return 1.0;
-      default:
-        return 2.0;
-    }
+    if (widget.assessmentHistory.isEmpty) return 100;
+    return widget.assessmentHistory.last.timestamp.millisecondsSinceEpoch.toDouble();
   }
 
   List<FlSpot> getOverallScores(BuildContext context) {
+    return widget.assessmentHistory.map((entry) {
+      double avg = 0;
+      int count = 0;
+      for (var val in entry.values) {
+        if (val != -1.0) {
+          avg += val;
+          count++;
+        }
+      }
+      return FlSpot(
+        entry.timestamp.millisecondsSinceEpoch.toDouble(),
+        count > 0 ? avg / count : 0,
+      );
+    }).toList();
+  }
+
+  List<FlSpot> getQuestionScores(BuildContext context, int index) {
     List<FlSpot> spots = [];
-
-    for (int i = 0; i < widget.assessmentHistory.length; i++) {
-      double averageScore = calculateAverageScore(context,  widget.assessmentHistory[i]);
-      DateTime timestamp =  widget.assessmentHistory[i].timestamp;
-      spots.add(FlSpot(
-          timestamp.millisecondsSinceEpoch.toDouble(), averageScore));
+    for (var entry in widget.assessmentHistory) {
+      if (index < entry.values.length && entry.values[index] != -1.0) {
+        spots.add(FlSpot(
+          entry.timestamp.millisecondsSinceEpoch.toDouble(),
+          entry.values[index],
+        ));
+      }
     }
-
     return spots;
   }
 
-  List<FlSpot> getQuestionScores(BuildContext context, int questionIndex) {
-    List<FlSpot> spots = [];
-
-    for (int i = 0; i <  widget.assessmentHistory.length; i++) {
-      int answer =  widget.assessmentHistory[i].answers[questionIndex];
-      int convertedAnswer = answer;
-      if (AppLocalizations.of(context)!.questionMap[ widget.assessmentHistory[i]
-          .questionSet]!.questions[questionIndex].isPositive) {
-        convertedAnswer = 5 - answer; // Invert the values
-      }
-      DateTime timestamp =  widget.assessmentHistory[i].timestamp;
-      spots.add(FlSpot(timestamp.millisecondsSinceEpoch.toDouble(),
-          convertedAnswer.toDouble()));
-    }
-
-    return spots;
-  }
-
-  double calculateAverageScore(BuildContext context,
-      AssessmentEntry assessmentEntry) {
-    double averageScore = 0;
-    for (int i = 0; i < assessmentEntry.answers.length; i++) {
-      int answer = assessmentEntry.answers[i];
-      if (AppLocalizations.of(context)!.questionMap[widget.assessmentHistory[0]
-          .questionSet]!.questions[i].isPositive) {
-        answer = 5 - answer; // Invert the values
-      }
-      averageScore += answer;
-    }
-    averageScore=averageScore/assessmentEntry.answers.length;
-    return averageScore;
-  }
-
-
-  //build the main axis...
   Widget bottomTitleWidgets(double value, TitleMeta meta, BuildContext context) {
-    String? freq = LocalStorage().getString("notificationFrequency");
-    Widget title;
-    switch (freq) {
-      case 'daily':
-        title = dailyTitles(value, meta, context);
-        break;
-      case 'weekly':
-        title = weeklyTitles(value, meta, context);
-        break;
-      case 'monthly':
-        title = monthlyTitles(value, meta, context);
-        break;
-      case 'annual':
-        title = annualTitles(value, meta, context);
-        break;
-      default:
-        title = defaultTitles(value, meta, context);
-        break;
-    }
-    return title; // Änderung: Direkt das Widget zurückgeben, nicht in ein SideTitleWidget einbetten
-  }
-
-  Widget defaultTitles(double value, TitleMeta meta, BuildContext context) {
-    final timestamp = DateTime.fromMillisecondsSinceEpoch(value.toInt());
+    final date = DateTime.fromMillisecondsSinceEpoch(value.toInt());
     return SideTitleWidget(
-      meta: meta,
-      child:
-          Text(
-            '${timestamp.day}.${timestamp.month}.${timestamp.year.toString().substring(timestamp.year.toString().length - 2)}',style: TextStyle(fontSize: 7.0),
-      ),
+      axisSide: meta.axisSide,
+      child: Text("${date.day}.${date.month}.", style: const TextStyle(fontSize: 8)),
     );
   }
 
-  Widget dailyTitles(double value, TitleMeta meta, BuildContext context) {
-    final timestamp = DateTime.fromMillisecondsSinceEpoch(value.toInt());
-    // Prüfe, ob der Tag ungerade ist (alle zwei Tage anzeigen)
-    if (timestamp.day % 5 != 0) {
-      return Container(); // Zeige nichts an
-    }
-    return SideTitleWidget(
-      meta: meta,
-      child: Column(
-        children: [
-          Text(
-            '${timestamp.day}.${timestamp.month}.${timestamp.year.toString().substring(timestamp.year.toString().length - 2)}',
-          ),
-          Text('${timestamp.hour}:${timestamp.minute}'),
-        ],
-      ),
-    );
-  }
-
-  Widget weeklyTitles(double value, TitleMeta meta, BuildContext context) {
-    final timestamp = DateTime.fromMillisecondsSinceEpoch(
-        value.toInt());
-    return SideTitleWidget(
-        meta: meta,
-        child: Text('${timestamp.day}.${timestamp.month}.${timestamp.year.toString().substring(timestamp.year.toString().length - 2)}'));
-  }
-
-  Widget monthlyTitles(double value, TitleMeta meta, BuildContext context) {
-    final timestamp = DateTime.fromMillisecondsSinceEpoch(
-        value.toInt());
-    final month =timestamp.month;
-    const style = TextStyle(
-      fontWeight: FontWeight.bold,
-      fontSize: 16,
-    );
-    Widget text;
-    switch (month) {
-      case 2:
-        text = const Text('MAR', style: style);
-        break;
-      case 5:
-        text = const Text('JUN', style: style);
-        break;
-      case 8:
-        text = const Text('SEP', style: style);
-        break;
-      case 11:
-        text = const Text('NOV', style: style);
-        break;
-      default:
-        text = const Text('', style: style);
-        break;
-    }
-
-    return SideTitleWidget(
-      meta: meta,
-      child: text,
-    );
-  }
-
-  Widget annualTitles(double value, TitleMeta meta, BuildContext context) {
-    final timestamp = DateTime.fromMillisecondsSinceEpoch(
-        value.toInt());
-    return SideTitleWidget(
-        meta: meta,
-        child:Text('${timestamp.year.toString()}')
-    );
-  }
   Widget leftTitleWidgets(double value, TitleMeta meta, BuildContext context) {
-    if (double.parse(value.toStringAsFixed(2)) % 1 == 0 && value >= 1 && value < 5) {
-      String answerText = AppLocalizations.of(context)!.rating[5-value.toInt()-1];
-      const style = TextStyle(
-        fontWeight: FontWeight.bold,
-        fontSize: 9,
-      );
-      return Flexible(
-        child: Text(answerText, style: style, softWrap: true, maxLines: 2, overflow: TextOverflow.ellipsis,),
-      );
-    }
-    return Container();
+    return SideTitleWidget(
+      axisSide: meta.axisSide,
+      child: Text("${(value * 100).toInt()}%", style: const TextStyle(fontSize: 8)),
+    );
   }
 }
