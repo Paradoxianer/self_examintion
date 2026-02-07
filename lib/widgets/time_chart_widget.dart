@@ -31,16 +31,18 @@ class _TimeChartWidgetState extends State<TimeChartWidget> {
     }
   }
 
+  // --- Kalender-orientierte Fenster-Berechnung ---
   DateTime get _windowStart {
     switch (_currentTimeRange) {
       case TimeRange.twoDays:
         return DateTime(_referenceDate.year, _referenceDate.month, _referenceDate.day - 1);
       case TimeRange.week:
-        return _referenceDate.subtract(const Duration(days: 6));
+        // Finde den Montag der Woche (1 = Montag, 7 = Sonntag)
+        return DateTime(_referenceDate.year, _referenceDate.month, _referenceDate.day - (_referenceDate.weekday - 1));
       case TimeRange.month:
-        return DateTime(_referenceDate.year, _referenceDate.month - 1, _referenceDate.day);
+        return DateTime(_referenceDate.year, _referenceDate.month, 1);
       case TimeRange.year:
-        return DateTime(_referenceDate.year - 1, _referenceDate.month, _referenceDate.day);
+        return DateTime(_referenceDate.year, 1, 1);
       case TimeRange.all:
         return widget.assessmentHistory.isNotEmpty 
             ? widget.assessmentHistory.first.timestamp 
@@ -49,12 +51,21 @@ class _TimeChartWidgetState extends State<TimeChartWidget> {
   }
 
   DateTime get _windowEnd {
-    if (_currentTimeRange == TimeRange.all) {
-      return widget.assessmentHistory.isNotEmpty 
-          ? widget.assessmentHistory.last.timestamp 
-          : _referenceDate;
+    switch (_currentTimeRange) {
+      case TimeRange.twoDays:
+        return DateTime(_referenceDate.year, _referenceDate.month, _referenceDate.day, 23, 59, 59);
+      case TimeRange.week:
+        final monday = _windowStart;
+        return DateTime(monday.year, monday.month, monday.day + 6, 23, 59, 59);
+      case TimeRange.month:
+        return DateTime(_referenceDate.year, _referenceDate.month + 1, 0, 23, 59, 59);
+      case TimeRange.year:
+        return DateTime(_referenceDate.year, 12, 31, 23, 59, 59);
+      case TimeRange.all:
+        return widget.assessmentHistory.isNotEmpty 
+            ? widget.assessmentHistory.last.timestamp 
+            : _referenceDate;
     }
-    return _referenceDate;
   }
 
   void _navigateTime(bool next) {
@@ -68,10 +79,10 @@ class _TimeChartWidgetState extends State<TimeChartWidget> {
           _referenceDate = _referenceDate.add(Duration(days: 7 * factor));
           break;
         case TimeRange.month:
-          _referenceDate = DateTime(_referenceDate.year, _referenceDate.month + factor, _referenceDate.day);
+          _referenceDate = DateTime(_referenceDate.year, _referenceDate.month + factor, 1);
           break;
         case TimeRange.year:
-          _referenceDate = DateTime(_referenceDate.year + factor, _referenceDate.month, _referenceDate.day);
+          _referenceDate = DateTime(_referenceDate.year + factor, 1, 1);
           break;
         case TimeRange.all:
           break;
@@ -85,9 +96,12 @@ class _TimeChartWidgetState extends State<TimeChartWidget> {
       return const Center(child: Text("No data available"));
     }
 
+    final start = _windowStart;
+    final end = _windowEnd;
+
     final filteredHistory = widget.assessmentHistory.where((entry) {
-      return entry.timestamp.isAfter(_windowStart.subtract(const Duration(seconds: 1))) &&
-             entry.timestamp.isBefore(_windowEnd.add(const Duration(seconds: 1)));
+      return entry.timestamp.isAfter(start.subtract(const Duration(seconds: 1))) &&
+             entry.timestamp.isBefore(end.add(const Duration(seconds: 1)));
     }).toList();
 
     return Column(
@@ -98,8 +112,8 @@ class _TimeChartWidgetState extends State<TimeChartWidget> {
             padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
             child: LineChart(
               LineChartData(
-                minX: _windowStart.millisecondsSinceEpoch.toDouble(),
-                maxX: _windowEnd.millisecondsSinceEpoch.toDouble(),
+                minX: start.millisecondsSinceEpoch.toDouble(),
+                maxX: end.millisecondsSinceEpoch.toDouble(),
                 minY: 0,
                 maxY: 1.1,
                 lineBarsData: [
@@ -127,6 +141,8 @@ class _TimeChartWidgetState extends State<TimeChartWidget> {
                     sideTitles: SideTitles(
                       showTitles: true,
                       reservedSize: 30,
+                      // Intervall anpassen für bessere Lesbarkeit
+                      interval: _calculateInterval(start, end),
                       getTitlesWidget: (value, meta) => bottomTitleWidgets(value, meta, context),
                     ),
                   ),
@@ -140,18 +156,6 @@ class _TimeChartWidgetState extends State<TimeChartWidget> {
                 ),
                 borderData: FlBorderData(show: true, border: Border.all(color: Colors.grey.shade300)),
                 gridData: const FlGridData(show: true, horizontalInterval: 0.2, drawVerticalLine: false),
-                lineTouchData: LineTouchData(
-                  touchTooltipData: LineTouchTooltipData(
-                    getTooltipItems: (touchedSpots) {
-                      return touchedSpots.map((spot) {
-                        return LineTooltipItem(
-                          "${(spot.y * 100).round()}%",
-                          TextStyle(color: spot.bar.color, fontWeight: FontWeight.bold),
-                        );
-                      }).toList();
-                    },
-                  ),
-                ),
               ),
             ),
           ),
@@ -188,6 +192,14 @@ class _TimeChartWidgetState extends State<TimeChartWidget> {
     );
   }
 
+  double _calculateInterval(DateTime start, DateTime end) {
+    final diff = end.difference(start).inDays;
+    if (diff <= 2) return 1000 * 60 * 60 * 12; // 12 Stunden
+    if (diff <= 7) return 1000 * 60 * 60 * 24; // 1 Tag
+    if (diff <= 31) return 1000 * 60 * 60 * 24 * 7; // 1 Woche
+    return 1000 * 60 * 60 * 24 * 30; // 1 Monat
+  }
+
   List<FlSpot> getOverallScores(List<AssessmentEntry> history) {
     return history.map((entry) {
       double avg = 0;
@@ -220,14 +232,15 @@ class _TimeChartWidgetState extends State<TimeChartWidget> {
 
   Widget bottomTitleWidgets(double value, TitleMeta meta, BuildContext context) {
     final date = DateTime.fromMillisecondsSinceEpoch(value.toInt());
+    String text;
+    if (_currentTimeRange == TimeRange.year || _currentTimeRange == TimeRange.all) {
+      text = "${date.month}.${date.year.toString().substring(2)}";
+    } else {
+      text = "${date.day}.${date.month}.";
+    }
     return SideTitleWidget(
       meta: meta,
-      child: Text(
-        _currentTimeRange == TimeRange.year || _currentTimeRange == TimeRange.all
-            ? "${date.month}.${date.year.toString().substring(2)}"
-            : "${date.day}.${date.month}.",
-        style: const TextStyle(fontSize: 8, fontWeight: FontWeight.bold),
-      ),
+      child: Text(text, style: const TextStyle(fontSize: 8, fontWeight: FontWeight.bold)),
     );
   }
 
