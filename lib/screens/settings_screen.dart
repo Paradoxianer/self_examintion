@@ -27,7 +27,7 @@ class SettingsScreen extends StatelessWidget {
         children: [
           _buildSectionHeader(context, localization.chooseQuestionSet),
           ListTile(
-            title: QuestionSetSelection(showDelete: true), // HIER AKTIVIERT
+            title: const QuestionSetSelection(showDelete: true),
             subtitle: Padding(
               padding: const EdgeInsets.only(top: 8.0),
               child: Text(
@@ -126,7 +126,12 @@ class SettingsScreen extends StatelessWidget {
 
   void _handleExport(BuildContext context, ExportType type) async {
     final history = await localStorage.loadAssessmentEntries();
-    if (history.isEmpty) return;
+    if (history.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Keine Daten zum Exportieren vorhanden."))
+      );
+      return;
+    }
     await exportService.exportData(context, history, type);
   }
 }
