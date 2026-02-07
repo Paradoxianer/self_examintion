@@ -118,7 +118,6 @@ class ComparisonChartWidget extends StatelessWidget {
     int count = 0;
 
     for (int i = 0; i < latestAssessment.values.length; i++) {
-      // Only add to chart if selected in control panel
       if (i < selectedQuestions.length && !selectedQuestions[i]) continue;
 
       double value = latestAssessment.values[i];
@@ -148,7 +147,6 @@ class ComparisonChartWidget extends StatelessWidget {
 
       int groupIdx = 0;
       for (int i = 0; i < previousAssessment.values.length; i++) {
-        // Skip if not selected
         if (i < selectedQuestions.length && !selectedQuestions[i]) continue;
 
         double value = previousAssessment.values[i];
@@ -170,14 +168,13 @@ class ComparisonChartWidget extends StatelessWidget {
         }
       }
 
-      // Add average if selected (using the last index of selectedQuestions)
       if (selectedQuestions.isNotEmpty && selectedQuestions.last && count > 0) {
         double avgLatest = totalLatestScore / count;
         double avgPrev = prevCount > 0 ? totalPreviousScore / prevCount : 0;
 
         barGroups.add(
           BarChartGroupData(
-            x: 100, // Position at the end
+            x: 100,
             barRods: [
               BarChartRodData(toY: avgPrev, color: Colors.brown, width: 12),
               BarChartRodData(toY: avgLatest, color: Colors.green, width: 12),
@@ -205,7 +202,7 @@ class ComparisonChartWidget extends StatelessWidget {
 
     if (value.toInt() < questionSet.questions.length) {
       return SideTitleWidget(
-        axisSide: meta.axisSide,
+        meta: meta,
         child: Text((value.toInt() + 1).toString(), style: style),
       );
     }
