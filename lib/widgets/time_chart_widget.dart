@@ -23,7 +23,6 @@ class _TimeChartWidgetState extends State<TimeChartWidget> {
   void initState() {
     super.initState();
     if (widget.assessmentHistory.isNotEmpty) {
-      // Initialize questions + 1 for the average line
       selectedQuestions = List.generate(
         widget.assessmentHistory[0].values.length + 1,
         (index) => true,
@@ -103,93 +102,121 @@ class _TimeChartWidgetState extends State<TimeChartWidget> {
              entry.timestamp.isBefore(end.add(const Duration(seconds: 1)));
     }).toList();
 
-    return Column(
-      children: [
-        Expanded(
-          flex: 3,
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
-            child: LineChart(
-              LineChartData(
-                minX: start.millisecondsSinceEpoch.toDouble(),
-                maxX: end.millisecondsSinceEpoch.toDouble(),
-                minY: 0,
-                maxY: 1.1,
-                lineBarsData: [
-                  // Overall average line (last element in selectedQuestions)
-                  if (selectedQuestions.last)
-                    LineChartBarData(
-                      spots: getOverallScores(filteredHistory),
-                      isCurved: true,
-                      color: Colors.red,
-                      barWidth: 4,
-                      dotData: const FlDotData(show: false),
-                    ),
-                  for (int i = 0; i < selectedQuestions.length - 1; i++)
-                    if (selectedQuestions[i])
-                      LineChartBarData(
-                        spots: getQuestionScores(filteredHistory, i),
-                        isCurved: true,
-                        color: globalColorMap[i + 1] ?? Colors.blue,
-                        barWidth: 2,
-                        dotData: const FlDotData(show: false),
-                      ),
-                ],
-                titlesData: FlTitlesData(
-                  rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
-                  topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
-                  bottomTitles: AxisTitles(
-                    sideTitles: SideTitles(
-                      showTitles: true,
-                      reservedSize: 30,
-                      interval: _calculateInterval(start, end),
-                      getTitlesWidget: (value, meta) => bottomTitleWidgets(value, meta, context),
-                    ),
-                  ),
-                  leftTitles: AxisTitles(
-                    sideTitles: SideTitles(
-                      showTitles: true,
-                      reservedSize: 40,
-                      getTitlesWidget: (value, meta) => leftTitleWidgets(value, meta, context),
-                    ),
-                  ),
+    return OrientationBuilder(
+      builder: (context, orientation) {
+        if (orientation == Orientation.portrait) {
+          return Column(
+            children: [
+              Expanded(
+                flex: 3,
+                child: _buildChart(filteredHistory, start, end),
+              ),
+              const SizedBox(height: 8),
+              Expanded(
+                flex: 4,
+                child: _buildControls(),
+              ),
+            ],
+          );
+        } else {
+          // LANDSCAPE: Side-by-side layout
+          return Row(
+            children: [
+              Expanded(
+                flex: 6,
+                child: _buildChart(filteredHistory, start, end),
+              ),
+              const VerticalDivider(width: 1),
+              Expanded(
+                flex: 4,
+                child: _buildControls(),
+              ),
+            ],
+          );
+        }
+      },
+    );
+  }
+
+  Widget _buildChart(List<AssessmentEntry> filteredHistory, DateTime start, DateTime end) {
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: LineChart(
+        LineChartData(
+          minX: start.millisecondsSinceEpoch.toDouble(),
+          maxX: end.millisecondsSinceEpoch.toDouble(),
+          minY: 0,
+          maxY: 1.1,
+          lineBarsData: [
+            if (selectedQuestions.isNotEmpty && selectedQuestions.last)
+              LineChartBarData(
+                spots: getOverallScores(filteredHistory),
+                isCurved: true,
+                color: Colors.red,
+                barWidth: 4,
+                dotData: const FlDotData(show: false),
+              ),
+            for (int i = 0; i < selectedQuestions.length - 1; i++)
+              if (selectedQuestions[i])
+                LineChartBarData(
+                  spots: getQuestionScores(filteredHistory, i),
+                  isCurved: true,
+                  color: globalColorMap[i + 1] ?? Colors.blue,
+                  barWidth: 2,
+                  dotData: const FlDotData(show: false),
                 ),
-                borderData: FlBorderData(show: true, border: Border.all(color: Colors.grey.shade300)),
-                gridData: const FlGridData(show: true, horizontalInterval: 0.2, drawVerticalLine: false),
+          ],
+          titlesData: FlTitlesData(
+            rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+            topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+            bottomTitles: AxisTitles(
+              sideTitles: SideTitles(
+                showTitles: true,
+                reservedSize: 30,
+                interval: _calculateInterval(start, end),
+                getTitlesWidget: (value, meta) => bottomTitleWidgets(value, meta, context),
+              ),
+            ),
+            leftTitles: AxisTitles(
+              sideTitles: SideTitles(
+                showTitles: true,
+                reservedSize: 40,
+                getTitlesWidget: (value, meta) => leftTitleWidgets(value, meta, context),
               ),
             ),
           ),
+          borderData: FlBorderData(show: true, border: Border.all(color: Colors.grey.shade300)),
+          gridData: const FlGridData(show: true, horizontalInterval: 0.2, drawVerticalLine: false),
         ),
-        const SizedBox(height: 8),
-        Expanded(
-          flex: 4,
-          child: ChartControlWidget(
-            assessmentHistory: widget.assessmentHistory,
-            selectedQuestions: selectedQuestions,
-            currentTimeRange: _currentTimeRange,
-            showAverage: true, // Durchschnitts-Chip aktivieren
-            onQuestionToggle: (index, value) {
-              setState(() {
-                selectedQuestions[index] = value;
-              });
-            },
-            onTimeRangeChange: (range) {
-              setState(() {
-                _currentTimeRange = range;
-                _referenceDate = widget.assessmentHistory.last.timestamp;
-              });
-            },
-            onNavigateTime: _navigateTime,
-            onTodayPressed: () {
-              setState(() {
-                _referenceDate = widget.assessmentHistory.isNotEmpty 
-                    ? widget.assessmentHistory.last.timestamp 
-                    : DateTime.now();
-              });
-            },
-          ),
-        ),
-      ],
+      ),
+    );
+  }
+
+  Widget _buildControls() {
+    return ChartControlWidget(
+      assessmentHistory: widget.assessmentHistory,
+      selectedQuestions: selectedQuestions,
+      currentTimeRange: _currentTimeRange,
+      showAverage: true,
+      onQuestionToggle: (index, value) {
+        setState(() {
+          selectedQuestions[index] = value;
+        });
+      },
+      onTimeRangeChange: (range) {
+        setState(() {
+          _currentTimeRange = range;
+          _referenceDate = widget.assessmentHistory.last.timestamp;
+        });
+      },
+      onNavigateTime: _navigateTime,
+      onTodayPressed: () {
+        setState(() {
+          _referenceDate = widget.assessmentHistory.isNotEmpty 
+              ? widget.assessmentHistory.last.timestamp 
+              : DateTime.now();
+        });
+      },
     );
   }
 
