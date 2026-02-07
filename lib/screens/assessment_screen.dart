@@ -18,13 +18,10 @@ class AssessmentScreen extends StatefulWidget {
 }
 
 class _AssessmentScreenState extends State<AssessmentScreen> {
-  final noteController = TextEditingController();
-
-  @override
-  void dispose() {
-    noteController.dispose();
-    super.dispose();
-  }
+  // Global note controller can be removed if per-question notes are enough,
+  // but keeping it for now if you still want a general summary note.
+  // Roadmap says: 2.3 UI-Cleaning: Removal of the global note field.
+  // So I will remove it.
 
   @override
   Widget build(BuildContext context) {
@@ -49,44 +46,31 @@ class _AssessmentScreenState extends State<AssessmentScreen> {
               ),
             ],
           ),
-          body: Column(
-            children: <Widget>[
-              Expanded(
-                child: ListView.builder(
-                  itemCount: questionSet.questions.length,
-                  itemBuilder: (context, index) {
-                    return QuestionCard(
-                      key: ValueKey(questionSet.questions[index].hashCode),
-                      cardNumber: index + 1,
-                      question: questionSet.questions[index],
-                      onSliderChanged: (double value) {
-                        questionSet.questions[index].value = value;
-                      },
-                    );
-                  },
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: TextField(
-                  decoration: InputDecoration(
-                    hintText: localization.noteHint,
-                  ),
-                  controller: noteController,
-                ),
-              ),
-              TextButton(
-                onPressed: () async {
-                  await saveAssessmentResults(questionSet);
-                  if (mounted) {
-                    Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(builder: (context) => ChartScreen()),
-                    );
-                  }
+          body: ListView.builder(
+            padding: const EdgeInsets.only(bottom: 80), // Space for FAB
+            itemCount: questionSet.questions.length,
+            itemBuilder: (context, index) {
+              return QuestionCard(
+                key: ValueKey(questionSet.questions[index].id),
+                cardNumber: index + 1,
+                question: questionSet.questions[index],
+                onSliderChanged: (double value) {
+                  questionSet.questions[index].value = value;
                 },
-                child: Text(localization.commit),
-              )
-            ],
+              );
+            },
+          ),
+          floatingActionButton: FloatingActionButton.extended(
+            onPressed: () async {
+              await saveAssessmentResults(questionSet);
+              if (mounted) {
+                Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(builder: (context) => ChartScreen()),
+                );
+              }
+            },
+            label: Text(localization.commit),
+            icon: const Icon(Icons.check),
           ),
         );
       },
@@ -99,7 +83,8 @@ class _AssessmentScreenState extends State<AssessmentScreen> {
         questionSet: widget.localStorage.getCurrentAuthor(),
         values: questionSet.questions.map((q) => q.value).toList(),
         questionNotes: questionSet.questions.map((q) => q.note).toList(),
-        note: noteController.text.isNotEmpty ? noteController.text : null);
+        note: null // Global note is now null as it's removed from UI
+    );
     await widget.localStorage.saveAssessmentEntry(assessmentEntry);
   }
 }
