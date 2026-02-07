@@ -140,6 +140,8 @@ class _ChartScreenState extends State<ChartScreen> {
           ComparisonChartWidget(
             assessmentHistory: history,
             selectedQuestions: _selectedQuestions,
+            currentTimeRange: _currentTimeRange,
+            referenceDate: _referenceDate,
           ),
           RadarChartWidget(
             assessmentHistory: history,
@@ -175,7 +177,7 @@ class _ChartScreenState extends State<ChartScreen> {
       assessmentHistory: history,
       selectedQuestions: _selectedQuestions,
       currentTimeRange: _currentTimeRange,
-      showAverage: true, // Jetzt in allen Diagrammen verfügbar für den "Average Circle"
+      showAverage: true,
       onQuestionToggle: (index, value) {
         setState(() => _selectedQuestions[index] = value);
       },
