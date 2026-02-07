@@ -41,14 +41,14 @@ class ChartControlWidget extends StatelessWidget {
         const Divider(height: 1),
         Expanded(
           child: ListView.builder(
-            padding: const EdgeInsets.only(top: 8, bottom: 16),
+            // Erhöhtes Bottom-Padding, um Überlagerung durch Steuerbalken zu verhindern
+            padding: const EdgeInsets.only(top: 8, bottom: 80),
             itemCount: questionSet.questions.length,
             itemBuilder: (context, qIndex) {
               final color = globalColorMap[qIndex + 1] ?? Colors.grey;
               final isSelected = selectedQuestions[qIndex];
               final questionText = questionSet.questions[qIndex].text;
 
-              // Extract notes specific to THIS question
               final questionNotes = assessmentHistory
                   .where((entry) =>
                       qIndex < entry.questionNotes.length &&
@@ -63,35 +63,58 @@ class ChartControlWidget extends StatelessWidget {
                   .toList();
 
               return Card(
+                clipBehavior: Clip.antiAlias,
                 margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
                 elevation: isSelected ? 2 : 0,
                 color: isSelected ? null : Theme.of(context).disabledColor.withValues(alpha: 0.05),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    ListTile(
-                      dense: true,
-                      leading: CircleAvatar(
-                        radius: 14,
-                        backgroundColor: isSelected ? color : Colors.grey.shade300,
-                        child: Text(
-                          "${qIndex + 1}",
-                          style: const TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.bold),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                          width: 50,
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Container(
+                                height: 40,
+                                decoration: BoxDecoration(
+                                  color: isSelected ? color.withValues(alpha: 0.5) : Colors.grey.withValues(alpha: 0.2),
+                                  borderRadius: const BorderRadius.only(bottomRight: Radius.circular(20)),
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    "${qIndex + 1}",
+                                    style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                              ),
+                              Checkbox(
+                                value: isSelected,
+                                activeColor: color,
+                                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                onChanged: (val) => onQuestionToggle(qIndex, val ?? false),
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                      title: Text(
-                        questionText,
-                        style: TextStyle(
-                          fontSize: 13,
-                          fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-                          color: isSelected ? null : Colors.grey,
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 10.0, right: 8.0),
+                            child: Text(
+                              questionText,
+                              style: TextStyle(
+                                fontSize: 13,
+                                fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                                color: isSelected ? null : Colors.grey,
+                              ),
+                            ),
+                          ),
                         ),
-                      ),
-                      trailing: Checkbox(
-                        value: isSelected,
-                        activeColor: color,
-                        onChanged: (val) => onQuestionToggle(qIndex, val ?? false),
-                      ),
+                      ],
                     ),
                     if (isSelected && questionNotes.isNotEmpty)
                       _buildNotesCarousel(context, questionNotes, color),
@@ -142,10 +165,10 @@ class ChartControlWidget extends StatelessWidget {
 
   Widget _buildNotesCarousel(BuildContext context, List<Map<String, dynamic>> notes, Color color) {
     return SizedBox(
-      height: 70,
+      height: 75,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
-        padding: const EdgeInsets.fromLTRB(52, 0, 16, 8),
+        padding: const EdgeInsets.fromLTRB(58, 0, 16, 8),
         itemCount: notes.length,
         itemBuilder: (context, index) {
           final noteData = notes[index];
