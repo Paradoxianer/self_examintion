@@ -64,6 +64,7 @@ class ChartControlWidget extends StatelessWidget {
     final color = globalColorMap[qIndex + 1] ?? Colors.grey;
     final isSelected = selectedQuestions[qIndex];
 
+    // Wir laden die Notizen chronologisch (älteste zuerst)
     final questionNotes = assessmentHistory
         .where((entry) =>
             qIndex < entry.questionNotes.length &&
@@ -73,8 +74,6 @@ class ChartControlWidget extends StatelessWidget {
               'date': entry.timestamp,
               'note': entry.questionNotes[qIndex]!,
             })
-        .toList()
-        .reversed
         .toList();
 
     return Card(
@@ -89,7 +88,6 @@ class ChartControlWidget extends StatelessWidget {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                // GESTALTETER LEADING-BEREICH (Zahl + Checkbox)
                 Container(
                   width: 50,
                   decoration: BoxDecoration(
@@ -115,7 +113,6 @@ class ChartControlWidget extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(width: 12),
-                // FRAGENTEXT
                 Expanded(
                   child: Padding(
                     padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 4.0),
@@ -229,15 +226,18 @@ class ChartControlWidget extends StatelessWidget {
     return SizedBox(
       height: 75,
       child: ListView.builder(
+        // REVERSE: Sorgt dafür, dass die Liste am Ende (beim neuesten Eintrag) startet
+        reverse: true, 
         scrollDirection: Axis.horizontal,
-        padding: EdgeInsets.fromLTRB(leftPadding, 0, 16, 8),
+        padding: EdgeInsets.fromLTRB(16, 0, leftPadding, 8),
         itemCount: notes.length,
         itemBuilder: (context, index) {
-          final noteData = notes[index];
+          // Da die Liste reversed ist, ist index 0 der LETZTE Eintrag in 'notes' (der Neueste)
+          final noteData = notes[notes.length - 1 - index];
           final DateTime date = noteData['date'];
           return Container(
             width: 200,
-            margin: const EdgeInsets.only(right: 8),
+            margin: const EdgeInsets.only(left: 8),
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
               color: color.withValues(alpha: 0.05),
