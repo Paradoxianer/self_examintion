@@ -198,7 +198,7 @@ class ComparisonChartWidget extends StatelessWidget {
     
     if (value == 100) {
       return SideTitleWidget(
-        axisSide: meta.axisSide,
+        meta: meta,
         child: Text(AppLocalizations.of(context)!.total, style: style),
       );
     }
@@ -216,7 +216,7 @@ class ComparisonChartWidget extends StatelessWidget {
   Widget leftTitleWidgets(double value, TitleMeta meta, BuildContext context) {
     const style = TextStyle(fontWeight: FontWeight.bold, fontSize: 10);
     return SideTitleWidget(
-      axisSide: meta.axisSide,
+      meta: meta,
       child: Text("${(value * 100).toInt()}%", style: style),
     );
   }
