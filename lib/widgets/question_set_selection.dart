@@ -6,19 +6,19 @@ import 'package:self_examination/utils/local_storage.dart';
 class QuestionSetSelection extends StatelessWidget {
   final Function(String)? onSetSelected;
 
-  QuestionSetSelection({this.onSetSelected});
+  const QuestionSetSelection({super.key, this.onSetSelected});
 
   @override
   Widget build(BuildContext context) {
     final localStorage = LocalStorage();
-    final questionSets = AppLocalizations.of(context)!.questionMap;
+    final localization = AppLocalizations.of(context)!;
+    final questionSets = localization.questionMap;
 
     return ListenableBuilder(
       listenable: localStorage.assessmentNotifier,
       builder: (context, _) {
         String selectedSet = localStorage.getCurrentAuthor();
 
-        // Ensure selectedSet is valid
         if (!questionSets.containsKey(selectedSet)) {
           selectedSet = questionSets.keys.first;
           WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -26,44 +26,54 @@ class QuestionSetSelection extends StatelessWidget {
           });
         }
 
-        return Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            DropdownButton<String>(
-              value: selectedSet,
-              underline: Container(),
-              items: questionSets.entries.map((entry) {
-                return DropdownMenuItem<String>(
-                  value: entry.key,
-                  child: Row(
-                    children: <Widget>[
-                      Icon(
-                        Icons.menu_book,
-                        color: entry.key == selectedSet
-                            ? Theme.of(context).primaryColor
-                            : null,
-                      ),
-                      const SizedBox(width: 8),
-                      Text(
-                        entry.value.authorName,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ],
+        return Container(
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // Constrain the width to prevent AppBar overflow
+              Flexible(
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: 200),
+                  child: DropdownButtonHideUnderline(
+                    child: DropdownButton<String>(
+                      value: selectedSet,
+                      isDense: true,
+                      isExpanded: false, // Prevents taking infinite width
+                      icon: const Icon(Icons.arrow_drop_down, size: 20),
+                      items: questionSets.entries.map((entry) {
+                        return DropdownMenuItem<String>(
+                          value: entry.key,
+                          child: Text(
+                            entry.value.authorName,
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+                          ),
+                        );
+                      }).toList(),
+                      onChanged: (String? newValue) {
+                        if (newValue != null && newValue != selectedSet) {
+                          localStorage.setCurrentAuthor(newValue);
+                          if (onSetSelected != null) onSetSelected!(newValue);
+                        }
+                      },
+                    ),
                   ),
-                );
-              }).toList(),
-              onChanged: (String? newValue) {
-                if (newValue != null && newValue != selectedSet) {
-                  localStorage.setCurrentAuthor(newValue);
-                  if (onSetSelected != null) onSetSelected!(newValue);
-                }
-              },
-            ),
-            IconButton(
-              icon: Icon(Icons.info_outline),
-              onPressed: () => _showSetInfoDialog(context, selectedSet, questionSets),
-            ),
-          ],
+                ),
+              ),
+              const VerticalDivider(width: 8, indent: 8, endIndent: 8),
+              IconButton(
+                padding: EdgeInsets.zero,
+                constraints: const BoxConstraints(),
+                icon: const Icon(Icons.info_outline, size: 18),
+                onPressed: () => _showSetInfoDialog(context, selectedSet, questionSets),
+              ),
+            ],
+          ),
         );
       },
     );
@@ -71,27 +81,61 @@ class QuestionSetSelection extends StatelessWidget {
 
   void _showSetInfoDialog(BuildContext context, String selectedKey, Map<String, SelfAssessmentQuestionSet> questionSets) {
     final questionSet = questionSets[selectedKey]!;
+    final colorScheme = Theme.of(context).colorScheme;
+
     showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text(questionSet.authorName),
-          content: Container(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          title: Row(
+            children: [
+              Icon(Icons.menu_book, color: colorScheme.primary),
+              const SizedBox(width: 12),
+              Expanded(child: Text(questionSet.authorName)),
+            ],
+          ),
+          content: SizedBox(
             width: double.maxFinite,
-            child: ListView.builder(
-              itemCount: questionSet.questions.length,
-              itemBuilder: (context, index) {
-                return ListTile(
-                  leading: Text("${index + 1}"),
-                  title: Text(questionSet.questions[index].text),
-                );
-              },
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 16.0),
+                  child: Text(
+                    questionSet.description,
+                    style: TextStyle(fontStyle: FontStyle.italic, color: colorScheme.onSurfaceVariant),
+                  ),
+                ),
+                const Divider(),
+                Flexible(
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: questionSet.questions.length,
+                    itemBuilder: (context, index) {
+                      return ListTile(
+                        contentPadding: EdgeInsets.zero,
+                        leading: CircleAvatar(
+                          radius: 12,
+                          backgroundColor: colorScheme.secondaryContainer,
+                          child: Text("${index + 1}", style: TextStyle(fontSize: 10, color: colorScheme.onSecondaryContainer)),
+                        ),
+                        title: Text(
+                          questionSet.questions[index].text,
+                          style: const TextStyle(fontSize: 13),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ],
             ),
           ),
-          actions: <Widget>[
+          actions: [
             TextButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: Text('Schließen'),
+              onPressed: () => Navigator.pop(context),
+              child: const Text('OK'),
             ),
           ],
         );
