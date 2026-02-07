@@ -25,9 +25,22 @@ Diese Roadmap dient als strukturierte Arbeitsgrundlage für die schrittweise Imp
 - [x] **4.3 Radar Chart**: Achsen-Beschriftung mit Prozentwerten und Average-Referenz-Kreis.
 
 ## Phase 5: Neue Screens & Sicherheit
-- [-] **5.1 Ergebnis-Overview Screen**: Neue Ansicht mit `LinearProgressIndicator`. (not neede anymore )
+- [x] **5.1 Ergebnis-Overview Screen**: (Gestrichen, da durch Phasen 3/4 ersetzt).
 - [x] **5.2 Privacy-Schutz**: Biometrie / PIN-Schutz.
 
 ## Phase 6: Export & Finalisierung
-- [ ] **6.1 Export-Manager**: CSV/PDF Export Varianten.
-- [ ] **6.2 Dokumentation & Cleanup**.
+- [x] **6.1 Export-Manager**: CSV Export Varianten (Alles, Werte+Schnitt, Nur Schnitt).
+- [ ] **6.2 Dokumentation & Cleanup**: Finaler Code-Review und Update der README.md.
+
+## Phase 7: Qualitätssicherung & Testing (QA)
+- [ ] **7.1 Unit-Tests**: Validierung der Berechnungslogik (Durchschnitte, Zeitfenster, Konvertierungen).
+- [ ] **7.2 Widget-Tests**: Überprüfung der UI-Komponenten (Slider-Funktion, Card-States, Dropdowns).
+- [ ] **7.3 Integration-Tests**: Durchlauf eines kompletten Assessments bis hin zum Export.
+- [ ] **7.4 Lokalisierungs-Check**: Vollständigkeitsprüfung aller unterstützten Sprachen (de, en, es, ko, lt, pl).
+
+## Phase 8: Beta-Release & Publishing
+- [ ] **8.1 Branding**: Finalisierung des App-Namens und der Launcher-Icons (Android/iOS).
+- [ ] **8.2 Store-Präsenz**: Erstellung von Screenshots und Store-Beschreibungen (lokalisiert).
+- [ ] **8.3 Versionierung**: Umstellung auf Version 1.0.0-beta.1 und Konfiguration der Build-Nummern.
+- [ ] **8.4 ProGuard & Obfuscation**: Konfiguration für Android (Schutz des Codes).
+- [ ] **8.5 Release-Build Test**: Erstellung einer APK/App Bundle und Test auf echtem Endgerät.
