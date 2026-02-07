@@ -3,6 +3,7 @@ import 'package:self_examination/data/self_assesment_questions.dart';
 import 'package:self_examination/localizations/app_localizations.dart';
 import 'package:self_examination/models/assessment_entry.dart';
 import 'package:self_examination/screens/chart_screen.dart';
+import 'package:self_examination/screens/settings_screen.dart';
 import 'package:self_examination/utils/local_storage.dart';
 import 'package:self_examination/widgets/question_card.dart';
 import 'package:self_examination/widgets/question_set_selection.dart';
@@ -34,14 +35,19 @@ class _AssessmentScreenState extends State<AssessmentScreen> {
         final questionSet = localization.questionMap[widget.localStorage.getCurrentAuthor()] ??
             localization.questionMap.values.first;
 
-        // Reset answers when the question set changes
-        for (var question in questionSet.questions) {
-          question.answer = 2; // Default value
-        }
-
         return Scaffold(
           appBar: AppBar(
             title: QuestionSetSelection(),
+            actions: [
+              IconButton(
+                icon: const Icon(Icons.settings),
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => SettingsScreen()),
+                  );
+                },
+              ),
+            ],
           ),
           body: Column(
             children: <Widget>[
@@ -54,7 +60,7 @@ class _AssessmentScreenState extends State<AssessmentScreen> {
                       cardNumber: index + 1,
                       question: questionSet.questions[index],
                       onSliderChanged: (double value) {
-                        questionSet.questions[index].answer = value.toInt();
+                        questionSet.questions[index].value = value;
                       },
                     );
                   },
@@ -91,7 +97,8 @@ class _AssessmentScreenState extends State<AssessmentScreen> {
     AssessmentEntry assessmentEntry = AssessmentEntry(
         timestamp: DateTime.now(),
         questionSet: widget.localStorage.getCurrentAuthor(),
-        answers: questionSet.questions.map((q) => q.answer).toList(),
+        values: questionSet.questions.map((q) => q.value).toList(),
+        questionNotes: questionSet.questions.map((q) => q.note).toList(),
         note: noteController.text.isNotEmpty ? noteController.text : null);
     await widget.localStorage.saveAssessmentEntry(assessmentEntry);
   }
