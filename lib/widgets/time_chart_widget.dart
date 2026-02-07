@@ -162,14 +162,14 @@ class _TimeChartWidgetState extends State<TimeChartWidget> {
   Widget bottomTitleWidgets(double value, TitleMeta meta, BuildContext context) {
     final date = DateTime.fromMillisecondsSinceEpoch(value.toInt());
     return SideTitleWidget(
-      axisSide: meta.axisSide,
+      meta: meta,
       child: Text("${date.day}.${date.month}.", style: const TextStyle(fontSize: 8)),
     );
   }
 
   Widget leftTitleWidgets(double value, TitleMeta meta, BuildContext context) {
     return SideTitleWidget(
-      axisSide: meta.axisSide,
+      meta: meta,
       child: Text("${(value * 100).toInt()}%", style: const TextStyle(fontSize: 8)),
     );
   }

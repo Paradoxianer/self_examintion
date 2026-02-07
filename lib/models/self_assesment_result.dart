@@ -1,9 +1,9 @@
 import 'package:self_examination/models/question.dart';
 
 class SelfAssessmentResult {
-  final String id; // Eindeutige ID für das Ergebnis
-  final DateTime timestamp; // Zeitstempel des Selbstbewertungsergebnisses
-  final List<Question> answers; // Eine Liste von beantworteten Fragen
+  final String id; 
+  final DateTime timestamp; 
+  final List<Question> answers; 
 
   SelfAssessmentResult({
     required this.id,
@@ -11,16 +11,14 @@ class SelfAssessmentResult {
     required this.answers,
   });
 
-  // Konvertiert das Selbstbewertungsergebnis in ein Map-Objekt für die Speicherung
   Map<String, dynamic> toMap() {
     return {
       'id': id,
-      'timestamp': timestamp.toUtc().toIso8601String(), // Zeitstempel als ISO-8601-String speichern
+      'timestamp': timestamp.toUtc().toIso8601String(), 
       'answers': answers.map((answer) => answer.toMap()).toList(),
     };
   }
 
-  // Erstellt ein Selbstbewertungsergebnis aus einem Map-Objekt, z.B. beim Laden aus der Datenbank
   factory SelfAssessmentResult.fromMap(Map<String, dynamic> map) {
     final List<dynamic> answerMaps = map['answers'];
     final List<Question> answers = answerMaps.map((answerMap) => Question.fromMap(answerMap)).toList();
@@ -32,15 +30,13 @@ class SelfAssessmentResult {
     );
   }
 
-  int calculateTotalScore() {
-    int totalScore = 0;
+  double calculateTotalScore() {
+    double totalScore = 0;
     for (Question question in answers) {
-      int answerValue = question.answer;
-      if (question.isPositive) {
-        // Wenn die Frage "negativ" bewertet wird, kehre die Bewertung um
-        answerValue = 5 - answerValue;
+      double value = question.value;
+      if (value != -1.0) {
+        totalScore += value;
       }
-      totalScore += answerValue;
     }
     return totalScore;
   }

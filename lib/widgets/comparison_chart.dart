@@ -1,6 +1,5 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:self_examination/data/self_assesment_questions.dart';
 import 'package:self_examination/localizations/app_localizations.dart';
 import 'package:self_examination/models/assessment_entry.dart';
 import 'package:self_examination/utils/local_storage.dart';
@@ -8,7 +7,7 @@ import 'package:self_examination/utils/local_storage.dart';
 class ComparisonChartWidget extends StatelessWidget {
   final List<AssessmentEntry> assessmentHistory;
 
-  ComparisonChartWidget({required this.assessmentHistory});
+  const ComparisonChartWidget({super.key, required this.assessmentHistory});
 
   @override
   Widget build(BuildContext context) {
@@ -58,7 +57,7 @@ class ComparisonChartWidget extends StatelessWidget {
                       ),
                     ),
                     minY: 0,
-                    maxY: 1.1, // Adjusted for 0.0 - 1.0
+                    maxY: 1.1,
                     barGroups: getComparisonData(context),
                     borderData: FlBorderData(show: true),
                     gridData: const FlGridData(
@@ -104,27 +103,17 @@ class ComparisonChartWidget extends StatelessWidget {
 
     final latestAssessment = assessmentHistory.last;
     final localization = AppLocalizations.of(context)!;
-    final currentAuthor = LocalStorage().getCurrentAuthor();
     
     if (!localization.questionMap.containsKey(latestAssessment.questionSet)) return barGroups;
-    final questions = localization.questionMap[latestAssessment.questionSet]!.questions;
 
     double totalLatestScore = 0;
     int count = 0;
 
     for (int i = 0; i < latestAssessment.values.length; i++) {
       double value = latestAssessment.values[i];
-      if (value == -1.0) continue; // Skip unanswered
+      if (value == -1.0) continue;
 
-      double displayValue = value;
-      // Invert if positive (matching old logic where 1 was best, now 1.0 is best)
-      // Actually, old logic: if isPositive, converted = 5 - answer. (1->4, 4->1)
-      // New logic: 1.0 is always "Full". If it's a "bad" thing (isPositive=false in your code meant bad?), 
-      // we need to be careful. In QuestionCard, we used:
-      // if (isPositive) 1.0 = Green, 0.0 = Red.
-      // So let's assume 1.0 is always "good" for the chart.
-      
-      totalLatestScore += displayValue;
+      totalLatestScore += value;
       count++;
 
       barGroups.add(
@@ -132,7 +121,7 @@ class ComparisonChartWidget extends StatelessWidget {
           x: i,
           barRods: [
             BarChartRodData(
-              toY: displayValue,
+              toY: value,
               color: Colors.green,
               width: 8,
             ),
@@ -165,7 +154,6 @@ class ComparisonChartWidget extends StatelessWidget {
         }
       }
 
-      // Add average
       if (count > 0) {
         double avgLatest = totalLatestScore / count;
         double avgPrev = prevCount > 0 ? totalPreviousScore / prevCount : 0;
@@ -193,12 +181,12 @@ class ComparisonChartWidget extends StatelessWidget {
     
     if (value.toInt() < questionSet.questions.length) {
       return SideTitleWidget(
-        axisSide: meta.axisSide,
+        meta: meta,
         child: Text((value.toInt() + 1).toString(), style: style),
       );
     } else {
       return SideTitleWidget(
-        axisSide: meta.axisSide,
+        meta: meta,
         child: Text(AppLocalizations.of(context)!.total, style: style),
       );
     }
@@ -207,7 +195,7 @@ class ComparisonChartWidget extends StatelessWidget {
   Widget leftTitleWidgets(double value, TitleMeta meta, BuildContext context) {
     const style = TextStyle(fontWeight: FontWeight.bold, fontSize: 10);
     return SideTitleWidget(
-      axisSide: meta.axisSide,
+      meta: meta,
       child: Text("${(value * 100).toInt()}%", style: style),
     );
   }

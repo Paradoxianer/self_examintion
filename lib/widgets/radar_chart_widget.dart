@@ -7,27 +7,19 @@ import 'package:self_examination/utils/globals.dart';
 class RadarChartWidget extends StatefulWidget {
   final List<AssessmentEntry> assessmentHistory;
 
-  RadarChartWidget({required this.assessmentHistory});
+  const RadarChartWidget({super.key, required this.assessmentHistory});
 
   @override
   _RadarChartWidgetState createState() => _RadarChartWidgetState();
 }
 
 class _RadarChartWidgetState extends State<RadarChartWidget> {
-  List<bool> selectedQuestions = [];
-
-  @override
-  void initState() {
-    super.initState();
-    // Initialize the selectedQuestions list with all questions selected
-    selectedQuestions = List.generate(
-      widget.assessmentHistory[0].answers.length,
-          (index) => true,
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
+    if (widget.assessmentHistory.isEmpty) {
+      return const Center(child: Text("No data available"));
+    }
+
     return Column(
       children: [
         Expanded(
@@ -38,11 +30,13 @@ class _RadarChartWidgetState extends State<RadarChartWidget> {
               child: RadarChart(
                 RadarChartData(
                   radarBackgroundColor: Colors.white,
-                  // Set the background color of the radar chart
                   dataSets: latestAnswerScore(context),
+                  getTitle: (index, angle) {
+                    return RadarChartTitle(text: (index + 1).toString());
+                  },
                 ),
-                swapAnimationDuration: Duration(milliseconds: 150), // Optional
-                swapAnimationCurve: Curves.linear, // Optional
+                duration: const Duration(milliseconds: 150),
+                curve: Curves.linear,
               ),
             ),
           ),
@@ -51,67 +45,38 @@ class _RadarChartWidgetState extends State<RadarChartWidget> {
     );
   }
 
-  //returns the ideal dataset and the last answerd dataset
-  List<RadarDataSet> latestAnswerScore(BuildContext context){
-
+  List<RadarDataSet> latestAnswerScore(BuildContext context) {
     List<RadarDataSet> radarSet = [];
-    List<RadarEntry> idealEntries = [];
-    List<RadarEntry> currentEntries = [];
-    // Check if there are assessments for comparison
-    if (widget.assessmentHistory.isEmpty) {
-      return radarSet;
-    }
+    if (widget.assessmentHistory.isEmpty) return radarSet;
 
     AssessmentEntry latestAssessment = widget.assessmentHistory.last;
-    //add ideal Dataset
+    final localization = AppLocalizations.of(context)!;
+    
+    if (!localization.questionMap.containsKey(latestAssessment.questionSet)) return radarSet;
 
-    //check if the
-    if (!AppLocalizations.of(context)!.questionMap.containsKey(latestAssessment.questionSet))
-      return radarSet;
-    // Iterate through questions and get the answers
-    for (int i = 0; i < latestAssessment.answers.length; i++) {
-      int latestAnswer = latestAssessment.answers[i];
-      int convertedLatestAnswer = latestAnswer;
+    List<RadarEntry> idealEntries = [];
+    List<RadarEntry> currentEntries = [];
 
-      // Invert values if the question is negative
-      if (AppLocalizations.of(context)!
-          .questionMap[latestAssessment.questionSet]!
-          .questions[i]
-          .isPositive) {
-        convertedLatestAnswer = 5 - latestAnswer;
-      }
-      idealEntries.add(RadarEntry(value: maxAnswer.toDouble()));
-      currentEntries.add(RadarEntry(value: convertedLatestAnswer.toDouble()));
+    for (int i = 0; i < latestAssessment.values.length; i++) {
+      double value = latestAssessment.values[i];
+      if (value == -1.0) value = 0.5; // Default for radar if not answered
+
+      idealEntries.add(const RadarEntry(value: 1.0));
+      currentEntries.add(RadarEntry(value: value));
     }
+
     radarSet.add(RadarDataSet(
-      borderColor: Colors.red,
+      borderColor: Colors.red.withValues(alpha: 0.5),
+      fillColor: Colors.red.withValues(alpha: 0.2),
       dataEntries: idealEntries,
     ));
-    //add current Dataset
+
     radarSet.add(RadarDataSet(
-        borderColor: Colors.green,
+      borderColor: Colors.green,
+      fillColor: Colors.green.withValues(alpha: 0.3),
       dataEntries: currentEntries,
     ));
+    
     return radarSet;
-
   }
-
-  List<FlSpot> getQuestionScores(BuildContext context, int questionIndex) {
-    List<FlSpot> spots = [];
-
-    for (int i = 0; i <  widget.assessmentHistory.length; i++) {
-      int answer =  widget.assessmentHistory[i].answers[questionIndex];
-      int convertedAnswer = answer;
-      if (AppLocalizations.of(context)!.questionMap[ widget.assessmentHistory[i]
-          .questionSet]!.questions[questionIndex].isPositive) {
-        convertedAnswer = 5 - answer; // Invert the values
-      }
-      DateTime timestamp =  widget.assessmentHistory[i].timestamp;
-      spots.add(FlSpot(timestamp.millisecondsSinceEpoch.toDouble(),
-          convertedAnswer.toDouble()));
-    }
-
-    return spots;
-  }
-  
 }
