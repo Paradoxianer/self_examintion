@@ -5,140 +5,70 @@ import 'package:self_examination/models/assessment_entry.dart';
 import 'package:self_examination/utils/globals.dart';
 import 'package:self_examination/widgets/chart_control_widget.dart';
 
-class TimeChartWidget extends StatefulWidget {
+class TimeChartWidget extends StatelessWidget {
   final List<AssessmentEntry> assessmentHistory;
+  final List<bool> selectedQuestions;
+  final TimeRange currentTimeRange;
+  final DateTime referenceDate;
 
-  const TimeChartWidget({super.key, required this.assessmentHistory});
+  const TimeChartWidget({
+    super.key,
+    required this.assessmentHistory,
+    required this.selectedQuestions,
+    required this.currentTimeRange,
+    required this.referenceDate,
+  });
 
-  @override
-  _TimeChartWidgetState createState() => _TimeChartWidgetState();
-}
-
-class _TimeChartWidgetState extends State<TimeChartWidget> {
-  List<bool> selectedQuestions = [];
-  TimeRange _currentTimeRange = TimeRange.all;
-  DateTime _referenceDate = DateTime.now();
-
-  @override
-  void initState() {
-    super.initState();
-    if (widget.assessmentHistory.isNotEmpty) {
-      selectedQuestions = List.generate(
-        widget.assessmentHistory[0].values.length + 1,
-        (index) => true,
-      );
-      _referenceDate = widget.assessmentHistory.last.timestamp;
-    }
-  }
-
+  // --- Kalender-orientierte Fenster-Berechnung (identisch zur Logik im Screen) ---
   DateTime get _windowStart {
-    switch (_currentTimeRange) {
+    switch (currentTimeRange) {
       case TimeRange.twoDays:
-        return DateTime(_referenceDate.year, _referenceDate.month, _referenceDate.day - 1);
+        return DateTime(referenceDate.year, referenceDate.month, referenceDate.day - 1);
       case TimeRange.week:
-        return DateTime(_referenceDate.year, _referenceDate.month, _referenceDate.day - (_referenceDate.weekday - 1));
+        return DateTime(referenceDate.year, referenceDate.month, referenceDate.day - (referenceDate.weekday - 1));
       case TimeRange.month:
-        return DateTime(_referenceDate.year, _referenceDate.month, 1);
+        return DateTime(referenceDate.year, referenceDate.month, 1);
       case TimeRange.year:
-        return DateTime(_referenceDate.year, 1, 1);
+        return DateTime(referenceDate.year, 1, 1);
       case TimeRange.all:
-        return widget.assessmentHistory.isNotEmpty 
-            ? widget.assessmentHistory.first.timestamp 
-            : _referenceDate.subtract(const Duration(days: 30));
+        return assessmentHistory.isNotEmpty 
+            ? assessmentHistory.first.timestamp 
+            : referenceDate.subtract(const Duration(days: 30));
     }
   }
 
   DateTime get _windowEnd {
-    switch (_currentTimeRange) {
+    switch (currentTimeRange) {
       case TimeRange.twoDays:
-        return DateTime(_referenceDate.year, _referenceDate.month, _referenceDate.day, 23, 59, 59);
+        return DateTime(referenceDate.year, referenceDate.month, referenceDate.day, 23, 59, 59);
       case TimeRange.week:
         final monday = _windowStart;
         return DateTime(monday.year, monday.month, monday.day + 6, 23, 59, 59);
       case TimeRange.month:
-        return DateTime(_referenceDate.year, _referenceDate.month + 1, 0, 23, 59, 59);
+        return DateTime(referenceDate.year, referenceDate.month + 1, 0, 23, 59, 59);
       case TimeRange.year:
-        return DateTime(_referenceDate.year, 12, 31, 23, 59, 59);
+        return DateTime(referenceDate.year, 12, 31, 23, 59, 59);
       case TimeRange.all:
-        return widget.assessmentHistory.isNotEmpty 
-            ? widget.assessmentHistory.last.timestamp 
-            : _referenceDate;
+        return assessmentHistory.isNotEmpty 
+            ? assessmentHistory.last.timestamp 
+            : referenceDate;
     }
-  }
-
-  void _navigateTime(bool next) {
-    setState(() {
-      int factor = next ? 1 : -1;
-      switch (_currentTimeRange) {
-        case TimeRange.twoDays:
-          _referenceDate = _referenceDate.add(Duration(days: 2 * factor));
-          break;
-        case TimeRange.week:
-          _referenceDate = _referenceDate.add(Duration(days: 7 * factor));
-          break;
-        case TimeRange.month:
-          _referenceDate = DateTime(_referenceDate.year, _referenceDate.month + factor, 1);
-          break;
-        case TimeRange.year:
-          _referenceDate = DateTime(_referenceDate.year + factor, 1, 1);
-          break;
-        case TimeRange.all:
-          break;
-      }
-    });
   }
 
   @override
   Widget build(BuildContext context) {
-    if (widget.assessmentHistory.isEmpty) {
+    if (assessmentHistory.isEmpty) {
       return const Center(child: Text("No data available"));
     }
 
     final start = _windowStart;
     final end = _windowEnd;
 
-    final filteredHistory = widget.assessmentHistory.where((entry) {
+    final filteredHistory = assessmentHistory.where((entry) {
       return entry.timestamp.isAfter(start.subtract(const Duration(seconds: 1))) &&
              entry.timestamp.isBefore(end.add(const Duration(seconds: 1)));
     }).toList();
 
-    return OrientationBuilder(
-      builder: (context, orientation) {
-        if (orientation == Orientation.portrait) {
-          return Column(
-            children: [
-              Expanded(
-                flex: 3,
-                child: _buildChart(filteredHistory, start, end),
-              ),
-              const SizedBox(height: 8),
-              Expanded(
-                flex: 4,
-                child: _buildControls(),
-              ),
-            ],
-          );
-        } else {
-          // LANDSCAPE: Side-by-side layout
-          return Row(
-            children: [
-              Expanded(
-                flex: 6,
-                child: _buildChart(filteredHistory, start, end),
-              ),
-              const VerticalDivider(width: 1),
-              Expanded(
-                flex: 4,
-                child: _buildControls(),
-              ),
-            ],
-          );
-        }
-      },
-    );
-  }
-
-  Widget _buildChart(List<AssessmentEntry> filteredHistory, DateTime start, DateTime end) {
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: LineChart(
@@ -148,6 +78,7 @@ class _TimeChartWidgetState extends State<TimeChartWidget> {
           minY: 0,
           maxY: 1.1,
           lineBarsData: [
+            // Overall average line (last element in selectedQuestions)
             if (selectedQuestions.isNotEmpty && selectedQuestions.last)
               LineChartBarData(
                 spots: getOverallScores(filteredHistory),
@@ -187,36 +118,20 @@ class _TimeChartWidgetState extends State<TimeChartWidget> {
           ),
           borderData: FlBorderData(show: true, border: Border.all(color: Colors.grey.shade300)),
           gridData: const FlGridData(show: true, horizontalInterval: 0.2, drawVerticalLine: false),
+          lineTouchData: LineTouchData(
+            touchTooltipData: LineTouchTooltipData(
+              getTooltipItems: (touchedSpots) {
+                return touchedSpots.map((spot) {
+                  return LineTooltipItem(
+                    "${(spot.y * 100).round()}%",
+                    TextStyle(color: spot.bar.color, fontWeight: FontWeight.bold),
+                  );
+                }).toList();
+              },
+            ),
+          ),
         ),
       ),
-    );
-  }
-
-  Widget _buildControls() {
-    return ChartControlWidget(
-      assessmentHistory: widget.assessmentHistory,
-      selectedQuestions: selectedQuestions,
-      currentTimeRange: _currentTimeRange,
-      showAverage: true,
-      onQuestionToggle: (index, value) {
-        setState(() {
-          selectedQuestions[index] = value;
-        });
-      },
-      onTimeRangeChange: (range) {
-        setState(() {
-          _currentTimeRange = range;
-          _referenceDate = widget.assessmentHistory.last.timestamp;
-        });
-      },
-      onNavigateTime: _navigateTime,
-      onTodayPressed: () {
-        setState(() {
-          _referenceDate = widget.assessmentHistory.isNotEmpty 
-              ? widget.assessmentHistory.last.timestamp 
-              : DateTime.now();
-        });
-      },
     );
   }
 
@@ -261,7 +176,7 @@ class _TimeChartWidgetState extends State<TimeChartWidget> {
   Widget bottomTitleWidgets(double value, TitleMeta meta, BuildContext context) {
     final date = DateTime.fromMillisecondsSinceEpoch(value.toInt());
     String text;
-    if (_currentTimeRange == TimeRange.year || _currentTimeRange == TimeRange.all) {
+    if (currentTimeRange == TimeRange.year || currentTimeRange == TimeRange.all) {
       text = "${date.month}.${date.year.toString().substring(2)}";
     } else {
       text = "${date.day}.${date.month}.";

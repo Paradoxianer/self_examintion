@@ -6,11 +6,20 @@ import 'package:self_examination/utils/local_storage.dart';
 
 class ComparisonChartWidget extends StatelessWidget {
   final List<AssessmentEntry> assessmentHistory;
+  final List<bool> selectedQuestions;
 
-  const ComparisonChartWidget({super.key, required this.assessmentHistory});
+  const ComparisonChartWidget({
+    super.key,
+    required this.assessmentHistory,
+    required this.selectedQuestions,
+  });
 
   @override
   Widget build(BuildContext context) {
+    if (assessmentHistory.isEmpty) {
+      return const Center(child: Text("No data available"));
+    }
+
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -69,7 +78,6 @@ class ComparisonChartWidget extends StatelessWidget {
                       rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
                       topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
                       bottomTitles: AxisTitles(
-                        drawBelowEverything: true,
                         sideTitles: SideTitles(
                           showTitles: true,
                           getTitlesWidget: (value, meta) {
@@ -110,6 +118,9 @@ class ComparisonChartWidget extends StatelessWidget {
     int count = 0;
 
     for (int i = 0; i < latestAssessment.values.length; i++) {
+      // Only add to chart if selected in control panel
+      if (i < selectedQuestions.length && !selectedQuestions[i]) continue;
+
       double value = latestAssessment.values[i];
       if (value == -1.0) continue;
 
@@ -135,15 +146,19 @@ class ComparisonChartWidget extends StatelessWidget {
       double totalPreviousScore = 0;
       int prevCount = 0;
 
+      int groupIdx = 0;
       for (int i = 0; i < previousAssessment.values.length; i++) {
+        // Skip if not selected
+        if (i < selectedQuestions.length && !selectedQuestions[i]) continue;
+
         double value = previousAssessment.values[i];
         if (value == -1.0) continue;
 
         totalPreviousScore += value;
         prevCount++;
 
-        if (i < barGroups.length) {
-          barGroups[i].barRods.insert(
+        if (groupIdx < barGroups.length) {
+          barGroups[groupIdx].barRods.insert(
                 0,
                 BarChartRodData(
                   toY: value,
@@ -151,16 +166,18 @@ class ComparisonChartWidget extends StatelessWidget {
                   width: 8,
                 ),
               );
+          groupIdx++;
         }
       }
 
-      if (count > 0) {
+      // Add average if selected (using the last index of selectedQuestions)
+      if (selectedQuestions.isNotEmpty && selectedQuestions.last && count > 0) {
         double avgLatest = totalLatestScore / count;
         double avgPrev = prevCount > 0 ? totalPreviousScore / prevCount : 0;
 
         barGroups.add(
           BarChartGroupData(
-            x: latestAssessment.values.length,
+            x: 100, // Position at the end
             barRods: [
               BarChartRodData(toY: avgPrev, color: Colors.brown, width: 12),
               BarChartRodData(toY: avgLatest, color: Colors.green, width: 12),
@@ -179,23 +196,27 @@ class ComparisonChartWidget extends StatelessWidget {
     
     const style = TextStyle(fontWeight: FontWeight.bold, fontSize: 12);
     
-    if (value.toInt() < questionSet.questions.length) {
+    if (value == 100) {
       return SideTitleWidget(
-        meta: meta,
-        child: Text((value.toInt() + 1).toString(), style: style),
-      );
-    } else {
-      return SideTitleWidget(
-        meta: meta,
+        axisSide: meta.axisSide,
         child: Text(AppLocalizations.of(context)!.total, style: style),
       );
     }
+
+    if (value.toInt() < questionSet.questions.length) {
+      return SideTitleWidget(
+        axisSide: meta.axisSide,
+        child: Text((value.toInt() + 1).toString(), style: style),
+      );
+    }
+    
+    return const SizedBox.shrink();
   }
 
   Widget leftTitleWidgets(double value, TitleMeta meta, BuildContext context) {
     const style = TextStyle(fontWeight: FontWeight.bold, fontSize: 10);
     return SideTitleWidget(
-      meta: meta,
+      axisSide: meta.axisSide,
       child: Text("${(value * 100).toInt()}%", style: style),
     );
   }
@@ -205,10 +226,10 @@ class ComparisonChartWidget extends StatelessWidget {
         AppLocalizations.of(context)!.questionMap.values.first;
     
     String text = "";
-    if (groupIndex < questionSet.questions.length) {
-      text = questionSet.questions[groupIndex].text;
-    } else {
+    if (group.x == 100) {
       text = AppLocalizations.of(context)!.total;
+    } else if (group.x.toInt() < questionSet.questions.length) {
+      text = questionSet.questions[group.x.toInt()].text;
     }
 
     return BarTooltipItem(
