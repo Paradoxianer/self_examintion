@@ -25,8 +25,8 @@ Diese Roadmap dient als strukturierte Arbeitsgrundlage für die schrittweise Imp
 - [x] **4.3 Radar Chart**: Achsen-Beschriftung mit Prozentwerten und Average-Referenz-Kreis.
 
 ## Phase 5: Neue Screens & Sicherheit
-- [ ] **5.1 Ergebnis-Overview Screen**: Neue Ansicht mit `LinearProgressIndicator`.
-- [ ] **5.2 Privacy-Schutz**: Biometrie / PIN-Schutz.
+- [-] **5.1 Ergebnis-Overview Screen**: Neue Ansicht mit `LinearProgressIndicator`. (not neede anymore )
+- [x] **5.2 Privacy-Schutz**: Biometrie / PIN-Schutz.
 
 ## Phase 6: Export & Finalisierung
 - [ ] **6.1 Export-Manager**: CSV/PDF Export Varianten.
