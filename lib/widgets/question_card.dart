@@ -30,6 +30,7 @@ class _QuestionCardState extends State<QuestionCard> {
   void initState() {
     super.initState();
     _sliderValue = widget.question.value;
+    // Wenn noch nicht beantwortet (-1.0), Slider optisch in die Mitte setzen
     if (_sliderValue == -1.0) _sliderValue = 0.5;
     _noteController = TextEditingController(text: widget.question.note);
     _showNote = widget.question.note?.isNotEmpty ?? false;
@@ -82,7 +83,7 @@ class _QuestionCardState extends State<QuestionCard> {
                 width: 50,
                 height: 50,
                 decoration: BoxDecoration(
-                  color: globalColorMap[widget.cardNumber]?.withOpacity(0.5) ?? Colors.blue.withOpacity(0.5),
+                  color: globalColorMap[widget.cardNumber]?.withValues(alpha: 0.5) ?? Colors.blue.withValues(alpha: 0.5),
                   borderRadius: const BorderRadius.only(bottomRight: Radius.circular(25)),
                 ),
                 child: Center(
@@ -147,7 +148,7 @@ class _QuestionCardState extends State<QuestionCard> {
                               min: 0.0,
                               max: 1.0,
                               activeColor: sliderColor,
-                              inactiveColor: sliderColor.withOpacity(0.2),
+                              inactiveColor: sliderColor.withValues(alpha: 0.2),
                               label: "${(_sliderValue * 100).round()}%",
                             ),
                             Padding(
