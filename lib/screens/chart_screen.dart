@@ -32,12 +32,11 @@ class _ChartScreenState extends State<ChartScreen> {
   }
 
   void _initializeState() async {
-    // Wait for history to be loaded to know how many questions we have
     final history = await _localStorage.loadAssessmentEntries();
     if (history.isNotEmpty && mounted) {
       setState(() {
         _selectedQuestions = List.generate(
-          history[0].values.length + 1, // +1 for average
+          history[0].values.length + 1,
           (index) => true,
         );
         _referenceDate = history.last.timestamp;
@@ -63,7 +62,6 @@ class _ChartScreenState extends State<ChartScreen> {
               );
             }
 
-            // Ensure _selectedQuestions is initialized if data arrived
             if (_selectedQuestions.isEmpty && history.isNotEmpty) {
                _selectedQuestions = List.generate(history[0].values.length + 1, (index) => true);
                _referenceDate = history.last.timestamp;
@@ -75,9 +73,11 @@ class _ChartScreenState extends State<ChartScreen> {
                 actions: [
                   IconButton(
                     icon: const Icon(Icons.settings),
-                    onPressed: () => Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) => const SettingsScreen()),
-                    ),
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(builder: (context) => SettingsScreen()),
+                      );
+                    },
                   ),
                 ],
               ),
@@ -126,7 +126,7 @@ class _ChartScreenState extends State<ChartScreen> {
 
   Widget _buildChartCarousel(List<AssessmentEntry> history) {
     return SizedBox(
-      height: 300, // Fixed height for chart area in carousel
+      height: 300,
       child: PageView(
         controller: _pageController,
         onPageChanged: (index) => setState(() => _currentPage = index),
@@ -173,7 +173,7 @@ class _ChartScreenState extends State<ChartScreen> {
       assessmentHistory: history,
       selectedQuestions: _selectedQuestions,
       currentTimeRange: _currentTimeRange,
-      showAverage: _currentPage == 0, // Show average toggle only for TimeChart
+      showAverage: _currentPage == 0,
       onQuestionToggle: (index, value) {
         setState(() => _selectedQuestions[index] = value);
       },
