@@ -144,6 +144,8 @@ class _ChartScreenState extends State<ChartScreen> {
           RadarChartWidget(
             assessmentHistory: history,
             selectedQuestions: _selectedQuestions,
+            currentTimeRange: _currentTimeRange,
+            referenceDate: _referenceDate,
           ),
         ],
       ),
