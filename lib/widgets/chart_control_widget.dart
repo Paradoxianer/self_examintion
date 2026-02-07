@@ -15,6 +15,7 @@ class ChartControlWidget extends StatelessWidget {
   final Function(TimeRange) onTimeRangeChange;
   final Function(bool next) onNavigateTime;
   final VoidCallback onTodayPressed;
+  final bool showAverage; // Neu: Steuert die Anzeige des Durchschnitts-Eintrags
 
   const ChartControlWidget({
     super.key,
@@ -25,6 +26,7 @@ class ChartControlWidget extends StatelessWidget {
     required this.onTimeRangeChange,
     required this.onNavigateTime,
     required this.onTodayPressed,
+    this.showAverage = false,
   });
 
   @override
@@ -35,96 +37,156 @@ class ChartControlWidget extends StatelessWidget {
 
     if (questionSet == null) return const SizedBox.shrink();
 
+    // Anzahl der echten Fragen
+    final int questionCount = questionSet.questions.length;
+    // Gesamtanzahl der Listenelemente (Fragen + optionaler Durchschnitt)
+    final int itemCount = showAverage ? questionCount + 1 : questionCount;
+
     return Column(
       children: [
         _buildTimeRangeSelector(context),
         const Divider(height: 1),
         Expanded(
           child: ListView.builder(
-            // Erhöhtes Bottom-Padding, um Überlagerung durch Steuerbalken zu verhindern
             padding: const EdgeInsets.only(top: 8, bottom: 80),
-            itemCount: questionSet.questions.length,
-            itemBuilder: (context, qIndex) {
-              final color = globalColorMap[qIndex + 1] ?? Colors.grey;
-              final isSelected = selectedQuestions[qIndex];
-              final questionText = questionSet.questions[qIndex].text;
+            itemCount: itemCount,
+            itemBuilder: (context, index) {
+              // Sonderfall: Letztes Element ist der Durchschnitt
+              if (showAverage && index == questionCount) {
+                return _buildAverageCard(context, localization);
+              }
 
-              final questionNotes = assessmentHistory
-                  .where((entry) =>
-                      qIndex < entry.questionNotes.length &&
-                      entry.questionNotes[qIndex] != null &&
-                      entry.questionNotes[qIndex]!.isNotEmpty)
-                  .map((entry) => {
-                        'date': entry.timestamp,
-                        'note': entry.questionNotes[qIndex]!,
-                      })
-                  .toList()
-                  .reversed
-                  .toList();
-
-              return Card(
-                clipBehavior: Clip.antiAlias,
-                margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-                elevation: isSelected ? 2 : 0,
-                color: isSelected ? null : Theme.of(context).disabledColor.withValues(alpha: 0.05),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SizedBox(
-                          width: 50,
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Container(
-                                height: 40,
-                                decoration: BoxDecoration(
-                                  color: isSelected ? color.withValues(alpha: 0.5) : Colors.grey.withValues(alpha: 0.2),
-                                  borderRadius: const BorderRadius.only(bottomRight: Radius.circular(20)),
-                                ),
-                                child: Center(
-                                  child: Text(
-                                    "${qIndex + 1}",
-                                    style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                                  ),
-                                ),
-                              ),
-                              Checkbox(
-                                value: isSelected,
-                                activeColor: color,
-                                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                                onChanged: (val) => onQuestionToggle(qIndex, val ?? false),
-                              ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(width: 8),
-                        Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.only(top: 10.0, right: 8.0),
-                            child: Text(
-                              questionText,
-                              style: TextStyle(
-                                fontSize: 13,
-                                fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-                                color: isSelected ? null : Colors.grey,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    if (isSelected && questionNotes.isNotEmpty)
-                      _buildNotesCarousel(context, questionNotes, color),
-                  ],
-                ),
-              );
+              // Normalfall: Frage
+              return _buildQuestionCard(context, index, questionSet.questions[index].text);
             },
           ),
         ),
       ],
+    );
+  }
+
+  Widget _buildQuestionCard(BuildContext context, int qIndex, String questionText) {
+    final color = globalColorMap[qIndex + 1] ?? Colors.grey;
+    final isSelected = selectedQuestions[qIndex];
+
+    final questionNotes = assessmentHistory
+        .where((entry) =>
+            qIndex < entry.questionNotes.length &&
+            entry.questionNotes[qIndex] != null &&
+            entry.questionNotes[qIndex]!.isNotEmpty)
+        .map((entry) => {
+              'date': entry.timestamp,
+              'note': entry.questionNotes[qIndex]!,
+            })
+        .toList()
+        .reversed
+        .toList();
+
+    return Card(
+      clipBehavior: Clip.antiAlias,
+      margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+      elevation: isSelected ? 2 : 0,
+      color: isSelected ? null : Theme.of(context).disabledColor.withValues(alpha: 0.05),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(
+                width: 50,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Container(
+                      height: 40,
+                      decoration: BoxDecoration(
+                        color: isSelected ? color.withValues(alpha: 0.5) : Colors.grey.withValues(alpha: 0.2),
+                        borderRadius: const BorderRadius.only(bottomRight: Radius.circular(20)),
+                      ),
+                      child: Center(
+                        child: Text(
+                          "${qIndex + 1}",
+                          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    ),
+                    Checkbox(
+                      value: isSelected,
+                      activeColor: color,
+                      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                      onChanged: (val) => onQuestionToggle(qIndex, val ?? false),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 10.0, right: 8.0),
+                  child: Text(
+                    questionText,
+                    style: TextStyle(
+                      fontSize: 13,
+                      fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                      color: isSelected ? null : Colors.grey,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          if (isSelected && questionNotes.isNotEmpty)
+            _buildNotesCarousel(context, questionNotes, color, 58),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildAverageCard(BuildContext context, AppLocalizations localization) {
+    // Der Index für den Durchschnitt in selectedQuestions ist der letzte
+    final int avgIndex = selectedQuestions.length - 1;
+    final bool isSelected = selectedQuestions[avgIndex];
+    const color = Colors.red; // Konsistent mit der Chart-Linie
+
+    return Card(
+      clipBehavior: Clip.antiAlias,
+      margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+      elevation: isSelected ? 2 : 0,
+      color: isSelected ? color.withValues(alpha: 0.1) : Theme.of(context).disabledColor.withValues(alpha: 0.05),
+      child: Row(
+        children: [
+          SizedBox(
+            width: 50,
+            child: Column(
+              children: [
+                Container(
+                  height: 40,
+                  decoration: BoxDecoration(
+                    color: isSelected ? color.withValues(alpha: 0.5) : Colors.grey.withValues(alpha: 0.2),
+                    borderRadius: const BorderRadius.only(bottomRight: Radius.circular(20)),
+                  ),
+                  child: const Center(child: Icon(Icons.functions, size: 20)),
+                ),
+                Checkbox(
+                  value: isSelected,
+                  activeColor: color,
+                  onChanged: (val) => onQuestionToggle(avgIndex, val ?? false),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(width: 8),
+          Text(
+            localization.total,
+            style: TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.bold,
+              color: isSelected ? color : Colors.grey,
+            ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -163,12 +225,12 @@ class ChartControlWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildNotesCarousel(BuildContext context, List<Map<String, dynamic>> notes, Color color) {
+  Widget _buildNotesCarousel(BuildContext context, List<Map<String, dynamic>> notes, Color color, double leftPadding) {
     return SizedBox(
       height: 75,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
-        padding: const EdgeInsets.fromLTRB(58, 0, 16, 8),
+        padding: EdgeInsets.fromLTRB(leftPadding, 0, 16, 8),
         itemCount: notes.length,
         itemBuilder: (context, index) {
           final noteData = notes[index];

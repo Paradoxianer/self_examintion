@@ -23,21 +23,20 @@ class _TimeChartWidgetState extends State<TimeChartWidget> {
   void initState() {
     super.initState();
     if (widget.assessmentHistory.isNotEmpty) {
+      // Initialize questions + 1 for the average line
       selectedQuestions = List.generate(
-        widget.assessmentHistory[0].values.length,
+        widget.assessmentHistory[0].values.length + 1,
         (index) => true,
       );
       _referenceDate = widget.assessmentHistory.last.timestamp;
     }
   }
 
-  // --- Kalender-orientierte Fenster-Berechnung ---
   DateTime get _windowStart {
     switch (_currentTimeRange) {
       case TimeRange.twoDays:
         return DateTime(_referenceDate.year, _referenceDate.month, _referenceDate.day - 1);
       case TimeRange.week:
-        // Finde den Montag der Woche (1 = Montag, 7 = Sonntag)
         return DateTime(_referenceDate.year, _referenceDate.month, _referenceDate.day - (_referenceDate.weekday - 1));
       case TimeRange.month:
         return DateTime(_referenceDate.year, _referenceDate.month, 1);
@@ -117,14 +116,16 @@ class _TimeChartWidgetState extends State<TimeChartWidget> {
                 minY: 0,
                 maxY: 1.1,
                 lineBarsData: [
-                  LineChartBarData(
-                    spots: getOverallScores(filteredHistory),
-                    isCurved: true,
-                    color: Colors.red,
-                    barWidth: 4,
-                    dotData: const FlDotData(show: false),
-                  ),
-                  for (int i = 0; i < selectedQuestions.length; i++)
+                  // Overall average line (last element in selectedQuestions)
+                  if (selectedQuestions.last)
+                    LineChartBarData(
+                      spots: getOverallScores(filteredHistory),
+                      isCurved: true,
+                      color: Colors.red,
+                      barWidth: 4,
+                      dotData: const FlDotData(show: false),
+                    ),
+                  for (int i = 0; i < selectedQuestions.length - 1; i++)
                     if (selectedQuestions[i])
                       LineChartBarData(
                         spots: getQuestionScores(filteredHistory, i),
@@ -141,7 +142,6 @@ class _TimeChartWidgetState extends State<TimeChartWidget> {
                     sideTitles: SideTitles(
                       showTitles: true,
                       reservedSize: 30,
-                      // Intervall anpassen für bessere Lesbarkeit
                       interval: _calculateInterval(start, end),
                       getTitlesWidget: (value, meta) => bottomTitleWidgets(value, meta, context),
                     ),
@@ -167,6 +167,7 @@ class _TimeChartWidgetState extends State<TimeChartWidget> {
             assessmentHistory: widget.assessmentHistory,
             selectedQuestions: selectedQuestions,
             currentTimeRange: _currentTimeRange,
+            showAverage: true, // Durchschnitts-Chip aktivieren
             onQuestionToggle: (index, value) {
               setState(() {
                 selectedQuestions[index] = value;
@@ -194,10 +195,10 @@ class _TimeChartWidgetState extends State<TimeChartWidget> {
 
   double _calculateInterval(DateTime start, DateTime end) {
     final diff = end.difference(start).inDays;
-    if (diff <= 2) return 1000 * 60 * 60 * 12; // 12 Stunden
-    if (diff <= 7) return 1000 * 60 * 60 * 24; // 1 Tag
-    if (diff <= 31) return 1000 * 60 * 60 * 24 * 7; // 1 Woche
-    return 1000 * 60 * 60 * 24 * 30; // 1 Monat
+    if (diff <= 2) return 1000 * 60 * 60 * 12;
+    if (diff <= 7) return 1000 * 60 * 60 * 24;
+    if (diff <= 31) return 1000 * 60 * 60 * 24 * 7;
+    return 1000 * 60 * 60 * 24 * 30;
   }
 
   List<FlSpot> getOverallScores(List<AssessmentEntry> history) {
