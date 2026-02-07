@@ -18,11 +18,6 @@ class AssessmentScreen extends StatefulWidget {
 }
 
 class _AssessmentScreenState extends State<AssessmentScreen> {
-  // Global note controller can be removed if per-question notes are enough,
-  // but keeping it for now if you still want a general summary note.
-  // Roadmap says: 2.3 UI-Cleaning: Removal of the global note field.
-  // So I will remove it.
-
   @override
   Widget build(BuildContext context) {
     return ListenableBuilder(
@@ -47,7 +42,7 @@ class _AssessmentScreenState extends State<AssessmentScreen> {
             ],
           ),
           body: ListView.builder(
-            padding: const EdgeInsets.only(bottom: 80), // Space for FAB
+            padding: const EdgeInsets.only(bottom: 80),
             itemCount: questionSet.questions.length,
             itemBuilder: (context, index) {
               return QuestionCard(
@@ -61,14 +56,7 @@ class _AssessmentScreenState extends State<AssessmentScreen> {
             },
           ),
           floatingActionButton: FloatingActionButton.extended(
-            onPressed: () async {
-              await saveAssessmentResults(questionSet);
-              if (mounted) {
-                Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(builder: (context) => ChartScreen()),
-                );
-              }
-            },
+            onPressed: () => _validateAndSave(context, questionSet),
             label: Text(localization.commit),
             icon: const Icon(Icons.check),
           ),
@@ -77,14 +65,52 @@ class _AssessmentScreenState extends State<AssessmentScreen> {
     );
   }
 
+  void _validateAndSave(BuildContext context, SelfAssessmentQuestionSet questionSet) async {
+    final localization = AppLocalizations.of(context)!;
+    bool hasUnanswered = questionSet.questions.any((q) => q.value == -1.0);
+
+    if (hasUnanswered) {
+      bool? proceed = await showDialog<bool>(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text(localization.warningTitle),
+          content: Text(localization.pleasAnswer),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context, false),
+              child: Text(localization.cancel),
+            ),
+            TextButton(
+              onPressed: () => Navigator.pop(context, true),
+              child: Text(localization.ok),
+            ),
+          ],
+        ),
+      );
+
+      if (proceed != true) return;
+    }
+
+    // Unbeantwortete Fragen auf 0.0 setzen vor dem Speichern
+    for (var q in questionSet.questions) {
+      if (q.value == -1.0) q.value = 0.0;
+    }
+
+    await saveAssessmentResults(questionSet);
+    if (mounted) {
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (context) => ChartScreen()),
+      );
+    }
+  }
+
   Future<void> saveAssessmentResults(SelfAssessmentQuestionSet questionSet) async {
     AssessmentEntry assessmentEntry = AssessmentEntry(
         timestamp: DateTime.now(),
         questionSet: widget.localStorage.getCurrentAuthor(),
         values: questionSet.questions.map((q) => q.value).toList(),
         questionNotes: questionSet.questions.map((q) => q.note).toList(),
-        note: null // Global note is now null as it's removed from UI
-    );
+        note: null);
     await widget.localStorage.saveAssessmentEntry(assessmentEntry);
   }
 }
