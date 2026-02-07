@@ -15,22 +15,15 @@ Diese Roadmap dient als strukturierte Arbeitsgrundlage für die schrittweise Imp
 - [x] **2.5 Unbeantwortet-Status**: Visuelle Kennzeichnung (Grau) und Validierungs-Dialog mit Auto-Set auf 0.0.
 
 ## Phase 3: Chart-Infrastruktur & Shared Widgets
-- [ ] **3.1 ChartControlWidget**: Entwicklung eines universellen Widgets unterhalb der Charts zur Auswahl/Abwahl einzelner Fragen (Checkboxen mit Farben).
-- [ ] **3.2 Landscape-Fix**: Refactoring des Layouts mittels `LayoutBuilder` / `OrientationBuilder`, damit Charts im Landscape die volle Breite nutzen.
-- [ ] **3.3 Color-Coding**: Systemweite Verknüpfung der Fragen-Farben mit den Chart-Elementen.
+- [x] **3.1 ChartControlWidget**: Universelles Panel zur Filterung und Notiz-Einsicht (Carousel).
+- [x] **3.2 Landscape-Fix**: Side-by-Side Layout für alle Charts im Querformat.
+- [x] **3.3 Color-Coding**: Systemweite Fragen-Farben in Balken, Linien und Labels.
 
 ## Phase 4: Spezifische Chart-Optimierung
-- [ ] **4.1 Comparison Chart**:
-    - [ ] Auswahl der Vergleichs-Daten (Datum A vs. Datum B).
-    - [ ] Legende mit Fragen-Texten statt nur Nummern.
-- [ ] **4.2 Time Chart**:
-    - [ ] Fix: Clipping-Fehler bei Zeitbereichen > 1 Monat.
-    - [ ] Zeitbereichs-QuickButtons (2T, 1W, 1M, 1J, 5J).
-    - [ ] Navigations-Buttons (Vor/Zurück) für den Zeitbereich.
-- [ ] **4.3 Radar Chart**:
-    - [ ] Beschriftung der Achsen mit Fragen-Kurztexten.
-    - [ ] Farbliche Füllung entsprechend der Durchschnittswerte.
-      ​
+- [x] **4.1 Comparison Chart**: Beliebiger Perioden-Vergleich (Woche vs. Woche, etc.) mit Dropdowns.
+- [x] **4.2 Time Chart**: Kalender-orientierte Fenster (Woche, Monat, Jahr) mit Navigation.
+- [x] **4.3 Radar Chart**: Achsen-Beschriftung mit Prozentwerten und Average-Referenz-Kreis.
+
 ## Phase 5: Neue Screens & Sicherheit
 - [ ] **5.1 Ergebnis-Overview Screen**: Neue Ansicht mit `LinearProgressIndicator`.
 - [ ] **5.2 Privacy-Schutz**: Biometrie / PIN-Schutz.
