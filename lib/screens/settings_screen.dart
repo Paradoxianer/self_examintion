@@ -18,7 +18,7 @@ class SettingsScreen extends StatelessWidget {
     final localization = AppLocalizations.of(context)!;
 
     return Scaffold(
-      app_bar: AppBar(
+      appBar: AppBar(
         title: Text(localization.settingsTitle),
       ),
       body: ListView(
@@ -40,12 +40,11 @@ class SettingsScreen extends StatelessWidget {
             builder: (context, _) {
               return SwitchListTile(
                 secondary: const Icon(Icons.lock_outline),
-                title: const Text("App-Sperre aktivieren"), // TODO: Localize
-                subtitle: const Text("Schützt deine Daten mit PIN oder Biometrie"), // TODO: Localize
+                title: const Text("App-Sperre aktivieren"), 
+                subtitle: const Text("Schützt deine Daten mit PIN oder Biometrie"),
                 value: securityService.isSecurityEnabled(),
                 onChanged: (bool value) async {
                   if (value) {
-                    // Wenn aktiviert wird, einmal kurz testen ob es klappt
                     bool canAuth = await securityService.canAuthenticate();
                     if (canAuth) {
                       bool success = await securityService.authenticate();
@@ -58,7 +57,6 @@ class SettingsScreen extends StatelessWidget {
                       );
                     }
                   } else {
-                    // Beim Deaktivieren ebenfalls authentifizieren (Sicherheitsmaßnahme)
                     bool success = await securityService.authenticate();
                     if (success) {
                       securityService.setSecurityEnabled(false);
@@ -95,7 +93,7 @@ class SettingsScreen extends StatelessWidget {
           ListTile(
             leading: Text(localization.datasecurityDialog),
             title: IconButton(
-              icon: const Icon(Icons.info),
+              icon: Icon(Icons.info),
               onPressed: () => _dsgvoDialog.showDSGVODialog(context),
             ),
           ),
