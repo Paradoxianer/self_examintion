@@ -52,7 +52,8 @@ class ChartControlWidget extends StatelessWidget {
               if (showAverage && index == questionCount) {
                 return _buildAverageCard(context, localization);
               }
-              return _buildQuestionCard(context, index, questionSet.questions[index].text);
+              return _buildQuestionCard(
+                  context, index, questionSet.questions[index].text);
             },
           ),
         ),
@@ -60,7 +61,8 @@ class ChartControlWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildQuestionCard(BuildContext context, int qIndex, String questionText) {
+  Widget _buildQuestionCard(
+      BuildContext context, int qIndex, String questionText) {
     final color = globalColorMap[qIndex + 1] ?? Colors.grey;
     final isSelected = selectedQuestions[qIndex];
 
@@ -80,7 +82,9 @@ class ChartControlWidget extends StatelessWidget {
       clipBehavior: Clip.antiAlias,
       margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
       elevation: isSelected ? 2 : 0,
-      color: isSelected ? null : Theme.of(context).disabledColor.withValues(alpha: 0.05),
+      color: isSelected
+          ? null
+          : Theme.of(context).disabledColor.withValues(alpha: 0.05),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -91,22 +95,27 @@ class ChartControlWidget extends StatelessWidget {
                 Container(
                   width: 50,
                   decoration: BoxDecoration(
-                    color: isSelected ? color.withValues(alpha: 0.5) : Colors.grey.withValues(alpha: 0.2),
-                    borderRadius: const BorderRadius.only(bottomRight: Radius.circular(20)),
+                    color: isSelected
+                        ? color.withValues(alpha: 0.5)
+                        : Colors.grey.withValues(alpha: 0.2),
+                    borderRadius: const BorderRadius.only(
+                        bottomRight: Radius.circular(20)),
                   ),
                   child: Column(
                     children: [
                       const SizedBox(height: 8),
                       Text(
                         "${qIndex + 1}",
-                        style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                        style: const TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.bold),
                       ),
                       const Spacer(),
                       Checkbox(
                         value: isSelected,
                         activeColor: color,
                         materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                        onChanged: (val) => onQuestionToggle(qIndex, val ?? false),
+                        onChanged: (val) =>
+                            onQuestionToggle(qIndex, val ?? false),
                       ),
                       const SizedBox(height: 4),
                     ],
@@ -115,12 +124,14 @@ class ChartControlWidget extends StatelessWidget {
                 const SizedBox(width: 12),
                 Expanded(
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 4.0),
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 12.0, horizontal: 4.0),
                     child: Text(
                       questionText,
                       style: TextStyle(
                         fontSize: 13,
-                        fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                        fontWeight:
+                            isSelected ? FontWeight.bold : FontWeight.normal,
                         color: isSelected ? null : Colors.grey,
                       ),
                     ),
@@ -136,7 +147,8 @@ class ChartControlWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildAverageCard(BuildContext context, AppLocalizations localization) {
+  Widget _buildAverageCard(
+      BuildContext context, AppLocalizations localization) {
     final int avgIndex = selectedQuestions.length - 1;
     final bool isSelected = selectedQuestions[avgIndex];
     const color = Colors.red;
@@ -145,7 +157,9 @@ class ChartControlWidget extends StatelessWidget {
       clipBehavior: Clip.antiAlias,
       margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
       elevation: isSelected ? 2 : 0,
-      color: isSelected ? color.withValues(alpha: 0.1) : Theme.of(context).disabledColor.withValues(alpha: 0.05),
+      color: isSelected
+          ? color.withValues(alpha: 0.1)
+          : Theme.of(context).disabledColor.withValues(alpha: 0.05),
       child: IntrinsicHeight(
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -153,8 +167,11 @@ class ChartControlWidget extends StatelessWidget {
             Container(
               width: 50,
               decoration: BoxDecoration(
-                color: isSelected ? color.withValues(alpha: 0.5) : Colors.grey.withValues(alpha: 0.2),
-                borderRadius: const BorderRadius.only(bottomRight: Radius.circular(20)),
+                color: isSelected
+                    ? color.withValues(alpha: 0.5)
+                    : Colors.grey.withValues(alpha: 0.2),
+                borderRadius:
+                    const BorderRadius.only(bottomRight: Radius.circular(20)),
               ),
               child: Column(
                 children: [
@@ -164,7 +181,8 @@ class ChartControlWidget extends StatelessWidget {
                   Checkbox(
                     value: isSelected,
                     activeColor: color,
-                    onChanged: (val) => onQuestionToggle(avgIndex, val ?? false),
+                    onChanged: (val) =>
+                        onQuestionToggle(avgIndex, val ?? false),
                   ),
                   const SizedBox(height: 4),
                 ],
@@ -187,7 +205,8 @@ class ChartControlWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildTimeRangeSelector(BuildContext context, AppLocalizations localization) {
+  Widget _buildTimeRangeSelector(
+      BuildContext context, AppLocalizations localization) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4.0),
       child: Row(
@@ -205,7 +224,8 @@ class ChartControlWidget extends StatelessWidget {
           ...TimeRange.values.map((range) {
             final isSelected = range == currentTimeRange;
             return ChoiceChip(
-              label: Text(localization.timeRangeShort[range.index], style: const TextStyle(fontSize: 10)),
+              label: Text(localization.timeRangeShort[range.index],
+                  style: const TextStyle(fontSize: 10)),
               selected: isSelected,
               onSelected: (_) => onTimeRangeChange(range),
               visualDensity: VisualDensity.compact,
@@ -222,12 +242,13 @@ class ChartControlWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildNotesCarousel(BuildContext context, List<Map<String, dynamic>> notes, Color color, double leftPadding) {
+  Widget _buildNotesCarousel(BuildContext context,
+      List<Map<String, dynamic>> notes, Color color, double leftPadding) {
     return SizedBox(
       height: 75,
       child: ListView.builder(
         // REVERSE: Sorgt dafür, dass die Liste am Ende (beim neuesten Eintrag) startet
-        reverse: true, 
+        reverse: true,
         scrollDirection: Axis.horizontal,
         padding: EdgeInsets.fromLTRB(16, 0, leftPadding, 8),
         itemCount: notes.length,
@@ -249,13 +270,15 @@ class ChartControlWidget extends StatelessWidget {
               children: [
                 Text(
                   DateFormat('dd.MM.yy').format(date),
-                  style: TextStyle(fontSize: 9, fontWeight: FontWeight.bold, color: color),
+                  style: TextStyle(
+                      fontSize: 9, fontWeight: FontWeight.bold, color: color),
                 ),
                 const SizedBox(height: 2),
                 Expanded(
                   child: Text(
                     noteData['note'],
-                    style: const TextStyle(fontSize: 11, fontStyle: FontStyle.italic),
+                    style: const TextStyle(
+                        fontSize: 11, fontStyle: FontStyle.italic),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),

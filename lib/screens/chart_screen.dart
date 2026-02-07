@@ -19,7 +19,7 @@ class ChartScreen extends StatefulWidget {
 class _ChartScreenState extends State<ChartScreen> {
   final LocalStorage _localStorage = LocalStorage();
   late PageController _pageController;
-  
+
   List<bool> _selectedQuestions = [];
   TimeRange _currentTimeRange = TimeRange.all;
   DateTime _referenceDate = DateTime.now();
@@ -37,9 +37,10 @@ class _ChartScreenState extends State<ChartScreen> {
     final history = await _localStorage.loadAssessmentEntries();
     if (history.isNotEmpty && mounted) {
       final int questionCount = history[0].values.length + 1; // +1 for average
-      
+
       // Load saved selection or default to all true
-      List<bool>? savedSelection = _localStorage.getBoolList('chartSelectedQuestions');
+      List<bool>? savedSelection =
+          _localStorage.getBoolList('chartSelectedQuestions');
       if (savedSelection == null || savedSelection.length != questionCount) {
         savedSelection = List.generate(questionCount, (index) => true);
       }
@@ -48,7 +49,8 @@ class _ChartScreenState extends State<ChartScreen> {
       String? savedRange = _localStorage.getString('chartTimeRange');
       TimeRange range = TimeRange.all;
       if (savedRange != null) {
-        range = TimeRange.values.firstWhere((e) => e.toString() == savedRange, orElse: () => TimeRange.all);
+        range = TimeRange.values.firstWhere((e) => e.toString() == savedRange,
+            orElse: () => TimeRange.all);
       }
 
       setState(() {
@@ -84,8 +86,9 @@ class _ChartScreenState extends State<ChartScreen> {
             }
 
             if (_selectedQuestions.isEmpty && history.isNotEmpty) {
-               _selectedQuestions = List.generate(history[0].values.length + 1, (index) => true);
-               _referenceDate = history.last.timestamp;
+              _selectedQuestions =
+                  List.generate(history[0].values.length + 1, (index) => true);
+              _referenceDate = history.last.timestamp;
             }
 
             return Scaffold(
@@ -96,7 +99,8 @@ class _ChartScreenState extends State<ChartScreen> {
                     icon: const Icon(Icons.settings),
                     onPressed: () {
                       Navigator.of(context).push(
-                        MaterialPageRoute(builder: (context) => SettingsScreen()),
+                        MaterialPageRoute(
+                            builder: (context) => SettingsScreen()),
                       );
                     },
                   ),
@@ -183,15 +187,19 @@ class _ChartScreenState extends State<ChartScreen> {
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: List.generate(3, (index) => Container(
-          margin: const EdgeInsets.symmetric(horizontal: 4),
-          width: 8,
-          height: 8,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: _currentPage == index ? Theme.of(context).primaryColor : Colors.grey.shade300,
-          ),
-        )),
+        children: List.generate(
+            3,
+            (index) => Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 4),
+                  width: 8,
+                  height: 8,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: _currentPage == index
+                        ? Theme.of(context).primaryColor
+                        : Colors.grey.shade300,
+                  ),
+                )),
       ),
     );
   }
@@ -209,7 +217,8 @@ class _ChartScreenState extends State<ChartScreen> {
       onTimeRangeChange: (range) {
         setState(() {
           _currentTimeRange = range;
-          _referenceDate = history.isNotEmpty ? history.last.timestamp : DateTime.now();
+          _referenceDate =
+              history.isNotEmpty ? history.last.timestamp : DateTime.now();
         });
         _saveSettings();
       },
@@ -224,7 +233,8 @@ class _ChartScreenState extends State<ChartScreen> {
               _referenceDate = _referenceDate.add(Duration(days: 7 * factor));
               break;
             case TimeRange.month:
-              _referenceDate = DateTime(_referenceDate.year, _referenceDate.month + factor, 1);
+              _referenceDate = DateTime(
+                  _referenceDate.year, _referenceDate.month + factor, 1);
               break;
             case TimeRange.year:
               _referenceDate = DateTime(_referenceDate.year + factor, 1, 1);
@@ -235,7 +245,8 @@ class _ChartScreenState extends State<ChartScreen> {
         });
       },
       onTodayPressed: () {
-        setState(() => _referenceDate = history.isNotEmpty ? history.last.timestamp : DateTime.now());
+        setState(() => _referenceDate =
+            history.isNotEmpty ? history.last.timestamp : DateTime.now());
       },
     );
   }

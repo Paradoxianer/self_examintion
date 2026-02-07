@@ -8,7 +8,8 @@ class QuestionSetSelection extends StatelessWidget {
   final Function(String)? onSetSelected;
   final bool showDelete;
 
-  const QuestionSetSelection({super.key, this.onSetSelected, this.showDelete = false});
+  const QuestionSetSelection(
+      {super.key, this.onSetSelected, this.showDelete = false});
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +34,10 @@ class QuestionSetSelection extends StatelessWidget {
         return Container(
           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
           decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
+            color: Theme.of(context)
+                .colorScheme
+                .surfaceContainerHighest
+                .withValues(alpha: 0.3),
             borderRadius: BorderRadius.circular(20),
           ),
           child: Row(
@@ -54,7 +58,8 @@ class QuestionSetSelection extends StatelessWidget {
                           child: Text(
                             entry.value.authorName,
                             overflow: TextOverflow.ellipsis,
-                            style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+                            style: const TextStyle(
+                                fontSize: 14, fontWeight: FontWeight.w600),
                           ),
                         );
                       }).toList(),
@@ -74,7 +79,8 @@ class QuestionSetSelection extends StatelessWidget {
                 padding: EdgeInsets.zero,
                 constraints: const BoxConstraints(),
                 icon: const Icon(Icons.info_outline, size: 18),
-                onPressed: () => _showSetInfoDialog(context, selectedSet, questionSets),
+                onPressed: () =>
+                    _showSetInfoDialog(context, selectedSet, questionSets),
               ),
               // OPTIONAL DELETE BUTTON (Only in Settings)
               if (showDelete) ...[
@@ -82,8 +88,10 @@ class QuestionSetSelection extends StatelessWidget {
                 IconButton(
                   padding: EdgeInsets.zero,
                   constraints: const BoxConstraints(),
-                  icon: const Icon(Icons.delete_outline, size: 18, color: Colors.red),
-                  onPressed: () => _confirmDeleteDialog(context, selectedSet, authorName),
+                  icon: const Icon(Icons.delete_outline,
+                      size: 18, color: Colors.red),
+                  onPressed: () =>
+                      _confirmDeleteDialog(context, selectedSet, authorName),
                 ),
               ],
             ],
@@ -93,7 +101,8 @@ class QuestionSetSelection extends StatelessWidget {
     );
   }
 
-  void _showSetInfoDialog(BuildContext context, String selectedKey, Map<String, SelfAssessmentQuestionSet> questionSets) {
+  void _showSetInfoDialog(BuildContext context, String selectedKey,
+      Map<String, SelfAssessmentQuestionSet> questionSets) {
     final questionSet = questionSets[selectedKey]!;
     final colorScheme = Theme.of(context).colorScheme;
 
@@ -101,12 +110,15 @@ class QuestionSetSelection extends StatelessWidget {
       context: context,
       builder: (context) {
         return AlertDialog(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
           title: Row(
             children: [
               Icon(Icons.menu_book, color: colorScheme.primary),
               const SizedBox(width: 12),
-              Expanded(child: Text(questionSet.authorName, style: const TextStyle(fontSize: 18))),
+              Expanded(
+                  child: Text(questionSet.authorName,
+                      style: const TextStyle(fontSize: 18))),
             ],
           ),
           content: SizedBox(
@@ -119,7 +131,10 @@ class QuestionSetSelection extends StatelessWidget {
                   child: Text(
                     questionSet.description,
                     textAlign: TextAlign.center,
-                    style: TextStyle(fontStyle: FontStyle.italic, color: colorScheme.onSurfaceVariant, fontSize: 12),
+                    style: TextStyle(
+                        fontStyle: FontStyle.italic,
+                        color: colorScheme.onSurfaceVariant,
+                        fontSize: 12),
                   ),
                 ),
                 const Divider(),
@@ -143,18 +158,22 @@ class QuestionSetSelection extends StatelessWidget {
                                 width: 32,
                                 decoration: BoxDecoration(
                                   color: color.withValues(alpha: 0.5),
-                                  borderRadius: const BorderRadius.only(bottomRight: Radius.circular(12)),
+                                  borderRadius: const BorderRadius.only(
+                                      bottomRight: Radius.circular(12)),
                                 ),
                                 child: Center(
                                   child: Text(
                                     "${index + 1}",
-                                    style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                                    style: const TextStyle(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.bold),
                                   ),
                                 ),
                               ),
                               Expanded(
                                 child: Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 12, vertical: 8),
                                   child: Text(
                                     questionSet.questions[index].text,
                                     style: const TextStyle(fontSize: 13),
@@ -172,14 +191,17 @@ class QuestionSetSelection extends StatelessWidget {
             ),
           ),
           actions: [
-            TextButton(onPressed: () => Navigator.pop(context), child: const Text('OK')),
+            TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text('OK')),
           ],
         );
       },
     );
   }
 
-  void _confirmDeleteDialog(BuildContext context, String authorKey, String authorName) {
+  void _confirmDeleteDialog(
+      BuildContext context, String authorKey, String authorName) {
     final localization = AppLocalizations.of(context)!;
     final localStorage = LocalStorage();
     showDialog(
@@ -189,7 +211,9 @@ class QuestionSetSelection extends StatelessWidget {
           title: Text(localization.warningTitle),
           content: Text(localization.warningDel(authorName, authorName)),
           actions: [
-            TextButton(onPressed: () => Navigator.pop(context), child: Text(localization.cancel)),
+            TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: Text(localization.cancel)),
             TextButton(
               onPressed: () {
                 localStorage.clearAllAssesmentEntries();

@@ -1,6 +1,5 @@
 import 'dart:ui';
 
-
 const Map<int, Color> globalColorMap = {
   1: Color(0xFF4285F4), // Blue
   2: Color(0xFF0F9D58), // Green
@@ -29,7 +28,6 @@ const Map<int, Color> globalColorMap = {
   25: Color(0xFF455A64), // Blue Grey
 };
 
-const List<String> answers = ["answer1", "answer2", "answer3","answer4"];
-const List<String>  examineFrequenze = ["daily","weekly","monthly","anual"];
+const List<String> answers = ["answer1", "answer2", "answer3", "answer4"];
+const List<String> examineFrequenze = ["daily", "weekly", "monthly", "anual"];
 const int maxAnswer = 4;
-

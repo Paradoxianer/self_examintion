@@ -1,9 +1,9 @@
 import 'package:self_examination/models/question.dart';
 
 class SelfAssessmentResult {
-  final String id; 
-  final DateTime timestamp; 
-  final List<Question> answers; 
+  final String id;
+  final DateTime timestamp;
+  final List<Question> answers;
 
   SelfAssessmentResult({
     required this.id,
@@ -14,14 +14,15 @@ class SelfAssessmentResult {
   Map<String, dynamic> toMap() {
     return {
       'id': id,
-      'timestamp': timestamp.toUtc().toIso8601String(), 
+      'timestamp': timestamp.toUtc().toIso8601String(),
       'answers': answers.map((answer) => answer.toMap()).toList(),
     };
   }
 
   factory SelfAssessmentResult.fromMap(Map<String, dynamic> map) {
     final List<dynamic> answerMaps = map['answers'];
-    final List<Question> answers = answerMaps.map((answerMap) => Question.fromMap(answerMap)).toList();
+    final List<Question> answers =
+        answerMaps.map((answerMap) => Question.fromMap(answerMap)).toList();
 
     return SelfAssessmentResult(
       id: map['id'],

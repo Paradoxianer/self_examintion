@@ -7,12 +7,12 @@ import 'package:self_examination/utils/local_storage.dart';
 import 'package:self_examination/widgets/dsgvo_dialog.dart';
 
 class HomeScreen extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     bool agreedToDSGVO = LocalStorage().getBool('agreedToDSGVO');
     if (agreedToDSGVO == false)
-      Future.delayed(Duration.zero, () => DSGVODialog().showDSGVODialog(context));
+      Future.delayed(
+          Duration.zero, () => DSGVODialog().showDSGVODialog(context));
     return Scaffold(
       body: Center(
         child: Column(
@@ -27,9 +27,8 @@ class HomeScreen extends StatelessWidget {
               onPressed: () {
                 Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: (context) => AssessmentScreen(
-                      localStorage: LocalStorage()
-                    ),
+                    builder: (context) =>
+                        AssessmentScreen(localStorage: LocalStorage()),
                   ),
                 );
               },

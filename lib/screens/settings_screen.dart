@@ -32,11 +32,11 @@ class SettingsScreen extends StatelessWidget {
               padding: const EdgeInsets.only(top: 8.0),
               child: Text(
                 "Wähle ein Set zum Bearbeiten oder Löschen der Daten.",
-                style: TextStyle(fontSize: 12, color: Theme.of(context).colorScheme.outline),
+                style: TextStyle(
+                    fontSize: 12, color: Theme.of(context).colorScheme.outline),
               ),
             ),
           ),
-          
           _buildSectionHeader(context, "Daten-Export"),
           ListTile(
             leading: const Icon(Icons.download),
@@ -48,14 +48,13 @@ class SettingsScreen extends StatelessWidget {
             title: const Text("Werte & Durchschnitt"),
             onTap: () => _handleExport(context, ExportType.valuesAndAverage),
           ),
-
           _buildSectionHeader(context, "Sicherheit & Datenschutz"),
           ListenableBuilder(
             listenable: localStorage.settingsNotifier,
             builder: (context, _) {
               return SwitchListTile(
                 secondary: const Icon(Icons.lock_outline),
-                title: const Text("App-Sperre aktivieren"), 
+                title: const Text("App-Sperre aktivieren"),
                 value: securityService.isSecurityEnabled(),
                 onChanged: (bool value) async {
                   if (value) {
@@ -77,12 +76,12 @@ class SettingsScreen extends StatelessWidget {
             title: Text(localization.datasecurityDialog),
             onTap: () => _dsgvoDialog.showDSGVODialog(context),
           ),
-
           _buildSectionHeader(context, localization.notificationFrequency),
           ListenableBuilder(
             listenable: localStorage.settingsNotifier,
             builder: (context, _) {
-              String reminderFrequency = localStorage.getString('notificationFrequency') ?? 'daily';
+              String reminderFrequency =
+                  localStorage.getString('notificationFrequency') ?? 'daily';
               return ListTile(
                 leading: const Icon(Icons.notifications_none),
                 title: Text(localization.notificationFrequency),
@@ -92,7 +91,8 @@ class SettingsScreen extends StatelessWidget {
                   items: examineFrequenze.map((String frequency) {
                     return DropdownMenuItem<String>(
                       value: frequency,
-                      child: Text(localization.frequenze[examineFrequenze.indexOf(frequency)]),
+                      child: Text(localization
+                          .frequenze[examineFrequenze.indexOf(frequency)]),
                     );
                   }).toList(),
                   onChanged: (String? newValue) {
@@ -127,9 +127,8 @@ class SettingsScreen extends StatelessWidget {
   void _handleExport(BuildContext context, ExportType type) async {
     final history = await localStorage.loadAssessmentEntries();
     if (history.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Keine Daten zum Exportieren vorhanden."))
-      );
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text("Keine Daten zum Exportieren vorhanden.")));
       return;
     }
     await exportService.exportData(context, history, type);

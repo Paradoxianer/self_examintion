@@ -83,7 +83,7 @@ class _DSGVODialogState extends State<DSGVODialog> {
               AppLocalizations.of(context)!.dsgvo3,
             ),
             SizedBox(height: 16),
-            if (!agreedToDSGVO)  // Show buttons only if not agreed
+            if (!agreedToDSGVO) // Show buttons only if not agreed
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[

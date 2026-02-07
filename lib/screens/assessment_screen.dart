@@ -24,8 +24,9 @@ class _AssessmentScreenState extends State<AssessmentScreen> {
       listenable: widget.localStorage.assessmentNotifier,
       builder: (context, _) {
         final localization = AppLocalizations.of(context)!;
-        final questionSet = localization.questionMap[widget.localStorage.getCurrentAuthor()] ??
-            localization.questionMap.values.first;
+        final questionSet =
+            localization.questionMap[widget.localStorage.getCurrentAuthor()] ??
+                localization.questionMap.values.first;
 
         return Scaffold(
           appBar: AppBar(
@@ -65,7 +66,8 @@ class _AssessmentScreenState extends State<AssessmentScreen> {
     );
   }
 
-  void _validateAndSave(BuildContext context, SelfAssessmentQuestionSet questionSet) async {
+  void _validateAndSave(
+      BuildContext context, SelfAssessmentQuestionSet questionSet) async {
     final localization = AppLocalizations.of(context)!;
     bool hasUnanswered = questionSet.questions.any((q) => q.value == -1.0);
 
@@ -104,7 +106,8 @@ class _AssessmentScreenState extends State<AssessmentScreen> {
     }
   }
 
-  Future<void> saveAssessmentResults(SelfAssessmentQuestionSet questionSet) async {
+  Future<void> saveAssessmentResults(
+      SelfAssessmentQuestionSet questionSet) async {
     AssessmentEntry assessmentEntry = AssessmentEntry(
         timestamp: DateTime.now(),
         questionSet: widget.localStorage.getCurrentAuthor(),

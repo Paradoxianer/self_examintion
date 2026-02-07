@@ -58,15 +58,17 @@ class _QuestionCardState extends State<QuestionCard> {
   Widget build(BuildContext context) {
     final localization = AppLocalizations.of(context)!;
     bool isAnswered = widget.question.value != -1.0;
-    
+
     Color sliderColor;
     if (!isAnswered) {
       sliderColor = Colors.grey;
     } else {
       if (widget.question.isPositive) {
-        sliderColor = Color.lerp(Colors.red, Colors.green, _sliderValue) ?? Colors.green;
+        sliderColor =
+            Color.lerp(Colors.red, Colors.green, _sliderValue) ?? Colors.green;
       } else {
-        sliderColor = Color.lerp(Colors.green, Colors.red, _sliderValue) ?? Colors.red;
+        sliderColor =
+            Color.lerp(Colors.green, Colors.red, _sliderValue) ?? Colors.red;
       }
     }
 
@@ -83,13 +85,17 @@ class _QuestionCardState extends State<QuestionCard> {
                 width: 50,
                 height: 50,
                 decoration: BoxDecoration(
-                  color: globalColorMap[widget.cardNumber]?.withValues(alpha: 0.5) ?? Colors.blue.withValues(alpha: 0.5),
-                  borderRadius: const BorderRadius.only(bottomRight: Radius.circular(25)),
+                  color: globalColorMap[widget.cardNumber]
+                          ?.withValues(alpha: 0.5) ??
+                      Colors.blue.withValues(alpha: 0.5),
+                  borderRadius:
+                      const BorderRadius.only(bottomRight: Radius.circular(25)),
                 ),
                 child: Center(
                   child: Text(
                     widget.cardNumber.toString(),
-                    style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    style: const TextStyle(
+                        fontSize: 20, fontWeight: FontWeight.bold),
                   ),
                 ),
               ),
@@ -108,7 +114,9 @@ class _QuestionCardState extends State<QuestionCard> {
                               message: widget.question.description ?? '',
                               child: Text(
                                 widget.question.text,
-                                style: const TextStyle(fontSize: 16.0, fontWeight: FontWeight.w500),
+                                style: const TextStyle(
+                                    fontSize: 16.0,
+                                    fontWeight: FontWeight.w500),
                               ),
                             ),
                           ),
@@ -122,16 +130,23 @@ class _QuestionCardState extends State<QuestionCard> {
                                     padding: EdgeInsets.zero,
                                     constraints: const BoxConstraints(),
                                     visualDensity: VisualDensity.compact,
-                                    icon: const Icon(Icons.info_outline, size: 20),
-                                    onPressed: () => _showTipsDialog(context, widget.question.tips!),
+                                    icon: const Icon(Icons.info_outline,
+                                        size: 20),
+                                    onPressed: () => _showTipsDialog(
+                                        context, widget.question.tips!),
                                   ),
                                 IconButton(
                                   padding: EdgeInsets.zero,
                                   constraints: const BoxConstraints(),
                                   visualDensity: VisualDensity.compact,
-                                  icon: Icon(_showNote ? Icons.note : Icons.note_add_outlined, 
-                                      size: 20, 
-                                      color: _showNote ? Theme.of(context).primaryColor : null),
+                                  icon: Icon(
+                                      _showNote
+                                          ? Icons.note
+                                          : Icons.note_add_outlined,
+                                      size: 20,
+                                      color: _showNote
+                                          ? Theme.of(context).primaryColor
+                                          : null),
                                   onPressed: () {
                                     setState(() {
                                       _showNote = !_showNote;
@@ -147,11 +162,15 @@ class _QuestionCardState extends State<QuestionCard> {
                       SliderTheme(
                         data: SliderTheme.of(context).copyWith(
                           trackHeight: 8.0,
-                          thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 10.0),
-                          overlayShape: const RoundSliderOverlayShape(overlayRadius: 20.0),
-                          valueIndicatorShape: const RectangularSliderValueIndicatorShape(),
+                          thumbShape: const RoundSliderThumbShape(
+                              enabledThumbRadius: 10.0),
+                          overlayShape: const RoundSliderOverlayShape(
+                              overlayRadius: 20.0),
+                          valueIndicatorShape:
+                              const RectangularSliderValueIndicatorShape(),
                           valueIndicatorColor: sliderColor,
-                          valueIndicatorTextStyle: const TextStyle(color: Colors.white),
+                          valueIndicatorTextStyle:
+                              const TextStyle(color: Colors.white),
                         ),
                         child: Column(
                           children: [
@@ -170,12 +189,18 @@ class _QuestionCardState extends State<QuestionCard> {
                               label: "${(_sliderValue * 100).round()}%",
                             ),
                             Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 12.0),
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text(localization.answers.first, style: const TextStyle(fontSize: 12, color: Colors.grey)),
-                                  Text(localization.answers.last, style: const TextStyle(fontSize: 12, color: Colors.grey)),
+                                  Text(localization.answers.first,
+                                      style: const TextStyle(
+                                          fontSize: 12, color: Colors.grey)),
+                                  Text(localization.answers.last,
+                                      style: const TextStyle(
+                                          fontSize: 12, color: Colors.grey)),
                                 ],
                               ),
                             ),
