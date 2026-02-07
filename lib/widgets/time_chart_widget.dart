@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
-import 'package:self_examination/localizations/app_localizations.dart';
 import 'package:self_examination/models/assessment_entry.dart';
 import 'package:self_examination/utils/globals.dart';
 import 'package:self_examination/widgets/chart_control_widget.dart';
