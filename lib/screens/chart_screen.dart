@@ -18,7 +18,7 @@ class ChartScreen extends StatefulWidget {
 
 class _ChartScreenState extends State<ChartScreen> {
   final LocalStorage _localStorage = LocalStorage();
-  final PageController _pageController = PageController();
+  late PageController _pageController;
   
   List<bool> _selectedQuestions = [];
   TimeRange _currentTimeRange = TimeRange.all;
@@ -28,20 +28,41 @@ class _ChartScreenState extends State<ChartScreen> {
   @override
   void initState() {
     super.initState();
+    _currentPage = _localStorage.getInt('lastChartIndex', defaultValue: 0);
+    _pageController = PageController(initialPage: _currentPage);
     _initializeState();
   }
 
   void _initializeState() async {
     final history = await _localStorage.loadAssessmentEntries();
     if (history.isNotEmpty && mounted) {
+      final int questionCount = history[0].values.length + 1; // +1 for average
+      
+      // Load saved selection or default to all true
+      List<bool>? savedSelection = _localStorage.getBoolList('chartSelectedQuestions');
+      if (savedSelection == null || savedSelection.length != questionCount) {
+        savedSelection = List.generate(questionCount, (index) => true);
+      }
+
+      // Load saved time range
+      String? savedRange = _localStorage.getString('chartTimeRange');
+      TimeRange range = TimeRange.all;
+      if (savedRange != null) {
+        range = TimeRange.values.firstWhere((e) => e.toString() == savedRange, orElse: () => TimeRange.all);
+      }
+
       setState(() {
-        _selectedQuestions = List.generate(
-          history[0].values.length + 1,
-          (index) => true,
-        );
+        _selectedQuestions = savedSelection!;
+        _currentTimeRange = range;
         _referenceDate = history.last.timestamp;
       });
     }
+  }
+
+  void _saveSettings() {
+    _localStorage.setBoolList('chartSelectedQuestions', _selectedQuestions);
+    _localStorage.setString('chartTimeRange', _currentTimeRange.toString());
+    _localStorage.setInt('lastChartIndex', _currentPage);
   }
 
   @override
@@ -129,7 +150,10 @@ class _ChartScreenState extends State<ChartScreen> {
       height: 300,
       child: PageView(
         controller: _pageController,
-        onPageChanged: (index) => setState(() => _currentPage = index),
+        onPageChanged: (index) {
+          setState(() => _currentPage = index);
+          _saveSettings();
+        },
         children: [
           TimeChartWidget(
             assessmentHistory: history,
@@ -180,12 +204,14 @@ class _ChartScreenState extends State<ChartScreen> {
       showAverage: true,
       onQuestionToggle: (index, value) {
         setState(() => _selectedQuestions[index] = value);
+        _saveSettings();
       },
       onTimeRangeChange: (range) {
         setState(() {
           _currentTimeRange = range;
           _referenceDate = history.isNotEmpty ? history.last.timestamp : DateTime.now();
         });
+        _saveSettings();
       },
       onNavigateTime: (next) {
         setState(() {

@@ -13,7 +13,6 @@ class LocalStorage {
   SharedPreferences? _prefs;
   String _currentAuthor = "none";
 
-  // Die zwei "Aktivitäten", auf die man getrennt hören kann
   final ActivityNotifier assessmentNotifier = ActivityNotifier();
   final ActivityNotifier settingsNotifier = ActivityNotifier();
 
@@ -32,7 +31,6 @@ class LocalStorage {
     if (authorName != _currentAuthor) {
       _currentAuthor = authorName;
       _prefs?.setString('currentAuthor', authorName);
-      // Benachrichtigt nur die Assessment-Widgets
       assessmentNotifier.notify();
     }
   }
@@ -51,7 +49,7 @@ class LocalStorage {
     }
   }
 
-  // --- Hilfsmethoden für Einstellungen (Nutzen settingsNotifier) ---
+  // --- Hilfsmethoden für Einstellungen ---
   Future<void> setBool(String key, bool value) async {
     await _prefs?.setBool(key, value);
     settingsNotifier.notify();
@@ -59,6 +57,15 @@ class LocalStorage {
 
   bool getBool(String key, {bool defaultValue = false}) {
     return _prefs?.getBool(key) ?? defaultValue;
+  }
+
+  Future<void> setInt(String key, int value) async {
+    await _prefs?.setInt(key, value);
+    settingsNotifier.notify();
+  }
+
+  int getInt(String key, {int defaultValue = 0}) {
+    return _prefs?.getInt(key) ?? defaultValue;
   }
 
   Future<void> setString(String key, String value) async {
@@ -70,7 +77,26 @@ class LocalStorage {
     return _prefs?.getString(key);
   }
 
-  // --- Assessment Methoden (Nutzen assessmentNotifier) ---
+  // Speichert eine Liste von Booleans als JSON-String
+  Future<void> setBoolList(String key, List<bool> values) async {
+    final String json = jsonEncode(values);
+    await _prefs?.setString(key, json);
+    // Wir notifizieren hier nicht automatisch, da dies oft Teil einer größeren Änderung ist
+  }
+
+  // Lädt eine Liste von Booleans
+  List<bool>? getBoolList(String key) {
+    final String? json = _prefs?.getString(key);
+    if (json == null) return null;
+    try {
+      final List<dynamic> decoded = jsonDecode(json);
+      return decoded.cast<bool>();
+    } catch (e) {
+      return null;
+    }
+  }
+
+  // --- Assessment Methoden ---
   Future<void> saveAssessmentEntry(AssessmentEntry entry) async {
     final key = '$_currentAuthor${entry.timestamp.millisecondsSinceEpoch}';
     final entryJson = jsonEncode(entry.toMap());
