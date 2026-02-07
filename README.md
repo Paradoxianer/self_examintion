@@ -1,71 +1,66 @@
-# Self Examination App
+# 🛡️ Self-Examination App
 
-The **Self Examination App** is a Flutter application that allows users to conduct self-assessments regularly based on a set of questions. The results are graphically presented in various charts, enabling users to track their personal progress. It follows the tradition of William Booth and John Wesley, who regularly asked themselves such self-examination questions. The app currently includes three different sets of self-examination questions:
+A powerful, private, and intuitive tool for spiritual and personal growth. Based on the traditions of William Booth and John Wesley, this app helps you track your journey of holiness through structured self-reflection.
 
-- Set 1 based on the Ten Commandments
-- Set 2 self-examination questions by William Booth
-- Set 3 self-examination questions by John Wesley
+![Branding](assets/icon/self_examination_light_blue.png)
 
-## Table of Contents
+## 🌟 Key Features
 
-- [Technologies](#technologies)
-- [Installation](#installation)
-- [Project Structure](#project-structure)
-- [Features](#features)
-- [Localization](#localization)
-- [Authors](#authors)
-- [License](#license)
+### 📊 Advanced Data Visualization
+- **Timeline Chart**: Track your progress over days, weeks, months, or years with beautiful area charts and trend lines.
+- **Comparison View**: Compare different time periods (e.g., this month vs. last month) to see where you've improved.
+- **Radar Analysis**: A unique geometric representation of your spiritual "shape," including an overall average reference circle.
+- **Deep-Dive Inspector**: Filter specific questions and swipe through your historical notes directly within the charts.
 
-## Technologies
+### 📝 Granular Input
+- **Continuous 0-100% Scale**: More precise than simple ratings, allowing for nuanced self-reflection.
+- **Per-Question Notes**: Document the "why" behind every answer. Notes are stored chronologically and accessible during analysis.
+- **Localized Guidance**: Each question set includes helpful tips and biblical references to guide your growth.
 
-- Flutter
-- Dart
+### 🔒 Privacy & Security First
+- **Biometric App Lock**: Protect your most personal reflections with Fingerprint, FaceID, or system PIN.
+- **Local-Only Storage**: Your data never leaves your device. No cloud, no tracking, total privacy.
+- **GDPR Compliant**: Full transparency on data handling through integrated privacy dialogs.
 
-## Installation
+### 📂 Data Portability
+- **CSV Export**: Export your history in three detail levels (Full Data, Values only, or Averages) to keep for your own records or share with a mentor.
 
-1. **Install Flutter:**
-    - [Flutter Installation Guide](https://flutter.dev/docs/get-started/install)
+## 📚 Integrated Question Sets
+Currently, the app includes three rigorously curated sets:
+1. **The Ten Commandments**: Reflecting on the foundational moral law.
+2. **William Booth's Self-Denial**: Questions used by the founder of the Salvation Army.
+3. **John Wesley's 22 Questions**: The daily examination used by the founder of Methodism.
 
+## 🛠️ Installation
+
+1. **Install Flutter:** [Flutter Installation Guide](https://flutter.dev/docs/get-started/install)
 2. **Clone the Project:**
    ```bash
    git clone https://github.com/Paradoxianer/self_examintion.git
-   cd self-examination-app
-
+   ```
 3. **Install Dependencies:**
    ```bash
-    flutter pub get
-
+   flutter pub get
+   ```
 4. **Run the Application:**
-    ```bash
+   ```bash
    flutter run
+   ```
 
-## Project Structure
-   - localizations/: Contains files for localization. 
-     - models/: Contains all important models (AssessmentEntry, AssessmentData, Question, and SelfAssessmentResult). 
-     - screens/: Contains Flutter widgets for various screens. 
-     - utils/: Contains utility functions. 
-     - widgets/: Contains custom widgets.
+## 🌍 Supported Languages
+The app is fully localized in:
+- 🇩🇪 German (de)
+- 🇺🇸 English (en)
+- 🇪🇸 Spanish (es)
+- 🇰🇷 Korean (ko)
+- 🇱🇹 Lithuanian (lt)
+- 🇵🇱 Polish (pl)
 
-## Features
-Self-assessment: Users can perform self-assessments based on various self-examination questions.
-The results are stored locally.
-Personal development can be visualized in various charts.
-Localization: The application supports multiple languages.
+## 🤝 Contributing
+Contributions to improve the app or add more localized question sets are welcome! Please follow modern Flutter standards and ensure all tests pass.
 
-## Localization
-    The app supports various languages. Currently supported languages:
-        English (en)
-        German (de)
-        Spanish (es)
-        Korean (ko)
-        Lithuanian (lt)
-        Polish (pl)
-    Language localization is done in the lib/localizations/ folder.
+## 👤 Author
+**Matthias Lindner** (@Paradoxianer)
 
-## Authors
-Matthias Lindner (@Paradoxianer)
-
-## License
-    This project is licensed under the MIT License. See the LICENSE file for more information.
-
-![Screenshot](assets/screenshots/Screenshot_self_examination.png)
+## 📄 License
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
