@@ -30,7 +30,6 @@ class _QuestionCardState extends State<QuestionCard> {
   void initState() {
     super.initState();
     _sliderValue = widget.question.value;
-    // Wenn noch nicht beantwortet (-1.0), Slider optisch in die Mitte setzen
     if (_sliderValue == -1.0) _sliderValue = 0.5;
     _noteController = TextEditingController(text: widget.question.note);
     _showNote = widget.question.note?.isNotEmpty ?? false;
@@ -65,9 +64,9 @@ class _QuestionCardState extends State<QuestionCard> {
       sliderColor = Colors.grey;
     } else {
       if (widget.question.isPositive) {
-        sliderColor = Color.lerp(Colors.green, Colors.red, _sliderValue) ?? Colors.red;
-      } else {
         sliderColor = Color.lerp(Colors.red, Colors.green, _sliderValue) ?? Colors.green;
+      } else {
+        sliderColor = Color.lerp(Colors.green, Colors.red, _sliderValue) ?? Colors.red;
       }
     }
 
@@ -79,6 +78,7 @@ class _QuestionCardState extends State<QuestionCard> {
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
+              // Leading Pillar
               Container(
                 width: 50,
                 height: 50,
@@ -96,11 +96,12 @@ class _QuestionCardState extends State<QuestionCard> {
               const SizedBox(width: 8),
               Expanded(
                 child: Padding(
-                  padding: const EdgeInsets.only(top: 8.0, right: 8.0),
+                  padding: const EdgeInsets.only(top: 8.0, right: 4.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Expanded(
                             child: Tooltip(
@@ -111,21 +112,38 @@ class _QuestionCardState extends State<QuestionCard> {
                               ),
                             ),
                           ),
-                          IconButton(
-                            icon: Icon(_showNote ? Icons.note : Icons.note_add_outlined, size: 20, color: _showNote ? Theme.of(context).primaryColor : null),
-                            onPressed: () {
-                              setState(() {
-                                _showNote = !_showNote;
-                              });
-                            },
-                          ),
-                          if (widget.question.tips != null)
-                            IconButton(
-                              icon: const Icon(Icons.info_outline, size: 20),
-                              onPressed: () => _showTipsDialog(context, widget.question.tips!),
+                          // Ultra-compact Icon column
+                          SizedBox(
+                            width: 32,
+                            child: Column(
+                              children: [
+                                if (widget.question.tips != null)
+                                  IconButton(
+                                    padding: EdgeInsets.zero,
+                                    constraints: const BoxConstraints(),
+                                    visualDensity: VisualDensity.compact,
+                                    icon: const Icon(Icons.info_outline, size: 20),
+                                    onPressed: () => _showTipsDialog(context, widget.question.tips!),
+                                  ),
+                                IconButton(
+                                  padding: EdgeInsets.zero,
+                                  constraints: const BoxConstraints(),
+                                  visualDensity: VisualDensity.compact,
+                                  icon: Icon(_showNote ? Icons.note : Icons.note_add_outlined, 
+                                      size: 20, 
+                                      color: _showNote ? Theme.of(context).primaryColor : null),
+                                  onPressed: () {
+                                    setState(() {
+                                      _showNote = !_showNote;
+                                    });
+                                  },
+                                ),
+                              ],
                             ),
+                          ),
                         ],
                       ),
+                      const SizedBox(height: 4),
                       SliderTheme(
                         data: SliderTheme.of(context).copyWith(
                           trackHeight: 8.0,
@@ -218,7 +236,6 @@ class _QuestionCardState extends State<QuestionCard> {
   List<Widget> _buildTipWidgets(BuildContext context, String tips) {
     List<Widget> tipWidgets = [];
     List<String> lines = tips.split('\n');
-
     for (String line in lines) {
       if (line.isNotEmpty) {
         tipWidgets.add(
@@ -239,16 +256,11 @@ class _QuestionCardState extends State<QuestionCard> {
     RegExp linkPattern = RegExp(r'\[(.+?)\]\((\S+?)\)');
     List<TextSpan> spans = [];
     int start = 0;
-
     for (final match in linkPattern.allMatches(line)) {
       final String precedingText = line.substring(start, match.start);
-      if (precedingText.isNotEmpty) {
-        spans.add(TextSpan(text: precedingText));
-      }
-
+      if (precedingText.isNotEmpty) spans.add(TextSpan(text: precedingText));
       final String linkText = match.group(1)!;
       final String linkUrl = match.group(2)!;
-
       spans.add(
         TextSpan(
           text: linkText,
@@ -256,17 +268,13 @@ class _QuestionCardState extends State<QuestionCard> {
             color: Theme.of(context).primaryColor,
             decoration: TextDecoration.underline,
           ),
-          recognizer: TapGestureRecognizer()
-            ..onTap = () => _launchURL(linkUrl),
+          recognizer: TapGestureRecognizer()..onTap = () => _launchURL(linkUrl),
         ),
       );
       start = match.end;
     }
-
     final String remainingText = line.substring(start);
-    if (remainingText.isNotEmpty) {
-      spans.add(TextSpan(text: remainingText));
-    }
+    if (remainingText.isNotEmpty) spans.add(TextSpan(text: remainingText));
     return spans;
   }
 
