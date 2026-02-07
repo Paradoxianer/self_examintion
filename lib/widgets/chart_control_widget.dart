@@ -14,6 +14,7 @@ class ChartControlWidget extends StatelessWidget {
   final Function(int, bool) onQuestionToggle;
   final Function(TimeRange) onTimeRangeChange;
   final Function(bool next) onNavigateTime;
+  final VoidCallback onTodayPressed;
 
   const ChartControlWidget({
     super.key,
@@ -23,6 +24,7 @@ class ChartControlWidget extends StatelessWidget {
     required this.onQuestionToggle,
     required this.onTimeRangeChange,
     required this.onNavigateTime,
+    required this.onTodayPressed,
   });
 
   @override
@@ -109,6 +111,11 @@ class ChartControlWidget extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
+          IconButton(
+            icon: const Icon(Icons.today, size: 20),
+            onPressed: onTodayPressed,
+            tooltip: "Heute",
+          ),
           IconButton(
             icon: const Icon(Icons.chevron_left, size: 20),
             onPressed: () => onNavigateTime(false),

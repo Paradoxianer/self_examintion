@@ -27,12 +27,10 @@ class _TimeChartWidgetState extends State<TimeChartWidget> {
         widget.assessmentHistory[0].values.length,
         (index) => true,
       );
-      // Start with the latest available date in history
       _referenceDate = widget.assessmentHistory.last.timestamp;
     }
   }
 
-  // Logic to calculate the time window
   DateTime get _windowStart {
     switch (_currentTimeRange) {
       case TimeRange.twoDays:
@@ -87,7 +85,6 @@ class _TimeChartWidgetState extends State<TimeChartWidget> {
       return const Center(child: Text("No data available"));
     }
 
-    // Filter history based on current window
     final filteredHistory = widget.assessmentHistory.where((entry) {
       return entry.timestamp.isAfter(_windowStart.subtract(const Duration(seconds: 1))) &&
              entry.timestamp.isBefore(_windowEnd.add(const Duration(seconds: 1)));
@@ -130,7 +127,6 @@ class _TimeChartWidgetState extends State<TimeChartWidget> {
                     sideTitles: SideTitles(
                       showTitles: true,
                       reservedSize: 30,
-                      interval: (_windowEnd.difference(_windowStart).inMilliseconds / 5),
                       getTitlesWidget: (value, meta) => bottomTitleWidgets(value, meta, context),
                     ),
                   ),
@@ -175,12 +171,17 @@ class _TimeChartWidgetState extends State<TimeChartWidget> {
             onTimeRangeChange: (range) {
               setState(() {
                 _currentTimeRange = range;
-                if (range == TimeRange.all) {
-                   _referenceDate = widget.assessmentHistory.last.timestamp;
-                }
+                _referenceDate = widget.assessmentHistory.last.timestamp;
               });
             },
             onNavigateTime: _navigateTime,
+            onTodayPressed: () {
+              setState(() {
+                _referenceDate = widget.assessmentHistory.isNotEmpty 
+                    ? widget.assessmentHistory.last.timestamp 
+                    : DateTime.now();
+              });
+            },
           ),
         ),
       ],
