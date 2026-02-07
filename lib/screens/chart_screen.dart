@@ -175,14 +175,14 @@ class _ChartScreenState extends State<ChartScreen> {
       assessmentHistory: history,
       selectedQuestions: _selectedQuestions,
       currentTimeRange: _currentTimeRange,
-      showAverage: _currentPage == 0,
+      showAverage: true, // Jetzt in allen Diagrammen verfügbar für den "Average Circle"
       onQuestionToggle: (index, value) {
         setState(() => _selectedQuestions[index] = value);
       },
       onTimeRangeChange: (range) {
         setState(() {
           _currentTimeRange = range;
-          _referenceDate = history.last.timestamp;
+          _referenceDate = history.isNotEmpty ? history.last.timestamp : DateTime.now();
         });
       },
       onNavigateTime: (next) {

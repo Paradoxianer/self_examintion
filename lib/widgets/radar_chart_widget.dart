@@ -62,16 +62,31 @@ class RadarChartWidget extends StatelessWidget {
              entry.timestamp.isBefore(_windowEnd.add(const Duration(seconds: 1)));
     }).toList();
 
-    // Bestimme die Indizes der tatsächlich ausgewählten Fragen
     final List<int> activeIndices = [];
-    for (int i = 0; i < selectedQuestions.length - 1; i++) { // -1 um den Durchschnitts-Index zu ignorieren
+    for (int i = 0; i < selectedQuestions.length - 1; i++) {
       if (selectedQuestions[i]) {
         activeIndices.add(i);
       }
     }
 
-    if (activeIndices.isEmpty) {
-      return const Center(child: Text("Bitte wähle mindestens eine Frage aus."));
+    if (activeIndices.length < 3) {
+      return Center(
+        child: Padding(
+          padding: const EdgeInsets.all(32.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(Icons.analytics_outlined, size: 48, color: Colors.grey.withValues(alpha: 0.5)),
+              const SizedBox(height: 16),
+              const Text(
+                "Das Radar-Chart benötigt mindestens 3 ausgewählte Fragen, um eine Fläche darzustellen.",
+                textAlign: TextAlign.center,
+                style: TextStyle(color: Colors.grey, fontStyle: FontStyle.italic),
+              ),
+            ],
+          ),
+        ),
+      );
     }
 
     return LayoutBuilder(
@@ -88,7 +103,7 @@ class RadarChartWidget extends StatelessWidget {
               child: RadarChart(
                 RadarChartData(
                   radarBackgroundColor: Colors.white,
-                  dataSets: [_buildMainDataSet(context, filteredHistory, activeIndices)],
+                  dataSets: _buildDataSets(context, filteredHistory, activeIndices),
                   getTitle: (index, angle) => const RadarChartTitle(text: ""),
                   tickCount: 5,
                   ticksTextStyle: const TextStyle(fontSize: 8, color: Colors.grey),
@@ -103,20 +118,41 @@ class RadarChartWidget extends StatelessWidget {
     );
   }
 
-  RadarDataSet _buildMainDataSet(BuildContext context, List<AssessmentEntry> history, List<int> activeIndices) {
+  List<RadarDataSet> _buildDataSets(BuildContext context, List<AssessmentEntry> history, List<int> activeIndices) {
     List<RadarEntry> entries = [];
+    double totalSum = 0;
+    int totalCount = 0;
+
     for (int originalIndex in activeIndices) {
       double displayVal = _getDisplayValue(originalIndex, history);
       entries.add(RadarEntry(value: displayVal));
+      totalSum += displayVal;
+      totalCount++;
     }
 
-    return RadarDataSet(
-      borderColor: Colors.green,
-      fillColor: Colors.green.withValues(alpha: 0.2),
-      borderWidth: 2,
-      entryRadius: 3,
-      dataEntries: entries,
-    );
+    final double overallAvg = totalCount > 0 ? totalSum / totalCount : 0.0;
+
+    return [
+      // 1. Der "Average Circle" (Durchschnitt aller gewählten Fragen)
+      // Nur anzeigen, wenn der Durchschnitts-Chip im Control-Panel aktiv ist (letzter Index)
+      if (selectedQuestions.last)
+        RadarDataSet(
+          borderColor: Colors.red.withValues(alpha: 0.6),
+          fillColor: Colors.transparent,
+          borderWidth: 2,
+          entryRadius: 0,
+          dataEntries: List.generate(activeIndices.length, (index) => RadarEntry(value: overallAvg)),
+        ),
+      
+      // 2. Die eigentliche Ist-Fläche
+      RadarDataSet(
+        borderColor: Colors.green,
+        fillColor: Colors.green.withValues(alpha: 0.2),
+        borderWidth: 2,
+        entryRadius: 3,
+        dataEntries: entries,
+      ),
+    ];
   }
 
   List<Widget> _buildCustomLabels(BuildContext context, List<AssessmentEntry> history, List<int> activeIndices, double radius) {
@@ -125,7 +161,6 @@ class RadarChartWidget extends StatelessWidget {
 
     for (int i = 0; i < count; i++) {
       final int originalIndex = activeIndices[i];
-      // Winkel basierend auf der Anzahl der AKTIVEN Achsen berechnen
       final double angle = (2 * pi / count) * i - (pi / 2);
       
       final double x = cos(angle) * (radius + 25);
