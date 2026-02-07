@@ -1,7 +1,9 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:self_examination/localizations/app_localizations.dart';
 import 'package:self_examination/models/question.dart';
 import 'package:self_examination/utils/globals.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class QuestionCard extends StatefulWidget {
   final Question question;
@@ -32,7 +34,6 @@ class _QuestionCardState extends State<QuestionCard> {
   @override
   void didUpdateWidget(QuestionCard oldWidget) {
     super.didUpdateWidget(oldWidget);
-    // Wenn sich die Frage im selben Slot ändert (z.B. Set-Wechsel)
     if (oldWidget.question != widget.question) {
       setState(() {
         _sliderValue = widget.question.answer.toDouble();
@@ -60,7 +61,7 @@ class _QuestionCardState extends State<QuestionCard> {
                   padding: const EdgeInsets.all(8.0),
                   child: Text(
                     widget.cardNumber.toString(),
-                    style: TextStyle(fontSize: 32),
+                    style: const TextStyle(fontSize: 32),
                   ),
                 ),
               ),
@@ -124,7 +125,12 @@ class _QuestionCardState extends State<QuestionCard> {
       builder: (context) {
         return AlertDialog(
           title: const Text('Tipps'),
-          content: SingleChildScrollView(child: Text(tips)),
+          content: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: _buildTipWidgets(context, tips),
+            ),
+          ),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
@@ -134,5 +140,69 @@ class _QuestionCardState extends State<QuestionCard> {
         );
       },
     );
+  }
+
+  List<Widget> _buildTipWidgets(BuildContext context, String tips) {
+    List<Widget> tipWidgets = [];
+    List<String> lines = tips.split('\n');
+
+    for (String line in lines) {
+      if (line.isNotEmpty) {
+        tipWidgets.add(
+          RichText(
+            text: TextSpan(
+              style: DefaultTextStyle.of(context).style,
+              children: _getRichTextSpans(context, line),
+            ),
+          ),
+        );
+        tipWidgets.add(const SizedBox(height: 8));
+      }
+    }
+    return tipWidgets;
+  }
+
+  List<TextSpan> _getRichTextSpans(BuildContext context, String line) {
+    RegExp linkPattern = RegExp(r'\[(.+?)\]\((\S+?)\)');
+    List<TextSpan> spans = [];
+    int start = 0;
+
+    for (final match in linkPattern.allMatches(line)) {
+      final String precedingText = line.substring(start, match.start);
+      if (precedingText.isNotEmpty) {
+        spans.add(TextSpan(text: precedingText));
+      }
+
+      final String linkText = match.group(1)!;
+      final String linkUrl = match.group(2)!;
+
+      spans.add(
+        TextSpan(
+          text: linkText,
+          style: TextStyle(
+            color: Theme.of(context).primaryColor,
+            decoration: TextDecoration.underline,
+          ),
+          recognizer: TapGestureRecognizer()
+            ..onTap = () => _launchURL(linkUrl),
+        ),
+      );
+      start = match.end;
+    }
+
+    final String remainingText = line.substring(start);
+    if (remainingText.isNotEmpty) {
+      spans.add(TextSpan(text: remainingText));
+    }
+    return spans;
+  }
+
+  Future<void> _launchURL(String url) async {
+    final Uri uri = Uri.parse(url);
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri);
+    } else {
+      print('Could not launch $url');
+    }
   }
 }
