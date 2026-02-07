@@ -34,18 +34,75 @@ class ChartControlWidget extends StatelessWidget {
     if (questionSet == null) return const SizedBox.shrink();
 
     return Column(
-      mainAxisSize: MainAxisSize.min,
       children: [
         _buildTimeRangeSelector(context),
         const Divider(height: 1),
-        _buildQuestionFilter(questionSet.questions),
-        const SizedBox(height: 8),
-        _buildNoteInspector(context),
+        Expanded(
+          child: ListView.builder(
+            padding: const EdgeInsets.only(top: 8, bottom: 16),
+            itemCount: questionSet.questions.length,
+            itemBuilder: (context, qIndex) {
+              final color = globalColorMap[qIndex + 1] ?? Colors.grey;
+              final isSelected = selectedQuestions[qIndex];
+              final questionText = questionSet.questions[qIndex].text;
+
+              // Extract notes specific to THIS question
+              final questionNotes = assessmentHistory
+                  .where((entry) =>
+                      qIndex < entry.questionNotes.length &&
+                      entry.questionNotes[qIndex] != null &&
+                      entry.questionNotes[qIndex]!.isNotEmpty)
+                  .map((entry) => {
+                        'date': entry.timestamp,
+                        'note': entry.questionNotes[qIndex]!,
+                      })
+                  .toList()
+                  .reversed
+                  .toList();
+
+              return Card(
+                margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                elevation: isSelected ? 2 : 0,
+                color: isSelected ? null : Theme.of(context).disabledColor.withValues(alpha: 0.05),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    ListTile(
+                      dense: true,
+                      leading: CircleAvatar(
+                        radius: 14,
+                        backgroundColor: isSelected ? color : Colors.grey.shade300,
+                        child: Text(
+                          "${qIndex + 1}",
+                          style: const TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                      title: Text(
+                        questionText,
+                        style: TextStyle(
+                          fontSize: 13,
+                          fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                          color: isSelected ? null : Colors.grey,
+                        ),
+                      ),
+                      trailing: Checkbox(
+                        value: isSelected,
+                        activeColor: color,
+                        onChanged: (val) => onQuestionToggle(qIndex, val ?? false),
+                      ),
+                    ),
+                    if (isSelected && questionNotes.isNotEmpty)
+                      _buildNotesCarousel(context, questionNotes, color),
+                  ],
+                ),
+              );
+            },
+          ),
+        ),
       ],
     );
   }
 
-  // --- Ebene 1: Zeitsteuerung ---
   Widget _buildTimeRangeSelector(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4.0),
@@ -53,21 +110,22 @@ class ChartControlWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           IconButton(
-            icon: const Icon(Icons.chevron_left),
+            icon: const Icon(Icons.chevron_left, size: 20),
             onPressed: () => onNavigateTime(false),
           ),
           ...TimeRange.values.map((range) {
             final isSelected = range == currentTimeRange;
             return ChoiceChip(
-              label: Text(_rangeLabel(range)),
+              label: Text(_rangeLabel(range), style: const TextStyle(fontSize: 10)),
               selected: isSelected,
               onSelected: (_) => onTimeRangeChange(range),
               visualDensity: VisualDensity.compact,
-              labelStyle: TextStyle(fontSize: 10, color: isSelected ? Colors.white : null),
+              selectedColor: Theme.of(context).primaryColor,
+              labelStyle: TextStyle(color: isSelected ? Colors.white : null),
             );
           }),
           IconButton(
-            icon: const Icon(Icons.chevron_right),
+            icon: const Icon(Icons.chevron_right, size: 20),
             onPressed: () => onNavigateTime(true),
           ),
         ],
@@ -75,100 +133,45 @@ class ChartControlWidget extends StatelessWidget {
     );
   }
 
-  // --- Ebene 2: Fragenfilter (Horizontale Chips) ---
-  Widget _buildQuestionFilter(List<dynamic> questions) {
+  Widget _buildNotesCarousel(BuildContext context, List<Map<String, dynamic>> notes, Color color) {
     return SizedBox(
-      height: 40,
+      height: 70,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
-        itemCount: questions.length,
-        padding: const EdgeInsets.symmetric(horizontal: 8),
+        padding: const EdgeInsets.fromLTRB(52, 0, 16, 8),
+        itemCount: notes.length,
         itemBuilder: (context, index) {
-          final color = globalColorMap[index + 1] ?? Colors.grey;
-          final isSelected = selectedQuestions[index];
-          return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 4),
-            child: FilterChip(
-              label: Text("${index + 1}"),
-              selected: isSelected,
-              onSelected: (val) => onQuestionToggle(index, val),
-              selectedColor: color,
-              checkmarkColor: Colors.white,
-              labelStyle: TextStyle(
-                color: isSelected ? Colors.white : null,
-                fontSize: 12,
-                fontWeight: FontWeight.bold,
-              ),
+          final noteData = notes[index];
+          final DateTime date = noteData['date'];
+          return Container(
+            width: 200,
+            margin: const EdgeInsets.only(right: 8),
+            padding: const EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              color: color.withValues(alpha: 0.05),
+              borderRadius: BorderRadius.circular(8),
+              border: Border.all(color: color.withValues(alpha: 0.2)),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  DateFormat('dd.MM.yy').format(date),
+                  style: TextStyle(fontSize: 9, fontWeight: FontWeight.bold, color: color),
+                ),
+                const SizedBox(height: 2),
+                Expanded(
+                  child: Text(
+                    noteData['note'],
+                    style: const TextStyle(fontSize: 11, fontStyle: FontStyle.italic),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+              ],
             ),
           );
         },
-      ),
-    );
-  }
-
-  // --- Ebene 3: Notiz-Inspektor (Horizontaler Scroller) ---
-  Widget _buildNoteInspector(BuildContext context) {
-    // Filtere alle Einträge, die überhaupt Notizen haben
-    final entriesWithNotes = assessmentHistory.where((entry) => 
-      entry.questionNotes.any((note) => note != null && note.isNotEmpty)
-    ).toList().reversed.toList();
-
-    if (entriesWithNotes.isEmpty) return const SizedBox.shrink();
-
-    return SizedBox(
-      height: 100,
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        padding: const EdgeInsets.symmetric(horizontal: 8),
-        itemCount: entriesWithNotes.length,
-        itemBuilder: (context, index) {
-          final entry = entriesWithNotes[index];
-          return _buildNoteCard(context, entry);
-        },
-      ),
-    );
-  }
-
-  Widget _buildNoteCard(BuildContext context, AssessmentEntry entry) {
-    // Sammle alle Notizen für diesen Tag
-    final notes = entry.questionNotes
-        .asMap()
-        .entries
-        .where((e) => e.value != null && e.value!.isNotEmpty)
-        .toList();
-
-    return Container(
-      width: 250,
-      margin: const EdgeInsets.only(right: 8, bottom: 8),
-      child: Card(
-        elevation: 1,
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                DateFormat('dd.MM.yyyy').format(entry.timestamp),
-                style: const TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Colors.blueGrey),
-              ),
-              const SizedBox(height: 4),
-              Expanded(
-                child: ListView(
-                  children: notes.map((n) => Padding(
-                    padding: const EdgeInsets.only(bottom: 2),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text("${n.key + 1}: ", style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: globalColorMap[n.key+1])),
-                        Expanded(child: Text(n.value!, style: const TextStyle(fontSize: 11), maxLines: 2, overflow: TextOverflow.ellipsis)),
-                      ],
-                    ),
-                  )).toList(),
-                ),
-              ),
-            ],
-          ),
-        ),
       ),
     );
   }
