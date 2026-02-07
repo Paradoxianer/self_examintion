@@ -62,22 +62,33 @@ class RadarChartWidget extends StatelessWidget {
              entry.timestamp.isBefore(_windowEnd.add(const Duration(seconds: 1)));
     }).toList();
 
+    // Bestimme die Indizes der tatsächlich ausgewählten Fragen
+    final List<int> activeIndices = [];
+    for (int i = 0; i < selectedQuestions.length - 1; i++) { // -1 um den Durchschnitts-Index zu ignorieren
+      if (selectedQuestions[i]) {
+        activeIndices.add(i);
+      }
+    }
+
+    if (activeIndices.isEmpty) {
+      return const Center(child: Text("Bitte wähle mindestens eine Frage aus."));
+    }
+
     return LayoutBuilder(
       builder: (context, constraints) {
         final double size = min(constraints.maxWidth, constraints.maxHeight);
-        final double radius = size * 0.35;
+        final double radius = size * 0.30;
 
         return Stack(
           alignment: Alignment.center,
           children: [
-            // 1. Das eigentliche Radar-Chart (ohne Titel)
             SizedBox(
               width: size,
               height: size,
               child: RadarChart(
                 RadarChartData(
                   radarBackgroundColor: Colors.white,
-                  dataSets: [_buildMainDataSet(context, filteredHistory)],
+                  dataSets: [_buildMainDataSet(context, filteredHistory, activeIndices)],
                   getTitle: (index, angle) => const RadarChartTitle(text: ""),
                   tickCount: 5,
                   ticksTextStyle: const TextStyle(fontSize: 8, color: Colors.grey),
@@ -85,24 +96,18 @@ class RadarChartWidget extends StatelessWidget {
                 ),
               ),
             ),
-            // 2. Custom Colored Labels (Number Boxes)
-            ..._buildCustomLabels(context, filteredHistory, radius),
+            ..._buildCustomLabels(context, filteredHistory, activeIndices, radius),
           ],
         );
       },
     );
   }
 
-  RadarDataSet _buildMainDataSet(BuildContext context, List<AssessmentEntry> history) {
-    final localization = AppLocalizations.of(context)!;
-    final authorKey = history.isNotEmpty ? history.first.questionSet : "";
-    final int questionCount = localization.questionMap[authorKey]?.questions.length ?? 0;
-    
+  RadarDataSet _buildMainDataSet(BuildContext context, List<AssessmentEntry> history, List<int> activeIndices) {
     List<RadarEntry> entries = [];
-    for (int i = 0; i < questionCount; i++) {
-      double displayVal = _getDisplayValue(i, history);
-      bool isSelected = i < selectedQuestions.length && selectedQuestions[i];
-      entries.add(RadarEntry(value: isSelected ? displayVal : 0.0));
+    for (int originalIndex in activeIndices) {
+      double displayVal = _getDisplayValue(originalIndex, history);
+      entries.add(RadarEntry(value: displayVal));
     }
 
     return RadarDataSet(
@@ -114,20 +119,19 @@ class RadarChartWidget extends StatelessWidget {
     );
   }
 
-  List<Widget> _buildCustomLabels(BuildContext context, List<AssessmentEntry> history, double radius) {
-    final localization = AppLocalizations.of(context)!;
-    final authorKey = history.isNotEmpty ? history.first.questionSet : "";
-    final int questionCount = localization.questionMap[authorKey]?.questions.length ?? 0;
+  List<Widget> _buildCustomLabels(BuildContext context, List<AssessmentEntry> history, List<int> activeIndices, double radius) {
     List<Widget> labels = [];
+    final int count = activeIndices.length;
 
-    for (int i = 0; i < questionCount; i++) {
-      if (i >= selectedQuestions.length || !selectedQuestions[i]) continue;
-
-      final double angle = (2 * pi / questionCount) * i - (pi / 2);
+    for (int i = 0; i < count; i++) {
+      final int originalIndex = activeIndices[i];
+      // Winkel basierend auf der Anzahl der AKTIVEN Achsen berechnen
+      final double angle = (2 * pi / count) * i - (pi / 2);
+      
       final double x = cos(angle) * (radius + 25);
       final double y = sin(angle) * (radius + 20);
-      final color = globalColorMap[i + 1] ?? Colors.grey;
-      final val = _getDisplayValue(i, history);
+      final color = globalColorMap[originalIndex + 1] ?? Colors.grey;
+      final val = _getDisplayValue(originalIndex, history);
 
       labels.add(
         Transform.translate(
@@ -140,7 +144,7 @@ class RadarChartWidget extends StatelessWidget {
               boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.1), blurRadius: 2)],
             ),
             child: Text(
-              "${i + 1}: ${(val * 100).round()}%",
+              "${originalIndex + 1}: ${(val * 100).round()}%",
               style: const TextStyle(color: Colors.white, fontSize: 9, fontWeight: FontWeight.bold),
             ),
           ),
