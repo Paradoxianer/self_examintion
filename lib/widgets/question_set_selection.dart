@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:self_examination/data/self_assesment_questions.dart';
 import 'package:self_examination/localizations/app_localizations.dart';
+import 'package:self_examination/utils/globals.dart';
 import 'package:self_examination/utils/local_storage.dart';
 
 class QuestionSetSelection extends StatelessWidget {
@@ -35,7 +36,6 @@ class QuestionSetSelection extends StatelessWidget {
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              // Constrain the width to prevent AppBar overflow
               Flexible(
                 child: ConstrainedBox(
                   constraints: const BoxConstraints(maxWidth: 200),
@@ -43,7 +43,7 @@ class QuestionSetSelection extends StatelessWidget {
                     child: DropdownButton<String>(
                       value: selectedSet,
                       isDense: true,
-                      isExpanded: false, // Prevents taking infinite width
+                      isExpanded: false,
                       icon: const Icon(Icons.arrow_drop_down, size: 20),
                       items: questionSets.entries.map((entry) {
                         return DropdownMenuItem<String>(
@@ -92,38 +92,63 @@ class QuestionSetSelection extends StatelessWidget {
             children: [
               Icon(Icons.menu_book, color: colorScheme.primary),
               const SizedBox(width: 12),
-              Expanded(child: Text(questionSet.authorName)),
+              Expanded(child: Text(questionSet.authorName, style: const TextStyle(fontSize: 18))),
             ],
           ),
           content: SizedBox(
             width: double.maxFinite,
             child: Column(
               mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(bottom: 16.0),
+                  padding: const EdgeInsets.only(bottom: 12.0),
                   child: Text(
                     questionSet.description,
-                    style: TextStyle(fontStyle: FontStyle.italic, color: colorScheme.onSurfaceVariant),
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontStyle: FontStyle.italic, color: colorScheme.onSurfaceVariant, fontSize: 12),
                   ),
                 ),
                 const Divider(),
+                const SizedBox(height: 8),
                 Flexible(
                   child: ListView.builder(
                     shrinkWrap: true,
                     itemCount: questionSet.questions.length,
                     itemBuilder: (context, index) {
-                      return ListTile(
-                        contentPadding: EdgeInsets.zero,
-                        leading: CircleAvatar(
-                          radius: 12,
-                          backgroundColor: colorScheme.secondaryContainer,
-                          child: Text("${index + 1}", style: TextStyle(fontSize: 10, color: colorScheme.onSecondaryContainer)),
-                        ),
-                        title: Text(
-                          questionSet.questions[index].text,
-                          style: const TextStyle(fontSize: 13),
+                      final color = globalColorMap[index + 1] ?? Colors.grey;
+                      return Card(
+                        margin: const EdgeInsets.only(bottom: 8),
+                        clipBehavior: Clip.antiAlias,
+                        elevation: 0,
+                        color: colorScheme.surfaceContainerLow,
+                        child: IntrinsicHeight(
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              Container(
+                                width: 32,
+                                decoration: BoxDecoration(
+                                  color: color.withValues(alpha: 0.5),
+                                  borderRadius: const BorderRadius.only(bottomRight: Radius.circular(12)),
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    "${index + 1}",
+                                    style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                              ),
+                              Expanded(
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                                  child: Text(
+                                    questionSet.questions[index].text,
+                                    style: const TextStyle(fontSize: 13),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       );
                     },
