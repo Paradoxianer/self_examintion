@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:self_examination/localizations/app_localizations.dart';
@@ -19,7 +20,6 @@ class RadarChartWidget extends StatelessWidget {
     required this.referenceDate,
   });
 
-  // --- Kalender-orientierte Fenster-Berechnung ---
   DateTime get _windowStart {
     switch (currentTimeRange) {
       case TimeRange.twoDays:
@@ -62,36 +62,96 @@ class RadarChartWidget extends StatelessWidget {
              entry.timestamp.isBefore(_windowEnd.add(const Duration(seconds: 1)));
     }).toList();
 
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: RadarChart(
-        RadarChartData(
-          radarBackgroundColor: Colors.white,
-          dataSets: _buildDataSets(context, filteredHistory),
-          getTitle: (index, angle) {
-            if (index < selectedQuestions.length && selectedQuestions[index]) {
-              final val = _getDisplayValue(index, filteredHistory);
-              return RadarChartTitle(
-                text: "${index + 1}: ${(val * 100).round()}%",
-                angle: angle,
-              );
-            }
-            return const RadarChartTitle(text: "");
-          },
-          tickCount: 5,
-          ticksTextStyle: const TextStyle(fontSize: 8, color: Colors.grey),
-          gridBorderData: BorderSide(color: Colors.grey.withValues(alpha: 0.3), width: 1),
-          // Styling hier vornehmen, da RadarChartTitle kein textStyle unterstützt
-          titlePositionPercentageOffset: 0.2,
-          titleTextStyle: const TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
-        ),
-      ),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final double size = min(constraints.maxWidth, constraints.maxHeight);
+        final double radius = size * 0.35;
+
+        return Stack(
+          alignment: Alignment.center,
+          children: [
+            // 1. Das eigentliche Radar-Chart (ohne Titel)
+            SizedBox(
+              width: size,
+              height: size,
+              child: RadarChart(
+                RadarChartData(
+                  radarBackgroundColor: Colors.white,
+                  dataSets: [_buildMainDataSet(context, filteredHistory)],
+                  getTitle: (index, angle) => const RadarChartTitle(text: ""),
+                  tickCount: 5,
+                  ticksTextStyle: const TextStyle(fontSize: 8, color: Colors.grey),
+                  gridBorderData: BorderSide(color: Colors.grey.withValues(alpha: 0.3), width: 1),
+                ),
+              ),
+            ),
+            // 2. Custom Colored Labels (Number Boxes)
+            ..._buildCustomLabels(context, filteredHistory, radius),
+          ],
+        );
+      },
     );
+  }
+
+  RadarDataSet _buildMainDataSet(BuildContext context, List<AssessmentEntry> history) {
+    final localization = AppLocalizations.of(context)!;
+    final authorKey = history.isNotEmpty ? history.first.questionSet : "";
+    final int questionCount = localization.questionMap[authorKey]?.questions.length ?? 0;
+    
+    List<RadarEntry> entries = [];
+    for (int i = 0; i < questionCount; i++) {
+      double displayVal = _getDisplayValue(i, history);
+      bool isSelected = i < selectedQuestions.length && selectedQuestions[i];
+      entries.add(RadarEntry(value: isSelected ? displayVal : 0.0));
+    }
+
+    return RadarDataSet(
+      borderColor: Colors.green,
+      fillColor: Colors.green.withValues(alpha: 0.2),
+      borderWidth: 2,
+      entryRadius: 3,
+      dataEntries: entries,
+    );
+  }
+
+  List<Widget> _buildCustomLabels(BuildContext context, List<AssessmentEntry> history, double radius) {
+    final localization = AppLocalizations.of(context)!;
+    final authorKey = history.isNotEmpty ? history.first.questionSet : "";
+    final int questionCount = localization.questionMap[authorKey]?.questions.length ?? 0;
+    List<Widget> labels = [];
+
+    for (int i = 0; i < questionCount; i++) {
+      if (i >= selectedQuestions.length || !selectedQuestions[i]) continue;
+
+      final double angle = (2 * pi / questionCount) * i - (pi / 2);
+      final double x = cos(angle) * (radius + 25);
+      final double y = sin(angle) * (radius + 20);
+      final color = globalColorMap[i + 1] ?? Colors.grey;
+      final val = _getDisplayValue(i, history);
+
+      labels.add(
+        Transform.translate(
+          offset: Offset(x, y),
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+            decoration: BoxDecoration(
+              color: color.withValues(alpha: 0.8),
+              borderRadius: BorderRadius.circular(4),
+              boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.1), blurRadius: 2)],
+            ),
+            child: Text(
+              "${i + 1}: ${(val * 100).round()}%",
+              style: const TextStyle(color: Colors.white, fontSize: 9, fontWeight: FontWeight.bold),
+            ),
+          ),
+        ),
+      );
+    }
+    return labels;
   }
 
   double _getDisplayValue(int questionIndex, List<AssessmentEntry> history) {
     if (history.isEmpty) return 0.0;
-
     if (currentTimeRange == TimeRange.twoDays) {
       final latest = history.last;
       if (questionIndex < latest.values.length) {
@@ -109,32 +169,5 @@ class RadarChartWidget extends StatelessWidget {
       }
       return count > 0 ? sum / count : 0.0;
     }
-  }
-
-  List<RadarDataSet> _buildDataSets(BuildContext context, List<AssessmentEntry> history) {
-    if (history.isEmpty) return [];
-
-    final localization = AppLocalizations.of(context)!;
-    final authorKey = history.first.questionSet;
-    if (!localization.questionMap.containsKey(authorKey)) return [];
-
-    final int questionCount = localization.questionMap[authorKey]!.questions.length;
-    List<RadarEntry> entries = [];
-
-    for (int i = 0; i < questionCount; i++) {
-      double displayVal = _getDisplayValue(i, history);
-      bool isSelected = i < selectedQuestions.length && selectedQuestions[i];
-      entries.add(RadarEntry(value: isSelected ? displayVal : 0.0));
-    }
-
-    return [
-      RadarDataSet(
-        borderColor: Colors.green,
-        fillColor: Colors.green.withValues(alpha: 0.2),
-        borderWidth: 2,
-        entryRadius: 4,
-        dataEntries: entries,
-      ),
-    ];
   }
 }
