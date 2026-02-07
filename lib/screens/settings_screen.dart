@@ -27,54 +27,46 @@ class SettingsScreen extends StatelessWidget {
         children: [
           _buildSectionHeader(context, localization.chooseQuestionSet),
           ListTile(
-            title: QuestionSetSelection(),
+            title: QuestionSetSelection(showDelete: true), // HIER AKTIVIERT
+            subtitle: Padding(
+              padding: const EdgeInsets.only(top: 8.0),
+              child: Text(
+                "Wähle ein Set zum Bearbeiten oder Löschen der Daten.",
+                style: TextStyle(fontSize: 12, color: Theme.of(context).colorScheme.outline),
+              ),
+            ),
           ),
           
-          _buildSectionHeader(context, "Daten-Export"), // TODO: Localize
+          _buildSectionHeader(context, "Daten-Export"),
           ListTile(
             leading: const Icon(Icons.download),
-            title: const Text("Alles exportieren"), // TODO: Localize
-            subtitle: const Text("Werte, Notizen und Durchschnitt"), // TODO: Localize
+            title: const Text("Alles exportieren"),
             onTap: () => _handleExport(context, ExportType.all),
           ),
           ListTile(
             leading: const Icon(Icons.table_chart_outlined),
-            title: const Text("Werte & Durchschnitt"), // TODO: Localize
+            title: const Text("Werte & Durchschnitt"),
             onTap: () => _handleExport(context, ExportType.valuesAndAverage),
           ),
-          ListTile(
-            leading: const Icon(Icons.show_chart),
-            title: const Text("Nur Durchschnitt"), // TODO: Localize
-            onTap: () => _handleExport(context, ExportType.averageOnly),
-          ),
 
-          _buildSectionHeader(context, "Sicherheit & Datenschutz"), // TODO: Localize
+          _buildSectionHeader(context, "Sicherheit & Datenschutz"),
           ListenableBuilder(
             listenable: localStorage.settingsNotifier,
             builder: (context, _) {
               return SwitchListTile(
                 secondary: const Icon(Icons.lock_outline),
                 title: const Text("App-Sperre aktivieren"), 
-                subtitle: const Text("Schützt deine Daten mit PIN oder Biometrie"),
                 value: securityService.isSecurityEnabled(),
                 onChanged: (bool value) async {
                   if (value) {
                     bool canAuth = await securityService.canAuthenticate();
                     if (canAuth) {
                       bool success = await securityService.authenticate();
-                      if (success) {
-                        securityService.setSecurityEnabled(true);
-                      }
-                    } else {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text("Dein Gerät unterstützt keine Sicherheitssperre."))
-                      );
+                      if (success) securityService.setSecurityEnabled(true);
                     }
                   } else {
                     bool success = await securityService.authenticate();
-                    if (success) {
-                      securityService.setSecurityEnabled(false);
-                    }
+                    if (success) securityService.setSecurityEnabled(false);
                   }
                 },
               );
@@ -86,7 +78,7 @@ class SettingsScreen extends StatelessWidget {
             onTap: () => _dsgvoDialog.showDSGVODialog(context),
           ),
 
-          _buildSectionHeader(context, "Erinnerung"), // TODO: Localize
+          _buildSectionHeader(context, localization.notificationFrequency),
           ListenableBuilder(
             listenable: localStorage.settingsNotifier,
             builder: (context, _) {
@@ -112,13 +104,6 @@ class SettingsScreen extends StatelessWidget {
               );
             },
           ),
-
-          _buildSectionHeader(context, "Gefahrenzone"), // TODO: Localize
-          ListTile(
-            leading: const Icon(Icons.delete_forever, color: Colors.red),
-            title: Text(localization.delete, style: const TextStyle(color: Colors.red)),
-            onTap: () => _confirmDeleteDialog(context),
-          ),
         ],
       ),
     );
@@ -141,39 +126,7 @@ class SettingsScreen extends StatelessWidget {
 
   void _handleExport(BuildContext context, ExportType type) async {
     final history = await localStorage.loadAssessmentEntries();
-    if (history.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Keine Daten zum Exportieren vorhanden."))
-      );
-      return;
-    }
+    if (history.isEmpty) return;
     await exportService.exportData(context, history, type);
-  }
-
-  void _confirmDeleteDialog(BuildContext context) async {
-    final localization = AppLocalizations.of(context)!;
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: Text(localization.warningTitle),
-          content: Text(localization.warningDel(localStorage.getCurrentAuthor(), localStorage.getCurrentAuthor())),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: Text(localization.cancel),
-            ),
-            TextButton(
-              onPressed: () {
-                localStorage.clearAllAssesmentEntries();
-                Navigator.of(context).pop();
-              },
-              style: TextButton.styleFrom(foregroundColor: Colors.red),
-              child: Text(localization.ok),
-            ),
-          ],
-        );
-      },
-    );
   }
 }

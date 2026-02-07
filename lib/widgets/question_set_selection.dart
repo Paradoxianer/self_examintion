@@ -6,8 +6,9 @@ import 'package:self_examination/utils/local_storage.dart';
 
 class QuestionSetSelection extends StatelessWidget {
   final Function(String)? onSetSelected;
+  final bool showDelete;
 
-  const QuestionSetSelection({super.key, this.onSetSelected});
+  const QuestionSetSelection({super.key, this.onSetSelected, this.showDelete = false});
 
   @override
   Widget build(BuildContext context) {
@@ -26,6 +27,8 @@ class QuestionSetSelection extends StatelessWidget {
             localStorage.setCurrentAuthor(selectedSet);
           });
         }
+
+        final authorName = questionSets[selectedSet]?.authorName ?? selectedSet;
 
         return Container(
           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
@@ -66,12 +69,23 @@ class QuestionSetSelection extends StatelessWidget {
                 ),
               ),
               const VerticalDivider(width: 8, indent: 8, endIndent: 8),
+              // INFO BUTTON
               IconButton(
                 padding: EdgeInsets.zero,
                 constraints: const BoxConstraints(),
                 icon: const Icon(Icons.info_outline, size: 18),
                 onPressed: () => _showSetInfoDialog(context, selectedSet, questionSets),
               ),
+              // OPTIONAL DELETE BUTTON (Only in Settings)
+              if (showDelete) ...[
+                const SizedBox(width: 4),
+                IconButton(
+                  padding: EdgeInsets.zero,
+                  constraints: const BoxConstraints(),
+                  icon: const Icon(Icons.delete_outline, size: 18, color: Colors.red),
+                  onPressed: () => _confirmDeleteDialog(context, selectedSet, authorName),
+                ),
+              ],
             ],
           ),
         );
@@ -158,9 +172,31 @@ class QuestionSetSelection extends StatelessWidget {
             ),
           ),
           actions: [
+            TextButton(onPressed: () => Navigator.pop(context), child: const Text('OK')),
+          ],
+        );
+      },
+    );
+  }
+
+  void _confirmDeleteDialog(BuildContext context, String authorKey, String authorName) {
+    final localization = AppLocalizations.of(context)!;
+    final localStorage = LocalStorage();
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text(localization.warningTitle),
+          content: Text(localization.warningDel(authorName, authorName)),
+          actions: [
+            TextButton(onPressed: () => Navigator.pop(context), child: Text(localization.cancel)),
             TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text('OK'),
+              onPressed: () {
+                localStorage.clearAllAssesmentEntries();
+                Navigator.pop(context);
+              },
+              style: TextButton.styleFrom(foregroundColor: Colors.red),
+              child: Text(localization.ok),
             ),
           ],
         );
