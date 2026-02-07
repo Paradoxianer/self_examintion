@@ -15,7 +15,7 @@ class ChartControlWidget extends StatelessWidget {
   final Function(TimeRange) onTimeRangeChange;
   final Function(bool next) onNavigateTime;
   final VoidCallback onTodayPressed;
-  final bool showAverage; // Neu: Steuert die Anzeige des Durchschnitts-Eintrags
+  final bool showAverage;
 
   const ChartControlWidget({
     super.key,
@@ -37,26 +37,21 @@ class ChartControlWidget extends StatelessWidget {
 
     if (questionSet == null) return const SizedBox.shrink();
 
-    // Anzahl der echten Fragen
     final int questionCount = questionSet.questions.length;
-    // Gesamtanzahl der Listenelemente (Fragen + optionaler Durchschnitt)
     final int itemCount = showAverage ? questionCount + 1 : questionCount;
 
     return Column(
       children: [
-        _buildTimeRangeSelector(context),
+        _buildTimeRangeSelector(context, localization),
         const Divider(height: 1),
         Expanded(
           child: ListView.builder(
             padding: const EdgeInsets.only(top: 8, bottom: 80),
             itemCount: itemCount,
             itemBuilder: (context, index) {
-              // Sonderfall: Letztes Element ist der Durchschnitt
               if (showAverage && index == questionCount) {
                 return _buildAverageCard(context, localization);
               }
-
-              // Normalfall: Frage
               return _buildQuestionCard(context, index, questionSet.questions[index].text);
             },
           ),
@@ -144,10 +139,9 @@ class ChartControlWidget extends StatelessWidget {
   }
 
   Widget _buildAverageCard(BuildContext context, AppLocalizations localization) {
-    // Der Index für den Durchschnitt in selectedQuestions ist der letzte
     final int avgIndex = selectedQuestions.length - 1;
     final bool isSelected = selectedQuestions[avgIndex];
-    const color = Colors.red; // Konsistent mit der Chart-Linie
+    const color = Colors.red;
 
     return Card(
       clipBehavior: Clip.antiAlias,
@@ -190,7 +184,7 @@ class ChartControlWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildTimeRangeSelector(BuildContext context) {
+  Widget _buildTimeRangeSelector(BuildContext context, AppLocalizations localization) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4.0),
       child: Row(
@@ -199,7 +193,7 @@ class ChartControlWidget extends StatelessWidget {
           IconButton(
             icon: const Icon(Icons.today, size: 20),
             onPressed: onTodayPressed,
-            tooltip: "Heute",
+            tooltip: localization.today,
           ),
           IconButton(
             icon: const Icon(Icons.chevron_left, size: 20),
@@ -208,7 +202,7 @@ class ChartControlWidget extends StatelessWidget {
           ...TimeRange.values.map((range) {
             final isSelected = range == currentTimeRange;
             return ChoiceChip(
-              label: Text(_rangeLabel(range), style: const TextStyle(fontSize: 10)),
+              label: Text(localization.timeRangeShort[range.index], style: const TextStyle(fontSize: 10)),
               selected: isSelected,
               onSelected: (_) => onTimeRangeChange(range),
               visualDensity: VisualDensity.compact,
@@ -266,15 +260,5 @@ class ChartControlWidget extends StatelessWidget {
         },
       ),
     );
-  }
-
-  String _rangeLabel(TimeRange range) {
-    switch (range) {
-      case TimeRange.twoDays: return "2T";
-      case TimeRange.week: return "1W";
-      case TimeRange.month: return "1M";
-      case TimeRange.year: return "1J";
-      case TimeRange.all: return "Alle";
-    }
   }
 }

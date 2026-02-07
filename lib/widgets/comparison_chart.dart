@@ -61,8 +61,9 @@ class _ComparisonChartWidgetState extends State<ComparisonChartWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final localization = AppLocalizations.of(context)!;
     if (widget.assessmentHistory.isEmpty) {
-      return const Center(child: Text("No data available"));
+      return Center(child: Text(localization.noData));
     }
 
     final periods = _getAvailablePeriods();
@@ -70,7 +71,7 @@ class _ComparisonChartWidgetState extends State<ComparisonChartWidget> {
     return Column(
       children: [
         if (widget.currentTimeRange != TimeRange.all)
-          _buildPeriodSelectors(context, periods),
+          _buildPeriodSelectors(context, periods, localization),
         const SizedBox(height: 8),
         Expanded(
           child: Padding(
@@ -80,7 +81,7 @@ class _ComparisonChartWidgetState extends State<ComparisonChartWidget> {
                 barTouchData: BarTouchData(
                   touchTooltipData: BarTouchTooltipData(
                     getTooltipItem: (group, groupIndex, rod, rodIndex) => 
-                        _buildTooltipItem(group, groupIndex, rod, rodIndex, context),
+                        _buildTooltipItem(group, groupIndex, rod, rodIndex, context, localization),
                   ),
                 ),
                 minY: 0,
@@ -94,7 +95,7 @@ class _ComparisonChartWidgetState extends State<ComparisonChartWidget> {
                   bottomTitles: AxisTitles(
                     sideTitles: SideTitles(
                       showTitles: true,
-                      getTitlesWidget: (value, meta) => _bottomTitleWidgets(value, meta, context),
+                      getTitlesWidget: (value, meta) => _bottomTitleWidgets(value, meta, context, localization),
                     ),
                   ),
                   leftTitles: AxisTitles(
@@ -113,21 +114,21 @@ class _ComparisonChartWidgetState extends State<ComparisonChartWidget> {
     );
   }
 
-  Widget _buildPeriodSelectors(BuildContext context, List<DateTime> availableDates) {
+  Widget _buildPeriodSelectors(BuildContext context, List<DateTime> availableDates, AppLocalizations localization) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          _buildDropdown(_selectedAnchorA!, (val) => setState(() => _selectedAnchorA = val), Colors.grey, availableDates),
+          _buildDropdown(_selectedAnchorA!, (val) => setState(() => _selectedAnchorA = val), Colors.grey, availableDates, localization),
           const Icon(Icons.compare_arrows, color: Colors.grey, size: 20),
-          _buildDropdown(_selectedAnchorB!, (val) => setState(() => _selectedAnchorB = val), Theme.of(context).primaryColor, availableDates),
+          _buildDropdown(_selectedAnchorB!, (val) => setState(() => _selectedAnchorB = val), Theme.of(context).primaryColor, availableDates, localization),
         ],
       ),
     );
   }
 
-  Widget _buildDropdown(DateTime currentValue, ValueChanged<DateTime?> onChanged, Color color, List<DateTime> dates) {
+  Widget _buildDropdown(DateTime currentValue, ValueChanged<DateTime?> onChanged, Color color, List<DateTime> dates, AppLocalizations localization) {
     String currentKey = _getPeriodKey(currentValue);
     DateTime effectiveValue = dates.firstWhere((d) => _getPeriodKey(d) == currentKey, orElse: () => currentValue);
     
@@ -152,7 +153,7 @@ class _ComparisonChartWidgetState extends State<ComparisonChartWidget> {
             return DropdownMenuItem<DateTime>(
               value: date,
               child: Text(
-                _formatDateForDropdown(date), 
+                _formatDateForDropdown(date, localization), 
                 style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: color)
               ),
             );
@@ -178,20 +179,22 @@ class _ComparisonChartWidgetState extends State<ComparisonChartWidget> {
   String _getPeriodKey(DateTime date) {
     switch (widget.currentTimeRange) {
       case TimeRange.twoDays: return "${date.year}-${date.month}-${date.day}";
-      case TimeRange.week: return "${date.year}-W${_getIsoWeek(date)}";
+      case TimeRange.week: 
+        int week = _getIsoWeek(date);
+        return "${date.year}-W$week";
       case TimeRange.month: return "${date.year}-${date.month}";
       case TimeRange.year: return "${date.year}";
       case TimeRange.all: return "all";
     }
   }
 
-  String _formatDateForDropdown(DateTime date) {
+  String _formatDateForDropdown(DateTime date, AppLocalizations localization) {
     switch (widget.currentTimeRange) {
       case TimeRange.twoDays: return DateFormat('dd.MM.yy').format(date);
       case TimeRange.week: return "KW ${_getIsoWeek(date)}, ${date.year}";
       case TimeRange.month: return DateFormat('MMM yyyy').format(date);
       case TimeRange.year: return date.year.toString();
-      default: return "";
+      case TimeRange.all: return localization.all;
     }
   }
 
@@ -206,14 +209,17 @@ class _ComparisonChartWidgetState extends State<ComparisonChartWidget> {
     final startB = _getPeriodStart(_selectedAnchorB!);
     final endB = _getPeriodEnd(_selectedAnchorB!);
 
-    final historyA = widget.assessmentHistory.where((e) => e.timestamp.isAfter(startA.subtract(const Duration(seconds: 1))) && e.timestamp.isBefore(endA.add(const Duration(seconds: 1)))).toList();
-    final historyB = widget.assessmentHistory.where((e) => e.timestamp.isAfter(startB.subtract(const Duration(seconds: 1))) && e.timestamp.isBefore(endB.add(const Duration(seconds: 1)))).toList();
+    final historyA = widget.assessmentHistory.where((e) => 
+      e.timestamp.isAfter(startA.subtract(const Duration(seconds: 1))) && 
+      e.timestamp.isBefore(endA.add(const Duration(seconds: 1)))).toList();
+    
+    final historyB = widget.assessmentHistory.where((e) => 
+      e.timestamp.isAfter(startB.subtract(const Duration(seconds: 1))) && 
+      e.timestamp.isBefore(endB.add(const Duration(seconds: 1)))).toList();
 
     List<BarChartGroupData> barGroups = [];
-    if (historyB.isEmpty && historyA.isEmpty) return [];
-
     final int questionCount = widget.assessmentHistory.first.values.length;
-    double totalA = 0, totalB = 0;
+    double totalAvgA = 0, totalAvgB = 0;
     int countSelected = 0;
 
     for (int i = 0; i < questionCount; i++) {
@@ -221,7 +227,7 @@ class _ComparisonChartWidgetState extends State<ComparisonChartWidget> {
 
       double avgA = _calculateAverage(historyA, i);
       double avgB = _calculateAverage(historyB, i);
-      totalA += avgA; totalB += avgB;
+      totalAvgA += avgA; totalAvgB += avgB;
       countSelected++;
 
       final color = globalColorMap[i + 1] ?? Colors.blue;
@@ -239,8 +245,8 @@ class _ComparisonChartWidgetState extends State<ComparisonChartWidget> {
       barGroups.add(BarChartGroupData(
         x: 100,
         barRods: [
-          BarChartRodData(toY: totalA / countSelected, color: Colors.red.withValues(alpha: 0.3), width: 12),
-          BarChartRodData(toY: totalB / countSelected, color: Colors.red, width: 12),
+          BarChartRodData(toY: totalAvgA / countSelected, color: Colors.red.withValues(alpha: 0.3), width: 12),
+          BarChartRodData(toY: totalAvgB / countSelected, color: Colors.red, width: 12),
         ],
       ));
     }
@@ -274,17 +280,19 @@ class _ComparisonChartWidgetState extends State<ComparisonChartWidget> {
     }
   }
 
-  Widget _bottomTitleWidgets(double value, TitleMeta meta, BuildContext context) {
+  Widget _bottomTitleWidgets(double value, TitleMeta meta, BuildContext context, AppLocalizations localization) {
     const style = TextStyle(fontWeight: FontWeight.bold, fontSize: 10);
-    if (value == 100) return SideTitleWidget(meta: meta, child: Text(AppLocalizations.of(context)!.total, style: style));
+    if (value == 100) return SideTitleWidget(meta: meta, child: Text(localization.total, style: style));
     return SideTitleWidget(meta: meta, child: Text((value.toInt() + 1).toString(), style: style));
   }
 
   Widget _leftTitleWidgets(double value, TitleMeta meta, BuildContext context) => SideTitleWidget(meta: meta, child: Text("${(value * 100).toInt()}%", style: const TextStyle(fontSize: 8)));
 
-  BarTooltipItem _buildTooltipItem(BarChartGroupData group, int gi, BarChartRodData rod, int ri, BuildContext context) {
-    final localization = AppLocalizations.of(context)!;
-    String qText = group.x == 100 ? localization.total : (localization.questionMap[LocalStorage().getCurrentAuthor()]?.questions[group.x.toInt()].text ?? "");
-    return BarTooltipItem("$qText\n${ri == 0 ? "Periode A" : "Periode B"}: ${(rod.toY * 100).round()}%", TextStyle(color: rod.color, fontWeight: FontWeight.bold, fontSize: 10));
+  BarTooltipItem _buildTooltipItem(BarChartGroupData group, int gi, BarChartRodData rod, int ri, BuildContext context, AppLocalizations localization) {
+    final authorKey = LocalStorage().getCurrentAuthor();
+    final questionSet = localization.questionMap[authorKey];
+    String qText = group.x == 100 ? localization.total : (questionSet?.questions[group.x.toInt()].text ?? "");
+    String periodLabel = ri == 0 ? localization.prevPeriod : localization.currPeriod;
+    return BarTooltipItem("$qText\n$periodLabel: ${(rod.toY * 100).round()}%", TextStyle(color: rod.color, fontWeight: FontWeight.bold, fontSize: 10));
   }
 }

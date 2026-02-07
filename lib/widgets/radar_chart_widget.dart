@@ -53,8 +53,9 @@ class RadarChartWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final localization = AppLocalizations.of(context)!;
     if (assessmentHistory.isEmpty) {
-      return const Center(child: Text("No data available"));
+      return Center(child: Text(localization.noData));
     }
 
     final filteredHistory = assessmentHistory.where((entry) {
@@ -78,10 +79,10 @@ class RadarChartWidget extends StatelessWidget {
             children: [
               Icon(Icons.analytics_outlined, size: 48, color: Colors.grey.withValues(alpha: 0.5)),
               const SizedBox(height: 16),
-              const Text(
-                "Das Radar-Chart benötigt mindestens 3 ausgewählte Fragen, um eine Fläche darzustellen.",
+              Text(
+                localization.radarError,
                 textAlign: TextAlign.center,
-                style: TextStyle(color: Colors.grey, fontStyle: FontStyle.italic),
+                style: const TextStyle(color: Colors.grey, fontStyle: FontStyle.italic),
               ),
             ],
           ),
@@ -133,8 +134,6 @@ class RadarChartWidget extends StatelessWidget {
     final double overallAvg = totalCount > 0 ? totalSum / totalCount : 0.0;
 
     return [
-      // 1. Der "Average Circle" (Durchschnitt aller gewählten Fragen)
-      // Nur anzeigen, wenn der Durchschnitts-Chip im Control-Panel aktiv ist (letzter Index)
       if (selectedQuestions.last)
         RadarDataSet(
           borderColor: Colors.red.withValues(alpha: 0.6),
@@ -143,8 +142,6 @@ class RadarChartWidget extends StatelessWidget {
           entryRadius: 0,
           dataEntries: List.generate(activeIndices.length, (index) => RadarEntry(value: overallAvg)),
         ),
-      
-      // 2. Die eigentliche Ist-Fläche
       RadarDataSet(
         borderColor: Colors.green,
         fillColor: Colors.green.withValues(alpha: 0.2),
@@ -162,7 +159,6 @@ class RadarChartWidget extends StatelessWidget {
     for (int i = 0; i < count; i++) {
       final int originalIndex = activeIndices[i];
       final double angle = (2 * pi / count) * i - (pi / 2);
-      
       final double x = cos(angle) * (radius + 25);
       final double y = sin(angle) * (radius + 20);
       final color = globalColorMap[originalIndex + 1] ?? Colors.grey;
