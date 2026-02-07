@@ -85,54 +85,55 @@ class ChartControlWidget extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(
-                width: 50,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Container(
-                      height: 40,
-                      decoration: BoxDecoration(
-                        color: isSelected ? color.withValues(alpha: 0.5) : Colors.grey.withValues(alpha: 0.2),
-                        borderRadius: const BorderRadius.only(bottomRight: Radius.circular(20)),
+          IntrinsicHeight(
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                // GESTALTETER LEADING-BEREICH (Zahl + Checkbox)
+                Container(
+                  width: 50,
+                  decoration: BoxDecoration(
+                    color: isSelected ? color.withValues(alpha: 0.5) : Colors.grey.withValues(alpha: 0.2),
+                    borderRadius: const BorderRadius.only(bottomRight: Radius.circular(20)),
+                  ),
+                  child: Column(
+                    children: [
+                      const SizedBox(height: 8),
+                      Text(
+                        "${qIndex + 1}",
+                        style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                       ),
-                      child: Center(
-                        child: Text(
-                          "${qIndex + 1}",
-                          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                        ),
+                      const Spacer(),
+                      Checkbox(
+                        value: isSelected,
+                        activeColor: color,
+                        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                        onChanged: (val) => onQuestionToggle(qIndex, val ?? false),
                       ),
-                    ),
-                    Checkbox(
-                      value: isSelected,
-                      activeColor: color,
-                      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                      onChanged: (val) => onQuestionToggle(qIndex, val ?? false),
-                    ),
-                  ],
+                      const SizedBox(height: 4),
+                    ],
+                  ),
                 ),
-              ),
-              const SizedBox(width: 8),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 10.0, right: 8.0),
-                  child: Text(
-                    questionText,
-                    style: TextStyle(
-                      fontSize: 13,
-                      fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-                      color: isSelected ? null : Colors.grey,
+                const SizedBox(width: 12),
+                // FRAGENTEXT
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 4.0),
+                    child: Text(
+                      questionText,
+                      style: TextStyle(
+                        fontSize: 13,
+                        fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                        color: isSelected ? null : Colors.grey,
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
           if (isSelected && questionNotes.isNotEmpty)
-            _buildNotesCarousel(context, questionNotes, color, 58),
+            _buildNotesCarousel(context, questionNotes, color, 62),
         ],
       ),
     );
@@ -148,38 +149,43 @@ class ChartControlWidget extends StatelessWidget {
       margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
       elevation: isSelected ? 2 : 0,
       color: isSelected ? color.withValues(alpha: 0.1) : Theme.of(context).disabledColor.withValues(alpha: 0.05),
-      child: Row(
-        children: [
-          SizedBox(
-            width: 50,
-            child: Column(
-              children: [
-                Container(
-                  height: 40,
-                  decoration: BoxDecoration(
-                    color: isSelected ? color.withValues(alpha: 0.5) : Colors.grey.withValues(alpha: 0.2),
-                    borderRadius: const BorderRadius.only(bottomRight: Radius.circular(20)),
+      child: IntrinsicHeight(
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Container(
+              width: 50,
+              decoration: BoxDecoration(
+                color: isSelected ? color.withValues(alpha: 0.5) : Colors.grey.withValues(alpha: 0.2),
+                borderRadius: const BorderRadius.only(bottomRight: Radius.circular(20)),
+              ),
+              child: Column(
+                children: [
+                  const SizedBox(height: 8),
+                  const Icon(Icons.functions, size: 20),
+                  const Spacer(),
+                  Checkbox(
+                    value: isSelected,
+                    activeColor: color,
+                    onChanged: (val) => onQuestionToggle(avgIndex, val ?? false),
                   ),
-                  child: const Center(child: Icon(Icons.functions, size: 20)),
-                ),
-                Checkbox(
-                  value: isSelected,
-                  activeColor: color,
-                  onChanged: (val) => onQuestionToggle(avgIndex, val ?? false),
-                ),
-              ],
+                  const SizedBox(height: 4),
+                ],
+              ),
             ),
-          ),
-          const SizedBox(width: 8),
-          Text(
-            localization.total,
-            style: TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.bold,
-              color: isSelected ? color : Colors.grey,
+            const SizedBox(width: 12),
+            Center(
+              child: Text(
+                localization.total,
+                style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
+                  color: isSelected ? color : Colors.grey,
+                ),
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
