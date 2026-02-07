@@ -1,34 +1,34 @@
-
 class AssessmentEntry {
   final DateTime timestamp;
   final String questionSet;
-  final List<int> answers; // Map mit Frage-IDs und den dazugehörigen Antworten
-  final String? note;
+  final List<double> values; // Die 0-1.0 Werte für jede Frage
+  final List<String?> questionNotes; // Notizen für jede einzelne Frage
+  final String? note; // Globale Notiz (optional)
 
-  AssessmentEntry(
-      {required this.timestamp,
-      required this.questionSet,
-      required this.answers,
-      this.note = null});
+  AssessmentEntry({
+    required this.timestamp,
+    required this.questionSet,
+    required this.values,
+    required this.questionNotes,
+    this.note,
+  });
 
   Map<String, dynamic> toMap() {
     return {
       'timestamp': timestamp.toIso8601String(),
       'authorName': questionSet,
-      'answers': answers,
+      'values': values,
+      'questionNotes': questionNotes,
       'note': note
     };
   }
 
   factory AssessmentEntry.fromMap(Map<String, dynamic> map) {
-    final List<dynamic> answerList = map['answers'];
-    final List<int> answers = List<int>.from(answerList);
     return AssessmentEntry(
         timestamp: DateTime.parse(map['timestamp']),
         questionSet: map['authorName'].toString(),
-  //todo fix this          SelfAssessmentQuestions.questionMap[map['authorName'].toString()] ??
-  //              SelfAssessmentQuestions.questionMap.entries.first.value,
-        answers: answers,
+        values: List<double>.from(map['values'] ?? []),
+        questionNotes: List<String?>.from(map['questionNotes'] ?? []),
         note: map['note']);
   }
 }
