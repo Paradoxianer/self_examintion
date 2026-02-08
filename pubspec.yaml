@@ -40,6 +40,10 @@ flutter_lints: ^2.0.0
 flutter:
   generate: true
   uses-material-design: true
+  
+  # --- ASSETS ADDED HERE ---
+  assets:
+    - assets/icon/self_examination_light_blue.png
 
 flutter_intl:
   enabled: true

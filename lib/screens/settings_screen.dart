@@ -83,7 +83,8 @@ class SettingsScreen extends StatelessWidget {
             onTap: () => _dsgvoDialog.showDSGVODialog(context),
           ),
 
-          _buildSectionHeader(context, localization.settingsReminderHeader),
+          /* --- Commented out until implementation is ready ---
+          _buildSectionHeader(context, localization.notificationFrequency),
           ListenableBuilder(
             listenable: localStorage.settingsNotifier,
             builder: (context, _) {
@@ -109,6 +110,8 @@ class SettingsScreen extends StatelessWidget {
               );
             },
           ),
+          // TODO: Implement notifications/reminder logic (e.g. using flutter_local_notifications)
+          */
 
           _buildSectionHeader(context, localization.about),
           ListTile(
@@ -147,7 +150,14 @@ class SettingsScreen extends StatelessWidget {
       context: context,
       applicationName: "Self-Examination",
       applicationVersion: "1.0.0-beta.1",
-      applicationIcon: Image.asset("assets/icon/self_examination_light_blue.png", width: 48, height: 48),
+      applicationIcon: ClipOval(
+        child: Image.asset(
+          "assets/icon/self_examination_light_blue.png",
+          width: 48,
+          height: 48,
+          fit: BoxFit.cover,
+        ),
+      ),
       applicationLegalese: localization.aboutContent,
     );
   }
