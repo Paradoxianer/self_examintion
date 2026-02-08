@@ -43,7 +43,7 @@ abstract class AppLocalizations {
     Locale('lt'),
   ];
 
-  // Normale Getter
+  // Global strings
   String get greetings;
   String get start;
   String get results;
@@ -90,7 +90,7 @@ abstract class AppLocalizations {
   List<String> get frequenze;
   Map<String, SelfAssessmentQuestionSet> get questionMap;
 
-  // Neue Felder
+  // Chart UI strings
   String get filterQuestions;
   String get today;
   String get noData;
@@ -99,6 +99,18 @@ abstract class AppLocalizations {
   String get currPeriod;
   String get all;
   List<String> get timeRangeShort;
+  String get tips;
+
+  // Settings specific strings
+  String get settingsQuestionSetSubtitle;
+  String get settingsExportHeader;
+  String get settingsExportAll;
+  String get settingsExportValues;
+  String get settingsExportAverage;
+  String get settingsSecurityHeader;
+  String get settingsSecurityLock;
+  String get settingsReminderHeader;
+  String get settingsNoDataToExport;
 }
 
 class _AppLocalizationsDelegate

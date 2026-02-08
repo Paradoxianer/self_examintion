@@ -31,30 +31,36 @@ class SettingsScreen extends StatelessWidget {
             subtitle: Padding(
               padding: const EdgeInsets.only(top: 8.0),
               child: Text(
-                "Wähle ein Set zum Bearbeiten oder Löschen der Daten.",
-                style: TextStyle(
-                    fontSize: 12, color: Theme.of(context).colorScheme.outline),
+                localization.settingsQuestionSetSubtitle,
+                style: TextStyle(fontSize: 12, color: Theme.of(context).colorScheme.outline),
               ),
             ),
           ),
-          _buildSectionHeader(context, "Daten-Export"),
+          
+          _buildSectionHeader(context, localization.settingsExportHeader),
           ListTile(
             leading: const Icon(Icons.download),
-            title: const Text("Alles exportieren"),
+            title: Text(localization.settingsExportAll),
             onTap: () => _handleExport(context, ExportType.all),
           ),
           ListTile(
             leading: const Icon(Icons.table_chart_outlined),
-            title: const Text("Werte & Durchschnitt"),
+            title: Text(localization.settingsExportValues),
             onTap: () => _handleExport(context, ExportType.valuesAndAverage),
           ),
-          _buildSectionHeader(context, "Sicherheit & Datenschutz"),
+          ListTile(
+            leading: const Icon(Icons.show_chart),
+            title: Text(localization.settingsExportAverage),
+            onTap: () => _handleExport(context, ExportType.averageOnly),
+          ),
+
+          _buildSectionHeader(context, localization.settingsSecurityHeader),
           ListenableBuilder(
             listenable: localStorage.settingsNotifier,
             builder: (context, _) {
               return SwitchListTile(
                 secondary: const Icon(Icons.lock_outline),
-                title: const Text("App-Sperre aktivieren"),
+                title: Text(localization.settingsSecurityLock), 
                 value: securityService.isSecurityEnabled(),
                 onChanged: (bool value) async {
                   if (value) {
@@ -76,12 +82,12 @@ class SettingsScreen extends StatelessWidget {
             title: Text(localization.datasecurityDialog),
             onTap: () => _dsgvoDialog.showDSGVODialog(context),
           ),
-          _buildSectionHeader(context, localization.notificationFrequency),
+
+          _buildSectionHeader(context, localization.settingsReminderHeader),
           ListenableBuilder(
             listenable: localStorage.settingsNotifier,
             builder: (context, _) {
-              String reminderFrequency =
-                  localStorage.getString('notificationFrequency') ?? 'daily';
+              String reminderFrequency = localStorage.getString('notificationFrequency') ?? 'daily';
               return ListTile(
                 leading: const Icon(Icons.notifications_none),
                 title: Text(localization.notificationFrequency),
@@ -91,8 +97,7 @@ class SettingsScreen extends StatelessWidget {
                   items: examineFrequenze.map((String frequency) {
                     return DropdownMenuItem<String>(
                       value: frequency,
-                      child: Text(localization
-                          .frequenze[examineFrequenze.indexOf(frequency)]),
+                      child: Text(localization.frequenze[examineFrequenze.indexOf(frequency)]),
                     );
                   }).toList(),
                   onChanged: (String? newValue) {
@@ -125,10 +130,12 @@ class SettingsScreen extends StatelessWidget {
   }
 
   void _handleExport(BuildContext context, ExportType type) async {
+    final localization = AppLocalizations.of(context)!;
     final history = await localStorage.loadAssessmentEntries();
     if (history.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text("Keine Daten zum Exportieren vorhanden.")));
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(localization.settingsNoDataToExport))
+      );
       return;
     }
     await exportService.exportData(context, history, type);
