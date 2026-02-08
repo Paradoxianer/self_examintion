@@ -36,7 +36,7 @@ class AppLocalizationsPl extends AppLocalizations {
   @override String get dsgvo2 => 'Inne osoby z dostępem do urządzenia mogą widzieć te dane.';
   @override String get dsgvo3 => 'Klikając „Zgadzam się”, akceptujesz przechowywanie danych.';
   @override String get dsgvoOK => 'Zgadzam się';
-  @override String get dsgvoCancel => 'Sprzeciwiam się';
+  @override String get dsgvoCancel => 'Sprzeciwiam sich';
   @override String get dsgvoYes => 'Zgoda udzielona';
   @override String get close => 'Zamknij';
   @override String get total => 'Razem';
@@ -69,6 +69,13 @@ class AppLocalizationsPl extends AppLocalizations {
   @override String get settingsSecurityLock => "Włącz blokadę aplikacji";
   @override String get settingsReminderHeader => "Przypomnienie";
   @override String get settingsNoDataToExport => "Brak danych do eksportu.";
+
+  @override String get about => "O aplikacji";
+  @override String get aboutContent => "Ta aplikacja służy do osobistej refleksji i wzrostu duchowego. Zainspirowana przez Williama Bootha i Johna Wesleya.";
+  @override String get version => "Wersja";
+  @override String get imprint => "Nota prawna";
+  @override String get license => "Licencje";
+  @override String get imprintContent => "Odpowiedzialny: Matthias Lindner\nKontakt: info@example.com";
 
   @override
   Map<String, SelfAssessmentQuestionSet> get questionMap {
@@ -108,7 +115,7 @@ class AppLocalizationsPl extends AppLocalizations {
       ),
       "John Wesley": SelfAssessmentQuestionSet(
         authorName: "John Wesley",
-        description: "22 pytania Wesleya:",
+        description: "22 codzienne pytania Wesleya:",
         questions: [
           Question(text: "Czy jestem hipokrytą?", isPositive: true),
           Question(text: "Czy jestem uczciwy?", isPositive: true),

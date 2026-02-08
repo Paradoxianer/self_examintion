@@ -101,7 +101,7 @@ abstract class AppLocalizations {
   List<String> get timeRangeShort;
   String get tips;
 
-  // Settings specific strings
+  // Settings strings
   String get settingsQuestionSetSubtitle;
   String get settingsExportHeader;
   String get settingsExportAll;
@@ -111,6 +111,14 @@ abstract class AppLocalizations {
   String get settingsSecurityLock;
   String get settingsReminderHeader;
   String get settingsNoDataToExport;
+
+  // About and Legal strings
+  String get about;
+  String get aboutContent;
+  String get version;
+  String get imprint;
+  String get license;
+  String get imprintContent;
 }
 
 class _AppLocalizationsDelegate

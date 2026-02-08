@@ -70,6 +70,13 @@ class AppLocalizationsLt extends AppLocalizations {
   @override String get settingsReminderHeader => "Priminimas";
   @override String get settingsNoDataToExport => "Nėra duomenų eksportavimui.";
 
+  @override String get about => "Apie programėlę";
+  @override String get aboutContent => "Ši programėlė skirta asmeninei refleksijai ir dvasiniam augimui. Įkvėpta William Booth ir John Wesley.";
+  @override String get version => "Versija";
+  @override String get imprint => "Atspaudas";
+  @override String get license => "Licencijos";
+  @override String get imprintContent => "Atsakingas: Matthias Lindner\nKontaktai: info@example.com";
+
   @override
   Map<String, SelfAssessmentQuestionSet> get questionMap {
     return {

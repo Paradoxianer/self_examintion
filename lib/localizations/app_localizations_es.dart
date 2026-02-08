@@ -18,24 +18,24 @@ class AppLocalizationsEs extends AppLocalizations {
   @override String get chartTitle => 'Gráfico de Desarrollo';
   @override String get noHistory => 'No se encontraron datos. Elija un conjunto de preguntas diferente o responda las preguntas.';
   @override String get warningTitle => 'Advertencia';
-  @override String warningDel(String autor, Object author) => 'Todo el progreso para $autor se eliminará y se perderá para siempre. ¿Desea continuar?';
+  @override String warningDel(String autor, Object author) => 'Todo el progreso para $autor se eliminará. ¿Desea continuar?';
   @override String get settingsTitle => 'Configuraciones';
-  @override String get chooseQuestionSet => 'Elegir conjunto de preguntas';
+  @override String get chooseQuestionSet => 'Elegir conjunto';
   @override String get delete => 'Eliminar datos';
   @override String get notification => 'Recordarme';
   @override String get notificationFrequency => 'Frecuencia';
   @override String get daily => 'diario';
   @override String get weekly => 'semanal';
   @override String get monthly => 'mensual';
-  @override String get datasecurityDialog => 'Diálogo de protección de datos';
+  @override String get datasecurityDialog => 'Privacidad y RGPD';
   @override String get dsgvoNo => 'Consentimiento denegado';
   @override String get dsgvoNoInfo => 'La aplicación solo puede funcionar si acepta.';
   @override String get ok => 'Aceptar';
   @override String get cancel => 'Cancelar';
-  @override String get dsgvoTitle => 'Privacidad de datos y consentimiento';
-  @override String get dsgvo1 => 'Para realizar un seguimiento de su desarrollo espiritual personal, almacenamos sus respuestas localmente.';
-  @override String get dsgvo2 => 'Tenga en cuenta que las personas que tienen acceso a su dispositivo pueden tener acceso a estos datos.';
-  @override String get dsgvo3 => 'Al hacer clic en \'Aceptar\', acepta que se almacenen sus datos.';
+  @override String get dsgvoTitle => 'Privacidad de datos';
+  @override String get dsgvo1 => 'Para seguir su desarrollo espiritual, almacenamos sus respuestas localmente.';
+  @override String get dsgvo2 => 'No se transmiten datos a la nube. Su privacidad queda en su teléfono.';
+  @override String get dsgvo3 => 'Al hacer clic en \'Aceptar\', acepta el almacenamiento local.';
   @override String get dsgvoOK => 'Aceptar';
   @override String get dsgvoCancel => 'Objetar';
   @override String get dsgvoYes => 'Consentimiento dado';
@@ -73,6 +73,14 @@ class AppLocalizationsEs extends AppLocalizations {
   @override String get settingsReminderHeader => "Recordatorio";
   @override String get settingsNoDataToExport => "No hay datos disponibles para exportar.";
 
+  // About and Legal strings
+  @override String get about => "Acerca de la aplicación";
+  @override String get aboutContent => "Esta aplicación es para la reflexión personal y el crecimiento espiritual. Inspirada por William Booth y John Wesley.";
+  @override String get version => "Versión";
+  @override String get imprint => "Aviso legal";
+  @override String get license => "Licencias";
+  @override String get imprintContent => "Responsable: Matthias Lindner\nContacto: info@example.com";
+
   @override
   Map<String, SelfAssessmentQuestionSet> get questionMap {
     return {
@@ -84,7 +92,7 @@ class AppLocalizationsEs extends AppLocalizations {
           Question(text: "¿Me abstengo de hacer o worshiping una imagen de Dios?"),
           Question(text: "¿Cuánto he evitado usar el nombre del Señor sin pensar?"),
           Question(text: "¿Me tomo un día libre cada seis días para honrar a Dios?"),
-          Question(text: "¿Honro a mis padres und les muestro respeto?"),
+          Question(text: "¿Hasta qué punto honro a mis padres?"),
           Question(text: "¿Evito hacer daño a los demás?"),
           Question(text: "¿Me alejo del adulterio?"),
           Question(text: "¿Practico la honestidad?"),

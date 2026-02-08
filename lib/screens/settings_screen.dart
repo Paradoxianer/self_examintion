@@ -109,6 +109,18 @@ class SettingsScreen extends StatelessWidget {
               );
             },
           ),
+
+          _buildSectionHeader(context, localization.about),
+          ListTile(
+            leading: const Icon(Icons.help_outline),
+            title: Text(localization.about),
+            onTap: () => _showAbout(context),
+          ),
+          ListTile(
+            leading: const Icon(Icons.gavel_outlined),
+            title: Text(localization.imprint),
+            onTap: () => _showImprint(context),
+          ),
         ],
       ),
     );
@@ -125,6 +137,31 @@ class SettingsScreen extends StatelessWidget {
           color: Theme.of(context).colorScheme.primary,
           letterSpacing: 1.2,
         ),
+      ),
+    );
+  }
+
+  void _showAbout(BuildContext context) {
+    final localization = AppLocalizations.of(context)!;
+    showAboutDialog(
+      context: context,
+      applicationName: "Self-Examination",
+      applicationVersion: "1.0.0-beta.1",
+      applicationIcon: Image.asset("assets/icon/self_examination_light_blue.png", width: 48, height: 48),
+      applicationLegalese: localization.aboutContent,
+    );
+  }
+
+  void _showImprint(BuildContext context) {
+    final localization = AppLocalizations.of(context)!;
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(localization.imprint),
+        content: Text(localization.imprintContent),
+        actions: [
+          TextButton(onPressed: () => Navigator.pop(context), child: Text(localization.ok)),
+        ],
       ),
     );
   }

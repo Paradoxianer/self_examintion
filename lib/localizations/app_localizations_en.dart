@@ -2,7 +2,6 @@ import 'package:self_examination/data/self_assesment_questions.dart';
 import 'package:self_examination/models/question.dart';
 import 'app_localizations.dart';
 
-/// The translations for English (`en`).
 class AppLocalizationsEn extends AppLocalizations {
   AppLocalizationsEn([String locale = 'en']) : super(locale);
 
@@ -16,9 +15,9 @@ class AppLocalizationsEn extends AppLocalizations {
   @override String get commit => 'Finish';
   @override String get saved => 'Data saved';
   @override String get chartTitle => 'Development Chart';
-  @override String get noHistory => 'No data found from past self-assessment. Please choose another set or fill out the questions.';
+  @override String get noHistory => 'No data found. Please answer the questions.';
   @override String get warningTitle => 'Warning';
-  @override String warningDel(String autor, Object author) => 'All saved progress for $autor will be deleted and lost forever. Proceed?';
+  @override String warningDel(String autor, Object author) => 'All progress for $autor will be deleted. Proceed?';
   @override String get settingsTitle => 'Settings';
   @override String get chooseQuestionSet => 'Choose question set';
   @override String get delete => 'Delete data';
@@ -27,15 +26,15 @@ class AppLocalizationsEn extends AppLocalizations {
   @override String get daily => 'daily';
   @override String get weekly => 'weekly';
   @override String get monthly => 'monthly';
-  @override String get datasecurityDialog => 'GDPR Dialog';
+  @override String get datasecurityDialog => 'Privacy & GDPR';
   @override String get dsgvoNo => 'Consent denied';
   @override String get dsgvoNoInfo => 'The app can only function if you agree.';
   @override String get ok => 'OK';
   @override String get cancel => 'Cancel';
   @override String get dsgvoTitle => 'Data Privacy and Consent';
-  @override String get dsgvo1 => 'To track your personal spiritual development, we store your answers. This data is anonymized and stored locally.';
-  @override String get dsgvo2 => 'Please note that individuals with access to your device may be able to access this data.';
-  @override String get dsgvo3 => 'By clicking \'Agree\', you agree to have your data stored as described.';
+  @override String get dsgvo1 => 'To track your personal spiritual development, we store your answers locally on your device.';
+  @override String get dsgvo2 => 'No data is transmitted to the cloud. Your privacy stays 100% on your phone.';
+  @override String get dsgvo3 => 'By clicking \'Agree\', you consent to local storage. Without it, history cannot be saved.';
   @override String get dsgvoOK => 'Agree';
   @override String get dsgvoCancel => 'Reject';
   @override String get dsgvoYes => 'Consent given';
@@ -54,7 +53,7 @@ class AppLocalizationsEn extends AppLocalizations {
   @override String get filterQuestions => "Filter Questions";
   @override String get today => "Today";
   @override String get noData => "No data available";
-  @override String get radarError => "The Radar Chart requires at least 3 selected questions to display an area.";
+  @override String get radarError => "The Radar Chart requires at least 3 selected questions.";
   @override String get prevPeriod => "Previous Period";
   @override String get currPeriod => "Current Period";
   @override String get all => "All";
@@ -71,23 +70,30 @@ class AppLocalizationsEn extends AppLocalizations {
   @override String get settingsReminderHeader => "Reminder";
   @override String get settingsNoDataToExport => "No data available to export.";
 
+  @override String get about => "About the App";
+  @override String get aboutContent => "This app is for personal reflection and spiritual growth. Inspired by William Booth and John Wesley.";
+  @override String get version => "Version";
+  @override String get imprint => "Imprint";
+  @override String get license => "Licenses";
+  @override String get imprintContent => "Responsible: Matthias Lindner\nContact: info@example.com";
+
   @override
   Map<String, SelfAssessmentQuestionSet> get questionMap {
     return {
       "Salvation Army Chemnitz": SelfAssessmentQuestionSet(
         authorName: "Salvation Army Chemnitz",
-        description: "Self-assessment questions based on the Ten Commandments.",
+        description: "Questions based on the Ten Commandments.",
         questions: [
-          Question(text: "To what extent do I avoid putting other things beside the one true God?"),
+          Question(text: "To what extent do I avoid putting other things beside God?"),
           Question(text: "How consistently do I refrain from making an image of God?"),
-          Question(text: "How much have I avoided using the name of the LORD thoughtlessly?"),
-          Question(text: "Do I take a day off every six days to honor God?"),
-          Question(text: "To what extent do I honor my parents and show them respect?"),
-          Question(text: "How consistently do I avoid harming others in thoughts, words, or actions?"),
-          Question(text: "To what extent do I stay away from adultery?"),
-          Question(text: "How reliably do I practice honesty and refrain from taking others property?"),
-          Question(text: "In what measure do I avoid spreading false things or gossip?"),
-          Question(text: "How much do I avoid being envious of what belongs to others?"),
+          Question(text: "Do I use the Lord's name thoughtfully?"),
+          Question(text: "Do I take a day off to honor God?"),
+          Question(text: "Do I honor my parents?"),
+          Question(text: "Do I avoid harming others?"),
+          Question(text: "Do I preserve marriage as sacred?"),
+          Question(text: "Am I honest with others' property?"),
+          Question(text: "Do I avoid gossip?"),
+          Question(text: "Do I avoid envy?"),
         ],
       ),
       "William Booth": SelfAssessmentQuestionSet(
@@ -96,15 +102,15 @@ class AppLocalizationsEn extends AppLocalizations {
         questions: [
           Question(text: "Am I habitually guilty of any known sin?", isPositive: true),
           Question(text: "Am I the master of my bodily appetites?"),
-          Question(text: "Are my thoughts such that I would not be ashamed if God revealed them?"),
-          Question(text: "Does worldly influence cause me to do things unlike Christ?", isPositive: true),
-          Question(text: "Do my tempers cause me to act contrary to love?", isPositive: true),
-          Question(text: "Am I doing all in my power for the salvation of sinners?"),
-          Question(text: "Am I fulfilling the vows I made to God?"),
-          Question(text: "Is my example in harmony with my profession?"),
-          Question(text: "Am I conscious of any pride or arrogance?", isPositive: true),
-          Question(text: "Do I have the courage to go against the stream of the world?"),
-          Question(text: "Am I in danger of worldly desire to be rich or admired?", isPositive: true),
+          Question(text: "Are my thoughts such that I would not be ashamed?"),
+          Question(text: "Does worldly influence cause me to do wrong?", isPositive: true),
+          Question(text: "Do I act out of love?", isPositive: true),
+          Question(text: "Do I do all for the salvation of sinners?"),
+          Question(text: "Do I fulfill my vows?"),
+          Question(text: "Is my example in harmony with my word?"),
+          Question(text: "Am I proud or arrogant?", isPositive: true),
+          Question(text: "Do I have the courage to go against the stream?"),
+          Question(text: "Am I in danger of worldly desire?", isPositive: true),
         ],
       ),
       "John Wesley": SelfAssessmentQuestionSet(
@@ -112,26 +118,26 @@ class AppLocalizationsEn extends AppLocalizations {
         description: "John Wesley's 22 daily questions:",
         questions: [
           Question(text: "Am I a hypocrite?", isPositive: true),
-          Question(text: "Am I honest in all my acts, or do I exaggerate?", isPositive: true),
-          Question(text: "Do I pass on what was said in confidence?", isPositive: true),
+          Question(text: "Am I honest or do I exaggerate?", isPositive: true),
+          Question(text: "Do I pass on confidential info?", isPositive: true),
           Question(text: "Can I be trusted?"),
-          Question(text: "Am I a slave to dress, friends, work or habits?", isPositive: true),
-          Question(text: "Am I self-conscious or self-pitying?", isPositive: true),
+          Question(text: "Am I a slave to habits?", isPositive: true),
+          Question(text: "Am I self-pitying?", isPositive: true),
           Question(text: "Did the Bible live in me today?"),
-          Question(text: "Do I give the Bible time to speak to me every day?"),
+          Question(text: "Do I give the Bible time?"),
           Question(text: "Am I enjoying prayer?"),
-          Question(text: "When did I last speak to someone of my faith?"),
-          Question(text: "Do I pray about the money I spend?"),
-          Question(text: "Do I get to bed and get up on time?"),
-          Question(text: "Do I disobey God in anything?", isPositive: true),
-          Question(text: "Do I insist on doing something that bothers my conscience?", isPositive: true),
-          Question(text: "Am I defeated in any part of my life?", isPositive: true),
-          Question(text: "Am I jealous, impure, critical or irritable?", isPositive: true),
+          Question(text: "When did I last speak of my faith?"),
+          Question(text: "Do I pray about my money?"),
+          Question(text: "Do I sleep and wake on time?"),
+          Question(text: "Do I disobey God?", isPositive: true),
+          Question(text: "Do I insist on things that bother my conscience?", isPositive: true),
+          Question(text: "Am I defeated in any part?", isPositive: true),
+          Question(text: "Am I jealous or irritable?", isPositive: true),
           Question(text: "How do I spend my spare time?", isPositive: true),
           Question(text: "Am I proud?", isPositive: true),
-          Question(text: "Do I thank God that I am not as other people?", isPositive: true),
-          Question(text: "Is there anyone I hold a resentment toward?", isPositive: true),
-          Question(text: "Do I grumble or complain constantly?", isPositive: true),
+          Question(text: "Do I thank God I am not like others?", isPositive: true),
+          Question(text: "Do I hold a resentment?", isPositive: true),
+          Question(text: "Do I grumble constantly?", isPositive: true),
           Question(text: "Is Christ real to me?"),
         ],
       ),
