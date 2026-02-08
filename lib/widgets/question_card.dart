@@ -65,10 +65,10 @@ class _QuestionCardState extends State<QuestionCard> {
     } else {
       if (widget.question.isPositive) {
         sliderColor =
-            Color.lerp(Colors.red, Colors.green, _sliderValue) ?? Colors.green;
+            Color.lerp(Colors.green, Colors.red, _sliderValue) ?? Colors.red;
       } else {
         sliderColor =
-            Color.lerp(Colors.green, Colors.red, _sliderValue) ?? Colors.red;
+            Color.lerp(Colors.red, Colors.green, _sliderValue) ?? Colors.green;
       }
     }
 
