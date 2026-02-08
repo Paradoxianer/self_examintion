@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:self_examination/localizations/app_localizations.dart';
 import 'package:self_examination/utils/globals.dart';
@@ -38,80 +39,33 @@ class SettingsScreen extends StatelessWidget {
           ),
           
           _buildSectionHeader(context, localization.settingsExportHeader),
-          ListTile(
-            leading: const Icon(Icons.download),
-            title: Text(localization.settingsExportAll),
-            onTap: () => _handleExport(context, ExportType.all),
+          _buildExportTile(
+            context, 
+            icon: Icons.download, 
+            title: localization.settingsExportAll, 
+            type: ExportType.all
           ),
-          ListTile(
-            leading: const Icon(Icons.table_chart_outlined),
-            title: Text(localization.settingsExportValues),
-            onTap: () => _handleExport(context, ExportType.valuesAndAverage),
+          _buildExportTile(
+            context, 
+            icon: Icons.table_chart_outlined, 
+            title: localization.settingsExportValues, 
+            type: ExportType.valuesAndAverage
           ),
-          ListTile(
-            leading: const Icon(Icons.show_chart),
-            title: Text(localization.settingsExportAverage),
-            onTap: () => _handleExport(context, ExportType.averageOnly),
+          _buildExportTile(
+            context, 
+            icon: Icons.show_chart, 
+            title: localization.settingsExportAverage, 
+            type: ExportType.averageOnly
           ),
 
           _buildSectionHeader(context, localization.settingsSecurityHeader),
-          ListenableBuilder(
-            listenable: localStorage.settingsNotifier,
-            builder: (context, _) {
-              return SwitchListTile(
-                secondary: const Icon(Icons.lock_outline),
-                title: Text(localization.settingsSecurityLock), 
-                value: securityService.isSecurityEnabled(),
-                onChanged: (bool value) async {
-                  if (value) {
-                    bool canAuth = await securityService.canAuthenticate();
-                    if (canAuth) {
-                      bool success = await securityService.authenticate();
-                      if (success) securityService.setSecurityEnabled(true);
-                    }
-                  } else {
-                    bool success = await securityService.authenticate();
-                    if (success) securityService.setSecurityEnabled(false);
-                  }
-                },
-              );
-            },
-          ),
+          _buildSecuritySwitch(context, localization),
+          
           ListTile(
             leading: const Icon(Icons.info_outline),
             title: Text(localization.datasecurityDialog),
             onTap: () => _dsgvoDialog.showDSGVODialog(context),
           ),
-
-          /* --- Commented out until implementation is ready ---
-          _buildSectionHeader(context, localization.notificationFrequency),
-          ListenableBuilder(
-            listenable: localStorage.settingsNotifier,
-            builder: (context, _) {
-              String reminderFrequency = localStorage.getString('notificationFrequency') ?? 'daily';
-              return ListTile(
-                leading: const Icon(Icons.notifications_none),
-                title: Text(localization.notificationFrequency),
-                trailing: DropdownButton<String>(
-                  value: reminderFrequency,
-                  underline: const SizedBox(),
-                  items: examineFrequenze.map((String frequency) {
-                    return DropdownMenuItem<String>(
-                      value: frequency,
-                      child: Text(localization.frequenze[examineFrequenze.indexOf(frequency)]),
-                    );
-                  }).toList(),
-                  onChanged: (String? newValue) {
-                    if (newValue != null) {
-                      localStorage.setString('notificationFrequency', newValue);
-                    }
-                  },
-                ),
-              );
-            },
-          ),
-          // TODO: Implement notifications/reminder logic (e.g. using flutter_local_notifications)
-          */
 
           _buildSectionHeader(context, localization.about),
           ListTile(
@@ -141,6 +95,56 @@ class SettingsScreen extends StatelessWidget {
           letterSpacing: 1.2,
         ),
       ),
+    );
+  }
+
+  Widget _buildExportTile(BuildContext context, {required IconData icon, required String title, required ExportType type}) {
+    // Feature-Guard for Web: Export is currently mobile-only due to file system sharing
+    final bool isEnabled = !kIsWeb;
+    
+    return ListTile(
+      leading: Icon(icon, color: isEnabled ? null : Theme.of(context).disabledColor),
+      title: Text(title, style: TextStyle(color: isEnabled ? null : Theme.of(context).disabledColor)),
+      subtitle: isEnabled ? null : const Text("Nur auf Mobilgeräten verfügbar", style: TextStyle(fontSize: 10)),
+      onTap: isEnabled ? () => _handleExport(context, type) : null,
+    );
+  }
+
+  Widget _buildSecuritySwitch(BuildContext context, AppLocalizations localization) {
+    // Feature-Guard for Web: Local Auth is mobile-only
+    if (kIsWeb) {
+      return ListTile(
+        leading: Icon(Icons.lock_outline, color: Theme.of(context).disabledColor),
+        title: Text(localization.settingsSecurityLock, style: TextStyle(color: Theme.of(context).disabledColor)),
+        subtitle: const Text("Biometrie nicht im Web verfügbar", style: TextStyle(fontSize: 10)),
+      );
+    }
+
+    return ListenableBuilder(
+      listenable: localStorage.settingsNotifier,
+      builder: (context, _) {
+        return SwitchListTile(
+          secondary: const Icon(Icons.lock_outline),
+          title: Text(localization.settingsSecurityLock), 
+          value: securityService.isSecurityEnabled(),
+          onChanged: (bool value) async {
+            if (value) {
+              bool canAuth = await securityService.canAuthenticate();
+              if (canAuth) {
+                bool success = await securityService.authenticate();
+                if (success) securityService.setSecurityEnabled(true);
+              } else {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text("Sicherheitssperre auf diesem Gerät nicht möglich."))
+                );
+              }
+            } else {
+              bool success = await securityService.authenticate();
+              if (success) securityService.setSecurityEnabled(false);
+            }
+          },
+        );
+      },
     );
   }
 
