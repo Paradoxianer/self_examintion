@@ -8,7 +8,7 @@ import 'package:self_examination/utils/local_storage.dart';
 import 'package:self_examination/widgets/chart_control_widget.dart';
 
 /// A widget that visualizes a comparison between two periods or entries
-/// with support for polarity inversion (sins vs. virtues).
+/// with support for polarity inversion and custom themed tooltips.
 class ComparisonChartWidget extends StatefulWidget {
   final List<AssessmentEntry> assessmentHistory;
   final List<bool> selectedQuestions;
@@ -74,22 +74,28 @@ class _ComparisonChartWidgetState extends State<ComparisonChartWidget> {
       children: [
         if (widget.currentTimeRange != TimeRange.all)
           _buildPeriodSelectors(context, periods, localization),
-        const SizedBox(height: 8),
+        const SizedBox(height: 16),
         Expanded(
           child: Padding(
-            padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+            padding: const EdgeInsets.fromLTRB(16, 0, 24, 16),
             child: BarChart(
               BarChartData(
                 barTouchData: BarTouchData(
                   touchTooltipData: BarTouchTooltipData(
+                    tooltipBorderRadius: BorderRadius.circular(8),
+                    tooltipPadding: const EdgeInsets.all(8),
+                    tooltipMargin: 4,
+                    fitInsideVertically: true,
+                    fitInsideHorizontally: true,
+                    getTooltipColor: (group) => Theme.of(context).colorScheme.surfaceContainerHighest.withValues(alpha: 0.98),
                     getTooltipItem: (group, groupIndex, rod, rodIndex) => 
-                        _buildTooltipItem(group, groupIndex, rod, rodIndex, context, localization),
+                        _buildCustomTooltipItem(group, groupIndex, rod, rodIndex, context, localization),
                   ),
                 ),
                 minY: 0,
                 maxY: 1.1,
                 barGroups: _getComparisonData(context),
-                borderData: FlBorderData(show: true, border: Border.all(color: Colors.grey.withValues(alpha: 0.2))),
+                borderData: FlBorderData(show: true, border: Border.all(color: Colors.grey.withValues(alpha: 0.1))),
                 gridData: const FlGridData(show: true, horizontalInterval: 0.2, drawVerticalLine: false),
                 titlesData: FlTitlesData(
                   rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
@@ -103,7 +109,7 @@ class _ComparisonChartWidgetState extends State<ComparisonChartWidget> {
                   leftTitles: AxisTitles(
                     sideTitles: SideTitles(
                       showTitles: true,
-                      reservedSize: 40,
+                      reservedSize: 45,
                       getTitlesWidget: (value, meta) => _leftTitleWidgets(value, meta, context),
                     ),
                   ),
@@ -116,6 +122,99 @@ class _ComparisonChartWidgetState extends State<ComparisonChartWidget> {
     );
   }
 
+  // --- Logic & Data ---
+
+  List<BarChartGroupData> _getComparisonData(BuildContext context) {
+    final startA = _getPeriodStart(_selectedAnchorA!);
+    final endA = _getPeriodEnd(_selectedAnchorA!);
+    final startB = _getPeriodStart(_selectedAnchorB!);
+    final endB = _getPeriodEnd(_selectedAnchorB!);
+
+    final historyA = widget.assessmentHistory.where((e) => e.timestamp.isAfter(startA.subtract(const Duration(seconds: 1))) && e.timestamp.isBefore(endA.add(const Duration(seconds: 1)))).toList();
+    final historyB = widget.assessmentHistory.where((e) => e.timestamp.isAfter(startB.subtract(const Duration(seconds: 1))) && e.timestamp.isBefore(endB.add(const Duration(seconds: 1)))).toList();
+
+    List<BarChartGroupData> barGroups = [];
+    if (historyB.isEmpty && historyA.isEmpty) return [];
+
+    final int questionCount = widget.assessmentHistory.first.values.length;
+    double totalAvgA = 0, totalAvgB = 0;
+    int countSelected = 0;
+
+    for (int i = 0; i < questionCount; i++) {
+      if (i < widget.selectedQuestions.length && !widget.selectedQuestions[i]) continue;
+
+      double avgA = _calculateAverage(context, historyA, i);
+      double avgB = _calculateAverage(context, historyB, i);
+      totalAvgA += avgA; totalAvgB += avgB;
+      countSelected++;
+
+      final color = globalColorMap[i + 1] ?? Colors.blue;
+
+      barGroups.add(
+        BarChartGroupData(
+          x: i,
+          barRods: [
+            BarChartRodData(toY: avgA, color: color.withValues(alpha: 0.3), width: 10, borderRadius: const BorderRadius.vertical(top: Radius.circular(4))),
+            BarChartRodData(toY: avgB, color: color, width: 10, borderRadius: const BorderRadius.vertical(top: Radius.circular(4))),
+          ],
+        ),
+      );
+    }
+
+    if (widget.selectedQuestions.isNotEmpty && widget.selectedQuestions.last && countSelected > 0) {
+      barGroups.add(
+        BarChartGroupData(
+          x: 100,
+          barRods: [
+            BarChartRodData(toY: totalAvgA / countSelected, color: Colors.red.withValues(alpha: 0.2), width: 14, borderRadius: const BorderRadius.vertical(top: Radius.circular(4))),
+            BarChartRodData(toY: totalAvgB / countSelected, color: Colors.red, width: 14, borderRadius: const BorderRadius.vertical(top: Radius.circular(4))),
+          ],
+        ),
+      );
+    }
+    return barGroups;
+  }
+
+  BarTooltipItem? _buildCustomTooltipItem(BarChartGroupData group, int gi, BarChartRodData rod, int ri, BuildContext context, AppLocalizations localization) {
+    final authorKey = LocalStorage().getCurrentAuthor();
+    final questionSet = localization.questionMap[authorKey];
+    
+    if (ri == 0 && group.barRods.length > 1) return null;
+
+    final valA = group.barRods[0].toY;
+    final valB = group.barRods.length > 1 ? group.barRods[1].toY : valA;
+    final color = group.barRods.length > 1 ? group.barRods[1].color : group.barRods[0].color;
+    
+    String headerText = group.x == 100 ? localization.total : "${(group.x.toInt() + 1)}";
+    String bodyText = group.x == 100 ? "" : (questionSet?.questions[group.x.toInt()].text ?? "");
+
+    return BarTooltipItem(
+      "",
+      const TextStyle(),
+      children: [
+        TextSpan(
+          text: "$headerText ",
+          style: TextStyle(color: color, fontWeight: FontWeight.bold, fontSize: 14),
+        ),
+        TextSpan(
+          text: "${(valA * 100).round()}% → ",
+          style: TextStyle(color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6), fontSize: 12, fontWeight: FontWeight.bold),
+        ),
+        TextSpan(
+          text: "${(valB * 100).round()}%\n",
+          style: TextStyle(color: Theme.of(context).colorScheme.onSurface, fontSize: 12, fontWeight: FontWeight.bold),
+        ),
+        if (bodyText.isNotEmpty)
+          TextSpan(
+            text: bodyText,
+            style: TextStyle(color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.8), fontSize: 10, fontStyle: FontStyle.italic),
+          ),
+      ],
+    );
+  }
+
+  // --- UI Helpers ---
+
   Widget _buildPeriodSelectors(BuildContext context, List<DateTime> availableDates, AppLocalizations localization) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -123,7 +222,7 @@ class _ComparisonChartWidgetState extends State<ComparisonChartWidget> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           _buildDropdown(_selectedAnchorA!, (val) => setState(() => _selectedAnchorA = val), Colors.grey, availableDates, localization),
-          const Icon(Icons.compare_arrows, color: Colors.grey, size: 20),
+          Icon(Icons.compare_arrows, color: Theme.of(context).colorScheme.primary, size: 24),
           _buildDropdown(_selectedAnchorB!, (val) => setState(() => _selectedAnchorB = val), Theme.of(context).primaryColor, availableDates, localization),
         ],
       ),
@@ -139,27 +238,42 @@ class _ComparisonChartWidgetState extends State<ComparisonChartWidget> {
     }
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
       decoration: BoxDecoration(
         color: color.withValues(alpha: 0.05),
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: color.withValues(alpha: 0.3)),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: color.withValues(alpha: 0.2)),
       ),
       child: DropdownButtonHideUnderline(
         child: DropdownButton<DateTime>(
           value: effectiveValue,
-          icon: Icon(Icons.arrow_drop_down, color: color, size: 18),
+          icon: Icon(Icons.arrow_drop_down, color: color),
           onChanged: onChanged,
-          items: dates.map((date) {
-            return DropdownMenuItem<DateTime>(
-              value: date,
-              child: Text(_formatDateForDropdown(date, localization), 
-                  style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: color)),
-            );
-          }).toList(),
+          items: dates.map((date) => DropdownMenuItem<DateTime>(
+            value: date,
+            child: Text(_formatDateForDropdown(date, localization), 
+                style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: color)),
+          )).toList(),
         ),
       ),
     );
+  }
+
+  double _calculateAverage(BuildContext context, List<AssessmentEntry> history, int idx) {
+    if (history.isEmpty) return 0.0;
+    final localization = AppLocalizations.of(context)!;
+    double sum = 0; int count = 0;
+    for (var e in history) {
+      if (idx < e.values.length && e.values[idx] != -1.0) {
+        double val = e.values[idx];
+        final questionSet = localization.questionMap[e.questionSet];
+        if (questionSet != null && idx < questionSet.questions.length && questionSet.questions[idx].isPositive) {
+          val = 1.0 - val;
+        }
+        sum += val; count++;
+      }
+    }
+    return count > 0 ? sum / count : 0.0;
   }
 
   List<DateTime> _getAvailablePeriods() {
@@ -198,70 +312,6 @@ class _ComparisonChartWidgetState extends State<ComparisonChartWidget> {
     return ((days - date.weekday + 10) / 7).floor();
   }
 
-  List<BarChartGroupData> _getComparisonData(BuildContext context) {
-    final startA = _getPeriodStart(_selectedAnchorA!);
-    final endA = _getPeriodEnd(_selectedAnchorA!);
-    final startB = _getPeriodStart(_selectedAnchorB!);
-    final endB = _getPeriodEnd(_selectedAnchorB!);
-
-    final historyA = widget.assessmentHistory.where((e) => e.timestamp.isAfter(startA.subtract(const Duration(seconds: 1))) && e.timestamp.isBefore(endA.add(const Duration(seconds: 1)))).toList();
-    final historyB = widget.assessmentHistory.where((e) => e.timestamp.isAfter(startB.subtract(const Duration(seconds: 1))) && e.timestamp.isBefore(endB.add(const Duration(seconds: 1)))).toList();
-
-    List<BarChartGroupData> barGroups = [];
-    if (historyB.isEmpty && historyA.isEmpty) return [];
-
-    final int questionCount = widget.assessmentHistory.first.values.length;
-    double totalAvgA = 0, totalAvgB = 0;
-    int countSelected = 0;
-
-    for (int i = 0; i < questionCount; i++) {
-      if (i < widget.selectedQuestions.length && !widget.selectedQuestions[i]) continue;
-
-      double avgA = _calculateAverage(context, historyA, i);
-      double avgB = _calculateAverage(context, historyB, i);
-      totalAvgA += avgA; totalAvgB += avgB;
-      countSelected++;
-
-      final color = globalColorMap[i + 1] ?? Colors.blue;
-
-      barGroups.add(BarChartGroupData(
-        x: i,
-        barRods: [
-          BarChartRodData(toY: avgA, color: color.withValues(alpha: 0.3), width: 8),
-          BarChartRodData(toY: avgB, color: color, width: 8),
-        ],
-      ));
-    }
-
-    if (widget.selectedQuestions.isNotEmpty && widget.selectedQuestions.last && countSelected > 0) {
-      barGroups.add(BarChartGroupData(
-        x: 100,
-        barRods: [
-          BarChartRodData(toY: totalAvgA / countSelected, color: Colors.red.withValues(alpha: 0.3), width: 12),
-          BarChartRodData(toY: totalAvgB / countSelected, color: Colors.red, width: 12),
-        ],
-      ));
-    }
-    return barGroups;
-  }
-
-  double _calculateAverage(BuildContext context, List<AssessmentEntry> history, int idx) {
-    if (history.isEmpty) return 0.0;
-    final localization = AppLocalizations.of(context)!;
-    double sum = 0; int count = 0;
-    for (var e in history) {
-      if (idx < e.values.length && e.values[idx] != -1.0) {
-        double val = e.values[idx];
-        final questionSet = localization.questionMap[e.questionSet];
-        if (questionSet != null && idx < questionSet.questions.length && questionSet.questions[idx].isPositive) {
-          val = 1.0 - val;
-        }
-        sum += val; count++;
-      }
-    }
-    return count > 0 ? sum / count : 0.0;
-  }
-
   DateTime _getPeriodStart(DateTime d) {
     switch (widget.currentTimeRange) {
       case TimeRange.twoDays: return d;
@@ -288,13 +338,6 @@ class _ComparisonChartWidgetState extends State<ComparisonChartWidget> {
     return SideTitleWidget(meta: meta, child: Text((value.toInt() + 1).toString(), style: style));
   }
 
-  Widget _leftTitleWidgets(double value, TitleMeta meta, BuildContext context) => SideTitleWidget(meta: meta, child: Text("${(value * 100).toInt()}%", style: const TextStyle(fontSize: 8)));
-
-  BarTooltipItem _buildTooltipItem(BarChartGroupData group, int gi, BarChartRodData rod, int ri, BuildContext context, AppLocalizations localization) {
-    final authorKey = LocalStorage().getCurrentAuthor();
-    final questionSet = localization.questionMap[authorKey];
-    String qText = group.x == 100 ? localization.total : (questionSet?.questions[group.x.toInt()].text ?? "");
-    String periodLabel = ri == 0 ? localization.prevPeriod : localization.currPeriod;
-    return BarTooltipItem("$qText\n$periodLabel: ${(rod.toY * 100).round()}%", TextStyle(color: rod.color, fontWeight: FontWeight.bold, fontSize: 10));
-  }
+  Widget _leftTitleWidgets(double value, TitleMeta meta, BuildContext context) => 
+      SideTitleWidget(meta: meta, child: Text("${(value * 100).toInt()}%", style: const TextStyle(fontSize: 8, fontWeight: FontWeight.bold)));
 }
