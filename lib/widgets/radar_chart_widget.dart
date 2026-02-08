@@ -6,6 +6,7 @@ import 'package:self_examination/models/assessment_entry.dart';
 import 'package:self_examination/utils/globals.dart';
 import 'package:self_examination/widgets/chart_control_widget.dart';
 
+/// A radar chart that displays question averages or latest values with polarity support.
 class RadarChartWidget extends StatelessWidget {
   final List<AssessmentEntry> assessmentHistory;
   final List<bool> selectedQuestions;
@@ -23,39 +24,31 @@ class RadarChartWidget extends StatelessWidget {
   DateTime get _windowStart {
     switch (currentTimeRange) {
       case TimeRange.twoDays:
-        return DateTime(
-            referenceDate.year, referenceDate.month, referenceDate.day - 1);
+        return DateTime(referenceDate.year, referenceDate.month, referenceDate.day - 1);
       case TimeRange.week:
-        return DateTime(referenceDate.year, referenceDate.month,
-            referenceDate.day - (referenceDate.weekday - 1));
+        return DateTime(referenceDate.year, referenceDate.month, referenceDate.day - (referenceDate.weekday - 1));
       case TimeRange.month:
         return DateTime(referenceDate.year, referenceDate.month, 1);
       case TimeRange.year:
         return DateTime(referenceDate.year, 1, 1);
       case TimeRange.all:
-        return assessmentHistory.isNotEmpty
-            ? assessmentHistory.first.timestamp
-            : referenceDate;
+        return assessmentHistory.isNotEmpty ? assessmentHistory.first.timestamp : referenceDate;
     }
   }
 
   DateTime get _windowEnd {
     switch (currentTimeRange) {
       case TimeRange.twoDays:
-        return DateTime(referenceDate.year, referenceDate.month,
-            referenceDate.day, 23, 59, 59);
+        return DateTime(referenceDate.year, referenceDate.month, referenceDate.day, 23, 59, 59);
       case TimeRange.week:
         final monday = _windowStart;
         return DateTime(monday.year, monday.month, monday.day + 6, 23, 59, 59);
       case TimeRange.month:
-        return DateTime(
-            referenceDate.year, referenceDate.month + 1, 0, 23, 59, 59);
+        return DateTime(referenceDate.year, referenceDate.month + 1, 0, 23, 59, 59);
       case TimeRange.year:
         return DateTime(referenceDate.year, 12, 31, 23, 59, 59);
       case TimeRange.all:
-        return assessmentHistory.isNotEmpty
-            ? assessmentHistory.last.timestamp
-            : referenceDate;
+        return assessmentHistory.isNotEmpty ? assessmentHistory.last.timestamp : referenceDate;
     }
   }
 
@@ -67,9 +60,8 @@ class RadarChartWidget extends StatelessWidget {
     }
 
     final filteredHistory = assessmentHistory.where((entry) {
-      return entry.timestamp
-              .isAfter(_windowStart.subtract(const Duration(seconds: 1))) &&
-          entry.timestamp.isBefore(_windowEnd.add(const Duration(seconds: 1)));
+      return entry.timestamp.isAfter(_windowStart.subtract(const Duration(seconds: 1))) &&
+             entry.timestamp.isBefore(_windowEnd.add(const Duration(seconds: 1)));
     }).toList();
 
     final List<int> activeIndices = [];
@@ -86,14 +78,12 @@ class RadarChartWidget extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(Icons.analytics_outlined,
-                  size: 48, color: Colors.grey.withValues(alpha: 0.5)),
+              Icon(Icons.analytics_outlined, size: 48, color: Colors.grey.withValues(alpha: 0.5)),
               const SizedBox(height: 16),
               Text(
                 localization.radarError,
                 textAlign: TextAlign.center,
-                style: const TextStyle(
-                    color: Colors.grey, fontStyle: FontStyle.italic),
+                style: const TextStyle(color: Colors.grey, fontStyle: FontStyle.italic),
               ),
             ],
           ),
@@ -115,33 +105,28 @@ class RadarChartWidget extends StatelessWidget {
               child: RadarChart(
                 RadarChartData(
                   radarBackgroundColor: Colors.white,
-                  dataSets:
-                      _buildDataSets(context, filteredHistory, activeIndices),
+                  dataSets: _buildDataSets(context, filteredHistory, activeIndices),
                   getTitle: (index, angle) => const RadarChartTitle(text: ""),
                   tickCount: 5,
-                  ticksTextStyle:
-                      const TextStyle(fontSize: 8, color: Colors.grey),
-                  gridBorderData: BorderSide(
-                      color: Colors.grey.withValues(alpha: 0.3), width: 1),
+                  ticksTextStyle: const TextStyle(fontSize: 8, color: Colors.grey),
+                  gridBorderData: BorderSide(color: Colors.grey.withValues(alpha: 0.3), width: 1),
                 ),
               ),
             ),
-            ..._buildCustomLabels(
-                context, filteredHistory, activeIndices, radius),
+            ..._buildCustomLabels(context, filteredHistory, activeIndices, radius),
           ],
         );
       },
     );
   }
 
-  List<RadarDataSet> _buildDataSets(BuildContext context,
-      List<AssessmentEntry> history, List<int> activeIndices) {
+  List<RadarDataSet> _buildDataSets(BuildContext context, List<AssessmentEntry> history, List<int> activeIndices) {
     List<RadarEntry> entries = [];
     double totalSum = 0;
     int totalCount = 0;
 
     for (int originalIndex in activeIndices) {
-      double displayVal = _getDisplayValue(originalIndex, history);
+      double displayVal = _getDisplayValue(context, originalIndex, history);
       entries.add(RadarEntry(value: displayVal));
       totalSum += displayVal;
       totalCount++;
@@ -156,8 +141,7 @@ class RadarChartWidget extends StatelessWidget {
           fillColor: Colors.transparent,
           borderWidth: 2,
           entryRadius: 0,
-          dataEntries: List.generate(
-              activeIndices.length, (index) => RadarEntry(value: overallAvg)),
+          dataEntries: List.generate(activeIndices.length, (index) => RadarEntry(value: overallAvg)),
         ),
       RadarDataSet(
         borderColor: Colors.green,
@@ -169,8 +153,7 @@ class RadarChartWidget extends StatelessWidget {
     ];
   }
 
-  List<Widget> _buildCustomLabels(BuildContext context,
-      List<AssessmentEntry> history, List<int> activeIndices, double radius) {
+  List<Widget> _buildCustomLabels(BuildContext context, List<AssessmentEntry> history, List<int> activeIndices, double radius) {
     List<Widget> labels = [];
     final int count = activeIndices.length;
 
@@ -180,7 +163,7 @@ class RadarChartWidget extends StatelessWidget {
       final double x = cos(angle) * (radius + 25);
       final double y = sin(angle) * (radius + 20);
       final color = globalColorMap[originalIndex + 1] ?? Colors.grey;
-      final val = _getDisplayValue(originalIndex, history);
+      final val = _getDisplayValue(context, originalIndex, history);
 
       labels.add(
         Transform.translate(
@@ -190,17 +173,11 @@ class RadarChartWidget extends StatelessWidget {
             decoration: BoxDecoration(
               color: color.withValues(alpha: 0.8),
               borderRadius: BorderRadius.circular(4),
-              boxShadow: [
-                BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.1), blurRadius: 2)
-              ],
+              boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.1), blurRadius: 2)],
             ),
             child: Text(
               "${originalIndex + 1}: ${(val * 100).round()}%",
-              style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 9,
-                  fontWeight: FontWeight.bold),
+              style: const TextStyle(color: Colors.white, fontSize: 9, fontWeight: FontWeight.bold),
             ),
           ),
         ),
@@ -209,23 +186,35 @@ class RadarChartWidget extends StatelessWidget {
     return labels;
   }
 
-  double _getDisplayValue(int questionIndex, List<AssessmentEntry> history) {
+  double _getDisplayValue(BuildContext context, int questionIndex, List<AssessmentEntry> history) {
     if (history.isEmpty) return 0.0;
+    final localization = AppLocalizations.of(context)!;
+
     if (currentTimeRange == TimeRange.twoDays) {
       final latest = history.last;
       if (questionIndex < latest.values.length) {
-        return latest.values[questionIndex] == -1.0
-            ? 0.0
-            : latest.values[questionIndex];
+        double val = latest.values[questionIndex];
+        if (val == -1.0) return 0.0;
+        // Invert if positive (sin)
+        final questionSet = localization.questionMap[latest.questionSet];
+        if (questionSet != null && questionIndex < questionSet.questions.length && questionSet.questions[questionIndex].isPositive) {
+          val = 1.0 - val;
+        }
+        return val;
       }
       return 0.0;
     } else {
       double sum = 0;
       int count = 0;
       for (var entry in history) {
-        if (questionIndex < entry.values.length &&
-            entry.values[questionIndex] != -1.0) {
-          sum += entry.values[questionIndex];
+        if (questionIndex < entry.values.length && entry.values[questionIndex] != -1.0) {
+          double val = entry.values[questionIndex];
+          // Invert if positive (sin)
+          final questionSet = localization.questionMap[entry.questionSet];
+          if (questionSet != null && questionIndex < questionSet.questions.length && questionSet.questions[questionIndex].isPositive) {
+            val = 1.0 - val;
+          }
+          sum += val;
           count++;
         }
       }
