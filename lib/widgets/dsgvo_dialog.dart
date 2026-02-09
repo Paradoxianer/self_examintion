@@ -7,7 +7,7 @@ import 'package:self_examination/utils/local_storage.dart';
 class DSGVODialog extends StatefulWidget {
   
   /// Utility method to show the GDPR dialog.
-  showDSGVODialog(BuildContext context) {
+  void showDSGVODialog(BuildContext context) {
     showDialog(
       context: context,
       barrierDismissible: false, // User must interact with the dialog
@@ -38,7 +38,7 @@ class _DSGVODialogState extends State<DSGVODialog> {
     localStorage.setBool('agreedToDSGVO', value);
   }
 
-  /// Shows a final warning if the user disagrees with privacy terms.
+  /// Shows a confirmation dialog if the user tries to decline.
   void showDisagreeDialog(BuildContext context) {
     final localization = AppLocalizations.of(context)!;
     showDialog(
@@ -51,9 +51,20 @@ class _DSGVODialogState extends State<DSGVODialog> {
             children: <Widget>[
               Text(localization.dsgvoNoInfo),
               const SizedBox(height: 24),
-              ElevatedButton(
-                onPressed: () => exit(0), // Final exit if no consent
-                child: Text(localization.ok),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  TextButton(
+                    onPressed: () => Navigator.pop(context), // Back to main GDPR dialog
+                    child: Text(localization.cancel),
+                  ),
+                  const SizedBox(width: 8),
+                  ElevatedButton(
+                    onPressed: () => exit(0), // Exit the app
+                    style: ElevatedButton.styleFrom(backgroundColor: Colors.red, foregroundColor: Colors.white),
+                    child: const Text("App beenden"), // Fallback or add to localization
+                  ),
+                ],
               ),
             ],
           ),
