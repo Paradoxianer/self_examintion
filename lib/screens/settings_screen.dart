@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:self_examination/localizations/app_localizations.dart';
 import 'package:self_examination/utils/globals.dart';
 import 'package:self_examination/utils/local_storage.dart';
@@ -99,9 +100,7 @@ class SettingsScreen extends StatelessWidget {
   }
 
   Widget _buildExportTile(BuildContext context, {required IconData icon, required String title, required ExportType type}) {
-    // Feature-Guard for Web: Export is currently mobile-only due to file system sharing
     final bool isEnabled = !kIsWeb;
-    
     return ListTile(
       leading: Icon(icon, color: isEnabled ? null : Theme.of(context).disabledColor),
       title: Text(title, style: TextStyle(color: isEnabled ? null : Theme.of(context).disabledColor)),
@@ -111,7 +110,6 @@ class SettingsScreen extends StatelessWidget {
   }
 
   Widget _buildSecuritySwitch(BuildContext context, AppLocalizations localization) {
-    // Feature-Guard for Web: Local Auth is mobile-only
     if (kIsWeb) {
       return ListTile(
         leading: Icon(Icons.lock_outline, color: Theme.of(context).disabledColor),
@@ -133,10 +131,6 @@ class SettingsScreen extends StatelessWidget {
               if (canAuth) {
                 bool success = await securityService.authenticate();
                 if (success) securityService.setSecurityEnabled(true);
-              } else {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text("Sicherheitssperre auf diesem Gerät nicht möglich."))
-                );
               }
             } else {
               bool success = await securityService.authenticate();
@@ -157,12 +151,28 @@ class SettingsScreen extends StatelessWidget {
       applicationIcon: ClipOval(
         child: Image.asset(
           "assets/icon/self_examination_light_blue.png",
-          width: 48,
-          height: 48,
-          fit: BoxFit.cover,
+          width: 48, height: 48, fit: BoxFit.cover,
         ),
       ),
       applicationLegalese: localization.aboutContent,
+      children: [
+        const SizedBox(height: 24),
+        InkWell(
+          onTap: () => _launchURL("https://github.com/Paradoxianer/self_examintion"),
+          child: Row(
+            children: [
+              const Icon(Icons.code, size: 20, color: Colors.blue),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Text(
+                  localization.githubRepository,
+                  style: const TextStyle(color: Colors.blue, decoration: TextDecoration.underline, fontSize: 12),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 
@@ -172,12 +182,35 @@ class SettingsScreen extends StatelessWidget {
       context: context,
       builder: (context) => AlertDialog(
         title: Text(localization.imprint),
-        content: Text(localization.imprintContent),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(localization.imprintContent),
+            const SizedBox(height: 24),
+            const Divider(),
+            const SizedBox(height: 8),
+            InkWell(
+              onTap: () => _launchURL("https://github.com/Paradoxianer/self_examintion"),
+              child: Text(
+                localization.githubRepository,
+                style: const TextStyle(color: Colors.blue, decoration: TextDecoration.underline, fontSize: 13),
+              ),
+            ),
+          ],
+        ),
         actions: [
           TextButton(onPressed: () => Navigator.pop(context), child: Text(localization.ok)),
         ],
       ),
     );
+  }
+
+  Future<void> _launchURL(String url) async {
+    final Uri uri = Uri.parse(url);
+    if (!await launchUrl(uri, mode: LaunchMode.externalApplication)) {
+      debugPrint('Could not launch $url');
+    }
   }
 
   void _handleExport(BuildContext context, ExportType type) async {

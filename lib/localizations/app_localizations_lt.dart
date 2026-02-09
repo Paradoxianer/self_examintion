@@ -75,7 +75,8 @@ class AppLocalizationsLt extends AppLocalizations {
   @override String get version => "Versija";
   @override String get imprint => "Atspaudas";
   @override String get license => "Licencijos";
-  @override String get imprintContent => "Atsakingas: Matthias Lindner\nKontaktai: info@example.com";
+  @override String get imprintContent => "Atsakingas: Matthias Lindner\nKontaktai: matthias.lindner@heilsarmee.de";
+  @override String get githubRepository => "GitHub saugykla (Pranešti apie klaidas ir prisidėti)";
 
   @override
   Map<String, SelfAssessmentQuestionSet> get questionMap {

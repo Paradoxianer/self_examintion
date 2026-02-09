@@ -2,7 +2,7 @@ import 'package:self_examination/data/self_assesment_questions.dart';
 import 'package:self_examination/models/question.dart';
 import 'app_localizations.dart';
 
-/// The translations for German (`de`).
+/// Die Übersetzungen für Deutsch (`de`).
 class AppLocalizationsDe extends AppLocalizations {
   AppLocalizationsDe([String locale = 'de']) : super(locale);
 
@@ -76,7 +76,8 @@ class AppLocalizationsDe extends AppLocalizations {
   @override String get version => "Version";
   @override String get imprint => "Impressum";
   @override String get license => "Lizenzen";
-  @override String get imprintContent => "Verantwortlich: Matthias Lindner\nKontakt: info@example.com";
+  @override String get imprintContent => "Verantwortlich: Matthias Lindner\nKontakt: matthias.lindner@heilsarmee.de";
+  @override String get githubRepository => "GitHub Repository (Fehler melden & mitwirken)";
 
   @override
   Map<String, SelfAssessmentQuestionSet> get questionMap {

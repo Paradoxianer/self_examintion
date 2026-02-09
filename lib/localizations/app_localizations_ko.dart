@@ -15,7 +15,7 @@ class AppLocalizationsKo extends AppLocalizations {
   @override String get commit => '완료';
   @override String get saved => '데이터가 저장되었습니다';
   @override String get chartTitle => '개발 차트';
-  @override String get noHistory => '데이터가 없습니다. 질문에 답해주세요.';
+  @override String get noHistory => '지난 데이터가 없습니다. 질문에 답해주세요.';
   @override String get warningTitle => '경고';
   @override String warningDel(String autor, Object author) => '$author의 모든 진행 상황이 삭제됩니다. 계속하시겠습니까?';
   @override String get settingsTitle => '설정';
@@ -26,17 +26,17 @@ class AppLocalizationsKo extends AppLocalizations {
   @override String get daily => '매일';
   @override String get weekly => '매주';
   @override String get monthly => '매월';
-  @override String get datasecurityDialog => '데이터 개인 정보 보호';
+  @override String get datasecurityDialog => 'GDPR 대화 상자';
   @override String get dsgvoNo => '동의 거부';
   @override String get dsgvoNoInfo => '동의하지 않으면 앱을 사용할 수 없습니다.';
   @override String get ok => '확인';
   @override String get cancel => '취소';
-  @override String get dsgvoTitle => '데이터 개인 정보 보호 및 동의';
-  @override String get dsgvo1 => '영적 발전을 추적하기 위해 답변을 로컬에 저장합니다.';
-  @override String get dsgvo2 => '클라우드로 전송되지 않습니다. 프라이버시는 기기에 남습니다.';
-  @override String get dsgvo3 => '동의하면 로컬 저장에 동의하는 것입니다.';
+  @override String get dsgvoTitle => '데이터 개인 정보 보호';
+  @override String get dsgvo1 => '영적 발전을 추적하기 위해 답변을 저장합니다.';
+  @override String get dsgvo2 => '기기 액세스 권한이 있는 사람이 데이터를 볼 수 있습니다.';
+  @override String get dsgvo3 => '동의를 클릭하면 데이터 저장에 동의하게 됩니다.';
   @override String get dsgvoOK => '동의';
-  @override String get dsgvoCancel => '거부';
+  @override String get dsgvoCancel => '반대';
   @override String get dsgvoYes => '동의 완료';
   @override String get close => '닫기';
   @override String get total => '전체';
@@ -75,7 +75,8 @@ class AppLocalizationsKo extends AppLocalizations {
   @override String get version => "버전";
   @override String get imprint => "법적 고지";
   @override String get license => "라이선스";
-  @override String get imprintContent => "책임자: Matthias Lindner\n연락처: info@example.com";
+  @override String get imprintContent => "책임자: Matthias Lindner\n연락처: matthias.lindner@heilsarmee.de";
+  @override String get githubRepository => "GitHub 저장소 (버그 보고 및 기여)";
 
   @override
   Map<String, SelfAssessmentQuestionSet> get questionMap {

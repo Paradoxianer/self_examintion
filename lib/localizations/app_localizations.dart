@@ -14,8 +14,7 @@ import 'app_localizations_lt.dart';
 import 'app_localizations_pl.dart';
 
 abstract class AppLocalizations {
-  AppLocalizations(String locale)
-      : localeName = intl.Intl.canonicalizedLocale(locale.toString());
+  AppLocalizations(String locale) : localeName = intl.Intl.canonicalizedLocale(locale.toString());
 
   final String localeName;
 
@@ -23,11 +22,9 @@ abstract class AppLocalizations {
     return Localizations.of<AppLocalizations>(context, AppLocalizations);
   }
 
-  static const LocalizationsDelegate<AppLocalizations> delegate =
-      _AppLocalizationsDelegate();
+  static const LocalizationsDelegate<AppLocalizations> delegate = _AppLocalizationsDelegate();
 
-  static const List<LocalizationsDelegate<dynamic>> localizationsDelegates =
-      <LocalizationsDelegate<dynamic>>[
+  static const List<LocalizationsDelegate<dynamic>> localizationsDelegates = <LocalizationsDelegate<dynamic>>[
     delegate,
     GlobalMaterialLocalizations.delegate,
     GlobalCupertinoLocalizations.delegate,
@@ -43,7 +40,6 @@ abstract class AppLocalizations {
     Locale('lt'),
   ];
 
-  // Global strings
   String get greetings;
   String get start;
   String get results;
@@ -101,7 +97,7 @@ abstract class AppLocalizations {
   List<String> get timeRangeShort;
   String get tips;
 
-  // Settings strings
+  // Settings specific strings
   String get settingsQuestionSetSubtitle;
   String get settingsExportHeader;
   String get settingsExportAll;
@@ -119,10 +115,10 @@ abstract class AppLocalizations {
   String get imprint;
   String get license;
   String get imprintContent;
+  String get githubRepository; // Added for repo link
 }
 
-class _AppLocalizationsDelegate
-    extends LocalizationsDelegate<AppLocalizations> {
+class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
   const _AppLocalizationsDelegate();
 
   @override
@@ -131,14 +127,7 @@ class _AppLocalizationsDelegate
   }
 
   @override
-  bool isSupported(Locale locale) => <String>[
-        'de',
-        'en',
-        'ko',
-        'es',
-        'pl',
-        'lt'
-      ].contains(locale.languageCode);
+  bool isSupported(Locale locale) => <String>['de', 'en', 'ko', 'es', 'pl', 'lt'].contains(locale.languageCode);
 
   @override
   bool shouldReload(_AppLocalizationsDelegate old) => false;
@@ -146,20 +135,15 @@ class _AppLocalizationsDelegate
 
 AppLocalizations lookupAppLocalizations(Locale locale) {
   switch (locale.languageCode) {
-    case 'de':
-      return AppLocalizationsDe();
-    case 'en':
-      return AppLocalizationsEn();
-    case 'ko':
-      return AppLocalizationsKo();
-    case 'es':
-      return AppLocalizationsEs();
-    case 'pl':
-      return AppLocalizationsPl();
-    case 'lt':
-      return AppLocalizationsLt();
+    case 'de': return AppLocalizationsDe();
+    case 'en': return AppLocalizationsEn();
+    case 'ko': return AppLocalizationsKo();
+    case 'es': return AppLocalizationsEs();
+    case 'pl': return AppLocalizationsPl();
+    case 'lt': return AppLocalizationsLt();
   }
 
   throw FlutterError(
-      'AppLocalizations.delegate failed to load unsupported locale "$locale".');
+      'AppLocalizations.delegate failed to load unsupported locale "$locale".'
+  );
 }

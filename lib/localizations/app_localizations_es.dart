@@ -51,7 +51,6 @@ class AppLocalizationsEs extends AppLocalizations {
   @override List<String> get answers => ["En absoluto", "Poco", "Mayormente", "Completamente"];
   @override List<String> get frequenze => ["diario", "semanal", "mensual", "anual"];
 
-  // Chart UI strings
   @override String get filterQuestions => "Filtrar preguntas";
   @override String get today => "Hoy";
   @override String get noData => "No hay datos disponibles";
@@ -62,7 +61,6 @@ class AppLocalizationsEs extends AppLocalizations {
   @override List<String> get timeRangeShort => ["2D", "1S", "1M", "1A", "Todo"];
   @override String get tips => "Consejos e información";
 
-  // Settings specific strings
   @override String get settingsQuestionSetSubtitle => "Elija un conjunto para editar o eliminar datos.";
   @override String get settingsExportHeader => "Exportación de datos";
   @override String get settingsExportAll => "Exportar todo";
@@ -73,13 +71,13 @@ class AppLocalizationsEs extends AppLocalizations {
   @override String get settingsReminderHeader => "Recordatorio";
   @override String get settingsNoDataToExport => "No hay datos disponibles para exportar.";
 
-  // About and Legal strings
   @override String get about => "Acerca de la aplicación";
   @override String get aboutContent => "Esta aplicación es para la reflexión personal y el crecimiento espiritual. Inspirada por William Booth y John Wesley.";
   @override String get version => "Versión";
   @override String get imprint => "Aviso legal";
   @override String get license => "Licencias";
   @override String get imprintContent => "Responsable: Matthias Lindner\nContacto: info@example.com";
+  @override String get githubRepository => "Repositorio GitHub (Reportar errores y contribuir)";
 
   @override
   Map<String, SelfAssessmentQuestionSet> get questionMap {
@@ -136,7 +134,7 @@ class AppLocalizationsEs extends AppLocalizations {
           Question(text: "¿Desobedezco a Dios en algo?", isPositive: true),
           Question(text: "¿Hago algo que molesta mi conciencia?", isPositive: true),
           Question(text: "¿Me siento derrotado?", isPositive: true),
-          Question(text: "¿Soy celoso o irritable?", isPositive: true),
+          Question(text: "¿Soy celoso or irritable?", isPositive: true),
           Question(text: "¿Cómo paso mi tiempo libre?", isPositive: true),
           Question(text: "¿Soy orgulloso?", isPositive: true),
           Question(text: "¿Agradezco a Dios no ser como otros?", isPositive: true),

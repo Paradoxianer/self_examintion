@@ -26,17 +26,17 @@ class AppLocalizationsPl extends AppLocalizations {
   @override String get daily => 'codziennie';
   @override String get weekly => 'tygodniowo';
   @override String get monthly => 'miesięcznie';
-  @override String get datasecurityDialog => 'Dialog RODO';
+  @override String get datasecurityDialog => 'Prywatność i RODO';
   @override String get dsgvoNo => 'Odmowa zgody';
   @override String get dsgvoNoInfo => 'Aplikacja może działać tylko po wyrażeniu zgody.';
-  @override String get ok => 'ok';
-  @override String get cancel => 'anuluj';
+  @override String get ok => 'OK';
+  @override String get cancel => 'Anuluj';
   @override String get dsgvoTitle => 'Ochrona danych';
   @override String get dsgvo1 => 'Aby śledzić rozwój duchowy, przechowujemy odpowiedzi lokalnie.';
   @override String get dsgvo2 => 'Inne osoby z dostępem do urządzenia mogą widzieć te dane.';
   @override String get dsgvo3 => 'Klikając „Zgadzam się”, akceptujesz przechowywanie danych.';
   @override String get dsgvoOK => 'Zgadzam się';
-  @override String get dsgvoCancel => 'Sprzeciwiam sich';
+  @override String get dsgvoCancel => 'Sprzeciwiam się';
   @override String get dsgvoYes => 'Zgoda udzielona';
   @override String get close => 'Zamknij';
   @override String get total => 'Razem';
@@ -75,7 +75,8 @@ class AppLocalizationsPl extends AppLocalizations {
   @override String get version => "Wersja";
   @override String get imprint => "Nota prawna";
   @override String get license => "Licencje";
-  @override String get imprintContent => "Odpowiedzialny: Matthias Lindner\nKontakt: info@example.com";
+  @override String get imprintContent => "Odpowiedzialny: Matthias Lindner\nKontakt: matthias.lindner@heilsarmee.de";
+  @override String get githubRepository => "Repozytorium GitHub (Zgłoś błędy i współtwórz)";
 
   @override
   Map<String, SelfAssessmentQuestionSet> get questionMap {
