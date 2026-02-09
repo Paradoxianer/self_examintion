@@ -1,47 +1,59 @@
-/*void main() {
-  group('AssessmentEntry', () {
-    test('toJson method converts object to JSON', () {
-      // Create an AssessmentEntry object
+import 'package:flutter_test/flutter_test.dart';
+import 'package:self_examination/models/assessment_entry.dart';
+
+void main() {
+  group('AssessmentEntry Serialization Tests', () {
+
+    test('toMap() should convert object to correct Map structure', () {
+      final now = DateTime.now();
       final entry = AssessmentEntry(
-        id: 1,
-        author: 'John Doe',
-        assessmentData: {1: 3, 2: 2, 3: 4},
+        timestamp: now,
+        questionSet: 'William Booth',
+        values: [0.5, 1.0, 0.0],
+        questionNotes: ['Note 1', '', null],
+        note: 'Global note'
       );
 
-      // Convert the object to JSON
-      final json = entry.toJson();
+      final map = entry.toMap();
 
-      // Define the expected JSON representation
-      final expectedJson = {
-        'id': 1,
-        'author': 'John Doe',
-        'assessmentData': {'1': 3, '2': 2, '3': 4},
-      };
-
-      // Compare the actual JSON with the expected JSON
-      expect(json, expectedJson);
+      expect(map['timestamp'], now.toIso8601String());
+      expect(map['authorName'], 'William Booth');
+      expect(map['values'], [0.5, 1.0, 0.0]);
+      expect(map['questionNotes'], ['Note 1', '', null]);
+      expect(map['note'], 'Global note');
     });
 
-    test('fromJson method converts JSON to object', () {
-      // Define a JSON representation
-      final json = {
-        'id': 1,
-        'author': 'John Doe',
-        'assessmentData': {'1': 3, '2': 2, '3': 4},
+    test('fromMap() should recreate object accurately from Map', () {
+      final isoDate = "2024-03-20T12:00:00.000Z";
+      final map = {
+        'timestamp': isoDate,
+        'authorName': 'John Wesley',
+        'values': [0.2, 0.8],
+        'questionNotes': ['Test', 'Note'],
+        'note': 'Summary'
       };
 
-      // Convert the JSON to an AssessmentEntry object
-      final entry = AssessmentEntry.fromJson(json);
+      final entry = AssessmentEntry.fromMap(map);
 
-      // Define the expected AssessmentEntry object
-      final expectedEntry = AssessmentEntry(
-        id: 1,
-        author: 'John Doe',
-        assessmentData: {1: 3, 2: 2, 3: 4},
-      );
+      expect(entry.timestamp, DateTime.parse(isoDate));
+      expect(entry.questionSet, 'John Wesley');
+      expect(entry.values, [0.2, 0.8]);
+      expect(entry.questionNotes, ['Test', 'Note']);
+      expect(entry.note, 'Summary');
+    });
 
-      // Compare the actual object with the expected object
-      expect(entry, expectedEntry);
+    test('fromMap() should handle missing or null fields gracefully', () {
+       final map = {
+        'timestamp': DateTime.now().toIso8601String(),
+        'authorName': 'Unknown',
+        // values and questionNotes missing
+      };
+
+      final entry = AssessmentEntry.fromMap(map);
+      expect(entry.values, isA<List<double>>());
+      expect(entry.values, isEmpty);
+      expect(entry.questionNotes, isA<List<String?>>());
+      expect(entry.questionNotes, isEmpty);
     });
   });
-}*/
+}
