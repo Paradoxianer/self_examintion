@@ -11,16 +11,16 @@ Diese Roadmap dient als strukturierte Arbeitsgrundlage für die schrittweise Imp
     - [x] **6.2.1 Logik**: Invertierung der Chart-Werte basierend auf `isPositive`.
     - [x] **6.2.2 UI**: Redesign der Chart-Tooltips.
     - [x] **6.2.3 UI**: Notiz-Detail-Dialog.
-    - [x] **6.2.4 UI**: About-Dialog und Datenschutz-Infos.
+    - [x] **6.2.4 UI**: Hinzufügen eines "About"-Dialogs und erweiterten Datenschutz-Infos.
     - [x] **6.2.5 Platform**: Fix für Carousel-Navigation (Maus-Support).
     - [x] **6.2.6 Platform**: Feature-Guards für Web/Desktop.
 - [x] **6.3 Dokumentation**: Finaler Code-Review und Update der README.md.
 
 ## Phase 7: Qualitätssicherung & Testing (QA) ✅
 - [x] **7.1 Unit-Tests: Core-Logik**: Validiert via AssessmentCalculator.
-- [x] **7.2 Widget-Tests**: Manuell verifiziert (automatisierte Tests für Dropdowns auf Standby).
-- [ ] **7.3 Integration-Tests**: Vorbereitung für Release-Build.
-- [x] **7.4 Lokalisierungs-Check**: Vollständig für 6 Sprachen.
+- [x] **7.2 Widget-Tests**: Manuell verifiziert (Basis-Tests vorhanden).
+- [x] **7.3 Integration-Tests**: End-to-End Workflow automatisiert.
+- [x] **7.4 Lokalisierungs-Check**: Vollständig für 6 Sprachen validiert.
 
 ## Phase 8: Beta-Release & Publishing ⏳
 - [ ] **8.1 Branding**: Finalisierung des App-Namens und der Launcher-Icons.

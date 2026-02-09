@@ -1,8 +1,9 @@
 name: self_examination
-description: A Tool to examine your state of holiness
+description: A powerful tool for spiritual and personal growth based on the traditions of William Booth and John Wesley.
 publish_to: 'none'
 
-version: 0.1.0+6
+# Current version: 1.0.0-beta.1
+version: 1.0.0+7
 
 environment:
   sdk: '>=3.1.5 <4.0.0'
@@ -41,7 +42,6 @@ flutter:
   generate: true
   uses-material-design: true
   
-  # --- ASSETS ADDED HERE ---
   assets:
     - assets/icon/self_examination_light_blue.png
 
