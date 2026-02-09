@@ -5,10 +5,11 @@ import 'package:self_examination/localizations/app_localizations.dart';
 import 'package:self_examination/models/assessment_entry.dart';
 import 'package:self_examination/utils/globals.dart';
 import 'package:self_examination/utils/local_storage.dart';
+import 'package:self_examination/utils/assessment_calculator.dart';
 import 'package:self_examination/widgets/chart_control_widget.dart';
 
-/// A widget that visualizes a comparison between two periods or entries
-/// with support for polarity inversion and custom themed tooltips.
+/// A widget that visualizes a comparison between two periods using themed tooltips
+/// and the centralized AssessmentCalculator for polarity support.
 class ComparisonChartWidget extends StatefulWidget {
   final List<AssessmentEntry> assessmentHistory;
   final List<bool> selectedQuestions;
@@ -64,9 +65,7 @@ class _ComparisonChartWidgetState extends State<ComparisonChartWidget> {
   @override
   Widget build(BuildContext context) {
     final localization = AppLocalizations.of(context)!;
-    if (widget.assessmentHistory.isEmpty) {
-      return Center(child: Text(localization.noData));
-    }
+    if (widget.assessmentHistory.isEmpty) return Center(child: Text(localization.noData));
 
     final periods = _getAvailablePeriods();
     
@@ -121,8 +120,6 @@ class _ComparisonChartWidgetState extends State<ComparisonChartWidget> {
       ],
     );
   }
-
-  // --- Logic & Data ---
 
   List<BarChartGroupData> _getComparisonData(BuildContext context) {
     final startA = _getPeriodStart(_selectedAnchorA!);
@@ -213,51 +210,7 @@ class _ComparisonChartWidgetState extends State<ComparisonChartWidget> {
     );
   }
 
-  // --- UI Helpers ---
-
-  Widget _buildPeriodSelectors(BuildContext context, List<DateTime> availableDates, AppLocalizations localization) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          _buildDropdown(_selectedAnchorA!, (val) => setState(() => _selectedAnchorA = val), Colors.grey, availableDates, localization),
-          Icon(Icons.compare_arrows, color: Theme.of(context).colorScheme.primary, size: 24),
-          _buildDropdown(_selectedAnchorB!, (val) => setState(() => _selectedAnchorB = val), Theme.of(context).primaryColor, availableDates, localization),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildDropdown(DateTime currentValue, ValueChanged<DateTime?> onChanged, Color color, List<DateTime> dates, AppLocalizations localization) {
-    String currentKey = _getPeriodKey(currentValue);
-    DateTime effectiveValue = dates.firstWhere((d) => _getPeriodKey(d) == currentKey, orElse: () => currentValue);
-    if (!dates.any((d) => _getPeriodKey(d) == currentKey)) {
-      dates = [effectiveValue, ...dates];
-      dates.sort((a, b) => b.compareTo(a));
-    }
-
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-      decoration: BoxDecoration(
-        color: color.withValues(alpha: 0.05),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: color.withValues(alpha: 0.2)),
-      ),
-      child: DropdownButtonHideUnderline(
-        child: DropdownButton<DateTime>(
-          value: effectiveValue,
-          icon: Icon(Icons.arrow_drop_down, color: color),
-          onChanged: onChanged,
-          items: dates.map((date) => DropdownMenuItem<DateTime>(
-            value: date,
-            child: Text(_formatDateForDropdown(date, localization), 
-                style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: color)),
-          )).toList(),
-        ),
-      ),
-    );
-  }
+  // --- Helpers using Centralized Calculator ---
 
   double _calculateAverage(BuildContext context, List<AssessmentEntry> history, int idx) {
     if (history.isEmpty) return 0.0;
@@ -265,17 +218,19 @@ class _ComparisonChartWidgetState extends State<ComparisonChartWidget> {
     double sum = 0; int count = 0;
     for (var e in history) {
       if (idx < e.values.length && e.values[idx] != -1.0) {
-        double val = e.values[idx];
         final questionSet = localization.questionMap[e.questionSet];
-        if (questionSet != null && idx < questionSet.questions.length && questionSet.questions[idx].isPositive) {
-          val = 1.0 - val;
+        bool isPositive = false;
+        if (questionSet != null && idx < questionSet.questions.length) {
+          isPositive = questionSet.questions[idx].isPositive;
         }
-        sum += val; count++;
+        sum += AssessmentCalculator.getChartValue(e.values[idx], isPositive);
+        count++;
       }
     }
     return count > 0 ? sum / count : 0.0;
   }
 
+  // ... (Restliche Hilfsmethoden bleiben gleich)
   List<DateTime> _getAvailablePeriods() {
     final Set<String> uniqueKeys = {};
     final List<DateTime> distinctDates = [];
@@ -330,6 +285,49 @@ class _ComparisonChartWidgetState extends State<ComparisonChartWidget> {
       case TimeRange.year: return DateTime(d.year, 12, 31, 23, 59, 59);
       default: return d;
     }
+  }
+
+  Widget _buildPeriodSelectors(BuildContext context, List<DateTime> availableDates, AppLocalizations localization) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          _buildDropdown(_selectedAnchorA!, (val) => setState(() => _selectedAnchorA = val), Colors.grey, availableDates, localization),
+          Icon(Icons.compare_arrows, color: Theme.of(context).colorScheme.primary, size: 24),
+          _buildDropdown(_selectedAnchorB!, (val) => setState(() => _selectedAnchorB = val), Theme.of(context).primaryColor, availableDates, localization),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildDropdown(DateTime currentValue, ValueChanged<DateTime?> onChanged, Color color, List<DateTime> dates, AppLocalizations localization) {
+    String currentKey = _getPeriodKey(currentValue);
+    DateTime effectiveValue = dates.firstWhere((d) => _getPeriodKey(d) == currentKey, orElse: () => currentValue);
+    if (!dates.any((d) => _getPeriodKey(d) == currentKey)) {
+      dates = [effectiveValue, ...dates];
+      dates.sort((a, b) => b.compareTo(a));
+    }
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+      decoration: BoxDecoration(
+        color: color.withValues(alpha: 0.05),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: color.withValues(alpha: 0.2)),
+      ),
+      child: DropdownButtonHideUnderline(
+        child: DropdownButton<DateTime>(
+          value: effectiveValue,
+          icon: Icon(Icons.arrow_drop_down, color: color),
+          onChanged: onChanged,
+          items: dates.map((date) => DropdownMenuItem<DateTime>(
+            value: date,
+            child: Text(_formatDateForDropdown(date, localization), 
+                style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: color)),
+          )).toList(),
+        ),
+      ),
+    );
   }
 
   Widget _bottomTitleWidgets(double value, TitleMeta meta, BuildContext context, AppLocalizations localization) {

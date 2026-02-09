@@ -3,6 +3,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:self_examination/localizations/app_localizations.dart';
 import 'package:self_examination/models/assessment_entry.dart';
 import 'package:self_examination/utils/globals.dart';
+import 'package:self_examination/utils/assessment_calculator.dart';
 import 'package:self_examination/widgets/chart_control_widget.dart';
 
 /// A chart that visualizes assessment trends over time using area charts.
@@ -105,7 +106,6 @@ class TimeChartWidget extends StatelessWidget {
   List<LineChartBarData> _buildBars(BuildContext context, List<AssessmentEntry> history) {
     List<LineChartBarData> bars = [];
 
-    // 1. Durchschnittslinie
     if (selectedQuestions.isNotEmpty && selectedQuestions.last) {
       bars.add(LineChartBarData(
         spots: _getOverallScores(context, history),
@@ -123,7 +123,6 @@ class TimeChartWidget extends StatelessWidget {
       ));
     }
 
-    // 2. Fragen-Linien
     for (int i = 0; i < selectedQuestions.length - 1; i++) {
       if (selectedQuestions[i]) {
         final color = globalColorMap[i + 1] ?? Colors.blue;
@@ -155,8 +154,10 @@ class TimeChartWidget extends StatelessWidget {
   }
 
   List<FlSpot> _getOverallScores(BuildContext context, List<AssessmentEntry> history) {
+    final localization = AppLocalizations.of(context)!;
     return history.map((entry) {
-      double avg = _calculateEntryAverage(context, entry);
+      final questionSet = localization.questionMap[entry.questionSet];
+      double avg = AssessmentCalculator.calculateAverage(entry, questionSet);
       return FlSpot(entry.timestamp.millisecondsSinceEpoch.toDouble(), avg);
     }).toList();
   }
@@ -166,35 +167,16 @@ class TimeChartWidget extends StatelessWidget {
     List<FlSpot> spots = [];
     for (var entry in history) {
       if (index < entry.values.length && entry.values[index] != -1.0) {
-        double val = entry.values[index];
-        // Logic fix: Invert if isPositive (Sünde)
         final questionSet = localization.questionMap[entry.questionSet];
-        if (questionSet != null && index < questionSet.questions.length && questionSet.questions[index].isPositive) {
-          val = 1.0 - val;
+        bool isPositive = false;
+        if (questionSet != null && index < questionSet.questions.length) {
+          isPositive = questionSet.questions[index].isPositive;
         }
+        double val = AssessmentCalculator.getChartValue(entry.values[index], isPositive);
         spots.add(FlSpot(entry.timestamp.millisecondsSinceEpoch.toDouble(), val));
       }
     }
     return spots;
-  }
-
-  double _calculateEntryAverage(BuildContext context, AssessmentEntry entry) {
-    final localization = AppLocalizations.of(context)!;
-    double sum = 0;
-    int count = 0;
-    final questionSet = localization.questionMap[entry.questionSet];
-    
-    for (int i = 0; i < entry.values.length; i++) {
-      double val = entry.values[i];
-      if (val != -1.0) {
-        if (questionSet != null && i < questionSet.questions.length && questionSet.questions[i].isPositive) {
-          val = 1.0 - val;
-        }
-        sum += val;
-        count++;
-      }
-    }
-    return count > 0 ? sum / count : 0.0;
   }
 
   Widget _bottomTitleWidgets(double value, TitleMeta meta, BuildContext context) {

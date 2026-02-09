@@ -4,9 +4,11 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:self_examination/localizations/app_localizations.dart';
 import 'package:self_examination/models/assessment_entry.dart';
 import 'package:self_examination/utils/globals.dart';
+import 'package:self_examination/utils/assessment_calculator.dart';
 import 'package:self_examination/widgets/chart_control_widget.dart';
 
-/// A radar chart that displays question averages or latest values with polarity support.
+/// A radar chart that displays question averages or latest values with polarity support
+/// using the centralized AssessmentCalculator.
 class RadarChartWidget extends StatelessWidget {
   final List<AssessmentEntry> assessmentHistory;
   final List<bool> selectedQuestions;
@@ -23,41 +25,30 @@ class RadarChartWidget extends StatelessWidget {
 
   DateTime get _windowStart {
     switch (currentTimeRange) {
-      case TimeRange.twoDays:
-        return DateTime(referenceDate.year, referenceDate.month, referenceDate.day - 1);
-      case TimeRange.week:
-        return DateTime(referenceDate.year, referenceDate.month, referenceDate.day - (referenceDate.weekday - 1));
-      case TimeRange.month:
-        return DateTime(referenceDate.year, referenceDate.month, 1);
-      case TimeRange.year:
-        return DateTime(referenceDate.year, 1, 1);
-      case TimeRange.all:
-        return assessmentHistory.isNotEmpty ? assessmentHistory.first.timestamp : referenceDate;
+      case TimeRange.twoDays: return DateTime(referenceDate.year, referenceDate.month, referenceDate.day - 1);
+      case TimeRange.week: return DateTime(referenceDate.year, referenceDate.month, referenceDate.day - (referenceDate.weekday - 1));
+      case TimeRange.month: return DateTime(referenceDate.year, referenceDate.month, 1);
+      case TimeRange.year: return DateTime(referenceDate.year, 1, 1);
+      case TimeRange.all: return assessmentHistory.isNotEmpty ? assessmentHistory.first.timestamp : referenceDate;
     }
   }
 
   DateTime get _windowEnd {
     switch (currentTimeRange) {
-      case TimeRange.twoDays:
-        return DateTime(referenceDate.year, referenceDate.month, referenceDate.day, 23, 59, 59);
+      case TimeRange.twoDays: return DateTime(referenceDate.year, referenceDate.month, referenceDate.day, 23, 59, 59);
       case TimeRange.week:
         final monday = _windowStart;
         return DateTime(monday.year, monday.month, monday.day + 6, 23, 59, 59);
-      case TimeRange.month:
-        return DateTime(referenceDate.year, referenceDate.month + 1, 0, 23, 59, 59);
-      case TimeRange.year:
-        return DateTime(referenceDate.year, 12, 31, 23, 59, 59);
-      case TimeRange.all:
-        return assessmentHistory.isNotEmpty ? assessmentHistory.last.timestamp : referenceDate;
+      case TimeRange.month: return DateTime(referenceDate.year, referenceDate.month + 1, 0, 23, 59, 59);
+      case TimeRange.year: return DateTime(referenceDate.year, 12, 31, 23, 59, 59);
+      case TimeRange.all: return assessmentHistory.isNotEmpty ? assessmentHistory.last.timestamp : referenceDate;
     }
   }
 
   @override
   Widget build(BuildContext context) {
     final localization = AppLocalizations.of(context)!;
-    if (assessmentHistory.isEmpty) {
-      return Center(child: Text(localization.noData));
-    }
+    if (assessmentHistory.isEmpty) return Center(child: Text(localization.noData));
 
     final filteredHistory = assessmentHistory.where((entry) {
       return entry.timestamp.isAfter(_windowStart.subtract(const Duration(seconds: 1))) &&
@@ -66,9 +57,7 @@ class RadarChartWidget extends StatelessWidget {
 
     final List<int> activeIndices = [];
     for (int i = 0; i < selectedQuestions.length - 1; i++) {
-      if (selectedQuestions[i]) {
-        activeIndices.add(i);
-      }
+      if (selectedQuestions[i]) activeIndices.add(i);
     }
 
     if (activeIndices.length < 3) {
@@ -193,14 +182,12 @@ class RadarChartWidget extends StatelessWidget {
     if (currentTimeRange == TimeRange.twoDays) {
       final latest = history.last;
       if (questionIndex < latest.values.length) {
-        double val = latest.values[questionIndex];
-        if (val == -1.0) return 0.0;
-        // Invert if positive (sin)
         final questionSet = localization.questionMap[latest.questionSet];
-        if (questionSet != null && questionIndex < questionSet.questions.length && questionSet.questions[questionIndex].isPositive) {
-          val = 1.0 - val;
+        bool isPositive = false;
+        if (questionSet != null && questionIndex < questionSet.questions.length) {
+          isPositive = questionSet.questions[questionIndex].isPositive;
         }
-        return val;
+        return AssessmentCalculator.getChartValue(latest.values[questionIndex], isPositive);
       }
       return 0.0;
     } else {
@@ -208,13 +195,12 @@ class RadarChartWidget extends StatelessWidget {
       int count = 0;
       for (var entry in history) {
         if (questionIndex < entry.values.length && entry.values[questionIndex] != -1.0) {
-          double val = entry.values[questionIndex];
-          // Invert if positive (sin)
           final questionSet = localization.questionMap[entry.questionSet];
-          if (questionSet != null && questionIndex < questionSet.questions.length && questionSet.questions[questionIndex].isPositive) {
-            val = 1.0 - val;
+          bool isPositive = false;
+          if (questionSet != null && questionIndex < questionSet.questions.length) {
+            isPositive = questionSet.questions[questionIndex].isPositive;
           }
-          sum += val;
+          sum += AssessmentCalculator.getChartValue(entry.values[questionIndex], isPositive);
           count++;
         }
       }
