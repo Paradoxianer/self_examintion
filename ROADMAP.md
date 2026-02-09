@@ -5,18 +5,18 @@ Diese Roadmap dient als strukturierte Arbeitsgrundlage für die schrittweise Imp
 ## Phase 1 - 5: ✅ Abgeschlossen
 *(Details in der Git-Historie)*
 
-## Phase 6: Export & Finalisierung ⏳
+## Phase 6: Export & Finalisierung ✅
 - [x] **6.1 Export-Manager**: CSV Export Varianten.
-- [ ] **6.2 Dokumentation & Cleanup (Deep-Dive Polish)**:
-    - [ ] **6.2.1 Logik**: Invertierung der Chart-Werte basierend auf `isPositive` (Sünden vs. Tugenden).
-    - [ ] **6.2.2 UI**: Redesign der Chart-Tooltips (bessere Lesbarkeit).
-    - [ ] **6.2.3 UI**: Notiz-Detail-Dialog beim Antippen im Carousel.
-    - [ ] **6.2.4 UI**: Hinzufügen eines "About"-Dialogs und erweiterten Datenschutz-Infos.
-    - [ ] **6.2.5 Platform**: Fix für Carousel-Navigation auf Web/Desktop (Maus-Support).
-    - [ ] **6.2.6 Platform**: Feature-Guards für Web/Desktop (Biometrie/Export Deaktivierung).
+- [x] **6.2 Dokumentation & Cleanup (Deep-Dive Polish)**:
+    - [x] **6.2.1 Logik**: Invertierung der Chart-Werte basierend auf `isPositive` (Sünden vs. Tugenden).
+    - [x] **6.2.2 UI**: Redesign der Chart-Tooltips (bessere Lesbarkeit).
+    - [x] **6.2.3 UI**: Notiz-Detail-Dialog beim Antippen im Carousel.
+    - [x] **6.2.4 UI**: Hinzufügen eines "About"-Dialogs und erweiterten Datenschutz-Infos.
+    - [x] **6.2.5 Platform**: Fix für Carousel-Navigation auf Web/Desktop (Maus-Support).
+    - [x] **6.2.6 Platform**: Feature-Guards für Web/Desktop (Biometrie/Export Deaktivierung).
 - [ ] **6.3 Dokumentation**: Finaler Code-Review und Update der README.md.
 
-## Phase 7: Qualitätssicherung & Testing (QA)
+## Phase 7: Qualitätssicherung & Testing (QA) ⏳
 - [ ] **7.1 Unit-Tests**: Validierung der Berechnungslogik (Durchschnitte, Invertierung).
 - [ ] **7.2 Widget-Tests**: Slider-Funktion, Card-States, Dropdowns.
 - [ ] **7.3 Integration-Tests**: Kompletter Durchlauf Mobile vs. Web.
