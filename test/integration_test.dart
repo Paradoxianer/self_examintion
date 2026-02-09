@@ -6,6 +6,7 @@ import 'package:self_examination/screens/assessment_screen.dart';
 import 'package:self_examination/screens/chart_screen.dart';
 import 'package:self_examination/utils/local_storage.dart';
 import 'package:self_examination/widgets/question_card.dart';
+import 'package:self_examination/localizations/app_localizations.dart';
 
 void main() {
   setUp(() async {
@@ -20,48 +21,53 @@ void main() {
 
   group('End-to-End Integration Flow', () {
     testWidgets('Complete assessment cycle and view results', (WidgetTester tester) async {
-      // 1. Build the App
-      await tester.pumpWidget(const MyApp());
+      // 1. Build the App with forced German locale
+      await tester.pumpWidget(
+        const MaterialApp(
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          locale: Locale('de'),
+          home: AuthWrapper(),
+        ),
+      );
+      
+      // Wait for AuthWrapper to initialize and redirect to HomeScreen
       await tester.pumpAndSettle();
 
-      // Ensure we are on the Assessment Screen (Start screen)
-      // Note: Depending on your home_screen logic, we might need to tap "Start" first.
-      // Assuming AuthWrapper redirects to HomeScreen and we tap Start.
-      
-      if (find.text('Starten').exists) { // German 'Start' button
-         await tester.tap(find.text('Starten'));
-         await tester.pumpAndSettle();
-      }
+      // 2. Navigate to AssessmentScreen
+      final startButtonFinder = find.text('Starten');
+      expect(startButtonFinder, findsOneWidget);
+      await tester.tap(startButtonFinder);
+      await tester.pumpAndSettle();
 
-      // 2. Interact with the first QuestionCard
+      // 3. Interact with the first QuestionCard
       expect(find.byType(QuestionCard), findsWidgets);
       
-      // Drag the first slider to 80% (approx)
+      // Drag the first slider to approx 80%
       await tester.drag(find.byType(Slider).first, const Offset(150.0, 0.0));
       await tester.pumpAndSettle();
 
-      // 3. Save the Assessment
+      // 4. Save the Assessment
       final fabFinder = find.byType(FloatingActionButton);
       expect(fabFinder, findsOneWidget);
       await tester.tap(fabFinder);
       await tester.pumpAndSettle();
 
-      // 4. Handle Unanswered Warning (if it appears)
-      if (find.byType(AlertDialog).exists) {
-        await tester.tap(find.text('OK'));
+      // 5. Handle Unanswered Warning (if it appears)
+      final okButtonFinder = find.text('OK');
+      if (tester.any(okButtonFinder)) {
+        await tester.tap(okButtonFinder);
         await tester.pumpAndSettle();
       }
 
-      // 5. Verify Navigation to ChartScreen
+      // 6. Verify Navigation to ChartScreen
       expect(find.byType(ChartScreen), findsOneWidget);
-      
-      // Verify that at least one Chart is visible
       expect(find.byType(PageView), findsOneWidget);
       
-      // 6. Check if data persisted
+      // 7. Check if data persisted
       final history = await LocalStorage().loadAssessmentEntries();
       expect(history.isNotEmpty, true);
-      expect(history.last.values.first > 0.5, true); // Verified our 80% drag
+      expect(history.last.values.first > 0.5, true);
     });
   });
 }
