@@ -14,7 +14,7 @@ Diese Roadmap dient als strukturierte Arbeitsgrundlage für die schrittweise Imp
     - [x] **6.2.4 UI**: Hinzufügen eines "About"-Dialogs und erweiterten Datenschutz-Infos.
     - [x] **6.2.5 Platform**: Fix für Carousel-Navigation auf Web/Desktop (Maus-Support).
     - [x] **6.2.6 Platform**: Feature-Guards für Web/Desktop (Biometrie/Export Deaktivierung).
-- [ ] **6.3 Dokumentation**: Finaler Code-Review und Update der README.md.
+- [x] **6.3 Dokumentation**: Finaler Code-Review und Update der README.md.
 
 ## Phase 7: Qualitätssicherung & Testing (QA) ⏳
 - [ ] **7.1 Unit-Tests**: Validierung der Berechnungslogik (Durchschnitte, Invertierung).
