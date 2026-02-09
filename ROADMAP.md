@@ -23,8 +23,22 @@ Diese Roadmap dient als strukturierte Arbeitsgrundlage für die schrittweise Imp
 - [x] **7.4 Lokalisierungs-Check**: Vollständig für 6 Sprachen validiert.
 
 ## Phase 8: Beta-Release & Publishing ⏳
-- [ ] **8.1 Branding**: Finalisierung des App-Namens und der Launcher-Icons.
-- [ ] **8.2 Store-Präsenz**: Screenshots und Beschreibungen.
-- [ ] **8.3 Versionierung**: Umstellung auf Version 1.0.0-beta.1.
-- [ ] **8.4 ProGuard**: Android-Code-Schutz.
-- [ ] **8.5 Release-Build Test**: Erstellung einer APK/App Bundle.
+- [ ] **8.1 Branding & Visuals**
+    - [ ] Launcher-Icons für alle Plattformen generieren (`flutter_launcher_icons`).
+    - [ ] Feature-Grafik (1024x500) für Google Play erstellen.
+    - [ ] App-Icon Review (Kontrast & Rundungen).
+- [ ] **8.2 Store-Präsenz & Marketing**
+    - [ ] Screenshots erstellen:
+        - [ ] Phone (6.5" & 5.5")
+        - [ ] Tablet (10" & 7")
+    - [ ] YouTube Demo-Video produzieren (Screencast der neuen Features).
+    - [ ] Store-Beschreibungen finalisieren (DE/EN/ES/KO/LT/PL).
+- [ ] **8.3 Versionierung & Build**
+    - [x] Umstellung auf Version 1.0.0-beta.1 (Build 7).
+    - [ ] Finaler Release-AAB (Android App Bundle) erstellen.
+- [ ] **8.4 Security & Performance**
+    - [x] ProGuard/R8 Code-Verschleierung konfigurieren.
+    - [ ] Performance-Check im Release-Build (Ladezeiten der Charts).
+- [ ] **8.5 Release-Prozess**
+    - [ ] Interner Test-Track in Google Play Console hochladen.
+    - [ ] Tester-Gruppe einladen und Feedback-Kanal eröffnen.
