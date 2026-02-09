@@ -10,6 +10,11 @@
 -keep class com.baseflow.localauth.** { *; }
 -keep class androidx.biometric.** { *; }
 
+# FIX: Missing Play Store SplitInstall classes
+-dontwarn com.google.android.play.core.**
+-keep class com.google.android.play.core.splitinstall.** { *; }
+-keep class com.google.android.play.core.tasks.** { *; }
+
 # Prevent obfuscation of specialized classes
 -keepattributes Signature
 -keepattributes *Annotation*

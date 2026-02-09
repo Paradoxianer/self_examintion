@@ -75,7 +75,7 @@ class AppLocalizationsKo extends AppLocalizations {
   @override String get version => "버전";
   @override String get imprint => "법적 고지";
   @override String get license => "라이선스";
-  @override String get imprintContent => "책임자: Matthias Lindner\n연락처: matthias.lindner@heilsarmee.de";
+  @override String get imprintContent => "책임자: Matthias Lindner\n연락처: ";
   @override String get githubRepository => "GitHub 저장소 (버그 보고 및 기여)";
 
   @override

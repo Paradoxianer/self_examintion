@@ -75,7 +75,7 @@ class AppLocalizationsPl extends AppLocalizations {
   @override String get version => "Wersja";
   @override String get imprint => "Nota prawna";
   @override String get license => "Licencje";
-  @override String get imprintContent => "Odpowiedzialny: Matthias Lindner\nKontakt: matthias.lindner@heilsarmee.de";
+  @override String get imprintContent => "Odpowiedzialny: Matthias Lindner\nKontakt: ";
   @override String get githubRepository => "Repozytorium GitHub (Zgłoś błędy i współtwórz)";
 
   @override

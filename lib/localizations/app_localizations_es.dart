@@ -76,7 +76,7 @@ class AppLocalizationsEs extends AppLocalizations {
   @override String get version => "Versión";
   @override String get imprint => "Aviso legal";
   @override String get license => "Licencias";
-  @override String get imprintContent => "Responsable: Matthias Lindner\nContacto: info@example.com";
+  @override String get imprintContent => "Responsable: Matthias Lindner\nContacto: ";
   @override String get githubRepository => "Repositorio GitHub (Reportar errores y contribuir)";
 
   @override
@@ -106,7 +106,7 @@ class AppLocalizationsEs extends AppLocalizations {
           Question(text: "¿Soy el amo de mis apetitos corporales?"),
           Question(text: "¿Son mis pensamientos limpios ante Dios?"),
           Question(text: "¿Me hace el mundo hacer cosas diferentes a las de Cristo?", isPositive: true),
-          Question(text: "¿Mis malhumores me hacen actuar contra el amor?", isPositive: true),
+          Question(text: "¿Mis malhumores me machen actuar contra el amor?", isPositive: true),
           Question(text: "¿Hago todo por la salvación de los pecadores?"),
           Question(text: "¿Cumplo mis votos a Dios?"),
           Question(text: "¿Es mi ejemplo armonioso con mi fe?"),
@@ -134,7 +134,7 @@ class AppLocalizationsEs extends AppLocalizations {
           Question(text: "¿Desobedezco a Dios en algo?", isPositive: true),
           Question(text: "¿Hago algo que molesta mi conciencia?", isPositive: true),
           Question(text: "¿Me siento derrotado?", isPositive: true),
-          Question(text: "¿Soy celoso or irritable?", isPositive: true),
+          Question(text: "¿Soy celoso o irritable?", isPositive: true),
           Question(text: "¿Cómo paso mi tiempo libre?", isPositive: true),
           Question(text: "¿Soy orgulloso?", isPositive: true),
           Question(text: "¿Agradezco a Dios no ser como otros?", isPositive: true),

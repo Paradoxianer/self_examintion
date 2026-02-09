@@ -75,7 +75,7 @@ class AppLocalizationsEn extends AppLocalizations {
   @override String get version => "Version";
   @override String get imprint => "Imprint";
   @override String get license => "Licenses";
-  @override String get imprintContent => "Responsible: Matthias Lindner\nContact: matthias.lindner@heilsarmee.de";
+  @override String get imprintContent => "Responsible: Matthias Lindner\nContact: ";
   @override String get githubRepository => "GitHub Repository (Report bugs & contribute)";
 
   @override

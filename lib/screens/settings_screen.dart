@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:self_examination/localizations/app_localizations.dart';
 import 'package:self_examination/utils/globals.dart';
@@ -40,24 +41,9 @@ class SettingsScreen extends StatelessWidget {
           ),
           
           _buildSectionHeader(context, localization.settingsExportHeader),
-          _buildExportTile(
-            context, 
-            icon: Icons.download, 
-            title: localization.settingsExportAll, 
-            type: ExportType.all
-          ),
-          _buildExportTile(
-            context, 
-            icon: Icons.table_chart_outlined, 
-            title: localization.settingsExportValues, 
-            type: ExportType.valuesAndAverage
-          ),
-          _buildExportTile(
-            context, 
-            icon: Icons.show_chart, 
-            title: localization.settingsExportAverage, 
-            type: ExportType.averageOnly
-          ),
+          _buildExportTile(context, icon: Icons.download, title: localization.settingsExportAll, type: ExportType.all),
+          _buildExportTile(context, icon: Icons.table_chart_outlined, title: localization.settingsExportValues, type: ExportType.valuesAndAverage),
+          _buildExportTile(context, icon: Icons.show_chart, title: localization.settingsExportAverage, type: ExportType.averageOnly),
 
           _buildSectionHeader(context, localization.settingsSecurityHeader),
           _buildSecuritySwitch(context, localization),
@@ -90,10 +76,7 @@ class SettingsScreen extends StatelessWidget {
       child: Text(
         title.toUpperCase(),
         style: TextStyle(
-          fontSize: 12,
-          fontWeight: FontWeight.bold,
-          color: Theme.of(context).colorScheme.primary,
-          letterSpacing: 1.2,
+          fontSize: 12, fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.primary, letterSpacing: 1.2,
         ),
       ),
     );
@@ -142,12 +125,16 @@ class SettingsScreen extends StatelessWidget {
     );
   }
 
-  void _showAbout(BuildContext context) {
+  void _showAbout(BuildContext context) async {
     final localization = AppLocalizations.of(context)!;
+    final packageInfo = await PackageInfo.fromPlatform();
+    
+    if (!context.mounted) return;
+
     showAboutDialog(
       context: context,
       applicationName: "Self-Examination",
-      applicationVersion: "1.0.0-beta.1",
+      applicationVersion: "${packageInfo.version}+${packageInfo.buildNumber}",
       applicationIcon: ClipOval(
         child: Image.asset(
           "assets/icon/self_examination_light_blue.png",
@@ -187,6 +174,14 @@ class SettingsScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(localization.imprintContent),
+            const SizedBox(height: 12),
+            InkWell(
+              onTap: () => _launchURL("mailto:matthias.lindner@heilsarmee.de"),
+              child: const Text(
+                "matthias.lindner@heilsarmee.de",
+                style: TextStyle(color: Colors.blue, decoration: TextDecoration.underline),
+              ),
+            ),
             const SizedBox(height: 24),
             const Divider(),
             const SizedBox(height: 8),

@@ -22,6 +22,7 @@ dependencies:
   local_auth: ^2.2.0
   path_provider: ^2.1.2
   share_plus: ^7.2.1
+  package_info_plus: ^8.0.0
 
   flutter_localizations:
     sdk: flutter
