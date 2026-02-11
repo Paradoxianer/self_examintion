@@ -14,7 +14,7 @@ void main() {
     SharedPreferences.setMockInitialValues({
       'isSecurityEnabled': false, // Disable lock for test flow
       'agreedToDSGVO': true,      // Skip GDPR dialog
-      'currentAuthor': 'Salvation Army Chemnitz'
+      'currentAuthor': 'ten commandments'
     });
     await LocalStorage().initialize();
   });

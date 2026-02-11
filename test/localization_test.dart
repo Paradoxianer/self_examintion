@@ -39,8 +39,8 @@ void main() {
     test('All locales should provide the main question sets', () {
       for (var locale in locales) {
         final sets = locale.questionMap;
-        expect(sets.containsKey('Salvation Army Chemnitz'), true, 
-          reason: 'Locale ${locale.localeName} is missing "Salvation Army Chemnitz" set');
+        expect(sets.containsKey('ten commandments'), true,
+          reason: 'Locale ${locale.localeName} is missing "ten commandments" set');
         expect(sets.containsKey('William Booth'), true, 
           reason: 'Locale ${locale.localeName} is missing "William Booth" set');
         expect(sets.containsKey('John Wesley'), true, 
@@ -49,12 +49,12 @@ void main() {
     });
 
     test('Question counts should be consistent across languages', () {
-      final baseCount = AppLocalizationsDe().questionMap['Salvation Army Chemnitz']!.questions.length;
+      final baseCount = AppLocalizationsDe().questionMap['ten commandments']!.questions.length;
       
       for (var locale in locales) {
-        final count = locale.questionMap['Salvation Army Chemnitz']!.questions.length;
+        final count = locale.questionMap['ten commandments']!.questions.length;
         expect(count, baseCount, 
-          reason: 'Question count for Salvation Army Chemnitz differs in ${locale.localeName}');
+          reason: 'Question count for ten commandments differs in ${locale.localeName}');
       }
     });
   });

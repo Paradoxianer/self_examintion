@@ -82,8 +82,8 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   Map<String, SelfAssessmentQuestionSet> get questionMap {
     return {
-      "Salvation Army Chemnitz": SelfAssessmentQuestionSet(
-        authorName: "Heilsarmee Chemnitz",
+      "ten commandments": SelfAssessmentQuestionSet(
+        authorName: "Zehn Gebote",
         description: "Fragen basierend auf den zehn Geboten.",
         questions: [
           Question(text: "Inwieweit vermeide ich es, andere Dinge neben Gott zu setzen?", description: "Du sollst keine anderen Götter haben!"),
@@ -106,7 +106,7 @@ class AppLocalizationsDe extends AppLocalizations {
           Question(text: "Habe ich mein körperliches Verlangen unter Kontrolle?"),
           Question(text: "Sind meine Gedanken vor Gott rein?"),
           Question(text: "Verleitet mich weltlicher Einfluss zu Unrecht?", isPositive: true),
-          Question(text: "Handle ich stets aus Liebe?", isPositive: true),
+          Question(text: "Handle ich stets aus Liebe?"),
           Question(text: "Tue ich alles für die Rettung von Sündern?"),
           Question(text: "Erfülle ich meine Gelübde?"),
           Question(text: "Steht mein Vorbild im Einklang mit meinem Wort?"),

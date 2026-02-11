@@ -45,7 +45,7 @@ class LocalStorage {
       _currentAuthor = tmpStr;
       assessmentNotifier.notify();
     } else if (tmpStr == null) {
-      _currentAuthor = "Salvation Army Chemnitz";
+      _currentAuthor = "ten commandments";
     }
   }
 

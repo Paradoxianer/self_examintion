@@ -7,7 +7,7 @@ import 'package:self_examination/localizations/app_localizations.dart';
 
 void main() {
   setUp(() async {
-    SharedPreferences.setMockInitialValues({'currentAuthor': 'Salvation Army Chemnitz'});
+    SharedPreferences.setMockInitialValues({'currentAuthor': 'ten commandments'});
     final storage = LocalStorage();
     await storage.initialize();
   });

@@ -81,7 +81,7 @@ class AppLocalizationsKo extends AppLocalizations {
   @override
   Map<String, SelfAssessmentQuestionSet> get questionMap {
     return {
-      "Salvation Army Chemnitz": SelfAssessmentQuestionSet(
+      "ten commandments": SelfAssessmentQuestionSet(
         authorName: "켐니츠 구세군",
         description: "십계명 기반 질문.",
         questions: [

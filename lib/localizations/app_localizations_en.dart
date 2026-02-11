@@ -81,8 +81,8 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   Map<String, SelfAssessmentQuestionSet> get questionMap {
     return {
-      "Salvation Army Chemnitz": SelfAssessmentQuestionSet(
-        authorName: "Salvation Army Chemnitz",
+      "ten commandments": SelfAssessmentQuestionSet(
+        authorName: "ten commandments",
         description: "Questions based on the Ten Commandments.",
         questions: [
           Question(text: "To what extent do I avoid putting other things beside God?"),
