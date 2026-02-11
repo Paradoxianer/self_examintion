@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:self_examination/localizations/app_localizations.dart';
 import 'package:self_examination/models/question.dart';
 import 'package:self_examination/utils/globals.dart';
+import 'package:self_examination/utils/assessment_calculator.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class QuestionCard extends StatefulWidget {
@@ -59,16 +60,19 @@ class _QuestionCardState extends State<QuestionCard> {
     final localization = AppLocalizations.of(context)!;
     bool isAnswered = widget.question.value != -1.0;
 
+    // Use AssessmentCalculator for consistent visual logic
+    final double displayScore = AssessmentCalculator.getChartValue(_sliderValue, widget.question.isPositive);
+
     Color sliderColor;
     if (!isAnswered) {
       sliderColor = Colors.grey;
     } else {
       if (widget.question.isPositive) {
-        sliderColor =
-            Color.lerp(Colors.green, Colors.red, _sliderValue) ?? Colors.red;
+        // Sin: 100% slider = Red (0% Holiness)
+        sliderColor = Color.lerp(Colors.green, Colors.red, _sliderValue) ?? Colors.red;
       } else {
-        sliderColor =
-            Color.lerp(Colors.red, Colors.green, _sliderValue) ?? Colors.green;
+        // Virtue: 100% slider = Green (100% Holiness)
+        sliderColor = Color.lerp(Colors.red, Colors.green, _sliderValue) ?? Colors.green;
       }
     }
 
@@ -85,17 +89,13 @@ class _QuestionCardState extends State<QuestionCard> {
                 width: 50,
                 height: 50,
                 decoration: BoxDecoration(
-                  color: globalColorMap[widget.cardNumber]
-                          ?.withValues(alpha: 0.5) ??
-                      Colors.blue.withValues(alpha: 0.5),
-                  borderRadius:
-                      const BorderRadius.only(bottomRight: Radius.circular(25)),
+                  color: globalColorMap[widget.cardNumber]?.withValues(alpha: 0.5) ?? Colors.blue.withValues(alpha: 0.5),
+                  borderRadius: const BorderRadius.only(bottomRight: Radius.circular(25)),
                 ),
                 child: Center(
                   child: Text(
                     widget.cardNumber.toString(),
-                    style: const TextStyle(
-                        fontSize: 20, fontWeight: FontWeight.bold),
+                    style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
                 ),
               ),
@@ -114,13 +114,10 @@ class _QuestionCardState extends State<QuestionCard> {
                               message: widget.question.description ?? '',
                               child: Text(
                                 widget.question.text,
-                                style: const TextStyle(
-                                    fontSize: 16.0,
-                                    fontWeight: FontWeight.w500),
+                                style: const TextStyle(fontSize: 16.0, fontWeight: FontWeight.w500),
                               ),
                             ),
                           ),
-                          // Ultra-compact Icon column
                           SizedBox(
                             width: 32,
                             child: Column(
@@ -130,23 +127,16 @@ class _QuestionCardState extends State<QuestionCard> {
                                     padding: EdgeInsets.zero,
                                     constraints: const BoxConstraints(),
                                     visualDensity: VisualDensity.compact,
-                                    icon: const Icon(Icons.info_outline,
-                                        size: 20),
-                                    onPressed: () => _showTipsDialog(
-                                        context, widget.question.tips!),
+                                    icon: const Icon(Icons.info_outline, size: 20),
+                                    onPressed: () => _showTipsDialog(context, localization, widget.question.tips!),
                                   ),
                                 IconButton(
                                   padding: EdgeInsets.zero,
                                   constraints: const BoxConstraints(),
                                   visualDensity: VisualDensity.compact,
-                                  icon: Icon(
-                                      _showNote
-                                          ? Icons.note
-                                          : Icons.note_add_outlined,
-                                      size: 20,
-                                      color: _showNote
-                                          ? Theme.of(context).primaryColor
-                                          : null),
+                                  icon: Icon(_showNote ? Icons.note : Icons.note_add_outlined, 
+                                      size: 20, 
+                                      color: _showNote ? Theme.of(context).primaryColor : null),
                                   onPressed: () {
                                     setState(() {
                                       _showNote = !_showNote;
@@ -162,15 +152,13 @@ class _QuestionCardState extends State<QuestionCard> {
                       SliderTheme(
                         data: SliderTheme.of(context).copyWith(
                           trackHeight: 8.0,
-                          thumbShape: const RoundSliderThumbShape(
-                              enabledThumbRadius: 10.0),
-                          overlayShape: const RoundSliderOverlayShape(
-                              overlayRadius: 20.0),
-                          valueIndicatorShape:
-                              const RectangularSliderValueIndicatorShape(),
+                          thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 10.0),
+                          overlayShape: const RoundSliderOverlayShape(overlayRadius: 20.0),
+                          valueIndicatorShape: const RectangularSliderValueIndicatorShape(),
                           valueIndicatorColor: sliderColor,
-                          valueIndicatorTextStyle:
-                              const TextStyle(color: Colors.white),
+                          valueIndicatorTextStyle: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                          // Force indicator to be shown while dragging
+                          showValueIndicator: ShowValueIndicator.always,
                         ),
                         child: Column(
                           children: [
@@ -186,21 +174,16 @@ class _QuestionCardState extends State<QuestionCard> {
                               max: 1.0,
                               activeColor: sliderColor,
                               inactiveColor: sliderColor.withValues(alpha: 0.2),
-                              label: "${(_sliderValue * 100).round()}%",
+                              // Show calculated holiness score in the tooltip
+                              label: "${(displayScore * 100).round()}%",
                             ),
                             Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 12.0),
+                              padding: const EdgeInsets.symmetric(horizontal: 12.0),
                               child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text(localization.answers.first,
-                                      style: const TextStyle(
-                                          fontSize: 12, color: Colors.grey)),
-                                  Text(localization.answers.last,
-                                      style: const TextStyle(
-                                          fontSize: 12, color: Colors.grey)),
+                                  Text(localization.answers.first, style: const TextStyle(fontSize: 12, color: Colors.grey)),
+                                  Text(localization.answers.last, style: const TextStyle(fontSize: 12, color: Colors.grey)),
                                 ],
                               ),
                             ),
@@ -235,12 +218,12 @@ class _QuestionCardState extends State<QuestionCard> {
     );
   }
 
-  void _showTipsDialog(BuildContext context, String tips) {
+  void _showTipsDialog(BuildContext context, AppLocalizations localization, String tips) {
     showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: const Text('Tipps'),
+          title: Text(localization.tips),
           content: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -250,7 +233,7 @@ class _QuestionCardState extends State<QuestionCard> {
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: const Text('Schließen'),
+              child: Text(localization.close),
             ),
           ],
         );
