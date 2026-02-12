@@ -45,7 +45,8 @@ class LocalStorage {
       _currentAuthor = tmpStr;
       assessmentNotifier.notify();
     } else if (tmpStr == null) {
-      _currentAuthor = "ten commandments";
+      // SET DEFAULT QUESTION SET TO WILLIAM BOOTH
+      _currentAuthor = "William Booth";
     }
   }
 
@@ -77,14 +78,11 @@ class LocalStorage {
     return _prefs?.getString(key);
   }
 
-  // Speichert eine Liste von Booleans als JSON-String
   Future<void> setBoolList(String key, List<bool> values) async {
     final String json = jsonEncode(values);
     await _prefs?.setString(key, json);
-    // Wir notifizieren hier nicht automatisch, da dies oft Teil einer größeren Änderung ist
   }
 
-  // Lädt eine Liste von Booleans
   List<bool>? getBoolList(String key) {
     final String? json = _prefs?.getString(key);
     if (json == null) return null;

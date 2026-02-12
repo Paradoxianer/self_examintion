@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:self_examination/main.dart';
-import 'package:self_examination/screens/assessment_screen.dart';
 import 'package:self_examination/screens/chart_screen.dart';
 import 'package:self_examination/utils/local_storage.dart';
 import 'package:self_examination/widgets/question_card.dart';
@@ -14,7 +13,7 @@ void main() {
     SharedPreferences.setMockInitialValues({
       'isSecurityEnabled': false, // Disable lock for test flow
       'agreedToDSGVO': true,      // Skip GDPR dialog
-      'currentAuthor': 'ten commandments'
+      'currentAuthor': 'Willam Booth'
     });
     await LocalStorage().initialize();
   });
