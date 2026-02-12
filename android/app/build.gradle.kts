@@ -14,7 +14,7 @@ if (keystorePropertiesFile.exists()) {
 }
 
 android {
-    namespace = "com.example.self_examination"
+    namespace = "de.heilsarmee.self_examination" // Optional: namespace auch anpassen
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 
@@ -28,7 +28,8 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.example.self_examination"
+        // HIER WIRD DER PAKETNAME FESTGELEGT
+        applicationId = "de.heilsarmee.self_examination"
         minSdk = flutter.minSdkVersion
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
@@ -46,7 +47,6 @@ android {
 
     buildTypes {
         release {
-            // HIER NUTZEN WIR JETZT DIE RELEASE-CONFIG
             signingConfig = signingConfigs.getByName("release")
 
             isMinifyEnabled = true
