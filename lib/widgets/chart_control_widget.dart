@@ -53,8 +53,11 @@ class ChartControlWidget extends StatelessWidget {
             itemCount: itemCount,
             itemBuilder: (context, index) {
               if (showAverage && index == questionCount) {
-                return _buildAverageCard(context, localization);
+                return _buildAverageCard(context, localization, index);
               }
+              // Safety check to prevent index out of bounds during set transitions
+              if (index >= questionCount) return const SizedBox.shrink();
+              
               return _buildQuestionCard(context, index, questionSet.questions[index].text);
             },
           ),
@@ -65,7 +68,8 @@ class ChartControlWidget extends StatelessWidget {
 
   Widget _buildQuestionCard(BuildContext context, int qIndex, String questionText) {
     final color = globalColorMap[qIndex + 1] ?? Colors.grey;
-    final isSelected = selectedQuestions[qIndex];
+    // Safety check for selectedQuestions length
+    final isSelected = qIndex < selectedQuestions.length ? selectedQuestions[qIndex] : false;
 
     final questionNotes = assessmentHistory
         .where((entry) =>
@@ -89,7 +93,6 @@ class ChartControlWidget extends StatelessWidget {
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // GESTALTETES STAMP-DESIGN (Zahl + Checkbox oben fixiert)
               Container(
                 width: 50,
                 decoration: BoxDecoration(
@@ -116,7 +119,6 @@ class ChartControlWidget extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: 12),
-              // FRAGENTEXT
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 4.0),
@@ -139,9 +141,9 @@ class ChartControlWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildAverageCard(BuildContext context, AppLocalizations localization) {
-    final int avgIndex = selectedQuestions.length - 1;
-    final bool isSelected = selectedQuestions[avgIndex];
+  Widget _buildAverageCard(BuildContext context, AppLocalizations localization, int avgIndex) {
+    // Safety check for selectedQuestions length
+    final bool isSelected = avgIndex < selectedQuestions.length ? selectedQuestions[avgIndex] : false;
     const color = Colors.red;
 
     return Card(
@@ -157,41 +159,41 @@ class ChartControlWidget extends StatelessWidget {
             decoration: BoxDecoration(
               color: isSelected ? color.withValues(alpha: 0.5) : Colors.grey.withValues(alpha: 0.2),
               borderRadius: const BorderRadius.only(bottomRight: Radius.circular(20)),
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const SizedBox(height: 8),
-                const Icon(Icons.functions, size: 20),
-                const SizedBox(height: 4),
-                Checkbox(
-                  value: isSelected,
-                  activeColor: color,
-                  materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                  onChanged: (val) => onQuestionToggle(avgIndex, val ?? false),
                 ),
-                const SizedBox(height: 8),
-              ],
-            ),
-          ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 16.0),
-              child: Text(
-                localization.total,
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.bold,
-                  color: isSelected ? color : Colors.grey,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const SizedBox(height: 8),
+                    const Icon(Icons.functions, size: 20),
+                    const SizedBox(height: 4),
+                    Checkbox(
+                      value: isSelected,
+                      activeColor: color,
+                      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                      onChanged: (val) => onQuestionToggle(avgIndex, val ?? false),
+                    ),
+                    const SizedBox(height: 8),
+                  ],
                 ),
               ),
-            ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 16.0),
+                  child: Text(
+                    localization.total,
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                      color: isSelected ? color : Colors.grey,
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
-        ],
-      ),
-    );
-  }
+        );
+      }
 
   Widget _buildTimeRangeSelector(BuildContext context, AppLocalizations localization) {
     return Padding(

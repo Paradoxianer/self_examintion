@@ -31,42 +31,25 @@ class _ChartScreenState extends State<ChartScreen> {
   @override
   void initState() {
     super.initState();
-    // Restore the last viewed chart from storage
     _currentPage = _localStorage.getInt('lastChartIndex', defaultValue: 0);
     _pageController = PageController(initialPage: _currentPage);
-    _initializeState();
+    _loadStoredFilters();
   }
 
-  /// Loads historical data and restores the user's previous filter settings.
-  void _initializeState() async {
-    final history = await _localStorage.loadAssessmentEntries();
-    if (history.isNotEmpty && mounted) {
-      final int questionCount = history[0].values.length + 1; // +1 for average toggle
-
-      // Restore question selection
-      List<bool>? savedSelection = _localStorage.getBoolList('chartSelectedQuestions');
-      if (savedSelection == null || savedSelection.length != questionCount) {
-        savedSelection = List.generate(questionCount, (index) => true);
-      }
-
-      // Restore time range
-      String? savedRange = _localStorage.getString('chartTimeRange');
-      TimeRange range = TimeRange.all;
-      if (savedRange != null) {
-        range = TimeRange.values.firstWhere((e) => e.toString() == savedRange, orElse: () => TimeRange.all);
-      }
-
-      setState(() {
-        _selectedQuestions = savedSelection!;
-        _currentTimeRange = range;
-        _referenceDate = history.last.timestamp;
-      });
+  void _loadStoredFilters() {
+    String? savedRange = _localStorage.getString('chartTimeRange');
+    if (savedRange != null) {
+      _currentTimeRange = TimeRange.values.firstWhere(
+        (e) => e.toString() == savedRange, 
+        orElse: () => TimeRange.all
+      );
     }
   }
 
-  /// Saves the current chart configuration to local storage.
+  /// Saves the current chart configuration to local storage using author-specific keys.
   void _saveSettings() {
-    _localStorage.setBoolList('chartSelectedQuestions', _selectedQuestions);
+    final authorKey = _localStorage.getCurrentAuthor();
+    _localStorage.setBoolList('chartSelectedQuestions_$authorKey', _selectedQuestions);
     _localStorage.setString('chartTimeRange', _currentTimeRange.toString());
     _localStorage.setInt('lastChartIndex', _currentPage);
   }
@@ -89,8 +72,22 @@ class _ChartScreenState extends State<ChartScreen> {
               );
             }
 
-            if (_selectedQuestions.isEmpty && history.isNotEmpty) {
-              _selectedQuestions = List.generate(history[0].values.length + 1, (index) => true);
+            // Sync selectedQuestions with the current author's specific settings
+            final authorKey = _localStorage.getCurrentAuthor();
+            final int expectedLength = history[0].values.length + 1;
+            final String storageKey = 'chartSelectedQuestions_$authorKey';
+            
+            // Check if we need to switch or initialize the selection list
+            // We check the length to see if it matches the current set's structure
+            if (_selectedQuestions.length != expectedLength) {
+              List<bool>? savedSelection = _localStorage.getBoolList(storageKey);
+              
+              if (savedSelection != null && savedSelection.length == expectedLength) {
+                _selectedQuestions = savedSelection;
+              } else {
+                // Default: all selected for a new or uninitialized set
+                _selectedQuestions = List.generate(expectedLength, (index) => true);
+              }
               _referenceDate = history.last.timestamp;
             }
 
@@ -110,32 +107,30 @@ class _ChartScreenState extends State<ChartScreen> {
               ),
               body: OrientationBuilder(
                 builder: (context, orientation) {
-                  if (orientation == Orientation.portrait) {
-                    return Column(
-                      children: [
-                        _buildChartCarousel(history),
-                        _buildPageIndicator(),
-                        const Divider(height: 1),
-                        Expanded(flex: 3, child: _buildControls(history)),
-                      ],
-                    );
-                  } else {
-                    return Row(
-                      children: [
-                        Expanded(
-                          flex: 6,
-                          child: Column(
-                            children: [
-                              Expanded(child: _buildChartCarousel(history)),
-                              _buildPageIndicator(),
-                            ],
-                          ),
-                        ),
-                        const VerticalDivider(width: 1),
-                        Expanded(flex: 4, child: _buildControls(history)),
-                      ],
-                    );
-                  }
+                  return orientation == Orientation.portrait
+                      ? Column(
+                          children: [
+                            _buildChartCarousel(history),
+                            _buildPageIndicator(),
+                            const Divider(height: 1),
+                            Expanded(flex: 3, child: _buildControls(history)),
+                          ],
+                        )
+                      : Row(
+                          children: [
+                            Expanded(
+                              flex: 6,
+                              child: Column(
+                                children: [
+                                  Expanded(child: _buildChartCarousel(history)),
+                                  _buildPageIndicator(),
+                                ],
+                              ),
+                            ),
+                            const VerticalDivider(width: 1),
+                            Expanded(flex: 4, child: _buildControls(history)),
+                          ],
+                        );
                 },
               ),
             );
@@ -145,18 +140,12 @@ class _ChartScreenState extends State<ChartScreen> {
     );
   }
 
-  /// Builds the swipable chart area with mouse support enabled.
   Widget _buildChartCarousel(List<AssessmentEntry> history) {
     return SizedBox(
       height: 300,
       child: ScrollConfiguration(
-        // Enable mouse dragging for carousel navigation on Desktop/Web
         behavior: ScrollConfiguration.of(context).copyWith(
-          dragDevices: {
-            PointerDeviceKind.touch,
-            PointerDeviceKind.mouse,
-            PointerDeviceKind.trackpad,
-          },
+          dragDevices: {PointerDeviceKind.touch, PointerDeviceKind.mouse, PointerDeviceKind.trackpad},
         ),
         child: PageView(
           controller: _pageController,
