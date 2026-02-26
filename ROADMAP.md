@@ -4,12 +4,12 @@ Diese Roadmap beschreibt den Weg von der aktuellen Beta-Version hin zu einer sta
 
 ---
 
-## 📅 V1.0 - Das Fundament & Beta-Release (Abgeschlossen / In Arbeit)
+## 📅 V1.0 - Das Fundament & Beta-Release (In Arbeit)
 
 ### Phase 1 - 7: ✅ Aufbau & Grundfunktionen
 *   Implementierung des Datenmodells, UI-Redesign, Diagramme, Security, Export und QA-Tests.
 
-### Phase 8: Beta-Release & Publishing (In Arbeit)
+### Phase 8: Beta-Release & Publishing (Abgeschlossen / In Arbeit)
 - [x] **8.1 Branding & Visuals**: App-Name "Self-Examination" und adaptive Icons finalisiert.
 - [x] **8.2 Store-Präsenz**: Beschreibungen in 6 Sprachen erstellt.
 - [x] **8.3 Versionierung**: Auf 1.0.0-beta.1+7 gesetzt.
@@ -17,6 +17,15 @@ Diese Roadmap beschreibt den Weg von der aktuellen Beta-Version hin zu einer sta
 - [x] **8.5 Release-Build**: `flutter build appbundle` ausgeführt.
 - [x] **8.6 Store-Upload**: AAB in die Play Console hochgeladen.
 - [x] **8.7 Chart-Stabilität**: Fehler bei Radar-Chart und "Gesamt"-Index korrigiert.
+
+### Phase 9: Finalisierung V1.0 (Polishing & UX)
+*Ziel: Ein runder Abschluss für das erste offizielle Release.*
+- [ ] **Daten-Integrität (#37)**: Bereinigung aller Dummy-Daten in den Standard-Fragensets (z.B. Heilsarmee Chemnitz).
+- [ ] **Onboarding-Erlebnis (#47)**: Einführung eines kurzen Intros für Erstnutzer, um den Workflow zu erklären.
+- [ ] **Export-Verbesserung (#49)**: Sinnvolle Spaltentitel (Fragetexte) im CSV/Excel Export.
+- [ ] **UX-Quick-Wins**:
+    - [ ] **Select/Deselect All (#44)**: Komfortable Auswahl in der Fragensteuerung.
+    - [ ] **Notiz-Sichtbarkeit (#46)**: Bessere Sichtbarkeit der Notiz-Funktion für Fragen.
 
 ---
 
@@ -28,27 +37,27 @@ Diese Phase beginnt nach dem erfolgreichen ersten Release der Version 1.0.
 *Ziel: Die App schneller und bereit für die Cloud machen.*
 - [ ] **Modernisierung der Technik (Refactoring)**: Einführung eines "Repository-Patterns", um die App fit für Cloud-Sync und Reporting zu machen.
 - [ ] **Sicherer & Schneller (Datenbank-Umstellung) (#33)**: Wechsel von einfachem Speicher zu einer echten, verschlüsselten Datenbank (Isar/SQLite). Ermöglicht flüssiges Suchen ohne Ladezeiten.
-- [ ] **Daten-Frühjahrsputz (#37)**: Korrektur der Beispieldaten im Heilsarmee-Set Chemnitz.
 
 ### Phase 2.2: Dein persönlicher Begleiter
 *Ziel: Mehr Individualität und bessere tägliche Unterstützung.*
 - [ ] **Eigene Fragen-Sets erstellen (#41)**: Ermögliche es Nutzern, komplett eigene Reflexions-Sets anzulegen.
 - [ ] **Erinnerungen & Impulse (#3)**: 
     - Sanfte Erinnerungen per Push-Benachrichtigung (einstellbar), um die regelmäßige Selbstprüfung zu unterstützen.
+- [ ] **Inhaltliche Erweiterung (#48, #17)**: 
+    - Bessere Beschreibungen und "Warum"-Erklärungen für bestehende Fragen (#48).
+    - Integration weiterer Sets (z.B. Wesley, DiscipleBuilding, 30 Fragen zur Reflexion) (#17).
 - [ ] **Sprachvielfalt (#24)**: Übersetzung in Ukrainisch und Russisch.
-- [ ] **Inhaltliche Erweiterung (#17)**: Integration weiterer Sets (z.B. Wesley, DiscipleBuilding, 30 Fragen zur Reflexion).
 
 ### Phase 2.3: Motivation & Belohnung (Gamification)
 *Ziel: Dranbleiben belohnen.*
 - [ ] **Dranbleiben-Zähler (#35)**: Visualisierung von "Streaks" (Serien) bei regelmäßiger Nutzung.
 - [ ] **Meilensteine**: Kleine Auszeichnungen und Medaillen für erreichte Ziele.
 
-### Phase 2.4: Vernetzung & Gemeinsames Wachstum (Optional)
+### Phase 2.4: Vernetzung & Gemeinsames Wachstum
 *Ziel: Cloud-Sync und anonymisierter Austausch.*
-- [ ] **Deine Daten überall (Cloud-Sync) (#42)**: Optionaler Login, um Daten zwischen Web und Mobile zu synchronisieren (Datenschutz bleibt priorisiert).
-- [ ] **Gemeinsam wachsen (Heilsarmee-Reporting) (#43)**: 
-    - Entwicklung einer Funktion, um anonymisierte Durchschnittswerte an ein Korps oder die Heilsarmee Deutschland zu senden.
-    - Fokus auf strikte Anonymisierung und Datenschutz ("Privacy by Design").
+- [ ] **Rechenschafts-Partner (#45)**: Möglichkeit, Ergebnisse (kontrolliert) mit einem Partner zu teilen.
+- [ ] **Deine Daten überall (Cloud-Sync) (#42)**: Optionaler Login, um Daten zwischen Web und Mobile zu synchronisieren.
+- [ ] **Gemeinsam wachsen (Heilsarmee-Reporting) (#43)**: Anonymisierte Durchschnittswerte an ein Korps oder die Heilsarmee Deutschland senden.
 
 ---
 
