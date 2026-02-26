@@ -71,32 +71,38 @@ class ChartControlWidget extends StatelessWidget {
   }
 
   Widget _buildSelectionControls(BuildContext context, AppLocalizations localization) {
+    final bool allSelected = selectedQuestions.isNotEmpty && selectedQuestions.every((q) => q);
+    final primaryColor = Theme.of(context).primaryColor;
+
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
+          Container(
+            width: 50,
+            alignment: Alignment.center,
+            child: Checkbox(
+              value: allSelected,
+              activeColor: primaryColor,
+              materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+              onChanged: (val) => onToggleAll(val ?? false),
+            ),
+          ),
+          const SizedBox(width: 12),
+          Text(
+            localization.all,
+            style: TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.bold,
+              color: allSelected ? primaryColor : Colors.grey[700],
+            ),
+          ),
+          const Spacer(),
           Text(
             localization.filterQuestions,
-            style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+            style: TextStyle(fontSize: 11, color: Colors.grey[600], fontStyle: FontStyle.italic),
           ),
-          Row(
-            children: [
-              TextButton.icon(
-                onPressed: () => onToggleAll(true),
-                icon: const Icon(Icons.check_box, size: 18),
-                label: Text(localization.all, style: const TextStyle(fontSize: 11)),
-                style: TextButton.styleFrom(visualDensity: VisualDensity.compact),
-              ),
-              const SizedBox(width: 8),
-              IconButton(
-                onPressed: () => onToggleAll(false),
-                icon: const Icon(Icons.check_box_outline_blank, size: 18),
-                visualDensity: VisualDensity.compact,
-                tooltip: "None", // Hardcoded fallback for now since we cannot edit texts
-              ),
-            ],
-          ),
+          const SizedBox(width: 8),
         ],
       ),
     );
@@ -104,7 +110,6 @@ class ChartControlWidget extends StatelessWidget {
 
   Widget _buildQuestionCard(BuildContext context, int qIndex, String questionText) {
     final color = globalColorMap[qIndex + 1] ?? Colors.grey;
-    // Safety check for selectedQuestions length
     final isSelected = qIndex < selectedQuestions.length ? selectedQuestions[qIndex] : false;
 
     final questionNotes = assessmentHistory
@@ -178,7 +183,6 @@ class ChartControlWidget extends StatelessWidget {
   }
 
   Widget _buildAverageCard(BuildContext context, AppLocalizations localization, int avgIndex) {
-    // Safety check for selectedQuestions length
     final bool isSelected = avgIndex < selectedQuestions.length ? selectedQuestions[avgIndex] : false;
     const color = Colors.red;
 
