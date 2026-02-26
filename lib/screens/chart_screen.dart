@@ -207,6 +207,14 @@ class _ChartScreenState extends State<ChartScreen> {
         setState(() => _selectedQuestions[index] = value);
         _saveSettings();
       },
+      onToggleAll: (value) {
+        setState(() {
+          for (int i = 0; i < _selectedQuestions.length; i++) {
+            _selectedQuestions[i] = value;
+          }
+        });
+        _saveSettings();
+      },
       onTimeRangeChange: (range) {
         setState(() {
           _currentTimeRange = range;

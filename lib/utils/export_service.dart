@@ -51,20 +51,33 @@ class ExportService {
     final localization = AppLocalizations.of(context)!;
     StringBuffer buffer = StringBuffer();
 
+    if (history.isEmpty) return "";
+
+    final questionSet = localization.questionMap[history.first.questionSet];
+    final String setName = questionSet?.authorName ?? history.first.questionSet;
+
     // --- Header Row ---
     buffer.write("Date;");
-    if (type != ExportType.averageOnly && history.isNotEmpty) {
-      final questionSet = localization.questionMap[history.first.questionSet];
-      if (questionSet != null) {
-        for (int i = 0; i < questionSet.questions.length; i++) {
-          buffer.write("Q${i + 1};");
-          if (type == ExportType.all) {
-            buffer.write("Note Q${i + 1};");
-          }
+    
+    if (type == ExportType.averageOnly) {
+      // If only average, show the name of the question set as the column title
+      buffer.write("$setName (Average);");
+    } else if (questionSet != null) {
+      for (int i = 0; i < questionSet.questions.length; i++) {
+        // Use the actual question text instead of "Q1, Q2..."
+        String qText = questionSet.questions[i].text.replaceAll(';', ',').replaceAll('\n', ' ');
+        buffer.write("$qText;");
+        if (type == ExportType.all) {
+          buffer.write("Note: $qText;");
         }
       }
     }
-    buffer.write("Average\n");
+    
+    if (type != ExportType.averageOnly) {
+      buffer.write("Total Average\n");
+    } else {
+      buffer.write("\n");
+    }
 
     // --- Data Rows ---
     for (var entry in history) {

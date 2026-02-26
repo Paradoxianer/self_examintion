@@ -15,6 +15,7 @@ class ChartControlWidget extends StatelessWidget {
   final List<bool> selectedQuestions;
   final TimeRange currentTimeRange;
   final Function(int, bool) onQuestionToggle;
+  final Function(bool) onToggleAll;
   final Function(TimeRange) onTimeRangeChange;
   final Function(bool next) onNavigateTime;
   final VoidCallback onTodayPressed;
@@ -26,6 +27,7 @@ class ChartControlWidget extends StatelessWidget {
     required this.selectedQuestions,
     required this.currentTimeRange,
     required this.onQuestionToggle,
+    required this.onToggleAll,
     required this.onTimeRangeChange,
     required this.onNavigateTime,
     required this.onTodayPressed,
@@ -47,6 +49,8 @@ class ChartControlWidget extends StatelessWidget {
       children: [
         _buildTimeRangeSelector(context, localization),
         const Divider(height: 1),
+        _buildSelectionControls(context, localization),
+        const Divider(height: 1),
         Expanded(
           child: ListView.builder(
             padding: const EdgeInsets.only(top: 8, bottom: 80),
@@ -63,6 +67,38 @@ class ChartControlWidget extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+
+  Widget _buildSelectionControls(BuildContext context, AppLocalizations localization) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            localization.filterQuestions,
+            style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+          ),
+          Row(
+            children: [
+              TextButton.icon(
+                onPressed: () => onToggleAll(true),
+                icon: const Icon(Icons.check_box, size: 18),
+                label: Text(localization.all, style: const TextStyle(fontSize: 11)),
+                style: TextButton.styleFrom(visualDensity: VisualDensity.compact),
+              ),
+              const SizedBox(width: 8),
+              IconButton(
+                onPressed: () => onToggleAll(false),
+                icon: const Icon(Icons.check_box_outline_blank, size: 18),
+                visualDensity: VisualDensity.compact,
+                tooltip: "None", // Hardcoded fallback for now since we cannot edit texts
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 
@@ -168,8 +204,7 @@ class ChartControlWidget extends StatelessWidget {
                     const SizedBox(height: 4),
                     Checkbox(
                       value: isSelected,
-                      activeColor: color,
-                      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                      activeColor: color, materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                       onChanged: (val) => onQuestionToggle(avgIndex, val ?? false),
                     ),
                     const SizedBox(height: 8),
