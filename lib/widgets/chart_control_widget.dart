@@ -71,7 +71,23 @@ class ChartControlWidget extends StatelessWidget {
   }
 
   Widget _buildSelectionControls(BuildContext context, AppLocalizations localization) {
-    final bool allSelected = selectedQuestions.isNotEmpty && selectedQuestions.every((q) => q);
+    // Determine the tristate value
+    bool? tristateValue;
+    if (selectedQuestions.isEmpty) {
+      tristateValue = false;
+    } else {
+      final bool allSelected = selectedQuestions.every((q) => q);
+      final bool noneSelected = selectedQuestions.every((q) => !q);
+      
+      if (allSelected) {
+        tristateValue = true;
+      } else if (noneSelected) {
+        tristateValue = false;
+      } else {
+        tristateValue = null; // Indeterminate state
+      }
+    }
+
     final primaryColor = Theme.of(context).primaryColor;
 
     return Padding(
@@ -82,10 +98,15 @@ class ChartControlWidget extends StatelessWidget {
             width: 50,
             alignment: Alignment.center,
             child: Checkbox(
-              value: allSelected,
+              value: tristateValue,
+              tristate: true,
               activeColor: primaryColor,
               materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-              onChanged: (val) => onToggleAll(val ?? false),
+              onChanged: (_) {
+                // If currently all are selected, deselect all.
+                // In all other cases (none or partial), select all.
+                onToggleAll(tristateValue != true);
+              },
             ),
           ),
           const SizedBox(width: 12),
@@ -94,7 +115,7 @@ class ChartControlWidget extends StatelessWidget {
             style: TextStyle(
               fontSize: 14,
               fontWeight: FontWeight.bold,
-              color: allSelected ? primaryColor : Colors.grey[700],
+              color: tristateValue == true ? primaryColor : Colors.grey[700],
             ),
           ),
           const Spacer(),
