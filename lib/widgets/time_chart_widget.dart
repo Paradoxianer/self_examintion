@@ -29,7 +29,6 @@ class TimeChartWidget extends StatelessWidget {
     final start = AssessmentCalculator.getPeriodStart(referenceDate, currentTimeRange);
     final end = AssessmentCalculator.getPeriodEnd(referenceDate, currentTimeRange);
     
-    // Daten filtern und ggf. aggregieren
     List<AssessmentEntry> displayHistory;
     if (currentTimeRange == TimeRange.year) {
       final authorKey = assessmentHistory.first.questionSet;
@@ -44,14 +43,11 @@ class TimeChartWidget extends StatelessWidget {
 
     if (displayHistory.isEmpty) return Center(child: Text(localization.noData));
 
-    // Skalierung
     double minX = start.millisecondsSinceEpoch.toDouble();
     double maxX = end.millisecondsSinceEpoch.toDouble();
 
-    if (currentTimeRange == TimeRange.year) {
-       minX = DateTime(referenceDate.year, 1, 1).millisecondsSinceEpoch.toDouble();
-       maxX = DateTime(referenceDate.year, 12, 31).millisecondsSinceEpoch.toDouble();
-    } else if ((currentTimeRange == TimeRange.twoDays || currentTimeRange == TimeRange.week) && displayHistory.length >= 2) {
+    // Zoom-Logik für kleine Zeiträume
+    if ((currentTimeRange == TimeRange.twoDays || currentTimeRange == TimeRange.week) && displayHistory.length >= 2) {
       final firstTs = displayHistory.first.timestamp.millisecondsSinceEpoch.toDouble();
       final lastTs = displayHistory.last.timestamp.millisecondsSinceEpoch.toDouble();
       final diff = lastTs - firstTs;
@@ -77,7 +73,6 @@ class TimeChartWidget extends StatelessWidget {
               sideTitles: SideTitles(
                 showTitles: true,
                 reservedSize: 38,
-                // Intervall dynamisch je nach Range
                 interval: _getInterval(minX, maxX),
                 getTitlesWidget: (value, meta) => _bottomTitleWidgets(value, meta, context),
               ),
@@ -103,17 +98,16 @@ class TimeChartWidget extends StatelessWidget {
   }
 
   double _getInterval(double min, double max) {
-    final diff = max - min;
-    if (currentTimeRange == TimeRange.year) return 1000 * 60 * 60 * 24 * 30; // Monatlich
-    if (currentTimeRange == TimeRange.month) return 1000 * 60 * 60 * 24 * 7; // Wöchentlich
-    return 1000 * 60 * 60 * 24; // Täglich
+    if (currentTimeRange == TimeRange.year) return 1000 * 60 * 60 * 24 * 30; // ~1 Monat
+    if (currentTimeRange == TimeRange.month) return 1000 * 60 * 60 * 24 * 7; // 1 Woche
+    if (currentTimeRange == TimeRange.twoDays) return 1000 * 60 * 60 * 24; // 1 Tag
+    return 1000 * 60 * 60 * 24; // Standard 1 Tag
   }
 
   List<LineChartBarData> _buildBars(BuildContext context, List<AssessmentEntry> history) {
     List<LineChartBarData> bars = [];
     final localization = AppLocalizations.of(context)!;
 
-    // Durchschnittslinie (Rot)
     if (selectedQuestions.isNotEmpty && selectedQuestions.last) {
       bars.add(LineChartBarData(
         spots: history.map((e) {
@@ -127,7 +121,6 @@ class TimeChartWidget extends StatelessWidget {
       ));
     }
 
-    // Einzelne Fragen
     for (int i = 0; i < selectedQuestions.length - 1; i++) {
       if (selectedQuestions[i]) {
         final color = globalColorMap[i + 1] ?? Colors.blue;
@@ -151,14 +144,22 @@ class TimeChartWidget extends StatelessWidget {
     final date = DateTime.fromMillisecondsSinceEpoch(value.toInt());
     final locale = AppLocalizations.of(context)!.localeName;
     
+    // Vermeidung von doppelten Labels am Anfang/Ende
+    if (value == meta.min || value == meta.max) return const SizedBox.shrink();
+
     String text = "";
     if (currentTimeRange == TimeRange.year) {
-      text = DateFormat.MMM(locale).format(date); // Jan, Feb...
+      text = DateFormat.MMM(locale).format(date);
     } else {
+      // Wochentag + Datum (z.B. Mo. 24.02.)
       text = "${DateFormat.E(locale).format(date)}\n${DateFormat.Md(locale).format(date)}";
     }
     
-    return SideTitleWidget(meta: meta, space: 4, child: Text(text, textAlign: TextAlign.center, style: const TextStyle(fontSize: 8)));
+    return SideTitleWidget(
+      meta: meta, 
+      space: 4, 
+      child: Text(text, textAlign: TextAlign.center, style: const TextStyle(fontSize: 8, fontWeight: FontWeight.bold))
+    );
   }
 
   Widget _leftTitleWidgets(double value, TitleMeta meta, BuildContext context) =>

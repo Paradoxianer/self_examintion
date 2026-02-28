@@ -133,12 +133,12 @@ class _ComparisonChartWidgetState extends State<ComparisonChartWidget> {
       double avgA = _calculateAverage(context, historyA, i);
       double avgB = _calculateAverage(context, historyB, i);
       
-      // Für den globalen Durchschnitt zählen wir immer alles
+      // Für den globalen Durchschnitt zählen wir IMMER alle Fragen des Sets
       sumAllA += avgA; 
       sumAllB += avgB;
       countAll++;
 
-      // Aber wir fügen nur eine Gruppe hinzu, wenn die Frage ausgewählt ist
+      // Wir fügen die Bar-Gruppe nur hinzu, wenn sie einzeln ausgewählt ist
       if (i < widget.selectedQuestions.length && widget.selectedQuestions[i]) {
         final color = globalColorMap[i + 1] ?? Colors.blue;
         barGroups.add(
@@ -154,6 +154,7 @@ class _ComparisonChartWidgetState extends State<ComparisonChartWidget> {
     }
 
     // Der Durchschnittsbalken wird angezeigt, wenn "Gesamt" (letzter Index) ausgewählt ist
+    // Er basiert jetzt stabil auf countAll (allen Fragen)
     if (widget.selectedQuestions.isNotEmpty && widget.selectedQuestions.last && countAll > 0) {
       barGroups.add(
         BarChartGroupData(
@@ -186,7 +187,6 @@ class _ComparisonChartWidgetState extends State<ComparisonChartWidget> {
     return count > 0 ? sum / count : 0.0;
   }
 
-  // --- Helper Methods ---
   DateTime _getPeriodStart(DateTime d) => AssessmentCalculator.getPeriodStart(d, widget.currentTimeRange);
   DateTime _getPeriodEnd(DateTime d) => AssessmentCalculator.getPeriodEnd(d, widget.currentTimeRange);
 
@@ -227,19 +227,27 @@ class _ComparisonChartWidgetState extends State<ComparisonChartWidget> {
   }
 
   Widget _buildDropdown(DateTime currentValue, ValueChanged<DateTime?> onChanged, Color color, List<DateTime> dates, AppLocalizations localization) {
-    return DropdownButton<DateTime>(
-      value: dates.firstWhere((d) => _getPeriodKey(d) == _getPeriodKey(currentValue), orElse: () => dates.first),
-      onChanged: onChanged,
-      items: dates.map((date) => DropdownMenuItem<DateTime>(
-        value: date,
-        child: Text(DateFormat.yMd().format(date), style: TextStyle(color: color, fontSize: 12)),
-      )).toList(),
+    String currentKey = _getPeriodKey(currentValue);
+    DateTime? effectiveValue = dates.where((d) => _getPeriodKey(d) == currentKey).firstOrNull;
+    
+    return DropdownButtonHideUnderline(
+      child: DropdownButton<DateTime>(
+        value: effectiveValue ?? dates.first,
+        icon: Icon(Icons.arrow_drop_down, color: color),
+        onChanged: onChanged,
+        items: dates.map((date) => DropdownMenuItem<DateTime>(
+          value: date,
+          child: Text(DateFormat.yMd(localization.localeName).format(date), 
+              style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: color)),
+        )).toList(),
+      ),
     );
   }
 
   Widget _bottomTitleWidgets(double value, TitleMeta meta, BuildContext context, AppLocalizations localization) {
-    if (value == 100) return SideTitleWidget(meta: meta, child: Text(localization.total, style: const TextStyle(fontSize: 10, fontWeight: FontWeight.bold)));
-    return SideTitleWidget(meta: meta, child: Text((value.toInt() + 1).toString(), style: const TextStyle(fontSize: 10)));
+    const style = TextStyle(fontWeight: FontWeight.bold, fontSize: 10);
+    if (value == 100) return SideTitleWidget(meta: meta, child: Text(localization.total, style: style));
+    return SideTitleWidget(meta: meta, child: Text((value.toInt() + 1).toString(), style: style));
   }
 
   Widget _leftTitleWidgets(double value, TitleMeta meta, BuildContext context) => 
@@ -249,6 +257,6 @@ class _ComparisonChartWidgetState extends State<ComparisonChartWidget> {
     if (ri == 0 && group.barRods.length > 1) return null;
     final valA = group.barRods[0].toY;
     final valB = group.barRods.length > 1 ? group.barRods[1].toY : valA;
-    return BarTooltipItem("${(valA*100).round()}% -> ${(valB*100).round()}%", const TextStyle(color: Colors.white));
+    return BarTooltipItem("${(valA*100).round()}% -> ${(valB*100).round()}%", const TextStyle(color: Colors.white, fontWeight: FontWeight.bold));
   }
 }
