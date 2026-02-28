@@ -148,6 +148,9 @@ class AppLocalizationsKo extends AppLocalizations {
           "선택적으로 기기 PIN 또는 생체 인식 보안(예: 지문 또는 얼굴 인식)으로 데이터를 추가로 보호할 수 있습니다.\n\n"
           "필요한 경우 데이터를 다양한 상세 수준의 CSV 파일로 내보내어 Excel 등에서 추가로 분석할 수 있습니다.";
 
+  @override String get appLocked => "앱 잠금";
+  @override String get unlock => "잠금 해제";
+
   @override
   Map<String, SelfAssessmentQuestionSet> get questionMap {
     return {

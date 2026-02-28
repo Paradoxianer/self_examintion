@@ -12,6 +12,7 @@ import 'app_localizations_ko.dart';
 import 'app_localizations_es.dart';
 import 'app_localizations_lt.dart';
 import 'app_localizations_pl.dart';
+import 'app_localizations_uk.dart';
 
 abstract class AppLocalizations {
   AppLocalizations(String locale) : localeName = intl.Intl.canonicalizedLocale(locale.toString());
@@ -38,6 +39,7 @@ abstract class AppLocalizations {
     Locale('es'),
     Locale('pl'),
     Locale('lt'),
+    Locale('uk'),
   ];
 
   String get greetings;
@@ -142,6 +144,10 @@ abstract class AppLocalizations {
   String get onboarding3Step1Description;
   String get onboarding3Step2Title;
   String get onboarding3Step2Description;
+
+  // Security strings
+  String get appLocked;
+  String get unlock;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
@@ -153,7 +159,7 @@ class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> 
   }
 
   @override
-  bool isSupported(Locale locale) => <String>['de', 'en', 'ko', 'es', 'pl', 'lt'].contains(locale.languageCode);
+  bool isSupported(Locale locale) => <String>['de', 'en', 'ko', 'es', 'pl', 'lt', 'uk'].contains(locale.languageCode);
 
   @override
   bool shouldReload(_AppLocalizationsDelegate old) => false;
@@ -167,6 +173,7 @@ AppLocalizations lookupAppLocalizations(Locale locale) {
     case 'es': return AppLocalizationsEs();
     case 'pl': return AppLocalizationsPl();
     case 'lt': return AppLocalizationsLt();
+    case 'uk': return AppLocalizationsUk();
   }
 
   throw FlutterError(

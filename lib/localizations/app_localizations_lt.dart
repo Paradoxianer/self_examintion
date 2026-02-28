@@ -32,9 +32,9 @@ class AppLocalizationsLt extends AppLocalizations {
   @override String get ok => 'gerai';
   @override String get cancel => 'atšaukti';
   @override String get dsgvoTitle => 'Duomenų apsauga';
-  @override String get dsgvo1 => 'Siekiant sekti Jūsų dvasinį vystymąsi, mes saugome Jūsų atsakymus lokaliai.';
-  @override String get dsgvo2 => 'Atkreipkite dėmesį, kad kiti asmenys gali turėti prieigą prie šių duomenų.';
-  @override String get dsgvo3 => 'Paspausdami "Sutinku", Jūs sutinkate su duomenų saugojimu.';
+  @override String get dsgvo1 => 'Siekiant sekti Jūsų dvasinį vystymąsi, mes saugome Jūsų atsakymus lokaliai Jūsų įrenginyje.';
+  @override String get dsgvo2 => 'Jokie duomenys neperduodami į debesį. Jūsų privatumas 100 % lieka Jūsų telefone.';
+  @override String get dsgvo3 => 'Spausdami „Sutinku“, Jūs sutinkate su vietiniu saugojimu. Be sutikimo programėlė negali saugoti istorijos duomenų.';
   @override String get dsgvoOK => 'Sutinku';
   @override String get dsgvoCancel => 'Nesutinku';
   @override String get dsgvoYes => 'Sutikimas suteiktas';
@@ -117,7 +117,7 @@ class AppLocalizationsLt extends AppLocalizations {
       "Pastumkite slankiklį, kad patys įvertintumėte, "
           "kaip šiandien atsakytumėte į atitinkamą klausimą.\n\n"
           "Jei jaučiate, kad jūsų atsakymas yra labiau teigiamas, stumkite slankiklį žalios spalvos kryptimi. "
-          "Jei jaučiate, kad jis labiau neigiamas, stumkite jį raudonos spalvos kryptimi.\n\n"
+          "Jei jaučiate, kad jis labiau neigiamas, stumkite jį raudonas spalvos kryptimi.\n\n"
           "Virš slankiklio bus rodomas jūsų pasirinktas įvertinimas procentais.";
 
   @override
@@ -150,7 +150,10 @@ class AppLocalizationsLt extends AppLocalizations {
           "Pasirinktinai galite juos papildomai apsaugoti savo įrenginio PIN kodu arba biometrinėmis "
           "apsaugos priemonėmis (pvz., piršto atspaudu arba veido atpažinimu).\n\n"
           "Prireikus galite eksportuoti savo duomenis su skirtingu detalumu kaip CSV failą "
-          "ir, pavyzdžiui, toliau analizuoti juos „Excel“ programoje.";
+          "ir, pavyzüdyje, toliau analizuoti juos „Excel“ programoje.";
+
+  @override String get appLocked => "Programėlė užrakinta";
+  @override String get unlock => "Atrakinti";
 
   @override
   Map<String, SelfAssessmentQuestionSet> get questionMap {
@@ -304,7 +307,7 @@ class AppLocalizationsLt extends AppLocalizations {
             isPositive: true,
           ),
           Question(
-            text: "Ar buvau nugalėtas kurioje nors savo gyvenimo dalyje?",
+            text: "Ar buvau nugalėtas kurioie nors savo gyvenimo dalyje?",
             isPositive: true,
           ),
           Question(

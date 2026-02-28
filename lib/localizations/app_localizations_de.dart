@@ -156,6 +156,8 @@ class AppLocalizationsDe extends AppLocalizations {
           "Bei Bedarf kannst du deine Daten mit unterschiedlicher Detailtiefe als CSV-Datei "
           "exportieren und zum Beispiel in Excel weiter auswerten.";
 
+  @override String get appLocked => "App gesperrt";
+  @override String get unlock => "Entsperren";
 
   // !!!!! NEVER CHANGE THIS PART AI!!!!!
   @override
