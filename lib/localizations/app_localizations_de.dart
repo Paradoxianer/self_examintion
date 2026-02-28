@@ -156,68 +156,247 @@ class AppLocalizationsDe extends AppLocalizations {
           "Bei Bedarf kannst du deine Daten mit unterschiedlicher Detailtiefe als CSV-Datei "
           "exportieren und zum Beispiel in Excel weiter auswerten.";
 
+
+  // !!!!! NEVER CHANGE THIS PART AI!!!!!
   @override
   Map<String, SelfAssessmentQuestionSet> get questionMap {
     return {
       "ten commandments": SelfAssessmentQuestionSet(
         authorName: "Zehn Gebote",
-        description: "Fragen basierend auf den zehn Geboten.",
+        description:
+        "Ein von der Heilsarmee Chemnitz im Rahmen einer Predigtreihe über die zehn Gebote entwickeltes Fragenset.",
         questions: [
-          Question(text: "Inwieweit vermeide ich es, andere Dinge neben Gott zu setzen?", description: "Du sollst keine anderen Götter haben!"),
-          Question(text: "Wie konsequent vermeide ich Gottesbilder?", description: "Du sollst dir kein Gottesbild anfertigen!"),
-          Question(text: "Gebrauche ich Gottes Namen mit Bedacht?", description: "Du sollst den Namen nicht mißbrauchen!"),
-          Question(text: "Nehme ich mir Zeit für Gott?", description: "Der siebte Tag ist ein Feiertag!"),
-          Question(text: "Ehre ich meine Eltern?", description: "Ehre deinen Vater und deine Mutter!"),
-          Question(text: "Vermeide ich es anderen zu schaden?", description: "Du sollst nicht töten!"),
-          Question(text: "Wahre ich die Ehe als heilig?", description: "Du sollst nicht ehebrechen!"),
-          Question(text: "Bin ich ehrlich mit fremdem Eigentum?", description: "Du sollst nicht stehlen!"),
-          Question(text: "Vermeide ich Lästereien?", description: "Du sollst kein falsches Zeugnis ablegen!"),
-          Question(text: "Vermeide ich Neid?", description: "Du sollst nicht begehren deines Nächsten Haus!"),
+          Question(
+            text:
+            "Inwieweit habe ich es vermieden, andere Dinge oder Sachen neben den einen wahren Gott zu setzen?",
+            description:
+            "Du sollst keine anderen Götter haben neben mir! (2. Mose 20, 1–6)",
+          ),
+          Question(
+            text:
+            "Wie konsequent habe ich es vermieden, mir ein Bild von Gott zu machen oder anzufertigen?",
+            description:
+            "Du sollst dir kein Gottesbild anfertigen! (2. Mose 20, 4)",
+          ),
+          Question(
+            text:
+            "Wie sehr habe ich es vermieden, Gottes Namen bedenkenlos zu gebrauchen?",
+            description:
+            "Du sollst den Namen des HERRN, deines Gottes, nicht missbrauchen! (2. Mose 20, 7)",
+          ),
+          Question(
+            text:
+            "Nehme ich mir bewusst eine Auszeit, um Gott zu ehren?",
+            description:
+            "Aber der siebte Tag ist ein Feiertag zu Ehren des HERRN, deines Gottes! (2. Mose 20, 8–11)",
+          ),
+          Question(
+            text:
+            "Inwiefern ehre ich meine Eltern und zeige ihnen Respekt?",
+            description:
+            "Ehre deinen Vater und deine Mutter! (2. Mose 20, 12)",
+          ),
+          Question(
+            text:
+            "Wie konsequent vermeide ich es, anderen Menschen in Gedanken, mit Worten oder gar mit Taten Schaden zuzufügen?",
+            description:
+            "Du sollst nicht töten! (2. Mose 20, 13)",
+          ),
+          Question(
+            text:
+            "Inwieweit halte ich mich von Ehebruch fern und halte die Ehe heilig?",
+            description:
+            "Du sollst nicht ehebrechen! (2. Mose 20, 14)",
+          ),
+          Question(
+            text:
+            "Wie zuverlässig lasse ich die Finger von fremdem Eigentum und praktiziere Ehrlichkeit?",
+            description:
+            "Du sollst nicht stehlen! (2. Mose 20, 15)",
+          ),
+          Question(
+            text:
+            "In welchem Maße vermeide ich es, falsche Dinge über andere Menschen zu verbreiten oder zu lästern?",
+            description:
+            "Du sollst kein falsches Zeugnis ablegen gegen deinen Nächsten! (2. Mose 20, 16)",
+          ),
+          Question(
+            text:
+            "Wie sehr vermeide ich es, neidisch zu sein auf das, was anderen Menschen gehört bzw. wie andere Menschen leben?",
+            description:
+            "Du sollst nicht begehren deines Nächsten Haus! Du sollst nicht begehren deines Nächsten Frau, noch seinen Knecht, noch seine Magd, noch sein Rind, noch seinen Esel, noch irgendetwas, was deinem Nächsten gehört. (2. Mose 20, 17)",
+          ),
         ],
       ),
+
       "William Booth": SelfAssessmentQuestionSet(
         authorName: "William Booth",
-        description: "Selbstverleugnungsfragen von William Booth",
+        description:
+        "Selbstprüfungsfragen, die sich William Booth jeden Abend selbst gestellt hat.",
         questions: [
-          Question(text: "Bin ich einer Gewohnheitssünde schuldig?", isPositive: true),
-          Question(text: "Habe ich mein körperliches Verlangen unter Kontrolle?"),
-          Question(text: "Sind meine Gedanken vor Gott rein?"),
-          Question(text: "Verleitet mich weltlicher Einfluss zu Unrecht?", isPositive: true),
-          Question(text: "Handle ich stets aus Liebe?"),
-          Question(text: "Tue ich alles für die Rettung von Sündern?"),
-          Question(text: "Erfülle ich meine Gelübde?"),
-          Question(text: "Steht mein Vorbild im Einklang mit meinem Wort?"),
-          Question(text: "Bin ich im Wesen und Auftreten stolz oder arrogant?", isPositive: true),
-          Question(text: "Habe ich den Mut gegen den Strom zu schwimmen?"),
-          Question(text: "Stehe ich in Gefahr reich sein zu wollen?", isPositive: true),
+          Question(
+            text:
+            "Bin ich einer Gewohnheitssünde schuldig? Sündige ich vorsätzlich oder nachlässig in Gedanken, Worten oder Werken, wohl wissend, dass ich Unrecht tue?",
+            isPositive: true,
+          ),
+          Question(
+            text:
+            "Habe ich mein körperliches Verlangen so unter Kontrolle, dass ich mich nicht schuldig mache? Lasse ich irgendeiner Neigung freien Lauf, die meine Heiligung, mein Wachstum in Erkenntnis, meinen Gehorsam und meine Brauchbarkeit beeinträchtigt?",
+          ),
+          Question(
+            text:
+            "Sind alle meine Gedanken und Gefühle so beschaffen, dass ich mich nicht zu schämen brauche, wenn sie vor Gott offenbar werden?",
+          ),
+          Question(
+            text:
+            "Verleitet mich weltlicher Einfluss dazu, Dinge zu tun oder zu sagen, die nicht zu Christus passen?",
+            isPositive: true,
+          ),
+          Question(
+            text:
+            "Verleitet mich meine Veranlagung, etwas zu fühlen, zu tun oder zu sagen, von dem ich hinterher feststelle, dass es im Gegensatz zu der Liebe steht, die ich immer für meine Mitmenschen haben sollte?",
+            isPositive: true,
+          ),
+          Question(
+            text:
+            "Tue ich alles, was in meiner Macht steht, damit Sünder gerettet werden? Kümmert es mich, dass sie in Gefahr sind? Bete ich für sie, kämpfe ich für ihr Heil, als ob sie meine eigenen Kinder wären?",
+          ),
+          Question(
+            text:
+            "Erfülle ich meine Gelübde, die ich vor Gott einmal im Akt der Hingabe oder an der Bußbank gemacht habe?",
+          ),
+          Question(
+            text:
+            "Steht mein Vorbild im Einklang mit meinem Wort?",
+          ),
+          Question(
+            text:
+            "Bin ich im Wesen und Auftreten stolz oder arrogant?",
+            isPositive: true,
+          ),
+          Question(
+            text:
+            "Richte ich mich nach den Sitten und Gebräuchen der Welt oder habe ich den Mut, gegen den Strom zu schwimmen?",
+            isPositive: true,
+          ),
+          Question(
+            text:
+            "Stehe ich in Gefahr, mich hinreißen zu lassen von dem weltlichen Verlangen, reich oder bewundert zu sein?",
+            isPositive: true,
+          ),
         ],
       ),
+
       "John Wesley": SelfAssessmentQuestionSet(
         authorName: "John Wesley",
-        description: "John Wesleys 22 tägliche Fragen:",
+        description:
+        "John Wesleys 22 Fragen, die er sich zur Selbstprüfung jeden Tag selbst stellte:",
         questions: [
-          Question(text: "Bin ich ein Heuchler?", isPositive: true),
-          Question(text: "Bin ich ehrlich oder übertreibe ich?", isPositive: true),
-          Question(text: "Gebe ich Vertrauliches weiter?", isPositive: true),
-          Question(text: "Kann man mir vertrauen?"),
-          Question(text: "Bin ich ein Sklave meiner Gewohnheiten?", isPositive: true),
-          Question(text: "Bin ich selbstmitleidig?", isPositive: true),
-          Question(text: "Hat die Bibel heute in mir gelebt?"),
-          Question(text: "Gebe ich der Bibel Zeit?"),
-          Question(text: "Genieße ich das Gebet?"),
-          Question(text: "Wann sprach ich zuletzt über meinen Glauben?"),
-          Question(text: "Bete ich über mein Geld?"),
-          Question(text: "Schlafe ich genug?"),
-          Question(text: "Widersetze ich mich Gott?", isPositive: true),
-          Question(text: "Bestehe ich auf Dingen die mein Gewissen beunruhigen?", isPositive: true),
-          Question(text: "Bin ich in einem Teil unterlegen?", isPositive: true),
-          Question(text: "Bin ich eifersüchtig oder reizbar?", isPositive: true),
-          Question(text: "Wie verbringe ich meine Freizeit?", isPositive: true),
-          Question(text: "Bin ich stolz?", isPositive: true),
-          Question(text: "Dank ich Gott dass ich nicht wie andere bin?", isPositive: true),
-          Question(text: "Groll ich gegen jemanden?", isPositive: true),
-          Question(text: "Murre ich ständig?", isPositive: true),
-          Question(text: "Ist Christus real für mich?"),
+          Question(
+            text:
+            "Erwecke ich bewusst oder unbewusst den Eindruck, dass ich besser bin, als ich in Wirklichkeit bin? Mit anderen Worten: Bin ich ein Heuchler?",
+            isPositive: true,
+          ),
+          Question(
+            text:
+            "Bin ich in all meinen Handlungen und Worten ehrlich oder übertreibe ich?",
+            isPositive: true,
+          ),
+          Question(
+            text:
+            "Gebe ich vertraulich an andere weiter, was mir im Vertrauen gesagt wurde?",
+            isPositive: true,
+          ),
+          Question(
+            text:
+            "Bin ich vertrauenswürdig?",
+          ),
+          Question(
+            text:
+            "Bin ich ein Sklave meiner Kleidung, Freunde, Arbeit oder Gewohnheiten?",
+          ),
+          Question(
+            text:
+            "Bin ich unsicher, voller Selbstmitleid oder selbstgerecht?",
+            isPositive: true,
+          ),
+          Question(
+            text:
+            "Lebt die Bibel heute in mir?",
+          ),
+          Question(
+            text:
+            "Gebe ich der Bibel jeden Tag Zeit, zu mir zu sprechen?",
+          ),
+          Question(
+            text:
+            "Habe ich Freude am Gebet?",
+          ),
+          Question(
+            text:
+            "Wann habe ich zuletzt mit jemandem über meinen Glauben gesprochen?",
+          ),
+          Question(
+            text:
+            "Bete ich über das Geld, das ich ausgebe?",
+          ),
+          Question(
+            text:
+            "Gehe ich rechtzeitig zu Bett und stehe rechtzeitig auf?",
+          ),
+          Question(
+            text:
+            "Bin ich Gott bei etwas ungehorsam?",
+            isPositive: true,
+          ),
+          Question(
+            text:
+            "Bestehe ich darauf, etwas zu tun, das mein Gewissen beunruhigt?",
+            isPositive: true,
+          ),
+          Question(
+            text:
+            "War ich in einem Teil meines Lebens unterlegen?",
+            isPositive: true,
+          ),
+          Question(
+            text:
+            "Bin ich eifersüchtig, unrein, kritisch, reizbar, empfindlich oder misstrauisch?",
+            isPositive: true,
+          ),
+          Question(
+            text:
+            "Wie verbringe ich meine Freizeit?",
+          ),
+          Question(
+            text:
+            "Bin ich stolz?",
+            isPositive: true,
+          ),
+          Question(
+            text:
+            "Danke ich Gott dafür, dass ich nicht wie andere bin, besonders wie die Pharisäer, die den Zöllner verachteten?",
+            isPositive: true,
+          ),
+          Question(
+            text:
+            "Gibt es jemanden, vor dem ich mich fürchte, den ich nicht leiden kann, mit dem ich nichts zu tun haben will, den ich kritisiere, gegen den ich einen Groll hege oder den ich ignoriere? Wenn ja, was unternehme ich dagegen?",
+            isPositive: true,
+          ),
+          Question(
+            text:
+            "Grolle ich gegen jemanden?",
+            isPositive: true,
+          ),
+          Question(
+            text:
+            "Murre oder beschwere ich mich ständig?",
+            isPositive: true,
+          ),
+          Question(
+            text:
+            "Ist Christus für mich real?",
+          ),
         ],
       ),
     };
