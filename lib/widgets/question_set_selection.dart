@@ -32,7 +32,7 @@ class QuestionSetSelection extends StatelessWidget {
         final authorName = questionSets[selectedSet]?.authorName ?? selectedSet;
 
         return Container(
-          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 2),
           decoration: BoxDecoration(
             color: Theme.of(context)
                 .colorScheme
@@ -44,37 +44,64 @@ class QuestionSetSelection extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Flexible(
-                child: ConstrainedBox(
-                  constraints: const BoxConstraints(maxWidth: 200),
-                  child: DropdownButtonHideUnderline(
-                    child: DropdownButton<String>(
-                      value: selectedSet,
-                      isDense: true,
-                      isExpanded: false,
-                      icon: const Icon(Icons.arrow_drop_down, size: 20),
-                      items: questionSets.entries.map((entry) {
-                        return DropdownMenuItem<String>(
-                          value: entry.key,
+                child: PopupMenuButton<String>(
+                  initialValue: selectedSet,
+                  tooltip: localization.chooseQuestionSet,
+                  onSelected: (String newValue) {
+                    if (newValue != selectedSet) {
+                      localStorage.setCurrentAuthor(newValue);
+                      if (onSetSelected != null) onSetSelected!(newValue);
+                    }
+                  },
+                  itemBuilder: (BuildContext context) {
+                    return questionSets.entries.map((entry) {
+                      return PopupMenuItem<String>(
+                        value: entry.key,
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: Text(
+                                entry.value.authorName,
+                                style: const TextStyle(
+                                    fontSize: 14, fontWeight: FontWeight.w600),
+                              ),
+                            ),
+                            const SizedBox(width: 8),
+                            IconButton(
+                              padding: EdgeInsets.zero,
+                              constraints: const BoxConstraints(),
+                              icon: const Icon(Icons.info_outline, size: 18),
+                              onPressed: () {
+                                Navigator.of(context).pop(); // Menü schließen
+                                _showSetInfoDialog(context, entry.key, questionSets);
+                              },
+                            ),
+                          ],
+                        ),
+                      );
+                    }).toList();
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Flexible(
                           child: Text(
-                            entry.value.authorName,
+                            authorName,
                             overflow: TextOverflow.ellipsis,
                             style: const TextStyle(
                                 fontSize: 14, fontWeight: FontWeight.w600),
                           ),
-                        );
-                      }).toList(),
-                      onChanged: (String? newValue) {
-                        if (newValue != null && newValue != selectedSet) {
-                          localStorage.setCurrentAuthor(newValue);
-                          if (onSetSelected != null) onSetSelected!(newValue);
-                        }
-                      },
+                        ),
+                        const Icon(Icons.arrow_drop_down, size: 20),
+                      ],
                     ),
                   ),
                 ),
               ),
               const VerticalDivider(width: 8, indent: 8, endIndent: 8),
-              // INFO BUTTON
+              // INFO BUTTON (für das aktuell ausgewählte Set)
               IconButton(
                 padding: EdgeInsets.zero,
                 constraints: const BoxConstraints(),
