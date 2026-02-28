@@ -60,6 +60,9 @@ class AppLocalizationsKo extends AppLocalizations {
   @override List<String> get timeRangeShort => ["2일", "1주", "1월", "1년", "전체"];
   @override String get tips => "팁 및 정보";
 
+  @override String get selectAll => "Select all"; // Fallback
+  @override String get selectNone => "Deselect all"; // Fallback
+
   @override String get settingsQuestionSetSubtitle => "데이터를 편집하거나 삭제할 세트를 선택하십시오.";
   @override String get settingsExportHeader => "데이터 내보내기";
   @override String get settingsExportAll => "모두 내보내기";
@@ -77,6 +80,18 @@ class AppLocalizationsKo extends AppLocalizations {
   @override String get license => "라이선스";
   @override String get imprintContent => "책임자: Matthias Lindner\n연락처: ";
   @override String get githubRepository => "GitHub 저장소 (버그 보고 및 기여)";
+
+  @override String get onboardingSkip => "Skip";
+  @override String get onboardingNext => "Next";
+  @override String get onboardingStart => "Start";
+  @override String get onboarding1Title => "Welcome to Self-Examination";
+  @override String get onboarding1Description => "Reflect on your spiritual journey. Start by selecting a question set at the top.";
+  @override String get onboarding2Title => "Assess & Note";
+  @override String get onboarding2Description => "Use the sliders to assess. Don't forget the pencil icon to add personal notes!";
+  @override String get onboarding3Title => "Visualize Growth";
+  @override String get onboarding3Description => "Swipe through different charts to see patterns and your overall development.";
+  @override String get onboarding4Title => "Compare & Filter";
+  @override String get onboarding4Description => "Use the controls below the charts to filter specific questions or select all at once.";
 
   @override
   Map<String, SelfAssessmentQuestionSet> get questionMap {

@@ -60,6 +60,9 @@ class AppLocalizationsEn extends AppLocalizations {
   @override List<String> get timeRangeShort => ["2D", "1W", "1M", "1Y", "All"];
   @override String get tips => "Tips & Information";
 
+  @override String get selectAll => "Select all";
+  @override String get selectNone => "Deselect all";
+
   @override String get settingsQuestionSetSubtitle => "Choose a set to edit or delete data.";
   @override String get settingsExportHeader => "Data Export";
   @override String get settingsExportAll => "Export All";
