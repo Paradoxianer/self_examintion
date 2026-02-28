@@ -59,7 +59,7 @@ class AppLocalizationsDe extends AppLocalizations {
   @override String get currPeriod => "Aktuelle Periode";
   @override String get all => "Alle";
   @override String get selectAll => "Alle auswählen";
-  @override String get selectNone => "Alle abwählen";
+  @override String get selectNone => "Keine auswählen";
   @override List<String> get timeRangeShort => ["2T", "1W", "1M", "1J", "Alle"];
   @override String get tips => "Tipps & Hinweise";
 
@@ -84,14 +84,27 @@ class AppLocalizationsDe extends AppLocalizations {
   @override String get onboardingSkip => "Überspringen";
   @override String get onboardingNext => "Weiter";
   @override String get onboardingStart => "Starten";
-  @override String get onboarding1Title => "Willkommen zur Selbstprüfung";
-  @override String get onboarding1Description => "Reflektiere deinen geistlichen Weg. Wähle zuerst oben ein Fragenset aus.";
-  @override String get onboarding2Title => "Bewerten & Notieren";
-  @override String get onboarding2Description => "Nutze die Slider zur Bewertung. Vergiss nicht das Stift-Symbol für persönliche Notizen!";
-  @override String get onboarding3Title => "Wachstum visualisieren";
-  @override String get onboarding3Description => "Wische durch verschiedene Diagramme, um Muster und deine Entwicklung zu sehen.";
-  @override String get onboarding4Title => "Vergleichen & Filtern";
-  @override String get onboarding4Description => "Nutze die Steuerung unter den Diagrammen, um Fragen zu filtern oder alle gleichzeitig zu wählen.";
+  
+  @override String get onboarding1Title => "Geistliche Inventur";
+  @override String get onboarding1Description => "Diese App ist dein persönliches Werkzeug zur Selbstreflexion. Inspiriert von den täglichen Prüfungsfragen William Booths und John Wesleys, hilft sie dir, deinen geistlichen Zustand ehrlich vor Gott zu bewerten und Muster in deiner Entwicklung zu erkennen.";
+  
+  @override String get onboarding2Title => "Prüfen & Notieren";
+  @override String get onboarding2Step1Title => "Themen wählen";
+  @override String get onboarding2Step1Description => "Wähle oben in der Leiste das Fragenset aus, das dich heute beschäftigt (z.B. die Zehn Gebote).";
+  @override String get onboarding2Step2Title => "Notiz-Icon nutzen";
+  @override String get onboarding2Step2Description => "Gib nicht nur Punkte ab. Tippe auf das Notiz-Icon (Blatt mit Plus), um Gedanken oder Gebete festzuhalten.";
+  
+  @override String get onboarding3Title => "Analyse & Vergleich";
+  @override String get onboarding3Step1Title => "Ansichten wechseln";
+  @override String get onboarding3Step1Description => "Wische im Diagramm-Bereich einfach nach links oder rechts, um zwischen Timeline, Vergleich und Radar-Ansicht zu wechseln.";
+  @override String get onboarding3Step2Title => "Fragen filtern";
+  @override String get onboarding3Step2Description => "Nutze die Liste unter den Diagrammen, um gezielt einzelne Fragen ein- oder auszublenden.";
+  
+  @override String get onboarding4Title => "Sicherheit & Export";
+  @override String get onboarding4Step1Title => "Deine Daten sind lokal";
+  @override String get onboarding4Step1Description => "Alle Antworten bleiben auf deinem Gerät. Es gibt keine Cloud-Speicherung ohne dein ausdrückliches Handeln.";
+  @override String get onboarding4Step2Title => "Export für Excel";
+  @override String get onboarding4Step2Description => "Du kannst deine Historie jederzeit als CSV exportieren, um sie in anderen Programmen detailliert auszuwerten.";
 
   @override
   Map<String, SelfAssessmentQuestionSet> get questionMap {
@@ -106,7 +119,7 @@ class AppLocalizationsDe extends AppLocalizations {
           Question(text: "Nehme ich mir Zeit für Gott?", description: "Der siebte Tag ist ein Feiertag!"),
           Question(text: "Ehre ich meine Eltern?", description: "Ehre deinen Vater und deine Mutter!"),
           Question(text: "Vermeide ich es anderen zu schaden?", description: "Du sollst nicht töten!"),
-          Question(text: "Wahre ich die Ehe als heilig?", description: "Du sollst nicht ehebrechen!"),
+          Question(text: "Wahre ich die Ehe als hilig?", description: "Du sollst nicht ehebrechen!"),
           Question(text: "Bin ich ehrlich mit fremdem Eigentum?", description: "Du sollst nicht stehlen!"),
           Question(text: "Vermeide ich Lästereien?", description: "Du sollst kein falsches Zeugnis ablegen!"),
           Question(text: "Vermeide ich Neid?", description: "Du sollst nicht begehren deines Nächsten Haus!"),

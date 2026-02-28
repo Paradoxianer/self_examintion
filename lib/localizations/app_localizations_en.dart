@@ -57,11 +57,10 @@ class AppLocalizationsEn extends AppLocalizations {
   @override String get prevPeriod => "Previous Period";
   @override String get currPeriod => "Current Period";
   @override String get all => "All";
-  @override List<String> get timeRangeShort => ["2D", "1W", "1M", "1Y", "All"];
-  @override String get tips => "Tips & Information";
-
   @override String get selectAll => "Select all";
   @override String get selectNone => "Deselect all";
+  @override List<String> get timeRangeShort => ["2D", "1W", "1M", "1Y", "All"];
+  @override String get tips => "Tips & Information";
 
   @override String get settingsQuestionSetSubtitle => "Choose a set to edit or delete data.";
   @override String get settingsExportHeader => "Data Export";
@@ -84,14 +83,27 @@ class AppLocalizationsEn extends AppLocalizations {
   @override String get onboardingSkip => "Skip";
   @override String get onboardingNext => "Next";
   @override String get onboardingStart => "Start";
-  @override String get onboarding1Title => "Welcome to Self-Examination";
-  @override String get onboarding1Description => "Reflect on your spiritual journey. Start by selecting a question set at the top.";
+  
+  @override String get onboarding1Title => "Spiritual Inventory";
+  @override String get onboarding1Description => "This app is your personal tool for self-reflection. Inspired by the daily examination questions of William Booth and John Wesley, it helps you assess your spiritual state honestly before God and recognize patterns in your development.";
+  
   @override String get onboarding2Title => "Assess & Note";
-  @override String get onboarding2Description => "Use the sliders to assess. Don't forget the pencil icon to add personal notes!";
-  @override String get onboarding3Title => "Visualize Growth";
-  @override String get onboarding3Description => "Swipe through different charts to see patterns and your overall development.";
-  @override String get onboarding4Title => "Compare & Filter";
-  @override String get onboarding4Description => "Use the controls below the charts to filter specific questions or select all at once.";
+  @override String get onboarding2Step1Title => "Choose Topics";
+  @override String get onboarding2Step1Description => "Select the question set that concerns you today (e.g., the Ten Commandments) from the top bar.";
+  @override String get onboarding2Step2Title => "Use Note Icon";
+  @override String get onboarding2Step2Description => "Don't just give scores. Tap the note icon (sheet with plus) to record thoughts or prayers.";
+  
+  @override String get onboarding3Title => "Analysis & Comparison";
+  @override String get onboarding3Step1Title => "Switch Views";
+  @override String get onboarding3Step1Description => "Simply swipe left or right in the chart area to switch between Timeline, Comparison, and Radar views.";
+  @override String get onboarding3Step2Title => "Filter Questions";
+  @override String get onboarding3Step2Description => "Use the list below the charts to specifically show or hide individual questions.";
+  
+  @override String get onboarding4Title => "Security & Export";
+  @override String get onboarding4Step1Title => "Your Data is Local";
+  @override String get onboarding4Step1Description => "All answers stay on your device. There is no cloud storage without your explicit action.";
+  @override String get onboarding4Step2Title => "Export for Excel";
+  @override String get onboarding4Step2Description => "You can export your history as a CSV at any time for detailed evaluation in other programs.";
 
   @override
   Map<String, SelfAssessmentQuestionSet> get questionMap {

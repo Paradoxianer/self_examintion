@@ -34,7 +34,7 @@ class AppLocalizationsLt extends AppLocalizations {
   @override String get dsgvoTitle => 'Duomenų apsauga';
   @override String get dsgvo1 => 'Siekiant sekti Jūsų dvasinį vystymąsi, mes saugome Jūsų atsakymus lokaliai.';
   @override String get dsgvo2 => 'Atkreipkite dėmesį, kad kiti asmenys gali turėti prieigą prie šių duomenų.';
-  @override String get dsgvo3 => 'Paspausdami "Sutinku", Jūs sutinkate su duomenų saugojimu.';
+  @override String get dsgvo3 => 'Paspausdami "Sutinku", Jūs sutinkate su duomenų saugojimimu.';
   @override String get dsgvoOK => 'Sutinku';
   @override String get dsgvoCancel => 'Nesutinku';
   @override String get dsgvoYes => 'Sutikimas suteiktas';
@@ -57,8 +57,8 @@ class AppLocalizationsLt extends AppLocalizations {
   @override String get prevPeriod => "Ankstesnis laikotarpis";
   @override String get currPeriod => "Dabartinis laikotarpis";
   @override String get all => "Visi";
-  @override String get selectAll => "Pasirinkti viską";
-  @override String get selectNone => "Atšaukti viską";
+  @override String get selectAll => "Select all";
+  @override String get selectNone => "Deselect all";
   @override List<String> get timeRangeShort => ["2D", "1S", "1M", "1M", "Visi"];
   @override String get tips => "Patarimai ir informacija";
 
@@ -80,17 +80,26 @@ class AppLocalizationsLt extends AppLocalizations {
   @override String get imprintContent => "Atsakingas: Matthias Lindner\nKontaktai: ";
   @override String get githubRepository => "GitHub saugykla (Pranešti apie klaidas ir prisidėti)";
 
-  @override String get onboardingSkip => "Praleisti";
-  @override String get onboardingNext => "Toliau";
-  @override String get onboardingStart => "Pradėti";
-  @override String get onboarding1Title => "Sveiki atvykę į savęs vertinimą";
-  @override String get onboarding1Description => "Apmąstykite savo dvasinę kelionę. Pradėkite pasirinkdami klausimų rinkinį viršuje.";
-  @override String get onboarding2Title => "Įvertinkite ir užsirašykite";
-  @override String get onboarding2Description => "Naudokite slankiklius vertinimui. Nepamirškite pieštuko piktogramos asmeninėms pastaboms!";
-  @override String get onboarding3Title => "Vizualizuokite augimą";
-  @override String get onboarding3Description => "Peržiūrėkite skirtingas diagramas, kad pamatytumėte dėsningumus ir bendrą vystymąsi.";
-  @override String get onboarding4Title => "Palyginkte ir filtruokite";
-  @override String get onboarding4Description => "Naudokite valdiklius po diagramomis, kad filtruotumėte konkrečius klausimus arba pasirinktumėte visus iš karto.";
+  @override String get onboardingSkip => "Omitir";
+  @override String get onboardingNext => "Siguiente";
+  @override String get onboardingStart => "Empezar";
+  @override String get onboarding1Title => "Welcome to Self-Examination";
+  @override String get onboarding1Description => "Reflect on your spiritual journey.";
+  @override String get onboarding2Title => "Assess & Note";
+  @override String get onboarding2Step1Title => "Choose Topics";
+  @override String get onboarding2Step1Description => "Select a set.";
+  @override String get onboarding2Step2Title => "Notes";
+  @override String get onboarding2Step2Description => "Add notes.";
+  @override String get onboarding3Title => "Charts";
+  @override String get onboarding3Step1Title => "Views";
+  @override String get onboarding3Step1Description => "Swipe.";
+  @override String get onboarding3Step2Title => "Filter";
+  @override String get onboarding3Step2Description => "Toggle.";
+  @override String get onboarding4Title => "Export";
+  @override String get onboarding4Step1Title => "Local";
+  @override String get onboarding4Step1Description => "Private.";
+  @override String get onboarding4Step2Title => "Excel";
+  @override String get onboarding4Step2Description => "CSV.";
 
   @override
   Map<String, SelfAssessmentQuestionSet> get questionMap {

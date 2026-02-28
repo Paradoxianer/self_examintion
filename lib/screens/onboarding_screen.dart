@@ -14,31 +14,68 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   @override
   Widget build(BuildContext context) {
     final localization = AppLocalizations.of(context)!;
-    
-    final List<OnboardingContent> _content = [
-      OnboardingContent(
+
+    final List<OnboardingPageData> pages = [
+      OnboardingPageData(
         title: localization.onboarding1Title,
-        description: localization.onboarding1Description,
-        assetPath: "assets/onboarding/step1.png",
-        icon: Icons.start,
+        steps: [
+          OnboardingStep(
+            description: localization.onboarding1Description,
+            assetPath: "assets/onboarding/intro.png",
+            icon: Icons.auto_awesome,
+          ),
+        ],
       ),
-      OnboardingContent(
+      OnboardingPageData(
         title: localization.onboarding2Title,
-        description: localization.onboarding2Description,
-        assetPath: "assets/onboarding/step2.png",
-        icon: Icons.edit_note,
+        steps: [
+          OnboardingStep(
+            title: localization.onboarding2Step1Title,
+            description: localization.onboarding2Step1Description,
+            assetPath: "assets/onboarding/sets.png",
+            icon: Icons.list_alt,
+          ),
+          OnboardingStep(
+            title: localization.onboarding2Step2Title,
+            description: localization.onboarding2Step2Description,
+            assetPath: "assets/onboarding/notes.png",
+            icon: Icons.note_add_outlined,
+          ),
+        ],
       ),
-      OnboardingContent(
+      OnboardingPageData(
         title: localization.onboarding3Title,
-        description: localization.onboarding3Description,
-        assetPath: "assets/onboarding/step3.png",
-        icon: Icons.query_stats,
+        steps: [
+          OnboardingStep(
+            title: localization.onboarding3Step1Title,
+            description: localization.onboarding3Step1Description,
+            assetPath: "assets/onboarding/swipe.png",
+            icon: Icons.swipe,
+          ),
+          OnboardingStep(
+            title: localization.onboarding3Step2Title,
+            description: localization.onboarding3Step2Description,
+            assetPath: "assets/onboarding/filter.png",
+            icon: Icons.filter_list,
+          ),
+        ],
       ),
-      OnboardingContent(
+      OnboardingPageData(
         title: localization.onboarding4Title,
-        description: localization.onboarding4Description,
-        assetPath: "assets/onboarding/step4.png",
-        icon: Icons.filter_alt,
+        steps: [
+          OnboardingStep(
+            title: localization.onboarding4Step1Title,
+            description: localization.onboarding4Step1Description,
+            assetPath: "assets/onboarding/security.png",
+            icon: Icons.security,
+          ),
+          OnboardingStep(
+            title: localization.onboarding4Step2Title,
+            description: localization.onboarding4Step2Description,
+            assetPath: "assets/onboarding/export.png",
+            icon: Icons.file_download,
+          ),
+        ],
       ),
     ];
 
@@ -49,12 +86,12 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           children: [
             PageView.builder(
               controller: _pageController,
-              itemCount: _content.length,
+              itemCount: pages.length,
               onPageChanged: (index) {
                 setState(() => _currentPage = index);
               },
               itemBuilder: (context, index) {
-                return _buildPage(_content[index]);
+                return _buildPage(pages[index]);
               },
             ),
             Positioned(
@@ -70,7 +107,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   ),
                   Row(
                     children: List.generate(
-                      _content.length,
+                      pages.length,
                       (index) => Container(
                         margin: const EdgeInsets.symmetric(horizontal: 4),
                         width: 8,
@@ -86,7 +123,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   ),
                   ElevatedButton(
                     onPressed: () {
-                      if (_currentPage < _content.length - 1) {
+                      if (_currentPage < pages.length - 1) {
                         _pageController.nextPage(
                           duration: const Duration(milliseconds: 300),
                           curve: Curves.easeInOut,
@@ -95,7 +132,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         _finishOnboarding();
                       }
                     },
-                    child: Text(_currentPage == _content.length - 1
+                    child: Text(_currentPage == pages.length - 1
                         ? localization.onboardingStart
                         : localization.onboardingNext),
                   ),
@@ -108,57 +145,71 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     );
   }
 
-  Widget _buildPage(OnboardingContent item) {
+  Widget _buildPage(OnboardingPageData page) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 30.0),
+      padding: const EdgeInsets.symmetric(horizontal: 24.0),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          const SizedBox(height: 40),
           Text(
-            item.title,
-            style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold, color: Theme.of(context).primaryColor),
+            page.title,
+            style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: Theme.of(context).primaryColor),
             textAlign: TextAlign.center,
           ),
-          const SizedBox(height: 15),
-          Text(
-            item.description,
-            style: const TextStyle(fontSize: 16, color: Colors.black54),
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(height: 30),
+          const SizedBox(height: 20),
           Expanded(
-            child: Container(
-              width: double.infinity,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                boxShadow: const [
-                  BoxShadow(color: Colors.black12, blurRadius: 10, spreadRadius: 2)
-                ],
-              ),
-              clipBehavior: Clip.antiAlias,
-              child: Image.asset(
-                item.assetPath,
-                fit: BoxFit.contain,
-                errorBuilder: (context, error, stackTrace) {
-                  return Container(
-                    color: Colors.grey.shade50,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(item.icon, size: 120, color: Colors.grey.shade300),
-                        const SizedBox(height: 10),
-                        Text(
-                          "(Image missing: ${item.assetPath})",
-                          style: TextStyle(fontSize: 10, color: Colors.grey.shade400),
-                        )
-                      ],
-                    ),
-                  );
-                },
+            child: SingleChildScrollView(
+              child: Column(
+                children: page.steps.map((step) => _buildStep(step)).toList(),
               ),
             ),
           ),
           const SizedBox(height: 80),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildStep(OnboardingStep step) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 32.0),
+      child: Column(
+        children: [
+          if (step.title != null)
+            Padding(
+              padding: const EdgeInsets.only(bottom: 8.0),
+              child: Text(
+                step.title!,
+                style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                textAlign: TextAlign.center,
+              ),
+            ),
+          Text(
+            step.description,
+            style: const TextStyle(fontSize: 15, color: Colors.black87),
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 16),
+          Container(
+            height: 140,
+            width: double.infinity,
+            decoration: BoxDecoration(
+              color: Colors.grey.shade50,
+              borderRadius: BorderRadius.circular(16),
+              border: Border.all(color: Colors.grey.shade200),
+              boxShadow: const [
+                BoxShadow(color: Colors.black12, blurRadius: 4, offset: Offset(0, 2))
+              ],
+            ),
+            clipBehavior: Clip.antiAlias,
+            child: Image.asset(
+              step.assetPath,
+              fit: BoxFit.contain,
+              errorBuilder: (context, error, stackTrace) {
+                return Center(child: Icon(step.icon, size: 64, color: Colors.grey.shade300));
+              },
+            ),
+          ),
         ],
       ),
     );
@@ -170,14 +221,20 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   }
 }
 
-class OnboardingContent {
+class OnboardingPageData {
   final String title;
+  final List<OnboardingStep> steps;
+  OnboardingPageData({required this.title, required this.steps});
+}
+
+class OnboardingStep {
+  final String? title;
   final String description;
   final String assetPath;
   final IconData icon;
 
-  OnboardingContent({
-    required this.title,
+  OnboardingStep({
+    this.title,
     required this.description,
     required this.assetPath,
     required this.icon,

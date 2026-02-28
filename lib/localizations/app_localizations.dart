@@ -123,14 +123,26 @@ abstract class AppLocalizations {
   String get onboardingSkip;
   String get onboardingNext;
   String get onboardingStart;
+  
+  // Screen 1: Vision & Intro
   String get onboarding1Title;
   String get onboarding1Description;
+  String get onboarding1StepTitle;
+  String get onboarding1StepDescription;
+  
+  // Screen 2: Usage (Slider & Notes)
   String get onboarding2Title;
-  String get onboarding2Description;
+  String get onboarding2Step1Title;
+  String get onboarding2Step1Description;
+  String get onboarding2Step2Title;
+  String get onboarding2Step2Description;
+  
+  // Screen 3: Analysis & Security
   String get onboarding3Title;
-  String get onboarding3Description;
-  String get onboarding4Title;
-  String get onboarding4Description;
+  String get onboarding3Step1Title;
+  String get onboarding3Step1Description;
+  String get onboarding3Step2Title;
+  String get onboarding3Step2Description;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
