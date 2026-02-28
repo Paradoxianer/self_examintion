@@ -25,7 +25,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         steps: [
           OnboardingStep(
             description: localization.onboarding1DescriptionBottom,
-            assetPath: "assets/onboarding/vision.png",
+            assetPath: "assets/onboarding/select_set.png",
             icon: Icons.auto_awesome,
           ),
         ],

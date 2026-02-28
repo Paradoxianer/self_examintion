@@ -48,6 +48,7 @@ flutter:
   
   assets:
     - assets/icon/self_examination_light_blue.png
+    - assets/onboarding/
 
 flutter_intl:
   enabled: true
