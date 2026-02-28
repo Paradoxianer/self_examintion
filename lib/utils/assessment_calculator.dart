@@ -29,6 +29,48 @@ class AssessmentCalculator {
     return count > 0 ? sum / count : 0.0;
   }
 
+  /// Aggregates assessment entries by month for a given year.
+  /// Returns a list of dummy entries representing the monthly averages.
+  static List<AssessmentEntry> aggregateByMonth(List<AssessmentEntry> history, int year, SelfAssessmentQuestionSet? questionSet) {
+    List<AssessmentEntry> monthlyAverages = [];
+    
+    for (int month = 1; month <= 12; month++) {
+      final monthEntries = history.where((e) => e.timestamp.year == year && e.timestamp.month == month).toList();
+      
+      if (monthEntries.isEmpty) continue;
+
+      int questionCount = monthEntries.first.values.length;
+      List<double> avgValues = List.filled(questionCount, 0.0);
+      List<int> counts = List.filled(questionCount, 0);
+
+      for (var entry in monthEntries) {
+        for (int i = 0; i < questionCount; i++) {
+          if (entry.values[i] != -1.0) {
+            avgValues[i] += entry.values[i];
+            counts[i]++;
+          }
+        }
+      }
+
+      for (int i = 0; i < questionCount; i++) {
+        if (counts[i] > 0) {
+          avgValues[i] /= counts[i];
+        } else {
+          avgValues[i] = -1.0;
+        }
+      }
+
+      monthlyAverages.add(AssessmentEntry(
+        timestamp: DateTime(year, month, 15), // Mitte des Monats für die Darstellung
+        questionSet: monthEntries.first.questionSet,
+        values: avgValues,
+        questionNotes: List.filled(questionCount, null),
+        note: null
+      ));
+    }
+    return monthlyAverages;
+  }
+
   /// Returns the start of the period for a given date and range.
   static DateTime getPeriodStart(DateTime d, TimeRange range) {
     switch (range) {
@@ -36,7 +78,7 @@ class AssessmentCalculator {
       case TimeRange.week: return d.subtract(Duration(days: d.weekday - 1));
       case TimeRange.month: return DateTime(d.year, d.month, 1);
       case TimeRange.year: return DateTime(d.year, 1, 1);
-      case TimeRange.all: return DateTime(2000); // Placeholder for earliest
+      case TimeRange.all: return DateTime(2000);
     }
   }
 
