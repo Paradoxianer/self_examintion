@@ -58,6 +58,8 @@ class AppLocalizationsEs extends AppLocalizations {
   @override String get prevPeriod => "Período anterior";
   @override String get currPeriod => "Período actual";
   @override String get all => "Todo";
+  @override String get selectAll => "Seleccionar todo";
+  @override String get selectNone => "No seleccionar ninguno";
   @override List<String> get timeRangeShort => ["2D", "1S", "1M", "1A", "Todo"];
   @override String get tips => "Consejos e información";
 
@@ -100,7 +102,7 @@ class AppLocalizationsEs extends AppLocalizations {
         questions: [
           Question(text: "¿Evito poner otras cosas junto al único Dios verdadero?"),
           Question(text: "¿Me abstengo de hacer o worshiping una imagen de Dios?"),
-          Question(text: "¿Cuánto he evitado usar el nombre del Señor sin pensar?"),
+          Question(text: "¿Quanto he evitado usar el nombre del Señor sin pensar?"),
           Question(text: "¿Me tomo un día libre cada seis días para honrar a Dios?"),
           Question(text: "¿Hasta qué punto honro a mis padres?"),
           Question(text: "¿Evito hacer daño a los demás?"),

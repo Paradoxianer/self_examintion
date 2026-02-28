@@ -50,18 +50,17 @@ class AppLocalizationsPl extends AppLocalizations {
   @override List<String> get answers => ["Wcale nie", "Trochę", "Większość czasu", "Całkowicie"];
   @override List<String> get frequenze => ["codziennie", "tygodniowo", "miesięcznie", "rocznie"];
 
-  @override String get filterQuestions => "Filtruuj pytania";
+  @override String get filterQuestions => "Filtruj pytania";
   @override String get today => "Dzisiaj";
   @override String get noData => "Brak danych";
   @override String get radarError => "Wykres radarowy wymaga co najmniej 3 wybranych pytań.";
   @override String get prevPeriod => "Poprzedni okres";
   @override String get currPeriod => "Bieżący okres";
   @override String get all => "Wszystko";
+  @override String get selectAll => "Zaznacz wszystko";
+  @override String get selectNone => "Odznacz wszystko";
   @override List<String> get timeRangeShort => ["2D", "1T", "1M", "1R", "Wszystko"];
   @override String get tips => "Porady i informacje";
-
-  @override String get selectAll => "Select all";
-  @override String get selectNone => "Deselect all";
 
   @override String get settingsQuestionSetSubtitle => "Wybierz zestaw do edycji lub usunięcia danych.";
   @override String get settingsExportHeader => "Eksport danych";
@@ -81,17 +80,17 @@ class AppLocalizationsPl extends AppLocalizations {
   @override String get imprintContent => "Odpowiedzialny: Matthias Lindner\nKontakt: ";
   @override String get githubRepository => "Repozytorium GitHub (Zgłoś błędy i współtwórz)";
 
-  @override String get onboardingSkip => "Skip";
-  @override String get onboardingNext => "Next";
-  @override String get onboardingStart => "Start";
-  @override String get onboarding1Title => "Welcome to Self-Examination";
-  @override String get onboarding1Description => "Reflect on your spiritual journey. Start by selecting a question set at the top.";
-  @override String get onboarding2Title => "Assess & Note";
-  @override String get onboarding2Description => "Use the sliders to assess. Don't forget the pencil icon to add personal notes!";
-  @override String get onboarding3Title => "Visualize Growth";
-  @override String get onboarding3Description => "Swipe through different charts to see patterns and your overall development.";
-  @override String get onboarding4Title => "Compare & Filter";
-  @override String get onboarding4Description => "Use the controls below the charts to filter specific questions or select all at once.";
+  @override String get onboardingSkip => "Pomiń";
+  @override String get onboardingNext => "Dalej";
+  @override String get onboardingStart => "Zacznij";
+  @override String get onboarding1Title => "Witamy w Samokontroli";
+  @override String get onboarding1Description => "Zastanów się nad swoją duchową podróżą. Zacznij od wybrania zestawu pytań na górze.";
+  @override String get onboarding2Title => "Oceń i Zanotuj";
+  @override String get onboarding2Description => "Użyj suwaków do oceny. Nie zapomnij o ikonie ołówka, aby dodać osobiste notatki!";
+  @override String get onboarding3Title => "Wizualizuj Wzrost";
+  @override String get onboarding3Description => "Przesuwaj różne wykresy, aby zobaczyć wzorce i ogólny rozwój.";
+  @override String get onboarding4Title => "Porównaj i Filtruj";
+  @override String get onboarding4Description => "Użyj kontrolek pod wykresami, aby filtrować konkretne pytania lub zaznaczyć wszystkie naraz.";
 
   @override
   Map<String, SelfAssessmentQuestionSet> get questionMap {

@@ -1,6 +1,5 @@
 import 'package:self_examination/data/self_assesment_questions.dart';
 import 'package:self_examination/models/question.dart';
-import 'package:flutter/material.dart';
 import 'app_localizations.dart';
 
 class AppLocalizationsLt extends AppLocalizations {
@@ -26,7 +25,7 @@ class AppLocalizationsLt extends AppLocalizations {
   @override String get notificationFrequency => 'Dažnumas';
   @override String get daily => 'kasdien';
   @override String get weekly => 'kas savaitę';
-  @override String get monthly => 'kas mėnesį';
+  @override String get monthly => 'miesięcznie';
   @override String get datasecurityDialog => 'BDAR Dialogas';
   @override String get dsgvoNo => 'Sutikimas atmestas';
   @override String get dsgvoNoInfo => 'Deja, programa gali veikti tik jei sutinkate.';
@@ -58,6 +57,8 @@ class AppLocalizationsLt extends AppLocalizations {
   @override String get prevPeriod => "Ankstesnis laikotarpis";
   @override String get currPeriod => "Dabartinis laikotarpis";
   @override String get all => "Visi";
+  @override String get selectAll => "Pasirinkti viską";
+  @override String get selectNone => "Atšaukti viską";
   @override List<String> get timeRangeShort => ["2D", "1S", "1M", "1M", "Visi"];
   @override String get tips => "Patarimai ir informacija";
 
@@ -79,17 +80,17 @@ class AppLocalizationsLt extends AppLocalizations {
   @override String get imprintContent => "Atsakingas: Matthias Lindner\nKontaktai: ";
   @override String get githubRepository => "GitHub saugykla (Pranešti apie klaidas ir prisidėti)";
 
-  @override String get onboardingSkip => "Skip";
-  @override String get onboardingNext => "Next";
-  @override String get onboardingStart => "Start";
-  @override String get onboarding1Title => "Welcome to Self-Examination";
-  @override String get onboarding1Description => "Reflect on your spiritual journey. Start by selecting a question set at the top.";
-  @override String get onboarding2Title => "Assess & Note";
-  @override String get onboarding2Description => "Use the sliders to assess. Don't forget the pencil icon to add personal notes!";
-  @override String get onboarding3Title => "Visualize Growth";
-  @override String get onboarding3Description => "Swipe through different charts to see patterns and your overall development.";
-  @override String get onboarding4Title => "Compare & Filter";
-  @override String get onboarding4Description => "Use the controls below the charts to filter specific questions or select all at once.";
+  @override String get onboardingSkip => "Praleisti";
+  @override String get onboardingNext => "Toliau";
+  @override String get onboardingStart => "Pradėti";
+  @override String get onboarding1Title => "Sveiki atvykę į savęs vertinimą";
+  @override String get onboarding1Description => "Apmąstykite savo dvasinę kelionę. Pradėkite pasirinkdami klausimų rinkinį viršuje.";
+  @override String get onboarding2Title => "Įvertinkite ir užsirašykite";
+  @override String get onboarding2Description => "Naudokite slankiklius vertinimui. Nepamirškite pieštuko piktogramos asmeninėms pastaboms!";
+  @override String get onboarding3Title => "Vizualizuokite augimą";
+  @override String get onboarding3Description => "Peržiūrėkite skirtingas diagramas, kad pamatytumėte dėsningumus ir bendrą vystymąsi.";
+  @override String get onboarding4Title => "Palyginkte ir filtruokite";
+  @override String get onboarding4Description => "Naudokite valdiklius po diagramomis, kad filtruotumėte konkrečius klausimus arba pasirinktumėte visus iš karto.";
 
   @override
   Map<String, SelfAssessmentQuestionSet> get questionMap {
@@ -143,7 +144,6 @@ class AppLocalizationsLt extends AppLocalizations {
           Question(text: "Ar laiku einu miegoti?"),
           Question(text: "Ar priešinuosi Dievui?", isPositive: true),
           Question(text: "Ar esu išdidus?", isPositive: true),
-          Theme(data: ThemeData(), child: Container(),),
           Question(text: "Ar Kristus man tikras?"),
         ],
       ),

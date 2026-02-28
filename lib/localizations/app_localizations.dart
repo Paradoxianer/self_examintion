@@ -94,6 +94,8 @@ abstract class AppLocalizations {
   String get prevPeriod;
   String get currPeriod;
   String get all;
+  String get selectAll;
+  String get selectNone;
   List<String> get timeRangeShort;
   String get tips;
 
@@ -115,7 +117,7 @@ abstract class AppLocalizations {
   String get imprint;
   String get license;
   String get imprintContent;
-  String get githubRepository; // Added for repo link
+  String get githubRepository;
 
   // Onboarding strings
   String get onboardingSkip;

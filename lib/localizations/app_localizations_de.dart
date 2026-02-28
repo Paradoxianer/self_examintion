@@ -58,6 +58,8 @@ class AppLocalizationsDe extends AppLocalizations {
   @override String get prevPeriod => "Vorherige Periode";
   @override String get currPeriod => "Aktuelle Periode";
   @override String get all => "Alle";
+  @override String get selectAll => "Alle auswählen";
+  @override String get selectNone => "Alle abwählen";
   @override List<String> get timeRangeShort => ["2T", "1W", "1M", "1J", "Alle"];
   @override String get tips => "Tipps & Hinweise";
 
@@ -91,9 +93,6 @@ class AppLocalizationsDe extends AppLocalizations {
   @override String get onboarding4Title => "Vergleichen & Filtern";
   @override String get onboarding4Description => "Nutze die Steuerung unter den Diagrammen, um Fragen zu filtern oder alle gleichzeitig zu wählen.";
 
-
-
-  // ---  NEVER EVER TOUCH OR CHANGE THIS PART OF THE FILE ---
   @override
   Map<String, SelfAssessmentQuestionSet> get questionMap {
     return {
@@ -158,7 +157,6 @@ class AppLocalizationsDe extends AppLocalizations {
           Question(text: "Ist Christus real für mich?"),
         ],
       ),
-      // ----------------------------
     };
   }
 }

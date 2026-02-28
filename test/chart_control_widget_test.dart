@@ -80,10 +80,8 @@ void main() {
 
       await tester.pumpAndSettle();
 
-      // Tap the first checkbox (now the first checkbox is the select-all one in the new UI)
-      // We want the first checkbox of the question list.
-      // In the new UI, the first checkbox is the "Select All" toggle.
-      // So we tap the second one for the first question.
+      // Tap the first checkbox (In the new UI, the first checkbox is the "Select All" toggle)
+      // So we tap the second one for the first question card.
       await tester.tap(find.byType(Checkbox).at(1));
       await tester.pump();
 
