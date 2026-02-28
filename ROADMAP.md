@@ -1,58 +1,60 @@
-# 🚀 Self-Examination App - Roadmap
+# 🚀 Self-Examination App - Strategische Roadmap
 
-Diese Roadmap beschreibt den Weg von der aktuellen Beta-Version hin zu einer stabilen, vernetzten und motivierenden Begleiter-App.
-
----
-
-## 📅 V1.0 - Das Fundament & Beta-Release (Abgeschlossen / In Arbeit)
-
-### Phase 1 - 7: ✅ Aufbau & Grundfunktionen
-*   Implementierung des Datenmodells, UI-Redesign, Diagramme, Security, Export und QA-Tests.
-
-### Phase 8: Beta-Release & Publishing (In Arbeit)
-- [x] **8.1 Branding & Visuals**: App-Name "Self-Examination" und adaptive Icons finalisiert.
-- [x] **8.2 Store-Präsenz**: Beschreibungen in 6 Sprachen erstellt.
-- [x] **8.3 Versionierung**: Auf 1.0.0-beta.1+7 gesetzt.
-- [x] **8.4 Security**: ProGuard/R8 Code-Verschleierung aktiv.
-- [x] **8.5 Release-Build**: `flutter build appbundle` ausgeführt.
-- [x] **8.6 Store-Upload**: AAB in die Play Console hochgeladen.
-- [x] **8.7 Chart-Stabilität**: Fehler bei Radar-Chart und "Gesamt"-Index korrigiert.
+Diese Roadmap definiert den Weg von der Beta zur professionellen Multi-Plattform-Lösung. Sie ist nach Release-Zyklen strukturiert, um einen klaren Fokus auf den Markteintritt und die Nutzererfahrung zu gewährleisten.
 
 ---
 
-## 🛠 V2.0 - Stabilität, Wachstum & Gemeinschaft
+## ✅ Abgeschlossen (Foundation)
 
-Diese Phase beginnt nach dem erfolgreichen ersten Release der Version 1.0.
-
-### Phase 2.1: Modernisierung & Sicherheit (Architektur-Upgrade)
-*Ziel: Die App schneller und bereit für die Cloud machen.*
-- [ ] **Modernisierung der Technik (Refactoring)**: Einführung eines "Repository-Patterns", um die App fit für Cloud-Sync und Reporting zu machen.
-- [ ] **Sicherer & Schneller (Datenbank-Umstellung) (#33)**: Wechsel von einfachem Speicher zu einer echten, verschlüsselten Datenbank (Isar/SQLite). Ermöglicht flüssiges Suchen ohne Ladezeiten.
-- [ ] **Daten-Frühjahrsputz (#37)**: Korrektur der Beispieldaten im Heilsarmee-Set Chemnitz.
-
-### Phase 2.2: Dein persönlicher Begleiter
-*Ziel: Mehr Individualität und bessere tägliche Unterstützung.*
-- [ ] **Eigene Fragen-Sets erstellen (#41)**: Ermögliche es Nutzern, komplett eigene Reflexions-Sets anzulegen.
-- [ ] **Erinnerungen & Impulse (#3)**: 
-    - Sanfte Erinnerungen per Push-Benachrichtigung (einstellbar), um die regelmäßige Selbstprüfung zu unterstützen.
-- [ ] **Sprachvielfalt (#24)**: Übersetzung in Ukrainisch und Russisch.
-- [ ] **Inhaltliche Erweiterung (#17)**: Integration weiterer Sets (z.B. Wesley, DiscipleBuilding, 30 Fragen zur Reflexion).
-
-### Phase 2.3: Motivation & Belohnung (Gamification)
-*Ziel: Dranbleiben belohnen.*
-- [ ] **Dranbleiben-Zähler (#35)**: Visualisierung von "Streaks" (Serien) bei regelmäßiger Nutzung.
-- [ ] **Meilensteine**: Kleine Auszeichnungen und Medaillen für erreichte Ziele.
-
-### Phase 2.4: Vernetzung & Gemeinsames Wachstum (Optional)
-*Ziel: Cloud-Sync und anonymisierter Austausch.*
-- [ ] **Deine Daten überall (Cloud-Sync) (#42)**: Optionaler Login, um Daten zwischen Web und Mobile zu synchronisieren (Datenschutz bleibt priorisiert).
-- [ ] **Gemeinsam wachsen (Heilsarmee-Reporting) (#43)**: 
-    - Entwicklung einer Funktion, um anonymisierte Durchschnittswerte an ein Korps oder die Heilsarmee Deutschland zu senden.
-    - Fokus auf strikte Anonymisierung und Datenschutz ("Privacy by Design").
+*   **User Onboarding (#47 & #46)**: Vollständiger Einführungsprozess zur Erklärung von Slidern, Notizen und Analyse-Funktionen.
+*   **Sprachvielfalt (#24)**: Unterstützung für DE, EN, ES, KO, LT, PL, UK und RU (Russisch neu hinzugefügt).
+*   **Daten-Portabilität (#49)**: CSV-Export mit kontextbezogenen Headern (Fragentexte statt IDs).
+*   **Dynamic Language Support**: Umschalten der App-Sprache unabhängig von den Systemeinstellungen (via `--dart-define`).
 
 ---
 
-## 💡 Unsere Leitlinien (nach Principal Flutter Architect)
-*   **Datenschutz zuerst**: Alle Cloud-Funktionen bleiben optional. Lokale Speicherung ist der Standard.
-*   **Sauberer Code**: Keine "Quick & Dirty"-Lösungen für Version 2.0.
-*   **Einfachheit**: Die Bedienung muss trotz neuer Funktionen intuitiv bleiben.
+## 🏁 Release 1: The Multi-Platform Launch
+*Ziel: Volle Verfügbarkeit auf iOS, Android und im Web bei maximaler Stabilität.*
+
+### 🔥 Prio 1: Launch-Blocker
+- [ ] **iOS Version (#50)**: Konfiguration der Biometrie-Berechtigungen (FaceID), Safe-Area-Anpassungen für moderne iPhones und Hardware-Tests.
+- [ ] **Web Version (#53)**: Deployment als Progressive Web App (PWA) inklusive Service-Worker-Konfiguration und Asset-Optimierung.
+- [ ] **App Store Release (#52)**: Vorbereitung der Apple-Metadaten, Screenshots (6.5"/5.5") und Einreichung zur Prüfung.
+- [ ] **Google Play Release (#51)**: Finalisierung des Store-Listings und Management des Produktions-Tracks in der Play Console.
+- [ ] **Performance Profiling (#54)**: Identifikation von Effizienz-Bottlenecks mittels Flutter DevTools (Fokus auf Speicherverbrauch und Chart-Rendering).
+
+### ⚡ Prio 2: Qualitätssicherung
+- [ ] **Stability Test Suite (#55)**: Implementierung von Unit-Tests für die Berechnungs-Logik und Integrationstests für die neuen Plattformen.
+
+---
+
+## 🛠 Release 2: Modernisierung & Engagement
+*Ziel: Technisches Refactoring für Skalierbarkeit und Steigerung der langfristigen Nutzerbindung.*
+
+### ⚡ Prio 2: Architektur & Content
+- [ ] **Datenbank-Migration (#33)**: Wechsel von SharedPreferences zu SQLite. **Fokus Effizienz:** Selektives Laden von Daten (Date-Range Filtering) auf Datenbankebene, um den RAM-Verbrauch zu minimieren.
+- [ ] **Content Expansion (#48)**: Ausbau der Beschreibungen für John Wesley und William Booth Sets (DE, EN, RU) für mehr geistliche Tiefe.
+- [ ] **Push-Benachrichtigungen (#3)**: Implementierung lokaler Reminder zur Unterstützung der täglichen Reflexions-Routine.
+- [ ] **Accountability Partner (#45)**: Sicheres Teilen von Fortschritten mit Mentoren (Privacy-Filter für Notizen).
+
+### ☕ Prio 3: Individualität & Motivation
+- [ ] **Eigene Fragen-Sets (#41)**: Werkzeuge für Nutzer, um komplett eigene Reflexions-Strukturen anzulegen.
+- [ ] **Gamification (#35)**: Einführung von Streaks und Meilensteinen zur langfristigen Motivation.
+- [ ] **Data Cleanup (#37)**: Bereinigung der Beispieldaten im Heilsarmee-Set Chemnitz.
+
+---
+
+## ☁️ Release 3: Connectivity & Vision
+*Ziel: Vernetzung und übergeordnetes Reporting.*
+
+- [ ] **Synchronisation (#42)**: Optionaler Login für den Datenabgleich zwischen Web und Mobile.
+- [ ] **Heilsarmee Reporting (#43)**: Anonymisierte Übermittlung von Durchschnittswerten für regionale Auswertungen (Privacy by Design).
+
+---
+
+## 🛡 Leitlinien (Principal Architect Standards)
+1.  **Privacy by Design**: Alle Cloud-Funktionen sind "Opt-In". Die Hoheit über die Daten liegt beim Nutzer.
+2.  **Performance-Kultur**: Wir raten nicht, wir messen (Profiling). Bottlenecks werden an der Wurzel (Datenbank/Algorithmus) behoben.
+3.  **Cross-Platform Consistency**: Die Erfahrung auf iOS, Android und Web muss sich nativ und hochwertig anfühlen.
+
+_Zuletzt aktualisiert am: 28. Februar 2025_
