@@ -53,7 +53,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           OnboardingStep(
             title: localization.onboarding3Step1Title,
             description: localization.onboarding3Step1Description,
-            assetPath: "assets/onboarding/swipe.png",
+            assetPath: "assets/onboarding/charts.png",
             icon: Icons.swipe,
           ),
           OnboardingStep(
