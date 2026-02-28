@@ -4,12 +4,19 @@ import 'package:self_examination/localizations/app_localizations.dart';
 import 'package:self_examination/utils/globals.dart';
 import 'package:self_examination/utils/local_storage.dart';
 
-class QuestionSetSelection extends StatelessWidget {
+class QuestionSetSelection extends StatefulWidget {
   final Function(String)? onSetSelected;
   final bool showDelete;
 
   const QuestionSetSelection(
       {super.key, this.onSetSelected, this.showDelete = false});
+
+  @override
+  State<QuestionSetSelection> createState() => _QuestionSetSelectionState();
+}
+
+class _QuestionSetSelectionState extends State<QuestionSetSelection> {
+  final MenuController _menuController = MenuController();
 
   @override
   Widget build(BuildContext context) {
@@ -44,64 +51,88 @@ class QuestionSetSelection extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Flexible(
-                child: PopupMenuButton<String>(
-                  initialValue: selectedSet,
-                  tooltip: localization.chooseQuestionSet,
-                  onSelected: (String newValue) {
-                    if (newValue != selectedSet) {
-                      localStorage.setCurrentAuthor(newValue);
-                      if (onSetSelected != null) onSetSelected!(newValue);
-                    }
-                  },
-                  itemBuilder: (BuildContext context) {
-                    return questionSets.entries.map((entry) {
-                      return PopupMenuItem<String>(
-                        value: entry.key,
+                child: MenuAnchor(
+                  controller: _menuController,
+                  alignmentOffset: const Offset(0, 10),
+                  builder: (context, controller, child) {
+                    return InkWell(
+                      borderRadius: BorderRadius.circular(20),
+                      onTap: () {
+                        if (controller.isOpen) {
+                          controller.close();
+                        } else {
+                          controller.open();
+                        }
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 4),
                         child: Row(
+                          mainAxisSize: MainAxisSize.min,
                           children: [
-                            Expanded(
+                            Flexible(
                               child: Text(
-                                entry.value.authorName,
+                                authorName,
+                                overflow: TextOverflow.ellipsis,
                                 style: const TextStyle(
                                     fontSize: 14, fontWeight: FontWeight.w600),
                               ),
                             ),
-                            const SizedBox(width: 8),
-                            IconButton(
-                              padding: EdgeInsets.zero,
-                              constraints: const BoxConstraints(),
-                              icon: const Icon(Icons.info_outline, size: 18),
-                              onPressed: () {
-                                Navigator.of(context).pop(); // Menü schließen
-                                _showSetInfoDialog(context, entry.key, questionSets);
-                              },
+                            Icon(
+                              controller.isOpen 
+                                  ? Icons.arrow_drop_up 
+                                  : Icons.arrow_drop_down, 
+                              size: 20
                             ),
                           ],
                         ),
-                      );
-                    }).toList();
+                      ),
+                    );
                   },
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 8),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Flexible(
-                          child: Text(
-                            authorName,
-                            overflow: TextOverflow.ellipsis,
-                            style: const TextStyle(
-                                fontSize: 14, fontWeight: FontWeight.w600),
-                          ),
+                  menuChildren: questionSets.entries.map((entry) {
+                    final isSelected = entry.key == selectedSet;
+                    return MenuItemButton(
+                      // Das Haupt-Item schließt das Menü und wählt das Set aus
+                      onPressed: () {
+                        if (entry.key != selectedSet) {
+                          localStorage.setCurrentAuthor(entry.key);
+                          if (widget.onSetSelected != null) widget.onSetSelected!(entry.key);
+                        }
+                        _menuController.close();
+                      },
+                      requestFocusOnHover: false,
+                      style: MenuItemButton.styleFrom(
+                        backgroundColor: isSelected 
+                            ? Theme.of(context).colorScheme.primaryContainer.withValues(alpha: 0.3)
+                            : null,
+                      ),
+                      leadingIcon: isSelected 
+                          ? Icon(Icons.check, size: 16, color: Theme.of(context).colorScheme.primary)
+                          : const SizedBox(width: 16),
+                      trailingIcon: IconButton(
+                        icon: const Icon(Icons.info_outline, size: 18),
+                        onPressed: () async {
+                          // Dialog anzeigen, OHNE das Menü zu schließen
+                          await _showSetInfoDialog(context, entry.key, questionSets);
+                          // Nachdem der Dialog geschlossen wurde, stellen wir sicher,
+                          // dass das Menü noch als offen wahrgenommen wird (falls nötig)
+                          if (!_menuController.isOpen) {
+                             _menuController.open();
+                          }
+                        },
+                      ),
+                      child: Text(
+                        entry.value.authorName,
+                        style: TextStyle(
+                          fontSize: 14, 
+                          fontWeight: isSelected ? FontWeight.bold : FontWeight.w500
                         ),
-                        const Icon(Icons.arrow_drop_down, size: 20),
-                      ],
-                    ),
-                  ),
+                      ),
+                    );
+                  }).toList(),
                 ),
               ),
               const VerticalDivider(width: 8, indent: 8, endIndent: 8),
-              // INFO BUTTON (für das aktuell ausgewählte Set)
+              // Globaler INFO BUTTON für das aktuell gewählte Set
               IconButton(
                 padding: EdgeInsets.zero,
                 constraints: const BoxConstraints(),
@@ -109,8 +140,7 @@ class QuestionSetSelection extends StatelessWidget {
                 onPressed: () =>
                     _showSetInfoDialog(context, selectedSet, questionSets),
               ),
-              // OPTIONAL DELETE BUTTON (Only in Settings)
-              if (showDelete) ...[
+              if (widget.showDelete) ...[
                 const SizedBox(width: 4),
                 IconButton(
                   padding: EdgeInsets.zero,
@@ -128,12 +158,12 @@ class QuestionSetSelection extends StatelessWidget {
     );
   }
 
-  void _showSetInfoDialog(BuildContext context, String selectedKey,
-      Map<String, SelfAssessmentQuestionSet> questionSets) {
+  Future<void> _showSetInfoDialog(BuildContext context, String selectedKey,
+      Map<String, SelfAssessmentQuestionSet> questionSets) async {
     final questionSet = questionSets[selectedKey]!;
     final colorScheme = Theme.of(context).colorScheme;
 
-    showDialog(
+    await showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
