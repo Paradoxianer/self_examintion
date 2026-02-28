@@ -25,7 +25,7 @@ class AppLocalizationsLt extends AppLocalizations {
   @override String get notificationFrequency => 'Dažnumas';
   @override String get daily => 'kasdien';
   @override String get weekly => 'kas savaitę';
-  @override String get monthly => 'miesięcznie';
+  @override String get monthly => 'kas mėnesį';
   @override String get datasecurityDialog => 'BDAR Dialogas';
   @override String get dsgvoNo => 'Sutikimas atmestas';
   @override String get dsgvoNoInfo => 'Deja, programa gali veikti tik jei sutinkate.';
@@ -57,8 +57,8 @@ class AppLocalizationsLt extends AppLocalizations {
   @override String get prevPeriod => "Ankstesnis laikotarpis";
   @override String get currPeriod => "Dabartinis laikotarpis";
   @override String get all => "Visi";
-  @override String get selectAll => "Select all";
-  @override String get selectNone => "Deselect all";
+  @override String get selectAll => "Pasirinkti viską";
+  @override String get selectNone => "Atšaukti viską";
   @override List<String> get timeRangeShort => ["2D", "1S", "1M", "1M", "Visi"];
   @override String get tips => "Patarimai ir informacija";
 
@@ -83,76 +83,260 @@ class AppLocalizationsLt extends AppLocalizations {
   @override String get onboardingSkip => "Praleisti";
   @override String get onboardingNext => "Toliau";
   @override String get onboardingStart => "Pradėti";
-  
-  @override String get onboarding1Title => "Dvasinis inventorius";
-  @override String get onboarding1DescriptionTop => "Ši programėlė padeda nuoširdžiai įvertinti savo dvasinę būseną prieš Dievą. Tai įrankis jūsų asmeniniam augimui.";
-  @override String get onboarding1DescriptionBottom => "Pasirinkite klausimų rinkinį iš viršutinės juostos, kuris jums šiandien aktualus.";
-  
-  @override String get onboarding2Title => "Tikrinimas ir pastabos";
-  @override String get onboarding2Step1Title => "Vertinimas";
-  @override String get onboarding2Step1Description => "Naudokite slankiklį, kad įvertintumėte savo būseną šiandien.";
-  @override String get onboarding2Step2Title => "Pastabos";
-  @override String get onboarding2Step2Description => "Bakstelėkite užrašų piktogramą (lapas su pliusu), kad užfiksuotumėte mintį ar maldą.";
-  
-  @override String get onboarding3Title => "Analizė ir saugumas";
-  @override String get onboarding3Step1Title => "Diagramos";
-  @override String get onboarding3Step1Description => "Braukite diagramos srityje, kad perjungtumėte skirtingus vaizdus.";
-  @override String get onboarding3Step2Title => "Privatumas";
-  @override String get onboarding3Step2Description => "Jūsų duomenys lieka lokaliai jūsų įrenginyje. Jei reikia, eksportuokite juos kaip CSV.";
+
+  @override
+  String get onboarding1Title => "Savęs Vertinimo Programėlė";
+
+  @override
+  String get onboarding1DescriptionTop =>
+      "William Booth ir John Wesley reguliariai skirdavo laiko savęs vertinimui.\n"
+          "Kaip šiandien išgyvenau savo tikėjimą?\n"
+          "Kur Dievo meilė galėjo tapti matoma per mane?\n"
+          "Ir kur ji dar nori mane keisti?\n\n"
+          "Ši programėlė kviečia jus būtent tokiai nuoširdžiai refleksijai.\n"
+          "Galite rinktis iš skirtingų klausimų rinkinių, fiksuoti savo atsakymus\n"
+          "ir stebėti savo vystymąsi per dienas, savaites, mėnesius ar metus –\n"
+          "bendrai arba atskirose srityse.\n\n"
+          "Kaip pagalba suvokti, kur Dievo meilė jus kviečia toliau veikti –\n"
+          "ir kur augimas vis dar įmanomas.";
+
+  @override
+  String get onboarding1DescriptionBottom =>
+      "Čia galite rinktis iš skirtingų savęs vertinimo klausimų rinkinių. "
+          "Kiekviename rinkinyje yra skirtingi klausimai su savo akcentais. "
+          "Visų klausimų apžvalgą galite gauti paspaudę informacijos piktogramą (i).";
+
+  @override
+  String get onboarding2Title => "Refleksija ir Pastabos";
+
+  @override
+  String get onboarding2Step1Title => "Refleksija";
+
+  @override
+  String get onboarding2Step1Description =>
+      "Pastumkite slankiklį, kad patys įvertintumėte, "
+          "kaip šiandien atsakytumėte į atitinkamą klausimą.\n\n"
+          "Jei jaučiate, kad jūsų atsakymas yra labiau teigiamas, stumkite slankiklį žalios spalvos kryptimi. "
+          "Jei jaučiate, kad jis labiau neigiamas, stumkite jį raudonos spalvos kryptimi.\n\n"
+          "Virš slankiklio bus rodomas jūsų pasirinktas įvertinimas procentais.";
+
+  @override
+  String get onboarding2Step2Title => "Pastabos";
+
+  @override
+  String get onboarding2Step2Description =>
+      "Bakstelėkite užrašų piktogramą (lapas su pliusu), kad užfiksuotumėte mintį, pastebėjimą "
+          "ar maldą. Pastaba bus išsaugota kartu su klausimu ir atitinkama data.\n\n"
+          "Dar kartą bakstelėkite užrašų piktogramą, kad vėl uždarytumėte užrašų lauką.";
+
+  @override
+  String get onboarding3Title => "Analizė ir Saugumas";
+
+  @override
+  String get onboarding3Step1Title => "Diagramos";
+
+  @override
+  String get onboarding3Step1Description =>
+      "Atsakę į visus klausimus, mygtuku „Baigta“ pateksite į diagramų vaizdą.\n\n"
+          "Braukite diagramoje į kairę arba į dešinę, kad perjungtumėte skirtingus vaizdus. "
+          "Po diagramomis galite pasirinkti, kurie klausimai turi būti rodomi analizėje.";
+
+  @override
+  String get onboarding3Step2Title => "Privatumas";
+
+  @override
+  String get onboarding3Step2Description =>
+      "Jūsų duomenys saugomi tik lokaliai jūsų įrenginyje.\n\n"
+          "Pasirinktinai galite juos papildomai apsaugoti savo įrenginio PIN kodu arba biometrinėmis "
+          "apsaugos priemonėmis (pvz., piršto atspaudu arba veido atpažinimu).\n\n"
+          "Prireikus galite eksportuoti savo duomenis su skirtingu detalumu kaip CSV failą "
+          "ir, pavyzdžiui, toliau analizuoti juos „Excel“ programoje.";
 
   @override
   Map<String, SelfAssessmentQuestionSet> get questionMap {
     return {
       "ten commandments": SelfAssessmentQuestionSet(
-        authorName: "Heilsarmee Chemnitz",
-        description: "Dešimt įsakymų.",
+        authorName: "Dešimt įsakymų",
+        description:
+        "Heilsarmee Chemnitz sukurtas klausimų rinkinys pagal pamokslų ciklą apie Dešimt įsakymų.",
         questions: [
-          Question(text: "Ar vengiu kitų dievų?"),
-          Question(text: "Ar nedarau stabų?"),
-          Question(text: "Ar nepiktnaudžiauju Dievo vardu?"),
-          Question(text: "Ar švenčiu sabatą?"),
-          Question(text: "Ar gerbiu tėvus?"),
-          Question(text: "Ar nežudau?"),
-          Question(text: "Ar vengiu svetimavimo?"),
-          Question(text: "Ar nevogiu?"),
-          Question(text: "Ar nemeluoju?"),
-          Question(text: "Ar netrokštu svetimo turto?"),
+          Question(
+            text: "Kiek man pavyko išvengti kitų dalykų ar objektų iškėlimo šalia vienintelio tikrojo Dievo?",
+            description: "Neturėk kitų dievų šalia manęs! (Išėjimo 20, 1–6)",
+          ),
+          Question(
+            text: "Kaip nuosekliai vengiau susikurti ar pasigaminti Dievo atvaizdą?",
+            description: "Nedaryk sau jokio Dievo atvaizdo! (Išėjimo 20, 4)",
+          ),
+          Question(
+            text: "Kiek vengiau neapgalvotai vartoti Dievo vardą?",
+            description: "Nenaudok piktam Viešpaties, savo Dievo, vardo! (Išėjimo 20, 7)",
+          ),
+          Question(
+            text: "Ar sąmoningai skiriu laiko Dievui pagerbti?",
+            description: "O septintoji diena yra šventė Viešpaties, tavo Dievo, garbei! (Išėjimo 20, 8–11)",
+          ),
+          Question(
+            text: "Kiek gerbiu savo tėvus ir rodau jiems pagarbą?",
+            description: "Gerbk savo tėvą ir motiną! (Išėjimo 20, 12)",
+          ),
+          Question(
+            text: "Kaip nuosekliai vengiu kenkti kitiems žmonėms mintimis, žodžiais ar net darbais?",
+            description: "Nežudyk! (Išėjimo 20, 13)",
+          ),
+          Question(
+            text: "Kiek laikausi atokiau nuo svetimavimo ir saugau santuoką šventą?",
+            description: "Nesvetimauk! (Išėjimo 20, 14)",
+          ),
+          Question(
+            text: "Kaip patikimai neliečiu svetimo turto ir praktikuoju sąžiningumą?",
+            description: "Nevok! (Išėjimo 20, 15)",
+          ),
+          Question(
+            text: "Kiek vengiu skleisti melagingą informaciją apie kitus žmones ar apkalbinėti?",
+            description: "Neliudyk melagingai prieš savo artimą! (Išėjimo 20, 16)",
+          ),
+          Question(
+            text: "Kiek vengiu pavydėti to, kas priklauso kitiems žmonėms ar kaip kiti žmonės gyvena?",
+            description: "Negeisk savo artimo namų! (Išėjimo 20, 17)",
+          ),
         ],
       ),
+
       "William Booth": SelfAssessmentQuestionSet(
         authorName: "William Booth",
-        description: "Savęs neigimo klausimus.",
+        description:
+        "Savęs vertinimo klausimai, kuriuos William Booth užduodavo sau kiekvieną vakarą.",
         questions: [
-          Question(text: "Ar kaltas dėl žinomos nuodėmės?", isPositive: true),
-          Question(text: "Ar kontroliuoju troškimus?"),
-          Question(text: "Ar mintys švarios?"),
-          Question(text: "Ar pasaulio įtaka veikia?", isPositive: true),
-          Question(text: "Ar elgiuosi su meile?", isPositive: true),
-          Question(text: "Ar rūpinuosi išgelbėjimu?"),
-          Question(text: "Ar vykdau pažadus?"),
-          Question(text: "Ar pavyzdys atitinka žodžius?"),
-          Question(text: "Ar esu išdidus?", isPositive: true),
-          Question(text: "Ar einu prieš srovę?"),
-          Question(text: "Ar trokštu turtų?", isPositive: true),
+          Question(
+            text: "Ar esu kaltas dėl kokios nors žinomos nuodėmės? Ar nusidedu tyčia ar dėl aplaidumo mintimis, žodžiais ar darbais, gerai žinodamas, kad elgiuosi neteisingai?",
+            isPositive: true,
+          ),
+          Question(
+            text: "Ar taip kontroliuoju savo kūniškus troškimus, kad nesijaučiu kaltas? Ar pasiduodu kokiam nors polinkiui, kuris kenkia mano šventėjimui, augimui pažinime, paklusnumui ir naudingumui?",
+          ),
+          Question(
+            text: "Ar visos mano mintys ir jausmai yra tokie, kad man nereikėtų gėdytis, jei jie būtų atskleisti prieš Dievą?",
+          ),
+          Question(
+            text: "Ar pasaulio įtaka mane verčia daryti ar sakyti dalykus, kurie netinka Kristaus sekėjui?",
+            isPositive: true,
+          ),
+          Question(
+            text: "Ar mano charakteris verčia mane jausti, daryti ar sakyti ką nors, kas, kaip vėliau suprantu, prieštarauja meilei, kurią visada turėčiau jausti savo artimui?",
+            isPositive: true,
+          ),
+          Question(
+            text: "Ar darau viską, kas mano galioje, kad nusidėjėliai būtų išgelbėti? Ar man rūpi, kad jiems gresia pavojus? Ar meldžiuosi už juos, ar kovoju už jų išgelbėjimą taip, lyg jie būtų mano paties vaikai?",
+          ),
+          Question(
+            text: "Ar vykdau savo pažadus, kuriuos daviau Dievui pasiaukojimo metu ar prie atgailos suolo?",
+          ),
+          Question(
+            text: "Ar mano pavyzdys dera su mano žodžiu?",
+          ),
+          Question(
+            text: "Ar savo prigimtimi ir elgesiu esu išdidus ar arogantiškas?",
+            isPositive: true,
+          ),
+          Question(
+            text: "Ar prisitaikau prie pasaulio papročių ir mados, ar turiu drąsos plaukti prieš srovę?",
+            isPositive: true,
+          ),
+          Question(
+            text: "Ar man gresia pavojus pasiduoti pasaulietiškam troškimui būti turtingam ar žavinčiam?",
+            isPositive: true,
+          ),
         ],
       ),
+
       "John Wesley": SelfAssessmentQuestionSet(
         authorName: "John Wesley",
-        description: "Wesley 22 klausimai:",
+        description:
+        "John Wesley 22 klausimai, kuriuos jis užduodavo sau savęs vertinimui kiekvieną dieną:",
         questions: [
-          Question(text: "Ar esu veidmainis?", isPositive: true),
-          Question(text: "Ar esu sąžiningas?", isPositive: true),
-          Question(text: "Ar išduodu paslaptis?", isPositive: true),
-          Question(text: "Ar patikimas?"),
-          Question(text: "Ar esu įpročių vergas?", isPositive: true),
-          Question(text: "Ar gailiuosi savęs?", isPositive: true),
-          Question(text: "Ar Biblija gyva?"),
-          Question(text: "Ar skiriu laiko maldai?"),
-          Question(text: "Ar dalinuosi tikėjimu?"),
-          Question(text: "Ar laiku einu miegoti?"),
-          Question(text: "Ar priešinuosi Dievui?", isPositive: true),
-          Question(text: "Ar esu išdidus?", isPositive: true),
-          Question(text: "Ar Kristus man tikras?"),
+          Question(
+            text: "Ar sąmoningai ar nesąmoningai sudarau įspūdį, kad esu geresnis nei esu iš tikrųjų? Kitaip tariant: ar esu veidmainis?",
+            isPositive: true,
+          ),
+          Question(
+            text: "Ar visuose savo veiksmuose ir žodžiuose esu sąžiningas, ar perdedu?",
+            isPositive: true,
+          ),
+          Question(
+            text: "Ar konfidencialiai perduodu kitiems tai, kas man buvo pasakyta paslaptyje?",
+            isPositive: true,
+          ),
+          Question(
+            text: "Ar esu patikimas?",
+          ),
+          Question(
+            text: "Ar esu savo aprangos, draugų, darbo ar įpročių vergas?",
+          ),
+          Question(
+            text: "Ar esu nesaugus, pilnas savigailos ar savęs pateisinimo?",
+            isPositive: true,
+          ),
+          Question(
+            text: "Ar Biblija šiandien gyva manyje?",
+          ),
+          Question(
+            text: "Ar kiekvieną dieną skiriu Biblijai laiko su manimi kalbėtis?",
+          ),
+          Question(
+            text: "Ar jaučiu džiaugsmą melsdamasis?",
+          ),
+          Question(
+            text: "Kada paskutinį kartą su kuo nors kalbėjausi apie savo tikėjimą?",
+          ),
+          Question(
+            text: "Ar meldžiuosi dėl pinigų, kuriuos išleidžiu?",
+          ),
+          Question(
+            text: "Ar laiku einu miegoti ir laiku keliuosi?",
+          ),
+          Question(
+            text: "Ar esu Dievui nepaklusnus kuriame nors dalyke?",
+            isPositive: true,
+          ),
+          Question(
+            text: "Ar primygtinai reikalauju daryti ką nors, dėl ko mano sąžinė nerimauja?",
+            isPositive: true,
+          ),
+          Question(
+            text: "Ar buvau nugalėtas kurioje nors savo gyvenimo dalyje?",
+            isPositive: true,
+          ),
+          Question(
+            text: "Ar esu pavydus, netyras, kritiškas, irzlus, jautrus ar įtarus?",
+            isPositive: true,
+          ),
+          Question(
+            text: "Kaip leidžiu laisvalaikį?",
+          ),
+          Question(
+            text: "Ar esu išdidus?",
+            isPositive: true,
+          ),
+          Question(
+            text: "Ar dėkoju Dievui, kad nesu toks kaip kiti žmonės, ypač kaip fariziejai, kurie niekino muitininką?",
+            isPositive: true,
+          ),
+          Question(
+            text: "Ar yra kas nors, ko bijau, ko nemėgstu, su kuo nenoriu turėti nieko bendra, ką kritikuoju, kam jaučiu pagiežą ar ką ignoruoju? Jei taip, ką dėl to darau?",
+            isPositive: true,
+          ),
+          Question(
+            text: "Ar jaučiu kam nors pagiežą?",
+            isPositive: true,
+          ),
+          Question(
+            text: "Ar nuolat burbu ar skundžiuosi?",
+            isPositive: true,
+          ),
+          Question(
+            text: "Ar Kristus man tikras?",
+          ),
         ],
       ),
     };
