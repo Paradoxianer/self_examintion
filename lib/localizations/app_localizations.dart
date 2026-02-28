@@ -116,6 +116,19 @@ abstract class AppLocalizations {
   String get license;
   String get imprintContent;
   String get githubRepository; // Added for repo link
+
+  // Onboarding strings
+  String get onboardingSkip;
+  String get onboardingNext;
+  String get onboardingStart;
+  String get onboarding1Title;
+  String get onboarding1Description;
+  String get onboarding2Title;
+  String get onboarding2Description;
+  String get onboarding3Title;
+  String get onboarding3Description;
+  String get onboarding4Title;
+  String get onboarding4Description;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

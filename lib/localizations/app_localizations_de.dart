@@ -79,6 +79,21 @@ class AppLocalizationsDe extends AppLocalizations {
   @override String get imprintContent => "Verantwortlich: Matthias Lindner\nKontakt:";
   @override String get githubRepository => "GitHub Repository (Fehler melden & mitwirken)";
 
+  @override String get onboardingSkip => "Überspringen";
+  @override String get onboardingNext => "Weiter";
+  @override String get onboardingStart => "Starten";
+  @override String get onboarding1Title => "Willkommen zur Selbstprüfung";
+  @override String get onboarding1Description => "Reflektiere deinen geistlichen Weg. Wähle zuerst oben ein Fragenset aus.";
+  @override String get onboarding2Title => "Bewerten & Notieren";
+  @override String get onboarding2Description => "Nutze die Slider zur Bewertung. Vergiss nicht das Stift-Symbol für persönliche Notizen!";
+  @override String get onboarding3Title => "Wachstum visualisieren";
+  @override String get onboarding3Description => "Wische durch verschiedene Diagramme, um Muster und deine Entwicklung zu sehen.";
+  @override String get onboarding4Title => "Vergleichen & Filtern";
+  @override String get onboarding4Description => "Nutze die Steuerung unter den Diagrammen, um Fragen zu filtern oder alle gleichzeitig zu wählen.";
+
+
+
+  // ---  NEVER EVER TOUCH OR CHANGE THIS PART OF THE FILE ---
   @override
   Map<String, SelfAssessmentQuestionSet> get questionMap {
     return {
@@ -143,6 +158,7 @@ class AppLocalizationsDe extends AppLocalizations {
           Question(text: "Ist Christus real für mich?"),
         ],
       ),
+      // ----------------------------
     };
   }
 }

@@ -78,6 +78,18 @@ class AppLocalizationsEn extends AppLocalizations {
   @override String get imprintContent => "Responsible: Matthias Lindner\nContact: ";
   @override String get githubRepository => "GitHub Repository (Report bugs & contribute)";
 
+  @override String get onboardingSkip => "Skip";
+  @override String get onboardingNext => "Next";
+  @override String get onboardingStart => "Start";
+  @override String get onboarding1Title => "Welcome to Self-Examination";
+  @override String get onboarding1Description => "Reflect on your spiritual journey. Start by selecting a question set at the top.";
+  @override String get onboarding2Title => "Assess & Note";
+  @override String get onboarding2Description => "Use the sliders to assess. Don't forget the pencil icon to add personal notes!";
+  @override String get onboarding3Title => "Visualize Growth";
+  @override String get onboarding3Description => "Swipe through different charts to see patterns and your overall development.";
+  @override String get onboarding4Title => "Compare & Filter";
+  @override String get onboarding4Description => "Use the controls below the charts to filter specific questions or select all at once.";
+
   @override
   Map<String, SelfAssessmentQuestionSet> get questionMap {
     return {

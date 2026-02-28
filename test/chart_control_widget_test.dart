@@ -33,6 +33,7 @@ void main() {
           selectedQuestions: selected,
           currentTimeRange: TimeRange.all,
           onQuestionToggle: (_, __) {},
+          onToggleAll: (_) {},
           onTimeRangeChange: (_) {},
           onNavigateTime: (_) {},
           onTodayPressed: () {},
@@ -70,6 +71,7 @@ void main() {
             toggledIndex = index;
             newValue = val;
           },
+          onToggleAll: (_) {},
           onTimeRangeChange: (_) {},
           onNavigateTime: (_) {},
           onTodayPressed: () {},
@@ -78,8 +80,11 @@ void main() {
 
       await tester.pumpAndSettle();
 
-      // Tap the first checkbox
-      await tester.tap(find.byType(Checkbox).first);
+      // Tap the first checkbox (now the first checkbox is the select-all one in the new UI)
+      // We want the first checkbox of the question list.
+      // In the new UI, the first checkbox is the "Select All" toggle.
+      // So we tap the second one for the first question.
+      await tester.tap(find.byType(Checkbox).at(1));
       await tester.pump();
 
       expect(toggledIndex, 0);

@@ -1,5 +1,6 @@
 import 'package:self_examination/data/self_assesment_questions.dart';
 import 'package:self_examination/models/question.dart';
+import 'package:flutter/material.dart';
 import 'app_localizations.dart';
 
 class AppLocalizationsLt extends AppLocalizations {
@@ -78,6 +79,18 @@ class AppLocalizationsLt extends AppLocalizations {
   @override String get imprintContent => "Atsakingas: Matthias Lindner\nKontaktai: ";
   @override String get githubRepository => "GitHub saugykla (Pranešti apie klaidas ir prisidėti)";
 
+  @override String get onboardingSkip => "Skip";
+  @override String get onboardingNext => "Next";
+  @override String get onboardingStart => "Start";
+  @override String get onboarding1Title => "Welcome to Self-Examination";
+  @override String get onboarding1Description => "Reflect on your spiritual journey. Start by selecting a question set at the top.";
+  @override String get onboarding2Title => "Assess & Note";
+  @override String get onboarding2Description => "Use the sliders to assess. Don't forget the pencil icon to add personal notes!";
+  @override String get onboarding3Title => "Visualize Growth";
+  @override String get onboarding3Description => "Swipe through different charts to see patterns and your overall development.";
+  @override String get onboarding4Title => "Compare & Filter";
+  @override String get onboarding4Description => "Use the controls below the charts to filter specific questions or select all at once.";
+
   @override
   Map<String, SelfAssessmentQuestionSet> get questionMap {
     return {
@@ -130,6 +143,7 @@ class AppLocalizationsLt extends AppLocalizations {
           Question(text: "Ar laiku einu miegoti?"),
           Question(text: "Ar priešinuosi Dievui?", isPositive: true),
           Question(text: "Ar esu išdidus?", isPositive: true),
+          Theme(data: ThemeData(), child: Container(),),
           Question(text: "Ar Kristus man tikras?"),
         ],
       ),
