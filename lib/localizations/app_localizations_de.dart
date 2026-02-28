@@ -84,22 +84,77 @@ class AppLocalizationsDe extends AppLocalizations {
   @override String get onboardingSkip => "Überspringen";
   @override String get onboardingNext => "Weiter";
   @override String get onboardingStart => "Starten";
-  
-  @override String get onboarding1Title => "Geistliche Inventur";
-  @override String get onboarding1DescriptionTop => "Diese App hilft dir, deinen geistlichen Zustand ehrlich vor Gott zu prüfen. Sie ist ein Werkzeug für dein persönliches Wachstum und tägliche Reflexion.";
-  @override String get onboarding1DescriptionBottom => "Hier kannst du zwischen verschiedenen Sets an Selbstprüfungsfragen wählen, die dich heute beschäftigen.";
-  
-  @override String get onboarding2Title => "Prüfen & Notieren";
-  @override String get onboarding2Step1Title => "Bewertung";
-  @override String get onboarding2Step1Description => "Bewege den Schieberegler, um zu bewerten, wie du dich heute in diesem Punkt fühlst.";
-  @override String get onboarding2Step2Title => "Notizen";
-  @override String get onboarding2Step2Description => "Tippe auf das Notiz-Icon (Blatt mit Plus), um einen Gedanken oder ein Gebet festzuhalten.";
-  
-  @override String get onboarding3Title => "Analyse & Sicherheit";
-  @override String get onboarding3Step1Title => "Diagramme";
-  @override String get onboarding3Step1Description => "Wische im Diagramm nach links oder rechts, um zwischen verschiedenen Ansichten zu wechseln.";
-  @override String get onboarding3Step2Title => "Privatsphäre";
-  @override String get onboarding3Step2Description => "Deine Daten bleiben lokal auf deinem Gerät. Exportiere sie bei Bedarf als CSV für Excel.";
+
+  @override
+  String get onboarding1Title => "Selbstprüfung App";
+
+  @override
+  String get onboarding1DescriptionTop =>
+      "William Booth und John Wesley nahmen sich regelmäßig Zeit für Selbstprüfung.\n"
+          "Wie habe ich heute meinen Glauben gelebt?\n"
+          "Wo durfte Gottes Liebe durch mich sichtbar werden?\n"
+          "Und wo möchte sie mich noch weiter verändern?\n\n"
+          "Diese App lädt dich zu genau dieser ehrlichen Reflexion ein.\n"
+          "Du kannst aus verschiedenen Fragensets wählen, deine Antworten festhalten\n"
+          "und deine Entwicklung über Tage, Wochen, Monate oder Jahre betrachten –\n"
+          "insgesamt oder in einzelnen Bereichen.\n\n"
+          "Als Hilfe, wahrzunehmen, wo Gottes Liebe dich weiter ins Handeln einlädt –\n"
+          "und wo Wachstum noch möglich ist.";
+
+  @override
+  String get onboarding1DescriptionBottom =>
+      "Hier kannst du zwischen verschiedenen Sets von Selbstprüfungsfragen wählen. "
+          "Jedes Set enthält unterschiedliche Fragen mit einem eigenen Schwerpunkt. "
+          "Einen Überblick über alle Fragen erhältst du, indem du auf das Info-Symbol (i) tippst.";
+
+  @override
+  String get onboarding2Title => "Reflektieren & Notieren";
+
+  @override
+  String get onboarding2Step1Title => "Reflektieren";
+
+  @override
+  String get onboarding2Step1Description =>
+      "Bewege den Schieberegler, um für dich selbst einzuschätzen, "
+          "wie du die jeweilige Frage heute beantworten würdest.\n\n"
+          "Empfindest du deine Antwort eher positiv, schiebe den Regler in die grüne Richtung. "
+          "Empfindest du sie eher negativ, schiebe ihn in die rote Richtung.\n\n"
+          "Über dem Schieberegler wird dir deine gewählte Bewertung in Prozent angezeigt.";
+
+  @override
+  String get onboarding2Step2Title => "Notizen";
+
+  @override
+  String get onboarding2Step2Description =>
+      "Tippe auf das Notiz-Icon (Blatt mit Plus), um einen Gedanken, eine Beobachtung "
+          "oder ein Gebet festzuhalten. Die Notiz wird zusammen mit der Frage und dem "
+          "entsprechenden Datum gespeichert.\n\n"
+          "Tippe erneut auf das Notiz-Icon, um das Notizfeld wieder zu schließen.";
+
+  @override
+  String get onboarding3Title => "Analyse & Sicherheit";
+
+  @override
+  String get onboarding3Step1Title => "Diagramme";
+
+  @override
+  String get onboarding3Step1Description =>
+      "Nachdem du alle Fragen beantwortet hast, gelangst du über den Button „Fertig“ "
+          "zur Diagrammansicht.\n\n"
+          "Wische im Diagramm nach links oder rechts, um zwischen verschiedenen Ansichten "
+          "zu wechseln. Unterhalb der Diagramme kannst du auswählen, "
+          "welche Fragen in der Auswertung angezeigt werden sollen.";
+
+  @override
+  String get onboarding3Step2Title => "Privatsphäre";
+
+  @override
+  String get onboarding3Step2Description =>
+      "Deine Daten bleiben ausschließlich lokal auf deinem Gerät gespeichert.\n\n"
+          "Optional kannst du sie zusätzlich mit deiner Geräte-PIN oder biometrischen "
+          "Sicherungen (z. B. Fingerabdruck oder Gesichtserkennung) schützen.\n\n"
+          "Bei Bedarf kannst du deine Daten mit unterschiedlicher Detailtiefe als CSV-Datei "
+          "exportieren und zum Beispiel in Excel weiter auswerten.";
 
   @override
   Map<String, SelfAssessmentQuestionSet> get questionMap {
