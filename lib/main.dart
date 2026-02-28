@@ -74,6 +74,8 @@ class _AuthWrapperState extends State<AuthWrapper> {
       );
     }
 
+    final localization = AppLocalizations.of(context)!;
+
     if (_isAuthenticated) {
       return HomeScreen();
     }
@@ -86,15 +88,15 @@ class _AuthWrapperState extends State<AuthWrapper> {
           children: [
             const Icon(Icons.lock_outline, size: 64, color: Colors.grey),
             const SizedBox(height: 24),
-            const Text(
-              "App gesperrt",
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            Text(
+              localization.appLocked,
+              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 32),
             ElevatedButton.icon(
               onPressed: _checkAuth,
               icon: const Icon(Icons.fingerprint),
-              label: const Text("Entsperren"),
+              label: Text(localization.unlock),
             ),
           ],
         ),

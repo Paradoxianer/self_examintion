@@ -153,6 +153,9 @@ class AppLocalizationsEs extends AppLocalizations {
           "Si es necesario, puede exportar sus datos con diferentes niveles de detalle como un archivo CSV "
           "y, por ejemplo, analizarlos más a fondo en Excel.";
 
+  @override String get appLocked => "App bloqueada";
+  @override String get unlock => "Desbloquear";
+
   @override
   Map<String, SelfAssessmentQuestionSet> get questionMap {
     return {
@@ -182,7 +185,7 @@ class AppLocalizationsEs extends AppLocalizations {
             description: "¡Honra a tu padre y a tu madre! (Éxodo 20, 12)",
           ),
           Question(
-            text: "¿Con qué frecuencia evito dañar a otras personas con mis pensamientos, palabras o incluso acciones?",
+            text: "¿Con qué frecuencia evito dañar a otras personas con mis pensamientos, words o incluso acciones?",
             description: "¡No matarás! (Éxodo 20, 13)",
           ),
           Question(

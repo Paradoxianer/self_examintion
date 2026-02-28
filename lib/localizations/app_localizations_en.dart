@@ -151,6 +151,8 @@ class AppLocalizationsEn extends AppLocalizations {
           "If necessary, you can export your data as a CSV file with different levels of detail "
           "and, for example, evaluate it further in Excel.";
 
+  @override String get appLocked => "App Locked";
+  @override String get unlock => "Unlock";
 
   @override
   Map<String, SelfAssessmentQuestionSet> get questionMap {

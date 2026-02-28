@@ -153,6 +153,9 @@ class AppLocalizationsPl extends AppLocalizations {
           "W razie potrzeby możesz wyeksportować swoje dane z różnym stopniem szczegółowości jako plik CSV "
           "i na przykład dalej analizować je w programie Excel.";
 
+  @override String get appLocked => "Aplikacja zablokowana";
+  @override String get unlock => "Odblokuj";
+
   @override
   Map<String, SelfAssessmentQuestionSet> get questionMap {
     return {

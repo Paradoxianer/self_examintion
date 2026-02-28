@@ -154,6 +154,9 @@ class AppLocalizationsUk extends AppLocalizations {
           "За потреби ви можете експортувати свої дані з різним ступенем деталізації як CSV-файл "
           "і, наприклад, далі аналізувати їх в Excel.";
 
+  @override String get appLocked => "Додаток заблоковано";
+  @override String get unlock => "Розблокувати";
+
   @override
   Map<String, SelfAssessmentQuestionSet> get questionMap {
     return {
