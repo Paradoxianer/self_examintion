@@ -83,14 +83,22 @@ class AppLocalizationsPl extends AppLocalizations {
   @override String get onboardingSkip => "Pomiń";
   @override String get onboardingNext => "Dalej";
   @override String get onboardingStart => "Zacznij";
-  @override String get onboarding1Title => "Witamy w Samokontroli";
-  @override String get onboarding1Description => "Zastanów się nad swoją duchową podróżą. Zacznij od wybrania zestawu pytań na górze.";
-  @override String get onboarding2Title => "Oceń i Zanotuj";
-  @override String get onboarding2Description => "Użyj suwaków do oceny. Nie zapomnij o ikonie ołówka, aby dodać osobiste notatki!";
-  @override String get onboarding3Title => "Wizualizuj Wzrost";
-  @override String get onboarding3Description => "Przesuwaj różne wykresy, aby zobaczyć wzorce i ogólny rozwój.";
-  @override String get onboarding4Title => "Porównaj i Filtruj";
-  @override String get onboarding4Description => "Użyj kontrolek pod wykresami, aby filtrować konkretne pytania lub zaznaczyć wszystkie naraz.";
+  
+  @override String get onboarding1Title => "Inwentarz Duchowy";
+  @override String get onboarding1DescriptionTop => "Ta aplikacja pomaga ci szczerze ocenić swój stan duchowy przed Bogiem. Jest to narzędzie do osobistego rozwoju i codziennej refleksji.";
+  @override String get onboarding1DescriptionBottom => "Wybierz zestaw pytań z górnego paska, który cię dzisiaj dotyczy.";
+  
+  @override String get onboarding2Title => "Sprawdź i Zanotuj";
+  @override String get onboarding2Step1Title => "Ocena";
+  @override String get onboarding2Step1Description => "Użyj suwaka, aby ocenić, jak się dzisiaj czujesz w tym punkcie.";
+  @override String get onboarding2Step2Title => "Notatki";
+  @override String get onboarding2Step2Description => "Dotknij ikony notatki (kartka z plusem), aby zapisać myśl lub modlitwę.";
+  
+  @override String get onboarding3Title => "Analiza i Bezpieczeństwo";
+  @override String get onboarding3Step1Title => "Wykresy";
+  @override String get onboarding3Step1Description => "Przesuń w lewo lub w prawo w obszarze wykresu, aby przełączać się między różnymi widokami.";
+  @override String get onboarding3Step2Title => "Prywatność";
+  @override String get onboarding3Step2Description => "Twoje dane pozostają lokalnie na Twoim urządzeniu. W razie potrzeby wyeksportuj je jako CSV do programu Excel.";
 
   @override
   Map<String, SelfAssessmentQuestionSet> get questionMap {

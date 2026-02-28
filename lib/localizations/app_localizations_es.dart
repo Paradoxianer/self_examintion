@@ -75,7 +75,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override String get about => "Acerca de la aplicación";
   @override String get aboutContent => "Esta aplicación es para la reflexión personal y el crecimiento espiritual. Inspirada por William Booth y John Wesley.";
-  @override String get version => "Versión";
+  @override String get version => "Versija";
   @override String get imprint => "Aviso legal";
   @override String get license => "Licencias";
   @override String get imprintContent => "Responsable: Matthias Lindner\nContacto: ";
@@ -84,14 +84,22 @@ class AppLocalizationsEs extends AppLocalizations {
   @override String get onboardingSkip => "Omitir";
   @override String get onboardingNext => "Siguiente";
   @override String get onboardingStart => "Empezar";
-  @override String get onboarding1Title => "Bienvenido a la Autoevaluación";
-  @override String get onboarding1Description => "Reflexiona sobre tu camino espiritual. Comienza seleccionando un conjunto de preguntas en la parte superior.";
-  @override String get onboarding2Title => "Evaluar y Anotar";
-  @override String get onboarding2Description => "Usa los deslizadores para evaluar. ¡No olvides el icono del lápiz para añadir notas personales!";
-  @override String get onboarding3Title => "Visualizar el Crecimiento";
-  @override String get onboarding3Description => "Desliza a través de diferentes gráficos para ver patrones y tu desarrollo general.";
-  @override String get onboarding4Title => "Comparar y Filtrar";
-  @override String get onboarding4Description => "Usa los controles debajo de los gráficos para filtrar preguntas específicas o seleccionar todas a la vez.";
+  
+  @override String get onboarding1Title => "Inventario Espiritual";
+  @override String get onboarding1DescriptionTop => "Esta aplicación le ayuda a evaluar honestamente su estado espiritual ante Dios. Es una herramienta para su crecimiento personal y reflexión diaria.";
+  @override String get onboarding1DescriptionBottom => "Elija un conjunto de preguntas que le interese hoy en la barra superior.";
+  
+  @override String get onboarding2Title => "Verificar y Anotar";
+  @override String get onboarding2Step1Title => "Evaluación";
+  @override String get onboarding2Step1Description => "Mueva el deslizador para evaluar cómo se siente hoy en este punto.";
+  @override String get onboarding2Step2Title => "Notas";
+  @override String get onboarding2Step2Description => "Toque el icono de nota (hoja con más) para registrar un pensamiento o una oración.";
+  
+  @override String get onboarding3Title => "Análisis y Seguridad";
+  @override String get onboarding3Step1Title => "Gráficos";
+  @override String get onboarding3Step1Description => "Deslice hacia la izquierda o hacia la derecha en el área del gráfico para cambiar entre diferentes vistas.";
+  @override String get onboarding3Step2Title => "Privacidad";
+  @override String get onboarding3Step2Description => "Sus datos permanecen localmente en su dispositivo. Expórtelos como CSV para Excel si es necesario.";
 
   @override
   Map<String, SelfAssessmentQuestionSet> get questionMap {

@@ -34,7 +34,7 @@ class AppLocalizationsLt extends AppLocalizations {
   @override String get dsgvoTitle => 'Duomenų apsauga';
   @override String get dsgvo1 => 'Siekiant sekti Jūsų dvasinį vystymąsi, mes saugome Jūsų atsakymus lokaliai.';
   @override String get dsgvo2 => 'Atkreipkite dėmesį, kad kiti asmenys gali turėti prieigą prie šių duomenų.';
-  @override String get dsgvo3 => 'Paspausdami "Sutinku", Jūs sutinkate su duomenų saugojimimu.';
+  @override String get dsgvo3 => 'Paspausdami "Sutinku", Jūs sutinkate su duomenų saugojimu.';
   @override String get dsgvoOK => 'Sutinku';
   @override String get dsgvoCancel => 'Nesutinku';
   @override String get dsgvoYes => 'Sutikimas suteiktas';
@@ -80,26 +80,25 @@ class AppLocalizationsLt extends AppLocalizations {
   @override String get imprintContent => "Atsakingas: Matthias Lindner\nKontaktai: ";
   @override String get githubRepository => "GitHub saugykla (Pranešti apie klaidas ir prisidėti)";
 
-  @override String get onboardingSkip => "Omitir";
-  @override String get onboardingNext => "Siguiente";
-  @override String get onboardingStart => "Empezar";
-  @override String get onboarding1Title => "Welcome to Self-Examination";
-  @override String get onboarding1Description => "Reflect on your spiritual journey.";
-  @override String get onboarding2Title => "Assess & Note";
-  @override String get onboarding2Step1Title => "Choose Topics";
-  @override String get onboarding2Step1Description => "Select a set.";
-  @override String get onboarding2Step2Title => "Notes";
-  @override String get onboarding2Step2Description => "Add notes.";
-  @override String get onboarding3Title => "Charts";
-  @override String get onboarding3Step1Title => "Views";
-  @override String get onboarding3Step1Description => "Swipe.";
-  @override String get onboarding3Step2Title => "Filter";
-  @override String get onboarding3Step2Description => "Toggle.";
-  @override String get onboarding4Title => "Export";
-  @override String get onboarding4Step1Title => "Local";
-  @override String get onboarding4Step1Description => "Private.";
-  @override String get onboarding4Step2Title => "Excel";
-  @override String get onboarding4Step2Description => "CSV.";
+  @override String get onboardingSkip => "Praleisti";
+  @override String get onboardingNext => "Toliau";
+  @override String get onboardingStart => "Pradėti";
+  
+  @override String get onboarding1Title => "Dvasinis inventorius";
+  @override String get onboarding1DescriptionTop => "Ši programėlė padeda nuoširdžiai įvertinti savo dvasinę būseną prieš Dievą. Tai įrankis jūsų asmeniniam augimui.";
+  @override String get onboarding1DescriptionBottom => "Pasirinkite klausimų rinkinį iš viršutinės juostos, kuris jums šiandien aktualus.";
+  
+  @override String get onboarding2Title => "Tikrinimas ir pastabos";
+  @override String get onboarding2Step1Title => "Vertinimas";
+  @override String get onboarding2Step1Description => "Naudokite slankiklį, kad įvertintumėte savo būseną šiandien.";
+  @override String get onboarding2Step2Title => "Pastabos";
+  @override String get onboarding2Step2Description => "Bakstelėkite užrašų piktogramą (lapas su pliusu), kad užfiksuotumėte mintį ar maldą.";
+  
+  @override String get onboarding3Title => "Analizė ir saugumas";
+  @override String get onboarding3Step1Title => "Diagramos";
+  @override String get onboarding3Step1Description => "Braukite diagramos srityje, kad perjungtumėte skirtingus vaizdus.";
+  @override String get onboarding3Step2Title => "Privatumas";
+  @override String get onboarding3Step2Description => "Jūsų duomenys lieka lokaliai jūsų įrenginyje. Jei reikia, eksportuokite juos kaip CSV.";
 
   @override
   Map<String, SelfAssessmentQuestionSet> get questionMap {
@@ -122,7 +121,7 @@ class AppLocalizationsLt extends AppLocalizations {
       ),
       "William Booth": SelfAssessmentQuestionSet(
         authorName: "William Booth",
-        description: "Savęs neigimo klausimai.",
+        description: "Savęs neigimo klausimus.",
         questions: [
           Question(text: "Ar kaltas dėl žinomos nuodėmės?", isPositive: true),
           Question(text: "Ar kontroliuoju troškimus?"),

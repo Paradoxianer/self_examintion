@@ -124,11 +124,10 @@ abstract class AppLocalizations {
   String get onboardingNext;
   String get onboardingStart;
   
-  // Screen 1: Vision & Intro
+  // Screen 1: Vision & Selection
   String get onboarding1Title;
-  String get onboarding1Description;
-  String get onboarding1StepTitle;
-  String get onboarding1StepDescription;
+  String get onboarding1DescriptionTop;
+  String get onboarding1DescriptionBottom;
   
   // Screen 2: Usage (Slider & Notes)
   String get onboarding2Title;
@@ -137,7 +136,7 @@ abstract class AppLocalizations {
   String get onboarding2Step2Title;
   String get onboarding2Step2Description;
   
-  // Screen 3: Analysis & Security
+  // Screen 3: Analysis & Privacy
   String get onboarding3Title;
   String get onboarding3Step1Title;
   String get onboarding3Step1Description;

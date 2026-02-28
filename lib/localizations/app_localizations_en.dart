@@ -85,25 +85,20 @@ class AppLocalizationsEn extends AppLocalizations {
   @override String get onboardingStart => "Start";
   
   @override String get onboarding1Title => "Spiritual Inventory";
-  @override String get onboarding1Description => "This app is your personal tool for self-reflection. Inspired by the daily examination questions of William Booth and John Wesley, it helps you assess your spiritual state honestly before God and recognize patterns in your development.";
+  @override String get onboarding1DescriptionTop => "This app helps you assess your spiritual state honestly before God. It is a tool for your personal growth and daily reflection.";
+  @override String get onboarding1DescriptionBottom => "Choose a question set from the top bar that concerns you today.";
   
-  @override String get onboarding2Title => "Assess & Note";
-  @override String get onboarding2Step1Title => "Choose Topics";
-  @override String get onboarding2Step1Description => "Select the question set that concerns you today (e.g., the Ten Commandments) from the top bar.";
-  @override String get onboarding2Step2Title => "Use Note Icon";
-  @override String get onboarding2Step2Description => "Don't just give scores. Tap the note icon (sheet with plus) to record thoughts or prayers.";
+  @override String get onboarding2Title => "Check & Note";
+  @override String get onboarding2Step1Title => "Assessment";
+  @override String get onboarding2Step1Description => "Move the slider to assess how you feel about this point today.";
+  @override String get onboarding2Step2Title => "Notes";
+  @override String get onboarding2Step2Description => "Tap the note icon (sheet with plus) to record a thought or a prayer.";
   
-  @override String get onboarding3Title => "Analysis & Comparison";
-  @override String get onboarding3Step1Title => "Switch Views";
-  @override String get onboarding3Step1Description => "Simply swipe left or right in the chart area to switch between Timeline, Comparison, and Radar views.";
-  @override String get onboarding3Step2Title => "Filter Questions";
-  @override String get onboarding3Step2Description => "Use the list below the charts to specifically show or hide individual questions.";
-  
-  @override String get onboarding4Title => "Security & Export";
-  @override String get onboarding4Step1Title => "Your Data is Local";
-  @override String get onboarding4Step1Description => "All answers stay on your device. There is no cloud storage without your explicit action.";
-  @override String get onboarding4Step2Title => "Export for Excel";
-  @override String get onboarding4Step2Description => "You can export your history as a CSV at any time for detailed evaluation in other programs.";
+  @override String get onboarding3Title => "Analysis & Security";
+  @override String get onboarding3Step1Title => "Charts";
+  @override String get onboarding3Step1Description => "Swipe left or right in the chart area to switch between different views.";
+  @override String get onboarding3Step2Title => "Privacy";
+  @override String get onboarding3Step2Description => "Your data stays local on your device. Export it as CSV for Excel if needed.";
 
   @override
   Map<String, SelfAssessmentQuestionSet> get questionMap {

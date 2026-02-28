@@ -57,8 +57,8 @@ class AppLocalizationsKo extends AppLocalizations {
   @override String get prevPeriod => "이전 기간";
   @override String get currPeriod => "현재 기간";
   @override String get all => "전체";
-  @override String get selectAll => "전체 선택";
-  @override String get selectNone => "전체 해제";
+  @override String get selectAll => "Select all";
+  @override String get selectNone => "Deselect all";
   @override List<String> get timeRangeShort => ["2일", "1주", "1월", "1년", "전체"];
   @override String get tips => "팁 및 정보";
 
@@ -80,17 +80,25 @@ class AppLocalizationsKo extends AppLocalizations {
   @override String get imprintContent => "책임자: Matthias Lindner\n연락처: ";
   @override String get githubRepository => "GitHub 저장소 (버그 보고 및 기여)";
 
-  @override String get onboardingSkip => "건너뛰기";
-  @override String get onboardingNext => "다음";
-  @override String get onboardingStart => "시작하기";
-  @override String get onboarding1Title => "자가 진단 시작하기";
-  @override String get onboarding1Description => "당신의 영적 여정을 돌아보세요. 상단에서 질문 세트를 선택하여 시작할 수 있습니다.";
-  @override String get onboarding2Title => "평가 및 메모";
-  @override String get onboarding2Description => "슬라이더를 사용해 진단하세요. 연필 아이콘을 눌러 개인적인 메모를 추가하는 것을 잊지 마세요!";
-  @override String get onboarding3Title => "성장 시각화";
-  @override String get onboarding3Description => "다양한 차트를 통해 성장 패턴과 전반적인 발전을 확인하세요.";
-  @override String get onboarding4Title => "비교 및 필터";
-  @override String get onboarding4Description => "차트 하단의 컨트롤을 사용해 특정 질문을 필터링하거나 한꺼번에 선택하세요.";
+  @override String get onboardingSkip => "Skip";
+  @override String get onboardingNext => "Next";
+  @override String get onboardingStart => "Start";
+  
+  @override String get onboarding1Title => "Spiritual Inventory";
+  @override String get onboarding1DescriptionTop => "This app helps you assess your spiritual state honestly before God. It is a tool for your personal growth and daily reflection.";
+  @override String get onboarding1DescriptionBottom => "Choose a question set from the top bar that concerns you today.";
+  
+  @override String get onboarding2Title => "Check & Note";
+  @override String get onboarding2Step1Title => "Assessment";
+  @override String get onboarding2Step1Description => "Move the slider to assess how you feel about this point today.";
+  @override String get onboarding2Step2Title => "Notes";
+  @override String get onboarding2Step2Description => "Tap the note icon (sheet with plus) to record a thought or a prayer.";
+  
+  @override String get onboarding3Title => "Analysis & Security";
+  @override String get onboarding3Step1Title => "Charts";
+  @override String get onboarding3Step1Description => "Swipe left or right in the chart area to switch between different views.";
+  @override String get onboarding3Step2Title => "Privacy";
+  @override String get onboarding3Step2Description => "Your data stays local on your device. Export it as CSV for Excel if needed.";
 
   @override
   Map<String, SelfAssessmentQuestionSet> get questionMap {

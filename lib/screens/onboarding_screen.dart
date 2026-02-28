@@ -3,6 +3,8 @@ import 'package:self_examination/localizations/app_localizations.dart';
 import 'package:self_examination/utils/local_storage.dart';
 
 class OnboardingScreen extends StatefulWidget {
+  const OnboardingScreen({super.key});
+
   @override
   _OnboardingScreenState createState() => _OnboardingScreenState();
 }
@@ -15,13 +17,15 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   Widget build(BuildContext context) {
     final localization = AppLocalizations.of(context)!;
 
+    // 3-Screen-Structure based on AppLocalizations
     final List<OnboardingPageData> pages = [
       OnboardingPageData(
         title: localization.onboarding1Title,
+        description: localization.onboarding1DescriptionTop,
         steps: [
           OnboardingStep(
-            description: localization.onboarding1Description,
-            assetPath: "assets/onboarding/intro.png",
+            description: localization.onboarding1DescriptionBottom,
+            assetPath: "assets/onboarding/vision.png",
             icon: Icons.auto_awesome,
           ),
         ],
@@ -32,8 +36,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           OnboardingStep(
             title: localization.onboarding2Step1Title,
             description: localization.onboarding2Step1Description,
-            assetPath: "assets/onboarding/sets.png",
-            icon: Icons.list_alt,
+            assetPath: "assets/onboarding/slider.png",
+            icon: Icons.linear_scale,
           ),
           OnboardingStep(
             title: localization.onboarding2Step2Title,
@@ -55,25 +59,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           OnboardingStep(
             title: localization.onboarding3Step2Title,
             description: localization.onboarding3Step2Description,
-            assetPath: "assets/onboarding/filter.png",
-            icon: Icons.filter_list,
-          ),
-        ],
-      ),
-      OnboardingPageData(
-        title: localization.onboarding4Title,
-        steps: [
-          OnboardingStep(
-            title: localization.onboarding4Step1Title,
-            description: localization.onboarding4Step1Description,
-            assetPath: "assets/onboarding/security.png",
+            assetPath: "assets/onboarding/privacy.png",
             icon: Icons.security,
-          ),
-          OnboardingStep(
-            title: localization.onboarding4Step2Title,
-            description: localization.onboarding4Step2Description,
-            assetPath: "assets/onboarding/export.png",
-            icon: Icons.file_download,
           ),
         ],
       ),
@@ -150,13 +137,21 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       padding: const EdgeInsets.symmetric(horizontal: 24.0),
       child: Column(
         children: [
-          const SizedBox(height: 40),
+          const SizedBox(height: 30),
           Text(
             page.title,
-            style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: Theme.of(context).primaryColor),
+            style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold, color: Theme.of(context).primaryColor),
             textAlign: TextAlign.center,
           ),
-          const SizedBox(height: 20),
+          if (page.description != null) ...[
+            const SizedBox(height: 16),
+            Text(
+              page.description!,
+              style: const TextStyle(fontSize: 15, fontStyle: FontStyle.italic),
+              textAlign: TextAlign.center,
+            ),
+          ],
+          const SizedBox(height: 24),
           Expanded(
             child: SingleChildScrollView(
               child: Column(
@@ -172,41 +167,38 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
   Widget _buildStep(OnboardingStep step) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 32.0),
+      padding: const EdgeInsets.only(bottom: 24.0),
       child: Column(
         children: [
           if (step.title != null)
             Padding(
-              padding: const EdgeInsets.only(bottom: 8.0),
+              padding: const EdgeInsets.only(bottom: 4.0),
               child: Text(
                 step.title!,
-                style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                style: const TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
                 textAlign: TextAlign.center,
               ),
             ),
           Text(
             step.description,
-            style: const TextStyle(fontSize: 15, color: Colors.black87),
+            style: const TextStyle(fontSize: 14, color: Colors.black87),
             textAlign: TextAlign.center,
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 12),
           Container(
-            height: 140,
+            height: 120,
             width: double.infinity,
             decoration: BoxDecoration(
               color: Colors.grey.shade50,
-              borderRadius: BorderRadius.circular(16),
+              borderRadius: BorderRadius.circular(12),
               border: Border.all(color: Colors.grey.shade200),
-              boxShadow: const [
-                BoxShadow(color: Colors.black12, blurRadius: 4, offset: Offset(0, 2))
-              ],
             ),
             clipBehavior: Clip.antiAlias,
             child: Image.asset(
               step.assetPath,
               fit: BoxFit.contain,
               errorBuilder: (context, error, stackTrace) {
-                return Center(child: Icon(step.icon, size: 64, color: Colors.grey.shade300));
+                return Center(child: Icon(step.icon, size: 48, color: Colors.grey.shade300));
               },
             ),
           ),
@@ -223,8 +215,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
 class OnboardingPageData {
   final String title;
+  final String? description;
   final List<OnboardingStep> steps;
-  OnboardingPageData({required this.title, required this.steps});
+  OnboardingPageData({required this.title, this.description, required this.steps});
 }
 
 class OnboardingStep {
