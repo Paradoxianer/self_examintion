@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:intl/intl.dart';
 import 'package:self_examination/localizations/app_localizations.dart';
 import 'package:self_examination/models/assessment_entry.dart';
 import 'package:self_examination/utils/globals.dart';
@@ -55,12 +56,27 @@ class TimeChartWidget extends StatelessWidget {
       entry.timestamp.isBefore(end.add(const Duration(seconds: 1)))
     ).toList();
 
+    // Fix for 2-day view: scale minX and maxX tightly around data points
+    double minX = start.millisecondsSinceEpoch.toDouble();
+    double maxX = end.millisecondsSinceEpoch.toDouble();
+
+    if (currentTimeRange == TimeRange.twoDays && filteredHistory.length >= 2) {
+      final firstTs = filteredHistory.first.timestamp.millisecondsSinceEpoch.toDouble();
+      final lastTs = filteredHistory.last.timestamp.millisecondsSinceEpoch.toDouble();
+      final diff = lastTs - firstTs;
+      if (diff > 0) {
+        // Add 10% padding to left and right so points are not exactly on the edge
+        minX = firstTs - (diff * 0.1);
+        maxX = lastTs + (diff * 0.1);
+      }
+    }
+
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 24, 24, 16),
       child: LineChart(
         LineChartData(
-          minX: start.millisecondsSinceEpoch.toDouble(),
-          maxX: end.millisecondsSinceEpoch.toDouble(),
+          minX: minX,
+          maxX: maxX,
           minY: 0,
           maxY: 1.05,
           lineBarsData: _buildBars(context, filteredHistory),
@@ -70,8 +86,8 @@ class TimeChartWidget extends StatelessWidget {
             bottomTitles: AxisTitles(
               sideTitles: SideTitles(
                 showTitles: true,
-                reservedSize: 30,
-                interval: _calculateInterval(start, end),
+                reservedSize: 38,
+                interval: _calculateInterval(minX, maxX, filteredHistory),
                 getTitlesWidget: (value, meta) => _bottomTitleWidgets(value, meta, context),
               ),
             ),
@@ -145,11 +161,18 @@ class TimeChartWidget extends StatelessWidget {
     return bars;
   }
 
-  double _calculateInterval(DateTime start, DateTime end) {
-    final diff = end.difference(start).inDays;
-    if (diff <= 2) return 1000 * 60 * 60 * 12;
-    if (diff <= 7) return 1000 * 60 * 60 * 24;
-    if (diff <= 31) return 1000 * 60 * 60 * 24 * 7;
+  double _calculateInterval(double minX, double maxX, List<AssessmentEntry> filteredHistory) {
+    final diffMs = maxX - minX;
+    final diffDays = diffMs / (1000 * 60 * 60 * 24);
+    
+    if (currentTimeRange == TimeRange.twoDays && filteredHistory.length >= 2) {
+      // For 2-day zoomed view, we want to see at least 2 labels
+      return diffMs / 1.5; 
+    }
+    
+    if (diffDays <= 2) return 1000 * 60 * 60 * 12;
+    if (diffDays <= 7) return 1000 * 60 * 60 * 24;
+    if (diffDays <= 31) return 1000 * 60 * 60 * 24 * 7;
     return 1000 * 60 * 60 * 24 * 30;
   }
 
@@ -181,10 +204,28 @@ class TimeChartWidget extends StatelessWidget {
 
   Widget _bottomTitleWidgets(double value, TitleMeta meta, BuildContext context) {
     final date = DateTime.fromMillisecondsSinceEpoch(value.toInt());
-    String text = (currentTimeRange == TimeRange.year || currentTimeRange == TimeRange.all)
-        ? "${date.month}.${date.year.toString().substring(2)}"
-        : "${date.day}.${date.month}.";
-    return SideTitleWidget(meta: meta, child: Text(text, style: const TextStyle(fontSize: 8, fontWeight: FontWeight.bold)));
+    final localization = AppLocalizations.of(context)!;
+    final locale = localization.localeName;
+    
+    String text = "";
+    if (currentTimeRange == TimeRange.year || currentTimeRange == TimeRange.all) {
+      text = DateFormat.yM(locale).format(date);
+    } else if (currentTimeRange == TimeRange.week || currentTimeRange == TimeRange.twoDays) {
+      // Show weekday abbreviation and date for better orientation
+      text = "${DateFormat.E(locale).format(date)}\n${DateFormat.Md(locale).format(date)}";
+    } else {
+      text = DateFormat.Md(locale).format(date);
+    }
+    
+    return SideTitleWidget(
+      meta: meta, 
+      space: 4,
+      child: Text(
+        text, 
+        textAlign: TextAlign.center,
+        style: const TextStyle(fontSize: 8, fontWeight: FontWeight.bold)
+      )
+    );
   }
 
   Widget _leftTitleWidgets(double value, TitleMeta meta, BuildContext context) {
