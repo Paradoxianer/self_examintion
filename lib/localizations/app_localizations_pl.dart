@@ -83,71 +83,261 @@ class AppLocalizationsPl extends AppLocalizations {
   @override String get onboardingSkip => "Pomiń";
   @override String get onboardingNext => "Dalej";
   @override String get onboardingStart => "Zacznij";
-  
-  @override String get onboarding1Title => "Inwentarz Duchowy";
-  @override String get onboarding1DescriptionTop => "Ta aplikacja pomaga ci szczerze ocenić swój stan duchowy przed Bogiem. Jest to narzędzie do osobistego rozwoju i codziennej refleksji.";
-  @override String get onboarding1DescriptionBottom => "Wybierz zestaw pytań z górnego paska, który cię dzisiaj dotyczy.";
-  
-  @override String get onboarding2Title => "Sprawdź i Zanotuj";
-  @override String get onboarding2Step1Title => "Ocena";
-  @override String get onboarding2Step1Description => "Użyj suwaka, aby ocenić, jak się dzisiaj czujesz w tym punkcie.";
-  @override String get onboarding2Step2Title => "Notatki";
-  @override String get onboarding2Step2Description => "Dotknij ikony notatki (kartka z plusem), aby zapisać myśl lub modlitwę.";
-  
-  @override String get onboarding3Title => "Analiza i Bezpieczeństwo";
-  @override String get onboarding3Step1Title => "Wykresy";
-  @override String get onboarding3Step1Description => "Przesuń w lewo lub w prawo w obszarze wykresu, aby przełączać się między różnymi widokami.";
-  @override String get onboarding3Step2Title => "Prywatność";
-  @override String get onboarding3Step2Description => "Twoje dane pozostają lokalnie na Twoim urządzeniu. W razie potrzeby wyeksportuj je jako CSV do programu Excel.";
+
+  @override
+  String get onboarding1Title => "Aplikacja Autorefleksja";
+
+  @override
+  String get onboarding1DescriptionTop =>
+      "William Booth i John Wesley regularnie poświęcali czas na badanie własnego serca.\n"
+          "Jak przeżyłem dzisiaj moją wiarę?\n"
+          "Gdzie Boża miłość mogła stać się widoczna przeze mnie?\n"
+          "A gdzie jeszcze chce mnie ona dalej zmieniać?\n\n"
+          "Ta aplikacja zaprasza cię właśnie do takiej szczerej refleksji.\n"
+          "Możesz wybierać spośród różnych zestawów pytań, zapisywać swoje odpowiedzi\n"
+          "i obserwować swój rozwój na przestrzeni dni, tygodni, miesięcy lub lat –\n"
+          "całościowo lub w poszczególnych obszarach.\n\n"
+          "Jako pomoc w dostrzeganiu, gdzie Boża miłość zaprasza cię do dalszego działania –\n"
+          "i gdzie wzrost jest wciąż możliwy.";
+
+  @override
+  String get onboarding1DescriptionBottom =>
+      "Tutaj możesz wybierać między różnymi zestawami pytań do autorefleksji. "
+          "Każdy zestaw zawiera inne pytania o innym punkcie ciężkości. "
+          "Przegląd wszystkich pytań uzyskasz, dotykając symbolu informacji (i).";
+
+  @override
+  String get onboarding2Title => "Refleksja i Notatki";
+
+  @override
+  String get onboarding2Step1Title => "Refleksja";
+
+  @override
+  String get onboarding2Step1Description =>
+      "Przesuń suwak, aby ocenić dla siebie samego, "
+          "jak odpowiedziałbyś dzisiaj na dane pytanie.\n\n"
+          "Jeśli czujesz, że twoja odpowiedź jest bardziej pozytywna, przesuń suwak w kierunku zielonym. "
+          "Jeśli czujesz, że jest bardziej negatywna, przesuń go w kierunku czerwonym.\n\n"
+          "Nad suwakiem wyświetli się twoja wybrana ocena w procentach.";
+
+  @override
+  String get onboarding2Step2Title => "Notatki";
+
+  @override
+  String get onboarding2Step2Description =>
+      "Dotknij ikony notatki (kartka z plusem), aby zapisać myśl, obserwację "
+          "lub modlitwę. Notatka zostanie zapisana razem z pytaniem i odpowiednią datą.\n\n"
+          "Dotknij ponownie ikony notatki, aby zamknąć pole notatki.";
+
+  @override
+  String get onboarding3Title => "Analiza i Bezpieczeństwo";
+
+  @override
+  String get onboarding3Step1Title => "Wykresy";
+
+  @override
+  String get onboarding3Step1Description =>
+      "Po udzieleniu odpowiedzi na wszystkie pytania, przejdziesz do widoku wykresów "
+          "za pomocą przycisku „Gotowe”.\n\n"
+          "Przesuń po wykresie w lewo lub w prawo, aby przełączać się między różnymi widokami. "
+          "Poniżej wykresów możesz wybrać, które pytania mają być uwzględnione w analizie.";
+
+  @override
+  String get onboarding3Step2Title => "Prywatność";
+
+  @override
+  String get onboarding3Step2Description =>
+      "Twoje dane pozostają zapisane wyłącznie lokalnie na twoim urządzeniu.\n\n"
+          "Opcjonalnie możesz je dodatkowo zabezpieczyć kodem PIN urządzenia lub zabezpieczeniami "
+          "biometrycznymi (np. odciskiem palca lub rozpoznawaniem twarzy).\n\n"
+          "W razie potrzeby możesz wyeksportować swoje dane z różnym stopniem szczegółowości jako plik CSV "
+          "i na przykład dalej analizować je w programie Excel.";
 
   @override
   Map<String, SelfAssessmentQuestionSet> get questionMap {
     return {
       "ten commandments": SelfAssessmentQuestionSet(
-        authorName: "Armia Zbawienia Chemnitz",
-        description: "Pytania oparte na dekalogu.",
+        authorName: "Dziesięć Przykazań",
+        description:
+        "Zestaw pytań opracowany przez Armię Zbawienia w Chemnitz w ramach serii kazań o Dziesięciu Przykazaniach.",
         questions: [
-          Question(text: "Czy unikam stawiania innych rzeczy obok Boga?"),
-          Question(text: "Czy unikam tworzenia obrazów Boga?"),
-          Question(text: "Czy nie nadużywam imienia Bożego?"),
-          Question(text: "Czy święcę dzień święty?"),
-          Question(text: "Czy czczę rodziców?"),
-          Question(text: "Czy nie krzywdzę innych?"),
-          Question(text: "Czy unikam cudzołóstwa?"),
-          Question(text: "Czy jestem uczciwy i nie kradnę?"),
-          Question(text: "Czy nie kłamię przeciw bliźniemu?"),
-          Question(text: "Czy nie pożądam cudzej własności?"),
+          Question(
+            text: "W jakim stopniu unikałem stawiania innych rzeczy lub spraw ponad jedynego prawdziwego Boga?",
+            description: "Nie będziesz miał innych bogów obok mnie! (2 Mojż. 20, 1–6)",
+          ),
+          Question(
+            text: "Jak konsekwentnie unikałem czynienia sobie obrazu Boga?",
+            description: "Nie będziesz czynił sobie żadnego rzeźbionego obrazu! (2 Mojż. 20, 4)",
+          ),
+          Question(
+            text: "Jak bardzo unikałem używania imienia Bożego bez zastanowienia?",
+            description: "Nie będziesz brał imienia Pana, Boga twego, nadaremno! (2 Mojż. 20, 7)",
+          ),
+          Question(
+            text: "Czy świadomie robię sobie przerwę, aby oddać cześć Bogu?",
+            description: "Ale siódmy dzień jest szabatem Pana, Boga twego! (2 Mojż. 20, 8–11)",
+          ),
+          Question(
+            text: "W jakim stopniu szanuję moich rodziców i okazuję im respekt?",
+            description: "Czcij ojca swego i matkę swoją! (2 Mojż. 20, 12)",
+          ),
+          Question(
+            text: "Jak konsekwentnie unikam szkodzenia innym ludziom w myślach, słowach lub czynach?",
+            description: "Nie będziesz zabijał! (2 Mojż. 20, 13)",
+          ),
+          Question(
+            text: "W jakim stopniu unikam cudzołóstwa i zachowuję małżeństwo jako święte?",
+            description: "Nie będziesz cudzołożył! (2 Mojż. 20, 14)",
+          ),
+          Question(
+            text: "Jak rzetelnie unikam przywłaszczania sobie cudzej własności i praktykuję uczciwość?",
+            description: "Nie będziesz kradł! (2 Mojż. 20, 15)",
+          ),
+          Question(
+            text: "W jakim stopniu unikam rozpowszechniania nieprawdziwych rzeczy o innych ludziach lub plotkowania?",
+            description: "Nie będziesz mówił przeciw bliźniemu swemu kłamstwa jako świadek! (2 Mojż. 20, 16)",
+          ),
+          Question(
+            text: "Jak bardzo unikam zazdrości o to, co należy do innych ludzi lub jak żyją inni?",
+            description: "Nie będziesz pożądał domu bliźniego swego! (2 Mojż. 20, 17)",
+          ),
         ],
       ),
+
       "William Booth": SelfAssessmentQuestionSet(
         authorName: "William Booth",
-        description: "Pytania o samozaparcie.",
+        description:
+        "Pytania do autorefleksji, które William Booth zadawał sobie każdego wieczoru.",
         questions: [
-          Question(text: "Czy jestem winny grzechu nawykowego?", isPositive: true),
-          Question(text: "Czy panuję nad pragnieniami?"),
-          Question(text: "Czy moje myśli są czyste?"),
-          Question(text: "Czy świat skłania mnie do zła?", isPositive: true),
-          Question(text: "Czy zawsze działam z miłością?", isPositive: true),
-          Question(text: "Czy dbam o zbawienie grzeszników?"),
-          Question(text: "Czy wypełniam śluby?"),
-          Question(text: "Czy mój przykład jest zgodny z wiarą?"),
-          Question(text: "Czy jestem dumny?", isPositive: true),
-          Question(text: "Czy idę pod prąd świata?"),
-          Question(text: "Czy pożądam bogactwa?", isPositive: true),
+          Question(
+            text: "Czy jestem winny jakiegoś znanego grzechu? Czy świadomie lub przez zaniedbanie grzeszę w myślach, słowach lub uczynkach, wiedząc, że czynię źle?",
+            isPositive: true,
+          ),
+          Question(
+            text: "Czy mam swoje cielesne pragnienia pod taką kontrolą, że nie czuję się winny? Czy ulegam jakiejś skłonności, która szkodzi mojemu uświęceniu, wzrostowi w poznaniu, posłuszeństwu i użyteczności?",
+          ),
+          Question(
+            text: "Czy wszystkie moje myśli i uczucia są takie, że nie musiałbym się wstydzić, gdyby zostały objawione przed Bogiem?",
+          ),
+          Question(
+            text: "Czy wpływ świata skłania mnie do robienia lub mówienia rzeczy, które nie pasują do naśladowcy Chrystusa?",
+            isPositive: true,
+          ),
+          Question(
+            text: "Czy moje usposobienie skłania mnie do odczuwania, robienia lub mówienia czegoś, o czym później przekonuję się, że jest sprzeczne z miłością, którą zawsze powinienem darzyć moich bliźnich?",
+            isPositive: true,
+          ),
+          Question(
+            text: "Czy czynię wszystko, co w mojej mocy, aby grzesznicy zostali zbawieni? Czy obchodzi mnie to, że są w niebezpieczeństwie? Czy modlę się za nich, walczę o ich zbawienie, jakby byli moimi własnymi dziećmi?",
+          ),
+          Question(
+            text: "Czy wypełniam moje śluby, które złożyłem przed Bogiem w akcie oddania lub przy ławce pokutnej?",
+          ),
+          Question(
+            text: "Czy mój przykład jest zgodny z moim słowem?",
+          ),
+          Question(
+            text: "Czy w mojej naturze i zachowaniu jestem dumny lub arogancki?",
+            isPositive: true,
+          ),
+          Question(
+            text: "Czy dostosowuję się do zwyczajów i mód świata, czy mam odwagę płynąć pod prąd?",
+            isPositive: true,
+          ),
+          Question(
+            text: "Czy grozi mi, że dam się ponieść światowemu pragnieniu bycia bogatym lub podziwianym?",
+            isPositive: true,
+          ),
         ],
       ),
+
       "John Wesley": SelfAssessmentQuestionSet(
         authorName: "John Wesley",
-        description: "22 codzienne pytania Wesleya:",
+        description:
+        "22 pytania Johna Wesleya, które zadawał sobie codziennie w ramach autorefleksji:",
         questions: [
-          Question(text: "Czy jestem hipokrytą?", isPositive: true),
-          Question(text: "Czy jestem uczciwy?", isPositive: true),
-          Question(text: "Czy dochowuję tajemnicy?", isPositive: true),
-          Question(text: "Czy można mi ufać?"),
-          Question(text: "Czy jestem niewolnikiem nawyków?", isPositive: true),
-          Question(text: "Czy Biblia żyje we mnie?"),
-          Question(text: "Czy mam czas na modlitwę?"),
-          Question(text: "Czy Jezus jest realny?"),
+          Question(
+            text: "Czy świadomie lub nieświadomie sprawiam wrażenie, że jestem lepszy niż w rzeczywistości? Innymi słowy: czy jestem hipokrytą?",
+            isPositive: true,
+          ),
+          Question(
+            text: "Czy we wszystkich moich działaniach i słowach jestem uczciwy, czy też przesadzam?",
+            isPositive: true,
+          ),
+          Question(
+            text: "Czy przekazuję innym w zaufaniu to, co mi powiedziano w tajemnicy?",
+            isPositive: true,
+          ),
+          Question(
+            text: "Czy można mi ufać?",
+          ),
+          Question(
+            text: "Czy jestem niewolnikiem swojego ubioru, przyjaciół, pracy lub nawyków?",
+          ),
+          Question(
+            text: "Czy jestem niepewny siebie, pełen użalania się nad sobą lub samousprawiedliwienia?",
+            isPositive: true,
+          ),
+          Question(
+            text: "Czy Biblia żyje dzisiaj we mnie?",
+          ),
+          Question(
+            text: "Czy każdego dnia daję Biblii czas, aby do mnie mówiła?",
+          ),
+          Question(
+            text: "Czy mam radość z modlitwy?",
+          ),
+          Question(
+            text: "Kiedy ostatni raz rozmawiałem z kimś o mojej wierze?",
+          ),
+          Question(
+            text: "Czy modlę się o pieniądze, które wydaję?",
+          ),
+          Question(
+            text: "Czy kładę się spać o czasie i wstaję o czasie?",
+          ),
+          Question(
+            text: "Czy jestem nieposłuszny Bogu w czymkolwiek?",
+            isPositive: true,
+          ),
+          Question(
+            text: "Czy upieram się przy robieniu czegoś, co niepokoi moje sumienie?",
+            isPositive: true,
+          ),
+          Question(
+            text: "Czy zostałem pokonany w jakiejś części mojego życia?",
+            isPositive: true,
+          ),
+          Question(
+            text: "Czy jestem zazdrosny, nieczysty, krytyczny, drażliwy, przewrażliwiony lub podejrzliwy?",
+            isPositive: true,
+          ),
+          Question(
+            text: "Jak spędzam wolny czas?",
+          ),
+          Question(
+            text: "Czy jestem dumny?",
+            isPositive: true,
+          ),
+          Question(
+            text: "Czy dziękuję Bogu za to, że nie jestem jak inni ludzie, zwłaszcza jak faryzeusze, którzy gardzili celnikiem?",
+            isPositive: true,
+          ),
+          Question(
+            text: "Czy jest ktoś, kogo się boję, kogo nie lubię, z kim nie chcę mieć nic wspólnego, kogo krytykuję, do kogo żywię urazę lub kogo ignoruję? Jeśli tak, co z tym robię?",
+            isPositive: true,
+          ),
+          Question(
+            text: "Czy żywię do kogoś urazę?",
+            isPositive: true,
+          ),
+          Question(
+            text: "Czy ciągle narzekam lub skarżę się?",
+            isPositive: true,
+          ),
+          Question(
+            text: "Czy Chrystus jest dla mnie realny?",
+          ),
         ],
       ),
     };
