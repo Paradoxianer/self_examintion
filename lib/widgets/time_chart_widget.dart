@@ -31,13 +31,10 @@ class TimeChartWidget extends StatelessWidget {
     
     List<AssessmentEntry> displayHistory;
     final authorKey = assessmentHistory.first.questionSet;
-    final questionSet = localization.questionMap[authorKey];
 
-    // Aggregations-Logik je nach Zeitspanne
     if (currentTimeRange == TimeRange.year) {
       displayHistory = AssessmentCalculator.aggregateByMonth(assessmentHistory, referenceDate.year);
     } else if (currentTimeRange == TimeRange.all) {
-      // Für die Gesamtansicht unterteilen wir in 10 sinnvolle Blöcke
       displayHistory = AssessmentCalculator.aggregate(assessmentHistory, 10);
     } else {
       displayHistory = assessmentHistory.where((entry) => 
@@ -48,7 +45,6 @@ class TimeChartWidget extends StatelessWidget {
 
     if (displayHistory.isEmpty) return Center(child: Text(localization.noData));
 
-    // X-Achsen Bereich festlegen
     double minX = (currentTimeRange == TimeRange.all) 
         ? displayHistory.first.timestamp.millisecondsSinceEpoch.toDouble()
         : start.millisecondsSinceEpoch.toDouble();
@@ -56,7 +52,6 @@ class TimeChartWidget extends StatelessWidget {
         ? displayHistory.last.timestamp.millisecondsSinceEpoch.toDouble()
         : end.millisecondsSinceEpoch.toDouble();
 
-    // Zoom-Effekt für kleine Ansichten (Punkte nicht am Rand kleben lassen)
     if ((currentTimeRange == TimeRange.twoDays || currentTimeRange == TimeRange.week) && displayHistory.length >= 2) {
       final diff = maxX - minX;
       minX -= diff * 0.05;
@@ -71,6 +66,54 @@ class TimeChartWidget extends StatelessWidget {
           maxX: maxX,
           minY: 0,
           maxY: 1.05,
+          lineTouchData: LineTouchData(
+            touchTooltipData: LineTouchTooltipData(
+              getTooltipColor: (spot) => Theme.of(context).colorScheme.surfaceContainerHighest.withValues(alpha: 0.95),
+              fitInsideHorizontally: true,
+              fitInsideVertically: true,
+              getTooltipItems: (List<LineBarSpot> touchedSpots) {
+                return touchedSpots.map((LineBarSpot touchedSpot) {
+                  final textStyle = TextStyle(
+                    color: touchedSpot.bar.color,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 12,
+                  );
+                  
+                  // Finde heraus, ob es der Durchschnitt (rote Linie) oder eine Einzelfrage ist
+                  String label = "";
+                  if (touchedSpot.bar.color == Colors.red) {
+                    label = localization.total;
+                  } else {
+                    // Suche den Index der Frage basierend auf der Farbe/Reihenfolge
+                    // Da wir die Bars in _buildBars in einer festen Reihenfolge bauen:
+                    // 1. Bar: Durchschnitt (optional)
+                    // Weitere: Gewählte Fragen
+                    int qIdx = -1;
+                    int barIndex = touchedSpots.indexOf(touchedSpot); // Das ist leider nicht zuverlässig
+                    
+                    // Wir nutzen die x-Koordinate für das Datum
+                    final date = DateTime.fromMillisecondsSinceEpoch(touchedSpot.x.toInt());
+                    final dateStr = DateFormat.yMd(localization.localeName).format(date);
+                    
+                    // Der Wert
+                    final val = "${(touchedSpot.y * 100).round()}%";
+                    
+                    return LineTooltipItem(
+                      "$dateStr\n$val",
+                      textStyle,
+                    );
+                  }
+                  
+                  final date = DateTime.fromMillisecondsSinceEpoch(touchedSpot.x.toInt());
+                  final dateStr = DateFormat.yMd(localization.localeName).format(date);
+                  return LineTooltipItem(
+                    "$label: ${(touchedSpot.y * 100).round()}%\n$dateStr",
+                    textStyle,
+                  );
+                }).toList();
+              },
+            ),
+          ),
           lineBarsData: _buildBars(context, displayHistory),
           titlesData: FlTitlesData(
             rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
@@ -105,17 +148,16 @@ class TimeChartWidget extends StatelessWidget {
 
   double _getInterval(double min, double max) {
     final diff = max - min;
-    if (currentTimeRange == TimeRange.all) return diff / 5; // Zeige ca 5 Labels
-    if (currentTimeRange == TimeRange.year) return 1000 * 60 * 60 * 24 * 30; // 1 Monat
-    if (currentTimeRange == TimeRange.month) return 1000 * 60 * 60 * 24 * 7; // 1 Woche
-    return 1000 * 60 * 60 * 24; // 1 Tag
+    if (currentTimeRange == TimeRange.all) return diff / 5;
+    if (currentTimeRange == TimeRange.year) return 1000 * 60 * 60 * 24 * 30;
+    if (currentTimeRange == TimeRange.month) return 1000 * 60 * 60 * 24 * 7;
+    return 1000 * 60 * 60 * 24;
   }
 
   List<LineChartBarData> _buildBars(BuildContext context, List<AssessmentEntry> history) {
     List<LineChartBarData> bars = [];
     final localization = AppLocalizations.of(context)!;
 
-    // Durchschnittslinie (Rot)
     if (selectedQuestions.isNotEmpty && selectedQuestions.last) {
       bars.add(LineChartBarData(
         spots: history.map((e) {
@@ -134,7 +176,6 @@ class TimeChartWidget extends StatelessWidget {
       ));
     }
 
-    // Einzelne Fragen
     for (int i = 0; i < selectedQuestions.length - 1; i++) {
       if (selectedQuestions[i]) {
         final color = globalColorMap[i + 1] ?? Colors.blue;
@@ -163,7 +204,6 @@ class TimeChartWidget extends StatelessWidget {
     final date = DateTime.fromMillisecondsSinceEpoch(value.toInt());
     final locale = AppLocalizations.of(context)!.localeName;
     
-    // Unterdrücke doppelte Labels am Rand
     if (value <= meta.min || value >= meta.max) return const SizedBox.shrink();
 
     String text = "";
