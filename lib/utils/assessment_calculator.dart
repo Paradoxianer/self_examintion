@@ -10,7 +10,7 @@ class AssessmentCalculator {
     return isPositive ? 1.0 - rawValue : rawValue;
   }
 
-  /// Calculates the average 'holiness' score for a single assessment entry.
+  /// Calculates the average score for a single entry.
   static double calculateAverage(AssessmentEntry entry, SelfAssessmentQuestionSet? questionSet) {
     if (entry.values.isEmpty) return 0.0;
     double sum = 0;
@@ -29,60 +29,75 @@ class AssessmentCalculator {
     return count > 0 ? sum / count : 0.0;
   }
 
-  /// Aggregates assessment entries by month for a given year.
-  /// Returns a list of dummy entries representing the monthly averages.
-  static List<AssessmentEntry> aggregateByMonth(List<AssessmentEntry> history, int year, SelfAssessmentQuestionSet? questionSet) {
-    List<AssessmentEntry> monthlyAverages = [];
-    
-    for (int month = 1; month <= 12; month++) {
-      final monthEntries = history.where((e) => e.timestamp.year == year && e.timestamp.month == month).toList();
-      
-      if (monthEntries.isEmpty) continue;
+  /// Generic aggregation function that splits a history into a fixed number of data points.
+  /// Used for long-term views like "All Time" to keep the chart readable.
+  static List<AssessmentEntry> aggregate(List<AssessmentEntry> history, int divisions) {
+    if (history.isEmpty) return [];
+    if (history.length <= divisions) return history;
 
-      int questionCount = monthEntries.first.values.length;
+    List<AssessmentEntry> aggregated = [];
+    // We group by an approximate index range to get exactly 'divisions' points
+    double step = history.length / divisions;
+
+    for (int i = 0; i < divisions; i++) {
+      int startIdx = (i * step).floor();
+      int endIdx = ((i + 1) * step).floor();
+      if (endIdx > history.length) endIdx = history.length;
+      
+      List<AssessmentEntry> batch = history.sublist(startIdx, endIdx);
+      if (batch.isEmpty) continue;
+
+      int questionCount = batch.first.values.length;
       List<double> avgValues = List.filled(questionCount, 0.0);
       List<int> counts = List.filled(questionCount, 0);
 
-      for (var entry in monthEntries) {
-        for (int i = 0; i < questionCount; i++) {
-          if (entry.values[i] != -1.0) {
-            avgValues[i] += entry.values[i];
-            counts[i]++;
+      for (var entry in batch) {
+        for (int q = 0; q < questionCount; q++) {
+          if (entry.values[q] != -1.0) {
+            avgValues[q] += entry.values[q];
+            counts[q]++;
           }
         }
       }
 
-      for (int i = 0; i < questionCount; i++) {
-        if (counts[i] > 0) {
-          avgValues[i] /= counts[i];
-        } else {
-          avgValues[i] = -1.0;
-        }
+      for (int q = 0; q < questionCount; q++) {
+        avgValues[q] = counts[q] > 0 ? avgValues[q] / counts[q] : -1.0;
       }
 
-      monthlyAverages.add(AssessmentEntry(
-        timestamp: DateTime(year, month, 15), // Mitte des Monats für die Darstellung
-        questionSet: monthEntries.first.questionSet,
+      aggregated.add(AssessmentEntry(
+        timestamp: batch[batch.length ~/ 2].timestamp, // Middle timestamp of the batch
+        questionSet: batch.first.questionSet,
         values: avgValues,
         questionNotes: List.filled(questionCount, null),
         note: null
       ));
     }
-    return monthlyAverages;
+    return aggregated;
   }
 
-  /// Returns the start of the period for a given date and range.
+  /// Specific aggregation for months in a year.
+  static List<AssessmentEntry> aggregateByMonth(List<AssessmentEntry> history, int year) {
+    List<AssessmentEntry> monthly = [];
+    for (int m = 1; m <= 12; m++) {
+      final entries = history.where((e) => e.timestamp.year == year && e.timestamp.month == m).toList();
+      if (entries.isNotEmpty) {
+        // Aggregate all entries of this month into one single point
+        monthly.add(aggregate(entries, 1).first);
+      }
+    }
+    return monthly;
+  }
+
   static DateTime getPeriodStart(DateTime d, TimeRange range) {
     switch (range) {
-      case TimeRange.twoDays: return d;
+      case TimeRange.twoDays: return DateTime(d.year, d.month, d.day - 1);
       case TimeRange.week: return d.subtract(Duration(days: d.weekday - 1));
       case TimeRange.month: return DateTime(d.year, d.month, 1);
       case TimeRange.year: return DateTime(d.year, 1, 1);
-      case TimeRange.all: return DateTime(2000);
+      case TimeRange.all: return DateTime(2000); 
     }
   }
 
-  /// Returns the end of the period for a given date and range.
   static DateTime getPeriodEnd(DateTime d, TimeRange range) {
     final start = getPeriodStart(d, range);
     switch (range) {
@@ -94,7 +109,6 @@ class AssessmentCalculator {
     }
   }
 
-  /// Calculates the ISO week number.
   static int getIsoWeek(DateTime date) {
     int days = date.difference(DateTime(date.year, 1, 1)).inDays;
     return ((days - date.weekday + 10) / 7).floor();

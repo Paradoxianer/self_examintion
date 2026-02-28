@@ -30,10 +30,15 @@ class TimeChartWidget extends StatelessWidget {
     final end = AssessmentCalculator.getPeriodEnd(referenceDate, currentTimeRange);
     
     List<AssessmentEntry> displayHistory;
+    final authorKey = assessmentHistory.first.questionSet;
+    final questionSet = localization.questionMap[authorKey];
+
+    // Aggregations-Logik je nach Zeitspanne
     if (currentTimeRange == TimeRange.year) {
-      final authorKey = assessmentHistory.first.questionSet;
-      final questionSet = localization.questionMap[authorKey];
-      displayHistory = AssessmentCalculator.aggregateByMonth(assessmentHistory, referenceDate.year, questionSet);
+      displayHistory = AssessmentCalculator.aggregateByMonth(assessmentHistory, referenceDate.year);
+    } else if (currentTimeRange == TimeRange.all) {
+      // Für die Gesamtansicht unterteilen wir in 10 sinnvolle Blöcke
+      displayHistory = AssessmentCalculator.aggregate(assessmentHistory, 10);
     } else {
       displayHistory = assessmentHistory.where((entry) => 
         entry.timestamp.isAfter(start.subtract(const Duration(seconds: 1))) &&
@@ -43,18 +48,19 @@ class TimeChartWidget extends StatelessWidget {
 
     if (displayHistory.isEmpty) return Center(child: Text(localization.noData));
 
-    double minX = start.millisecondsSinceEpoch.toDouble();
-    double maxX = end.millisecondsSinceEpoch.toDouble();
+    // X-Achsen Bereich festlegen
+    double minX = (currentTimeRange == TimeRange.all) 
+        ? displayHistory.first.timestamp.millisecondsSinceEpoch.toDouble()
+        : start.millisecondsSinceEpoch.toDouble();
+    double maxX = (currentTimeRange == TimeRange.all)
+        ? displayHistory.last.timestamp.millisecondsSinceEpoch.toDouble()
+        : end.millisecondsSinceEpoch.toDouble();
 
-    // Zoom-Logik für kleine Zeiträume
+    // Zoom-Effekt für kleine Ansichten (Punkte nicht am Rand kleben lassen)
     if ((currentTimeRange == TimeRange.twoDays || currentTimeRange == TimeRange.week) && displayHistory.length >= 2) {
-      final firstTs = displayHistory.first.timestamp.millisecondsSinceEpoch.toDouble();
-      final lastTs = displayHistory.last.timestamp.millisecondsSinceEpoch.toDouble();
-      final diff = lastTs - firstTs;
-      if (diff > 0) {
-        minX = firstTs - (diff * 0.1);
-        maxX = lastTs + (diff * 0.1);
-      }
+      final diff = maxX - minX;
+      minX -= diff * 0.05;
+      maxX += diff * 0.05;
     }
 
     return Padding(
@@ -98,16 +104,18 @@ class TimeChartWidget extends StatelessWidget {
   }
 
   double _getInterval(double min, double max) {
-    if (currentTimeRange == TimeRange.year) return 1000 * 60 * 60 * 24 * 30; // ~1 Monat
+    final diff = max - min;
+    if (currentTimeRange == TimeRange.all) return diff / 5; // Zeige ca 5 Labels
+    if (currentTimeRange == TimeRange.year) return 1000 * 60 * 60 * 24 * 30; // 1 Monat
     if (currentTimeRange == TimeRange.month) return 1000 * 60 * 60 * 24 * 7; // 1 Woche
-    if (currentTimeRange == TimeRange.twoDays) return 1000 * 60 * 60 * 24; // 1 Tag
-    return 1000 * 60 * 60 * 24; // Standard 1 Tag
+    return 1000 * 60 * 60 * 24; // 1 Tag
   }
 
   List<LineChartBarData> _buildBars(BuildContext context, List<AssessmentEntry> history) {
     List<LineChartBarData> bars = [];
     final localization = AppLocalizations.of(context)!;
 
+    // Durchschnittslinie (Rot)
     if (selectedQuestions.isNotEmpty && selectedQuestions.last) {
       bars.add(LineChartBarData(
         spots: history.map((e) {
@@ -117,10 +125,16 @@ class TimeChartWidget extends StatelessWidget {
         isCurved: true,
         color: Colors.red,
         barWidth: 3,
-        dotData: const FlDotData(show: true),
+        dotData: FlDotData(
+          show: true,
+          getDotPainter: (spot, percent, barData, index) => FlDotCirclePainter(
+            radius: 3, color: Colors.white, strokeWidth: 2, strokeColor: Colors.red,
+          ),
+        ),
       ));
     }
 
+    // Einzelne Fragen
     for (int i = 0; i < selectedQuestions.length - 1; i++) {
       if (selectedQuestions[i]) {
         final color = globalColorMap[i + 1] ?? Colors.blue;
@@ -133,7 +147,12 @@ class TimeChartWidget extends StatelessWidget {
           isCurved: true,
           color: color,
           barWidth: 1.5,
-          dotData: const FlDotData(show: false),
+          dotData: FlDotData(
+            show: true,
+            getDotPainter: (spot, percent, barData, index) => FlDotCirclePainter(
+              radius: 2, color: color, strokeWidth: 1, strokeColor: Colors.white,
+            ),
+          ),
         ));
       }
     }
@@ -144,14 +163,15 @@ class TimeChartWidget extends StatelessWidget {
     final date = DateTime.fromMillisecondsSinceEpoch(value.toInt());
     final locale = AppLocalizations.of(context)!.localeName;
     
-    // Vermeidung von doppelten Labels am Anfang/Ende
-    if (value == meta.min || value == meta.max) return const SizedBox.shrink();
+    // Unterdrücke doppelte Labels am Rand
+    if (value <= meta.min || value >= meta.max) return const SizedBox.shrink();
 
     String text = "";
-    if (currentTimeRange == TimeRange.year) {
+    if (currentTimeRange == TimeRange.all) {
+      text = DateFormat.yM(locale).format(date);
+    } else if (currentTimeRange == TimeRange.year) {
       text = DateFormat.MMM(locale).format(date);
     } else {
-      // Wochentag + Datum (z.B. Mo. 24.02.)
       text = "${DateFormat.E(locale).format(date)}\n${DateFormat.Md(locale).format(date)}";
     }
     
