@@ -7,6 +7,10 @@ import 'package:self_examination/utils/demo_data_generator.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  
+  // Read the language from the environment (e.g., --dart-define=LANGUAGE=en)
+  const String forcedLanguage = String.fromEnvironment('LANGUAGE');
+  
   final localStorage = LocalStorage();
   await localStorage.initialize();
   await localStorage.loadCurrentAutor();
@@ -16,15 +20,20 @@ void main() async {
   final demoLocalization = lookupAppLocalizations(const Locale('en'));
   await DemoDataGenerator.generate(demoLocalization);
   
-  runApp(const MyApp());
+  runApp(MyApp(
+    forcedLocale: forcedLanguage.isNotEmpty ? Locale(forcedLanguage) : null,
+  ));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final Locale? forcedLocale;
+
+  const MyApp({super.key, this.forcedLocale});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+        locale: forcedLocale,
         localizationsDelegates: AppLocalizations.localizationsDelegates,
         supportedLocales: AppLocalizations.supportedLocales,
         debugShowCheckedModeBanner: false,
@@ -83,6 +92,10 @@ class _AuthWrapperState extends State<AuthWrapper> {
       return HomeScreen();
     }
 
+    final localization = AppLocalizations.of(context);
+    final String lockedText = localization?.appLocked ?? "App gesperrt";
+    final String unlockText = localization?.unlock ?? "Entsperren";
+
     return Scaffold(
       body: Center(
         child: Column(
@@ -90,15 +103,15 @@ class _AuthWrapperState extends State<AuthWrapper> {
           children: [
             const Icon(Icons.lock_outline, size: 64, color: Colors.grey),
             const SizedBox(height: 24),
-            const Text(
-              "App gesperrt",
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            Text(
+              lockedText,
+              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 32),
             ElevatedButton.icon(
               onPressed: _checkAuth,
               icon: const Icon(Icons.fingerprint),
-              label: const Text("Entsperren"),
+              label: Text(unlockText),
             ),
           ],
         ),
