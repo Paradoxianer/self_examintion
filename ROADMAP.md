@@ -4,19 +4,17 @@ Diese Roadmap definiert den Weg von der Beta zur professionellen Multi-Plattform
 
 ---
 
-## ✅ Abgeschlossen (Foundation)
+## 🏁 Release 1: The Multi-Platform Launch
+*Ziel: Volle Verfügbarkeit auf iOS, Android und im Web bei maximaler Stabilität.*
 
+### ✅ Bereits abgeschlossen (R1 Progress)
 *   **User Onboarding (#47 & #46)**: Vollständiger Einführungsprozess zur Erklärung von Slidern, Notizen und Analyse-Funktionen.
 *   **Sprachvielfalt (#24)**: Unterstützung für DE, EN, ES, KO, LT, PL, UK und RU (Russisch neu hinzugefügt).
 *   **Daten-Portabilität (#49)**: CSV-Export mit kontextbezogenen Headern (Fragentexte statt IDs).
 *   **Dynamic Language Support**: Umschalten der App-Sprache unabhängig von den Systemeinstellungen (via `--dart-define`).
+*   **Security Foundation**: Implementierung des Biometrie-Lock-Screens und der Security-Services.
 
----
-
-## 🏁 Release 1: The Multi-Platform Launch
-*Ziel: Volle Verfügbarkeit auf iOS, Android und im Web bei maximaler Stabilität.*
-
-### 🔥 Prio 1: Launch-Blocker
+### 🔥 Prio 1: Ausstehende Launch-Blocker
 - [ ] **iOS Version (#50)**: Konfiguration der Biometrie-Berechtigungen (FaceID), Safe-Area-Anpassungen für moderne iPhones und Hardware-Tests.
 - [ ] **Web Version (#53)**: Deployment als Progressive Web App (PWA) inklusive Service-Worker-Konfiguration und Asset-Optimierung.
 - [ ] **App Store Release (#52)**: Vorbereitung der Apple-Metadaten, Screenshots (6.5"/5.5") und Einreichung zur Prüfung.
