@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_web_plugins/url_strategy.dart';
 import 'package:self_examination/localizations/app_localizations.dart';
 import 'package:self_examination/screens/home_screen.dart';
 import 'package:self_examination/utils/local_storage.dart';
 import 'package:self_examination/utils/security_service.dart';
 
 void main() async {
+  // Use path URL strategy to remove the '#' from URLs on web
+  usePathUrlStrategy();
+  
   WidgetsFlutterBinding.ensureInitialized();
   final localStorage = LocalStorage();
   await localStorage.initialize();
@@ -84,12 +88,6 @@ class _AuthWrapperState extends State<AuthWrapper> with WidgetsBindingObserver {
     });
 
     // We need a context to get the localization
-    // Since initState doesn't have a context, we might need a small delay or
-    // handle it in the build method. But for better UX, we use a default or
-    // wait for the first frame.
-    
-    // In AuthWrapper, we can use a generic reason if localization is not yet ready,
-    // but better to wait for the frame.
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       if (!mounted) return;
       
