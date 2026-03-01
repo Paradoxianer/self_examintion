@@ -97,8 +97,13 @@ class TimeChartWidget extends StatelessWidget {
                   } else {
                     // Search for the question number based on the color in globalColorMap
                     int questionNr = -1;
+                    final barColor = touchedSpot.bar.color;
+                    
                     globalColorMap.forEach((nr, color) {
-                      if (color.value == touchedSpot.bar.color.value) questionNr = nr;
+                      // Fix: Secure access to color and compare values safely
+                      if (color.value == barColor.value) {
+                         questionNr = nr;
+                      }
                     });
                     
                     String label = (questionNr != -1) ? "$questionNr" : "?";
