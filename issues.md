@@ -1,18 +1,11 @@
 # 📋 GitHub Issues Roadmap
-_Zuletzt aktualisiert am: 01.03.2026 16:47_
+_Zuletzt aktualisiert am: 01.03.2026 19:22_
 _Sortiert nach Release und Priorität (High > Medium > Low)_
 
 ## 🔥 🔴 #54: Performance Profiling & Bottleneck Analysis [bug, prio: 1] 🏁 [Release 1]
 ---
 **Status / Description:**
 Use the Flutter DevTools Profiler to identify efficiency bottlenecks. Focus: 1. Memory footprint when scaling history. 2. CPU spikes during chart rendering. 3. Startup time optimization.
-
----
-
-## 🔥 ✨ #53: Publish Web Version [prio: 1, feature] 🏁 [Release 1]
----
-**Status / Description:**
-Crucial for multi-platform availability. Task: Configure web-specific assets (manifest.json, service workers), ensure URL strategy works without hashes, and deploy as a PWA via GitHub Pages or Firebase.
 
 ---
 
@@ -48,6 +41,13 @@ Ensure core features dont break. Task: Implement Unit Tests for data processing 
 ---
 **Status / Description:**
 Content is the soul of the app. Task: Expand descriptions for John Wesley and William Booth sets to provide spiritual depth. Add small biblical context where appropriate (DE, EN, RU).
+
+---
+
+## ⚡ ✨ #57: UI Optimization: Landscape Mode & Widget Refactoring [enhancement, prio: 2] 🏁 [Release 2]
+---
+**Status / Description:**
+Improve ergonomics in landscape mode. Architectural Task: Decouple ChartControlWidget into two standalone widgets: 1. TimeSelectionBar (to be placed under charts in landscape) 2. QuestionFilterPanel (modular placement). Goal: Better use of horizontal space and clearer hierarchy.
 
 ---
 

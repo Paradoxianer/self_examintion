@@ -35,6 +35,9 @@ flutter_launcher_icons:
   android: "launcher_icon"
   ios: true
   remove_alpha_ios: true
+  web:
+    generate: true
+    image_path: "assets/icon/self_examination_light_blue.png"
   image_path: "assets/icon/self_examination_light_blue.png"
   # Professional Adaptive Icon configuration for Android
   adaptive_icon_background: "assets/icon/blue_light.png"
