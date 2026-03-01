@@ -21,8 +21,9 @@ Diese Roadmap definiert den Weg von der Beta zur professionellen Multi-Plattform
 - [ ] **Google Play Release (#51)**: Finalisierung des Store-Listings und Management des Produktions-Tracks in der Play Console.
 - [ ] **Performance Profiling (#54)**: Identifikation von Effizienz-Bottlenecks mittels Flutter DevTools (Fokus auf Speicherverbrauch und Chart-Rendering).
 
-### ⚡ Prio 2: Qualitätssicherung
+### ⚡ Prio 2: Qualitätssicherung & UX
 - [ ] **Stability Test Suite (#55)**: Implementierung von Unit-Tests für die Berechnungs-Logik und Integrationstests für die neuen Plattformen.
+- [ ] **Navigation: Directional Arrows (#56)**: Implementierung von Pfeil-Navigation für Charts (optimiert für Web/Desktop).
 
 ---
 
@@ -30,9 +31,10 @@ Diese Roadmap definiert den Weg von der Beta zur professionellen Multi-Plattform
 *Ziel: Technisches Refactoring für Skalierbarkeit und Steigerung der langfristigen Nutzerbindung.*
 
 ### ⚡ Prio 2: Architektur & Content
-- [ ] **Datenbank-Migration (#33)**: Wechsel von SharedPreferences zu SQLite. **Fokus Effizienz:** Selektives Laden von Daten (Date-Range Filtering) auf Datenbankebene, um den RAM-Verbrauch zu minimieren.
-- [ ] **Content Expansion (#48)**: Ausbau der Beschreibungen für John Wesley und William Booth Sets (DE, EN, RU) für mehr geistliche Tiefe.
-- [ ] **Push-Benachrichtigungen (#3)**: Implementierung lokaler Reminder zur Unterstützung der täglichen Reflexions-Routine.
+- [ ] **UI Landscape Optimization (#57)**: Refactoring des `ChartControlWidget` und ergonomische Anpassung für Querformat.
+- [ ] **Datenbank-Migration (#33)**: Wechsel von SharedPreferences zu SQLite. **Fokus Effizienz:** Selektives Laden von Daten (Date-Range Filtering) auf Datenbankebene.
+- [ ] **Content Expansion (#48)**: Ausbau der Beschreibungen für John Wesley und William Booth Sets (DE, EN, RU).
+- [ ] **Push-Benachrichtigungen (#3)**: Implementierung lokaler Reminder.
 - [ ] **Accountability Partner (#45)**: Sicheres Teilen von Fortschritten mit Mentoren (Privacy-Filter für Notizen).
 
 ### ☕ Prio 3: Individualität & Motivation
@@ -46,7 +48,7 @@ Diese Roadmap definiert den Weg von der Beta zur professionellen Multi-Plattform
 *Ziel: Vernetzung und übergeordnetes Reporting.*
 
 - [ ] **Synchronisation (#42)**: Optionaler Login für den Datenabgleich zwischen Web und Mobile.
-- [ ] **Heilsarmee Reporting (#43)**: Anonymisierte Übermittlung von Durchschnittswerten für regionale Auswertungen (Privacy by Design).
+- [ ] **Heilsarmee Reporting (#43)**: Anonymisierte Übermittlung von Durchschnittswerten für regionale Auswertungen.
 
 ---
 
@@ -55,4 +57,4 @@ Diese Roadmap definiert den Weg von der Beta zur professionellen Multi-Plattform
 2.  **Performance-Kultur**: Wir raten nicht, wir messen (Profiling). Bottlenecks werden an der Wurzel (Datenbank/Algorithmus) behoben.
 3.  **Cross-Platform Consistency**: Die Erfahrung auf iOS, Android und Web muss sich nativ und hochwertig anfühlen.
 
-_Zuletzt aktualisiert am: 28. Februar 2025_
+_Zuletzt aktualisiert am: 01. März 2025_
