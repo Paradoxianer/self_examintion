@@ -10,7 +10,7 @@ if ! command -v gh &> /dev/null; then
     echo "Fehler: gh (GitHub CLI) ist nicht installiert."
     exit 1
 fi
-¨
+
 # Daten von GitHub laden
 export DATA=$(gh issue list --json number,title,body,labels,milestone --limit 100)
 
