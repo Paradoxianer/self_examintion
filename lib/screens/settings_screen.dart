@@ -84,11 +84,15 @@ class SettingsScreen extends StatelessWidget {
 
   Widget _buildExportTile(BuildContext context, {required IconData icon, required String title, required ExportType type}) {
     final bool isEnabled = !kIsWeb;
-    return ListTile(
-      leading: Icon(icon, color: isEnabled ? null : Theme.of(context).disabledColor),
-      title: Text(title, style: TextStyle(color: isEnabled ? null : Theme.of(context).disabledColor)),
-      subtitle: isEnabled ? null : const Text("Nur auf Mobilgeräten verfügbar", style: TextStyle(fontSize: 10)),
-      onTap: isEnabled ? () => _handleExport(context, type) : null,
+    return Builder(
+      builder: (innerContext) {
+        return ListTile(
+          leading: Icon(icon, color: isEnabled ? null : Theme.of(context).disabledColor),
+          title: Text(title, style: TextStyle(color: isEnabled ? null : Theme.of(context).disabledColor)),
+          subtitle: isEnabled ? null : const Text("Nur auf Mobilgeräten verfügbar", style: TextStyle(fontSize: 10)),
+          onTap: isEnabled ? () => _handleExport(innerContext, type) : null,
+        );
+      }
     );
   }
 
@@ -218,6 +222,13 @@ class SettingsScreen extends StatelessWidget {
       );
       return;
     }
-    await exportService.exportData(context, history, type);
+
+    // Identify the origin for iPad popover
+    final RenderBox? box = context.findRenderObject() as RenderBox?;
+    final Rect? sharePositionOrigin = box != null 
+        ? box.localToGlobal(Offset.zero) & box.size 
+        : null;
+
+    await exportService.exportData(context, history, type, sharePositionOrigin: sharePositionOrigin);
   }
 }

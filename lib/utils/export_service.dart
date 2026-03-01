@@ -24,8 +24,9 @@ class ExportService {
   ///
   /// [context] is required for localization access.
   /// [type] determines how much detail is included in the CSV.
+  /// [sharePositionOrigin] is required for iPad to avoid crashes when showing the share sheet.
   Future<void> exportData(BuildContext context, List<AssessmentEntry> history,
-      ExportType type) async {
+      ExportType type, {Rect? sharePositionOrigin}) async {
     final String author =
         history.isNotEmpty ? history.first.questionSet : "Export";
 
@@ -40,9 +41,12 @@ class ExportService {
 
     await file.writeAsString(csv);
 
-    // 3. Share the file
-    await Share.shareXFiles([XFile(file.path)],
-        text: 'Self-Examination Data: $author');
+    // 3. Share the file with iPad support
+    await Share.shareXFiles(
+      [XFile(file.path)],
+      text: 'Self-Examination Data: $author',
+      sharePositionOrigin: sharePositionOrigin,
+    );
   }
 
   /// Internal helper to construct the CSV string.
