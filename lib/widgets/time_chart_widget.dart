@@ -30,8 +30,6 @@ class TimeChartWidget extends StatelessWidget {
     final end = AssessmentCalculator.getPeriodEnd(referenceDate, currentTimeRange);
     
     List<AssessmentEntry> displayHistory;
-
-    // Optimization: Calculate displayHistory only when needed
     if (currentTimeRange == TimeRange.year) {
       displayHistory = AssessmentCalculator.aggregateByMonth(assessmentHistory, referenceDate.year);
     } else if (currentTimeRange == TimeRange.all) {
@@ -52,7 +50,6 @@ class TimeChartWidget extends StatelessWidget {
         ? displayHistory.last.timestamp.millisecondsSinceEpoch.toDouble()
         : end.millisecondsSinceEpoch.toDouble();
 
-    // Adjust margins for small ranges
     double adjustedMinX = minX;
     double adjustedMaxX = maxX;
     if ((currentTimeRange == TimeRange.twoDays || currentTimeRange == TimeRange.week) && displayHistory.length >= 2) {
@@ -82,18 +79,13 @@ class TimeChartWidget extends StatelessWidget {
                     fontSize: 12,
                   );
                   
-                  // Optimization: Get date once
                   final date = DateTime.fromMillisecondsSinceEpoch(touchedSpot.x.toInt());
                   final dateStr = DateFormat.yMd(localization.localeName).format(date);
                   final val = "${(touchedSpot.y * 100).round()}%";
 
-                  // Identification of the line
-                  String label = "";
                   if (touchedSpot.bar.color == Colors.red) {
-                    label = localization.total;
-                    return LineTooltipItem("$label: $val\n$dateStr", textStyle);
+                    return LineTooltipItem("${localization.total}: $val\n$dateStr", textStyle);
                   } 
-                  
                   return LineTooltipItem("$val\n$dateStr", textStyle);
                 }).toList();
               },
@@ -141,51 +133,51 @@ class TimeChartWidget extends StatelessWidget {
 
   List<LineChartBarData> _buildBars(BuildContext context, List<AssessmentEntry> history) {
     if (history.isEmpty) return [];
-    
     final localization = AppLocalizations.of(context)!;
     final List<LineChartBarData> bars = [];
-    
-    // Optimization: Lookup questionSet once outside the loops
     final String currentSetKey = history.first.questionSet;
     final questionSet = localization.questionMap[currentSetKey];
 
-    // Build Average Bar (Red Line)
+    // Average Bar (Red)
     if (selectedQuestions.isNotEmpty && selectedQuestions.last) {
       bars.add(LineChartBarData(
-        spots: history.map((e) {
-          return FlSpot(
-            e.timestamp.millisecondsSinceEpoch.toDouble(), 
-            AssessmentCalculator.calculateAverage(e, questionSet)
-          );
-        }).toList(),
+        spots: history.map((e) => FlSpot(
+          e.timestamp.millisecondsSinceEpoch.toDouble(), 
+          AssessmentCalculator.calculateAverage(e, questionSet)
+        )).toList(),
         isCurved: true,
         color: Colors.red,
         barWidth: 3,
-        dotData: const FlDotData(show: false), // Performance optimization: disable dots for average
+        dotData: FlDotData(
+          show: true,
+          getDotPainter: (spot, percent, barData, index) => FlDotCirclePainter(
+            radius: 3, color: Colors.white, strokeWidth: 2, strokeColor: Colors.red,
+          ),
+        ),
       ));
     }
 
-    // Build Individual Question Bars
+    // Question Bars
     for (int i = 0; i < selectedQuestions.length - 1; i++) {
       if (selectedQuestions[i]) {
         final color = globalColorMap[i + 1] ?? Colors.blue;
         final bool isPos = (questionSet != null && i < questionSet.questions.length) 
-            ? questionSet.questions[i].isPositive 
-            : false;
+            ? questionSet.questions[i].isPositive : false;
 
         bars.add(LineChartBarData(
           spots: history.map((e) {
             final double val = (i < e.values.length) ? e.values[i] : -1.0;
-            return FlSpot(
-              e.timestamp.millisecondsSinceEpoch.toDouble(), 
-              AssessmentCalculator.getChartValue(val, isPos)
-            );
+            return FlSpot(e.timestamp.millisecondsSinceEpoch.toDouble(), AssessmentCalculator.getChartValue(val, isPos));
           }).toList(),
           isCurved: true,
           color: color,
           barWidth: 1.5,
-          dotData: const FlDotData(show: false), // Performance optimization: disable dots during fast rendering
-          belowBarData: BarAreaData(show: false),
+          dotData: FlDotData(
+            show: true,
+            getDotPainter: (spot, percent, barData, index) => FlDotCirclePainter(
+              radius: 2, color: color, strokeWidth: 1, strokeColor: Colors.white,
+            ),
+          ),
         ));
       }
     }
@@ -195,7 +187,6 @@ class TimeChartWidget extends StatelessWidget {
   Widget _bottomTitleWidgets(double value, TitleMeta meta, BuildContext context) {
     final date = DateTime.fromMillisecondsSinceEpoch(value.toInt());
     final locale = AppLocalizations.of(context)!.localeName;
-    
     if (value <= meta.min || value >= meta.max) return const SizedBox.shrink();
 
     String text = "";
@@ -206,12 +197,7 @@ class TimeChartWidget extends StatelessWidget {
     } else {
       text = "${DateFormat.E(locale).format(date)}\n${DateFormat.Md(locale).format(date)}";
     }
-    
-    return SideTitleWidget(
-      meta: meta, 
-      space: 4, 
-      child: Text(text, textAlign: TextAlign.center, style: const TextStyle(fontSize: 8, fontWeight: FontWeight.bold))
-    );
+    return SideTitleWidget(meta: meta, space: 4, child: Text(text, textAlign: TextAlign.center, style: const TextStyle(fontSize: 8, fontWeight: FontWeight.bold)));
   }
 
   Widget _leftTitleWidgets(double value, TitleMeta meta, BuildContext context) =>
