@@ -30,8 +30,8 @@ class TimeChartWidget extends StatelessWidget {
     final end = AssessmentCalculator.getPeriodEnd(referenceDate, currentTimeRange);
     
     List<AssessmentEntry> displayHistory;
-    final authorKey = assessmentHistory.first.questionSet;
 
+    // Optimization: Calculate displayHistory only when needed
     if (currentTimeRange == TimeRange.year) {
       displayHistory = AssessmentCalculator.aggregateByMonth(assessmentHistory, referenceDate.year);
     } else if (currentTimeRange == TimeRange.all) {
@@ -45,25 +45,28 @@ class TimeChartWidget extends StatelessWidget {
 
     if (displayHistory.isEmpty) return Center(child: Text(localization.noData));
 
-    double minX = (currentTimeRange == TimeRange.all) 
+    final double minX = (currentTimeRange == TimeRange.all) 
         ? displayHistory.first.timestamp.millisecondsSinceEpoch.toDouble()
         : start.millisecondsSinceEpoch.toDouble();
-    double maxX = (currentTimeRange == TimeRange.all)
+    final double maxX = (currentTimeRange == TimeRange.all)
         ? displayHistory.last.timestamp.millisecondsSinceEpoch.toDouble()
         : end.millisecondsSinceEpoch.toDouble();
 
+    // Adjust margins for small ranges
+    double adjustedMinX = minX;
+    double adjustedMaxX = maxX;
     if ((currentTimeRange == TimeRange.twoDays || currentTimeRange == TimeRange.week) && displayHistory.length >= 2) {
       final diff = maxX - minX;
-      minX -= diff * 0.05;
-      maxX += diff * 0.05;
+      adjustedMinX -= diff * 0.05;
+      adjustedMaxX += diff * 0.05;
     }
 
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 24, 24, 16),
       child: LineChart(
         LineChartData(
-          minX: minX,
-          maxX: maxX,
+          minX: adjustedMinX,
+          maxX: adjustedMaxX,
           minY: 0,
           maxY: 1.05,
           lineTouchData: LineTouchData(
@@ -79,37 +82,19 @@ class TimeChartWidget extends StatelessWidget {
                     fontSize: 12,
                   );
                   
-                  // Finde heraus, ob es der Durchschnitt (rote Linie) oder eine Einzelfrage ist
+                  // Optimization: Get date once
+                  final date = DateTime.fromMillisecondsSinceEpoch(touchedSpot.x.toInt());
+                  final dateStr = DateFormat.yMd(localization.localeName).format(date);
+                  final val = "${(touchedSpot.y * 100).round()}%";
+
+                  // Identification of the line
                   String label = "";
                   if (touchedSpot.bar.color == Colors.red) {
                     label = localization.total;
-                  } else {
-                    // Suche den Index der Frage basierend auf der Farbe/Reihenfolge
-                    // Da wir die Bars in _buildBars in einer festen Reihenfolge bauen:
-                    // 1. Bar: Durchschnitt (optional)
-                    // Weitere: Gewählte Fragen
-                    int qIdx = -1;
-                    int barIndex = touchedSpots.indexOf(touchedSpot); // Das ist leider nicht zuverlässig
-                    
-                    // Wir nutzen die x-Koordinate für das Datum
-                    final date = DateTime.fromMillisecondsSinceEpoch(touchedSpot.x.toInt());
-                    final dateStr = DateFormat.yMd(localization.localeName).format(date);
-                    
-                    // Der Wert
-                    final val = "${(touchedSpot.y * 100).round()}%";
-                    
-                    return LineTooltipItem(
-                      "$dateStr\n$val",
-                      textStyle,
-                    );
-                  }
+                    return LineTooltipItem("$label: $val\n$dateStr", textStyle);
+                  } 
                   
-                  final date = DateTime.fromMillisecondsSinceEpoch(touchedSpot.x.toInt());
-                  final dateStr = DateFormat.yMd(localization.localeName).format(date);
-                  return LineTooltipItem(
-                    "$label: ${(touchedSpot.y * 100).round()}%\n$dateStr",
-                    textStyle,
-                  );
+                  return LineTooltipItem("$val\n$dateStr", textStyle);
                 }).toList();
               },
             ),
@@ -155,45 +140,52 @@ class TimeChartWidget extends StatelessWidget {
   }
 
   List<LineChartBarData> _buildBars(BuildContext context, List<AssessmentEntry> history) {
-    List<LineChartBarData> bars = [];
+    if (history.isEmpty) return [];
+    
     final localization = AppLocalizations.of(context)!;
+    final List<LineChartBarData> bars = [];
+    
+    // Optimization: Lookup questionSet once outside the loops
+    final String currentSetKey = history.first.questionSet;
+    final questionSet = localization.questionMap[currentSetKey];
 
+    // Build Average Bar (Red Line)
     if (selectedQuestions.isNotEmpty && selectedQuestions.last) {
       bars.add(LineChartBarData(
         spots: history.map((e) {
-          final questionSet = localization.questionMap[e.questionSet];
-          return FlSpot(e.timestamp.millisecondsSinceEpoch.toDouble(), AssessmentCalculator.calculateAverage(e, questionSet));
+          return FlSpot(
+            e.timestamp.millisecondsSinceEpoch.toDouble(), 
+            AssessmentCalculator.calculateAverage(e, questionSet)
+          );
         }).toList(),
         isCurved: true,
         color: Colors.red,
         barWidth: 3,
-        dotData: FlDotData(
-          show: true,
-          getDotPainter: (spot, percent, barData, index) => FlDotCirclePainter(
-            radius: 3, color: Colors.white, strokeWidth: 2, strokeColor: Colors.red,
-          ),
-        ),
+        dotData: const FlDotData(show: false), // Performance optimization: disable dots for average
       ));
     }
 
+    // Build Individual Question Bars
     for (int i = 0; i < selectedQuestions.length - 1; i++) {
       if (selectedQuestions[i]) {
         final color = globalColorMap[i + 1] ?? Colors.blue;
+        final bool isPos = (questionSet != null && i < questionSet.questions.length) 
+            ? questionSet.questions[i].isPositive 
+            : false;
+
         bars.add(LineChartBarData(
           spots: history.map((e) {
-            final questionSet = localization.questionMap[e.questionSet];
-            bool pos = questionSet?.questions[i].isPositive ?? false;
-            return FlSpot(e.timestamp.millisecondsSinceEpoch.toDouble(), AssessmentCalculator.getChartValue(e.values[i], pos));
+            final double val = (i < e.values.length) ? e.values[i] : -1.0;
+            return FlSpot(
+              e.timestamp.millisecondsSinceEpoch.toDouble(), 
+              AssessmentCalculator.getChartValue(val, isPos)
+            );
           }).toList(),
           isCurved: true,
           color: color,
           barWidth: 1.5,
-          dotData: FlDotData(
-            show: true,
-            getDotPainter: (spot, percent, barData, index) => FlDotCirclePainter(
-              radius: 2, color: color, strokeWidth: 1, strokeColor: Colors.white,
-            ),
-          ),
+          dotData: const FlDotData(show: false), // Performance optimization: disable dots during fast rendering
+          belowBarData: BarAreaData(show: false),
         ));
       }
     }
