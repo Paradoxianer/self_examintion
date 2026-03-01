@@ -143,37 +143,72 @@ class _ChartScreenState extends State<ChartScreen> {
   Widget _buildChartCarousel(List<AssessmentEntry> history) {
     return SizedBox(
       height: 300,
-      child: ScrollConfiguration(
-        behavior: ScrollConfiguration.of(context).copyWith(
-          dragDevices: {PointerDeviceKind.touch, PointerDeviceKind.mouse, PointerDeviceKind.trackpad},
-        ),
-        child: PageView(
-          controller: _pageController,
-          onPageChanged: (index) {
-            setState(() => _currentPage = index);
-            _saveSettings();
-          },
-          children: [
-            TimeChartWidget(
-              assessmentHistory: history,
-              selectedQuestions: _selectedQuestions,
-              currentTimeRange: _currentTimeRange,
-              referenceDate: _referenceDate,
+      child: Stack(
+        children: [
+          PageView(
+            controller: _pageController,
+            onPageChanged: (index) {
+              setState(() => _currentPage = index);
+              _saveSettings();
+            },
+            children: [
+              TimeChartWidget(
+                assessmentHistory: history,
+                selectedQuestions: _selectedQuestions,
+                currentTimeRange: _currentTimeRange,
+                referenceDate: _referenceDate,
+              ),
+              ComparisonChartWidget(
+                assessmentHistory: history,
+                selectedQuestions: _selectedQuestions,
+                currentTimeRange: _currentTimeRange,
+                referenceDate: _referenceDate,
+              ),
+              RadarChartWidget(
+                assessmentHistory: history,
+                selectedQuestions: _selectedQuestions,
+                currentTimeRange: _currentTimeRange,
+                referenceDate: _referenceDate,
+              ),
+            ],
+          ),
+          // Left Navigation Arrow
+          if (_currentPage > 0)
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Padding(
+                padding: const EdgeInsets.only(left: 4.0),
+                child: CircleAvatar(
+                  backgroundColor: Theme.of(context).colorScheme.surface.withOpacity(0.5),
+                  child: IconButton(
+                    icon: const Icon(Icons.chevron_left),
+                    onPressed: () => _pageController.previousPage(
+                      duration: const Duration(milliseconds: 300),
+                      curve: Curves.easeInOut,
+                    ),
+                  ),
+                ),
+              ),
             ),
-            ComparisonChartWidget(
-              assessmentHistory: history,
-              selectedQuestions: _selectedQuestions,
-              currentTimeRange: _currentTimeRange,
-              referenceDate: _referenceDate,
+          // Right Navigation Arrow
+          if (_currentPage < 2)
+            Align(
+              alignment: Alignment.centerRight,
+              child: Padding(
+                padding: const EdgeInsets.only(right: 4.0),
+                child: CircleAvatar(
+                  backgroundColor: Theme.of(context).colorScheme.surface.withOpacity(0.5),
+                  child: IconButton(
+                    icon: const Icon(Icons.chevron_right),
+                    onPressed: () => _pageController.nextPage(
+                      duration: const Duration(milliseconds: 300),
+                      curve: Curves.easeInOut,
+                    ),
+                  ),
+                ),
+              ),
             ),
-            RadarChartWidget(
-              assessmentHistory: history,
-              selectedQuestions: _selectedQuestions,
-              currentTimeRange: _currentTimeRange,
-              referenceDate: _referenceDate,
-            ),
-          ],
-        ),
+        ],
       ),
     );
   }
