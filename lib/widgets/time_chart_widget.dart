@@ -99,7 +99,6 @@ class TimeChartWidget extends StatelessWidget {
               sideTitles: SideTitles(
                 showTitles: true,
                 reservedSize: 38,
-                interval: _getInterval(minX, maxX),
                 getTitlesWidget: (value, meta) => _bottomTitleWidgets(value, meta, context),
               ),
             ),
@@ -111,24 +110,15 @@ class TimeChartWidget extends StatelessWidget {
               ),
             ),
           ),
-          gridData: FlGridData(
+          gridData: const FlGridData(
             show: true, 
             horizontalInterval: 0.2,
-            verticalInterval: _getInterval(minX, maxX),
-            getDrawingVerticalLine: (value) => FlLine(color: Colors.grey.withValues(alpha: 0.05), strokeWidth: 1),
+            drawVerticalLine: false, // Performance: Weniger Gitterlinien zeichnen
           ),
           borderData: FlBorderData(show: true, border: Border.all(color: Colors.grey.withValues(alpha: 0.1))),
         ),
       ),
     );
-  }
-
-  double _getInterval(double min, double max) {
-    final diff = max - min;
-    if (currentTimeRange == TimeRange.all) return diff / 5;
-    if (currentTimeRange == TimeRange.year) return 1000 * 60 * 60 * 24 * 30;
-    if (currentTimeRange == TimeRange.month) return 1000 * 60 * 60 * 24 * 7;
-    return 1000 * 60 * 60 * 24;
   }
 
   List<LineChartBarData> _buildBars(BuildContext context, List<AssessmentEntry> history) {
