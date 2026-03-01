@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Deployment Script für die Self-Examination Web Version (PWA)
-# Erstellt von deinem Principal Flutter Architect
+# Optimiert für moderne Flutter Versionen (3.27+)
 
 echo "🚀 Starte Web-Deployment Prozess..."
 
@@ -14,13 +14,11 @@ echo "📦 Lade Packages..."
 flutter pub get
 
 # 3. Flutter Web Build ausführen
-# --base-href legt fest, unter welchem Pfad die App läuft.
-# Für GitHub Pages meist /projektname/
+# Wir lassen --web-renderer weg, da Flutter (3.27+) dies automatisch optimiert.
 echo "🏗️ Erstelle optimierten Web-Build (PWA)..."
-flutter build web --release --base-href "/self_examintion/" --web-renderer canvaskit
+flutter build web --release --base-href "/self_examintion/"
 
 echo "✅ Build abgeschlossen!"
 echo "------------------------------------------------------"
 echo "Die fertigen Dateien liegen im Ordner: build/web"
-echo "Du kannst diesen Ordner nun auf deinen Webserver oder zu GitHub Pages hochladen."
 echo "------------------------------------------------------"

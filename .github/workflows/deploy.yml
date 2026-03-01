@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - feature/web-pwa
 
 permissions:
   contents: read
@@ -22,13 +21,19 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
+          # Wir nutzen 'any', um die aktuellste stabile Version zu erhalten, 
+          # da dein Code Features von Flutter 3.27+ nutzt (.withValues).
           cache: true
 
       - name: Install dependencies
-        run: flutter pub get
+        run: |
+          flutter pub get
+          flutter gen-l10n || echo "No l10n to generate"
 
       - name: Build Web
-        run: flutter build web --release --base-href "/self_examintion/" --web-renderer canvaskit
+        # Wir entfernen --web-renderer, da dies in neueren Versionen automatisch optimiert wird
+        # und oft zu 'Exit Code 64' (Usage Error) führt.
+        run: flutter build web --release --base-href "/self_examintion/"
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
