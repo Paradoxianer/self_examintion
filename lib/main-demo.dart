@@ -45,7 +45,8 @@ class MyApp extends StatelessWidget {
   }
 }
 
-/// A wrapper widget that handles initial authentication before showing the home screen.
+/// A wrapper widget that handles initial authentication and app lifecycle
+/// to secure the app when it enters the background.
 class AuthWrapper extends StatefulWidget {
   const AuthWrapper({super.key});
 
@@ -53,7 +54,7 @@ class AuthWrapper extends StatefulWidget {
   State<AuthWrapper> createState() => _AuthWrapperState();
 }
 
-class _AuthWrapperState extends State<AuthWrapper> {
+class _AuthWrapperState extends State<AuthWrapper> with WidgetsBindingObserver {
   final SecurityService _securityService = SecurityService();
   bool _isAuthenticated = false;
   bool _isChecking = true;
@@ -61,7 +62,25 @@ class _AuthWrapperState extends State<AuthWrapper> {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     _checkAuth();
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      _checkAuth();
+    } else if (state == AppLifecycleState.paused) {
+      setState(() {
+        _isAuthenticated = false;
+      });
+    }
   }
 
   Future<void> _checkAuth() async {
@@ -73,10 +92,24 @@ class _AuthWrapperState extends State<AuthWrapper> {
       return;
     }
 
-    bool success = await _securityService.authenticate();
     setState(() {
-      _isAuthenticated = success;
-      _isChecking = false;
+      _isChecking = true;
+    });
+
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      if (!mounted) return;
+      
+      final localization = AppLocalizations.of(context);
+      final String reason = localization?.unlock ?? 'Please authenticate to access your data';
+      
+      bool success = await _securityService.authenticate(localizedReason: reason);
+      
+      if (mounted) {
+        setState(() {
+          _isAuthenticated = success;
+          _isChecking = false;
+        });
+      }
     });
   }
 
@@ -93,8 +126,8 @@ class _AuthWrapperState extends State<AuthWrapper> {
     }
 
     final localization = AppLocalizations.of(context);
-    final String lockedText = localization?.appLocked ?? "App gesperrt";
-    final String unlockText = localization?.unlock ?? "Entsperren";
+    final String lockedText = localization?.appLocked ?? "App Locked";
+    final String unlockText = localization?.unlock ?? "Unlock";
 
     return Scaffold(
       body: Center(

@@ -109,14 +109,15 @@ class SettingsScreen extends StatelessWidget {
           title: Text(localization.settingsSecurityLock), 
           value: securityService.isSecurityEnabled(),
           onChanged: (bool value) async {
+            final String reason = localization.unlock;
             if (value) {
               bool canAuth = await securityService.canAuthenticate();
               if (canAuth) {
-                bool success = await securityService.authenticate();
+                bool success = await securityService.authenticate(localizedReason: reason);
                 if (success) securityService.setSecurityEnabled(true);
               }
             } else {
-              bool success = await securityService.authenticate();
+              bool success = await securityService.authenticate(localizedReason: reason);
               if (success) securityService.setSecurityEnabled(false);
             }
           },

@@ -29,7 +29,8 @@ class MyApp extends StatelessWidget {
   }
 }
 
-/// A wrapper widget that handles initial authentication before showing the home screen.
+/// A wrapper widget that handles initial authentication and app lifecycle
+/// to secure the app when it enters the background.
 class AuthWrapper extends StatefulWidget {
   const AuthWrapper({super.key});
 
@@ -37,7 +38,7 @@ class AuthWrapper extends StatefulWidget {
   State<AuthWrapper> createState() => _AuthWrapperState();
 }
 
-class _AuthWrapperState extends State<AuthWrapper> {
+class _AuthWrapperState extends State<AuthWrapper> with WidgetsBindingObserver {
   final SecurityService _securityService = SecurityService();
   bool _isAuthenticated = false;
   bool _isChecking = true;
@@ -45,7 +46,27 @@ class _AuthWrapperState extends State<AuthWrapper> {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     _checkAuth();
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    // Re-authenticate when the app comes to the foreground
+    if (state == AppLifecycleState.resumed) {
+      _checkAuth();
+    } else if (state == AppLifecycleState.paused) {
+      // Lock the app when it goes to the background
+      setState(() {
+        _isAuthenticated = false;
+      });
+    }
   }
 
   Future<void> _checkAuth() async {
@@ -58,11 +79,31 @@ class _AuthWrapperState extends State<AuthWrapper> {
       return;
     }
 
-    // Try to authenticate
-    bool success = await _securityService.authenticate();
     setState(() {
-      _isAuthenticated = success;
-      _isChecking = false;
+      _isChecking = true;
+    });
+
+    // We need a context to get the localization
+    // Since initState doesn't have a context, we might need a small delay or
+    // handle it in the build method. But for better UX, we use a default or
+    // wait for the first frame.
+    
+    // In AuthWrapper, we can use a generic reason if localization is not yet ready,
+    // but better to wait for the frame.
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      if (!mounted) return;
+      
+      final localization = AppLocalizations.of(context);
+      final String reason = localization?.unlock ?? 'Please authenticate to access your data';
+      
+      bool success = await _securityService.authenticate(localizedReason: reason);
+      
+      if (mounted) {
+        setState(() {
+          _isAuthenticated = success;
+          _isChecking = false;
+        });
+      }
     });
   }
 

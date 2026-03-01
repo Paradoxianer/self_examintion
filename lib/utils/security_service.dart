@@ -20,34 +20,41 @@ class SecurityService {
   /// Checks if the device is capable of biometric authentication
   /// (Fingerprint, FaceID) or has a system-level PIN/Passcode set.
   Future<bool> canAuthenticate() async {
-    final bool canAuthenticateWithBiometrics = await _auth.canCheckBiometrics;
-    final bool canAuthenticate =
-        canAuthenticateWithBiometrics || await _auth.isDeviceSupported();
-    return canAuthenticate;
+    try {
+      final bool canAuthenticateWithBiometrics = await _auth.canCheckBiometrics;
+      final bool canAuthenticate =
+          canAuthenticateWithBiometrics || await _auth.isDeviceSupported();
+      return canAuthenticate;
+    } catch (e) {
+      return false;
+    }
   }
 
   /// Attempts to authenticate the user using the system dialog.
   ///
+  /// [localizedReason] is shown to the user in the system dialog.
   /// If security is disabled in the app settings, it returns [true] immediately.
-  /// Otherwise, it triggers the biometric or PIN challenge.
   /// Returns [true] if authentication was successful, [false] otherwise.
-  Future<bool> authenticate() async {
+  Future<bool> authenticate({required String localizedReason}) async {
     if (!_localStorage.getBool('isSecurityEnabled', defaultValue: false)) {
       return true;
     }
 
     try {
       final bool didAuthenticate = await _auth.authenticate(
-        localizedReason:
-            'Bitte authentifiziere dich, um deine Daten zu schützen.',
+        localizedReason: localizedReason,
         options: const AuthenticationOptions(
           stickyAuth: true,
           biometricOnly: false, // Allows PIN/Pattern fallback
+          useErrorDialogs: true, // Shows system dialogs for errors
         ),
       );
       return didAuthenticate;
     } on PlatformException catch (e) {
       print("SecurityService Error: $e");
+      // Handle specific errors like NotEnrolled if needed
+      return false;
+    } catch (e) {
       return false;
     }
   }
