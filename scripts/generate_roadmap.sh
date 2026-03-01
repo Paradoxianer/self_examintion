@@ -10,23 +10,25 @@ if ! command -v gh &> /dev/null; then
     echo "Fehler: gh (GitHub CLI) ist nicht installiert."
     exit 1
 fi
-
+¨
 # Daten von GitHub laden
-DATA=$(gh issue list --json number,title,body,labels,milestone --limit 100)
+export DATA=$(gh issue list --json number,title,body,labels,milestone --limit 100)
 
 if [ -z "$DATA" ] || [ "$DATA" == "[]" ]; then
     echo "Keine Daten empfangen. Bist du eingeloggt (gh auth status)?"
     exit 1
 fi
 
-# Wir nutzen Python (vorinstalliert auf macOS), um das JSON sauber zu verarbeiten
-python3 - <<EOF
+# Wir nutzen Python, übergeben die Daten aber sicher via Environment Variable
+python3 - <<'EOF'
 import json
 import os
 from datetime import datetime
 
+# Daten sicher aus der Umgebungsvariable laden
+raw_data = os.environ.get('DATA', '[]')
 try:
-    data = json.loads('''$DATA''')
+    data = json.loads(raw_data)
 except Exception as e:
     print(f"Fehler beim Parsen der Daten: {e}")
     exit(1)
@@ -83,8 +85,7 @@ for i in sorted_data:
     lines.append('---')
     lines.append('')
 
-# Pfad zur issues.md (eine Ebene über dem scripts-Ordner)
-script_dir = os.path.dirname(os.path.abspath(''))
+# Speichern im Hauptverzeichnis des Projekts
 target_path = os.path.join(os.getcwd(), 'issues.md')
 
 with open(target_path, 'w', encoding='utf-8') as f:
