@@ -92,19 +92,20 @@ class TimeChartWidget extends StatelessWidget {
                   }
 
                   // Identify if it's the Total line (red) or a specific question
-                  if (touchedSpot.bar.color == Colors.red) {
+                  // Secure color access for the web compiler
+                  final Color? currentBarColor = touchedSpot.bar.color;
+                  if (currentBarColor != null && currentBarColor.value == Colors.red.value) {
                     return LineTooltipItem("$header${localization.total}: $val", textStyle);
                   } else {
                     // Search for the question number based on the color in globalColorMap
                     int questionNr = -1;
-                    final barColor = touchedSpot.bar.color;
-                    
-                    globalColorMap.forEach((nr, color) {
-                      // Fix: Secure access to color and compare values safely
-                      if (color.value == barColor.value) {
-                         questionNr = nr;
-                      }
-                    });
+                    if (currentBarColor != null) {
+                      globalColorMap.forEach((nr, color) {
+                        if (color.value == currentBarColor.value) {
+                          questionNr = nr;
+                        }
+                      });
+                    }
                     
                     String label = (questionNr != -1) ? "$questionNr" : "?";
                     return LineTooltipItem("$header$label: $val", textStyle);
