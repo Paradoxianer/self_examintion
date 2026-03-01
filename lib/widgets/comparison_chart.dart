@@ -93,7 +93,7 @@ class _ComparisonChartWidgetState extends State<ComparisonChartWidget> {
                     sideTitles: SideTitles(
                       showTitles: true,
                       reservedSize: 30,
-                      interval: 1,
+                      // Wir setzen KEIN fixes Intervall mehr, damit fl_chart flexibel bleibt
                       getTitlesWidget: (value, meta) => _bottomTitleWidgets(value, meta, context, localization),
                     ),
                   ),
@@ -116,7 +116,6 @@ class _ComparisonChartWidgetState extends State<ComparisonChartWidget> {
   Widget _bottomTitleWidgets(double value, TitleMeta meta, BuildContext context, AppLocalizations localization) {
     const style = TextStyle(fontWeight: FontWeight.bold, fontSize: 10);
     if (value == 100) return SideTitleWidget(meta: meta, child: Text(localization.total, style: style));
-    // Nur Title anzeigen wenn der Wert im Bereich der Fragen liegt
     if (value >= 0 && value < widget.selectedQuestions.length - 1) {
       return SideTitleWidget(meta: meta, child: Text((value.toInt() + 1).toString(), style: style));
     }
