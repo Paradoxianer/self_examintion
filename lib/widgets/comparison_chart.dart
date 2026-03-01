@@ -4,9 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:self_examination/localizations/app_localizations.dart';
 import 'package:self_examination/models/assessment_entry.dart';
 import 'package:self_examination/utils/globals.dart';
-import 'package:self_examination/utils/local_storage.dart';
 import 'package:self_examination/utils/assessment_calculator.dart';
-import 'package:self_examination/widgets/chart_control_widget.dart';
 
 class ComparisonChartWidget extends StatefulWidget {
   final List<AssessmentEntry> assessmentHistory;
@@ -77,7 +75,6 @@ class _ComparisonChartWidgetState extends State<ComparisonChartWidget> {
               BarChartData(
                 barTouchData: BarTouchData(
                   touchTooltipData: BarTouchTooltipData(
-                    tooltipBorderRadius: BorderRadius.circular(8),
                     getTooltipColor: (group) => Theme.of(context).colorScheme.surfaceContainerHighest.withValues(alpha: 0.98),
                     getTooltipItem: (group, groupIndex, rod, rodIndex) => 
                         _buildCustomTooltipItem(group, groupIndex, rod, rodIndex, context, localization),
@@ -85,7 +82,7 @@ class _ComparisonChartWidgetState extends State<ComparisonChartWidget> {
                 ),
                 minY: 0,
                 maxY: 1.1,
-                barGroups: _getComparisonData(context),
+                barGroups: _getComparisonData(context, localization),
                 borderData: FlBorderData(show: true, border: Border.all(color: Colors.grey.withValues(alpha: 0.1))),
                 gridData: const FlGridData(show: true, horizontalInterval: 0.2, drawVerticalLine: false),
                 titlesData: FlTitlesData(
@@ -94,6 +91,8 @@ class _ComparisonChartWidgetState extends State<ComparisonChartWidget> {
                   bottomTitles: AxisTitles(
                     sideTitles: SideTitles(
                       showTitles: true,
+                      reservedSize: 30,
+                      interval: 1,
                       getTitlesWidget: (value, meta) => _bottomTitleWidgets(value, meta, context, localization),
                     ),
                   ),
@@ -113,73 +112,90 @@ class _ComparisonChartWidgetState extends State<ComparisonChartWidget> {
     );
   }
 
-  List<BarChartGroupData> _getComparisonData(BuildContext context) {
-    final startA = _getPeriodStart(_selectedAnchorA!);
-    final endA = _getPeriodEnd(_selectedAnchorA!);
-    final startB = _getPeriodStart(_selectedAnchorB!);
-    final endB = _getPeriodEnd(_selectedAnchorB!);
+  Widget _bottomTitleWidgets(double value, TitleMeta meta, BuildContext context, AppLocalizations localization) {
+    const style = TextStyle(fontWeight: FontWeight.bold, fontSize: 10);
+    if (value == 100) return SideTitleWidget(meta: meta, child: Text(localization.total, style: style));
+    // Nur Title anzeigen wenn der Wert im Bereich der Fragen liegt
+    if (value >= 0 && value < widget.selectedQuestions.length - 1) {
+      return SideTitleWidget(meta: meta, child: Text((value.toInt() + 1).toString(), style: style));
+    }
+    return const SizedBox.shrink();
+  }
+
+  Widget _leftTitleWidgets(double value, TitleMeta meta, BuildContext context) => 
+      SideTitleWidget(meta: meta, child: Text("${(value * 100).toInt()}%", style: const TextStyle(fontSize: 8)));
+
+  BarTooltipItem? _buildCustomTooltipItem(BarChartGroupData group, int gi, BarChartRodData rod, int ri, BuildContext context, AppLocalizations localization) {
+    if (ri == 0 && group.barRods.length > 1) return null;
+    final valA = group.barRods[0].toY;
+    final valB = group.barRods.length > 1 ? group.barRods[1].toY : valA;
+    return BarTooltipItem("${(valA*100).round()}% -> ${(valB*100).round()}%", const TextStyle(color: Colors.white, fontWeight: FontWeight.bold));
+  }
+
+  List<BarChartGroupData> _getComparisonData(BuildContext context, AppLocalizations localization) {
+    if (widget.assessmentHistory.isEmpty) return [];
+
+    final startA = AssessmentCalculator.getPeriodStart(_selectedAnchorA!, widget.currentTimeRange);
+    final endA = AssessmentCalculator.getPeriodEnd(_selectedAnchorA!, widget.currentTimeRange);
+    final startB = AssessmentCalculator.getPeriodStart(_selectedAnchorB!, widget.currentTimeRange);
+    final endB = AssessmentCalculator.getPeriodEnd(_selectedAnchorB!, widget.currentTimeRange);
 
     final historyA = widget.assessmentHistory.where((e) => e.timestamp.isAfter(startA.subtract(const Duration(seconds: 1))) && e.timestamp.isBefore(endA.add(const Duration(seconds: 1)))).toList();
     final historyB = widget.assessmentHistory.where((e) => e.timestamp.isAfter(startB.subtract(const Duration(seconds: 1))) && e.timestamp.isBefore(endB.add(const Duration(seconds: 1)))).toList();
 
-    List<BarChartGroupData> barGroups = [];
-    if (historyB.isEmpty && historyA.isEmpty) return [];
+    if (historyA.isEmpty && historyB.isEmpty) return [];
 
+    final String currentSetKey = widget.assessmentHistory.first.questionSet;
+    final questionSet = localization.questionMap[currentSetKey];
     final int questionCount = widget.assessmentHistory.first.values.length;
-    double sumAllA = 0, sumAllB = 0;
-    int countAll = 0;
+    
+    final List<bool> polarities = List.generate(questionCount, (i) => 
+      (questionSet != null && i < questionSet.questions.length) ? questionSet.questions[i].isPositive : false
+    );
+
+    List<BarChartGroupData> barGroups = [];
+    double totalAvgSumA = 0, totalAvgSumB = 0;
+    int totalValidQuestions = 0;
 
     for (int i = 0; i < questionCount; i++) {
-      double avgA = _calculateAverage(context, historyA, i);
-      double avgB = _calculateAverage(context, historyB, i);
+      final avgA = _calculateAverageForQuestion(historyA, i, polarities[i]);
+      final avgB = _calculateAverageForQuestion(historyB, i, polarities[i]);
       
-      // Für den globalen Durchschnitt zählen wir IMMER alle Fragen des Sets
-      sumAllA += avgA; 
-      sumAllB += avgB;
-      countAll++;
+      totalAvgSumA += avgA;
+      totalAvgSumB += avgB;
+      totalValidQuestions++;
 
-      // Wir fügen die Bar-Gruppe nur hinzu, wenn sie einzeln ausgewählt ist
       if (i < widget.selectedQuestions.length && widget.selectedQuestions[i]) {
         final color = globalColorMap[i + 1] ?? Colors.blue;
-        barGroups.add(
-          BarChartGroupData(
-            x: i,
-            barRods: [
-              BarChartRodData(toY: avgA, color: color.withValues(alpha: 0.3), width: 10, borderRadius: const BorderRadius.vertical(top: Radius.circular(4))),
-              BarChartRodData(toY: avgB, color: color, width: 10, borderRadius: const BorderRadius.vertical(top: Radius.circular(4))),
-            ],
-          ),
-        );
+        barGroups.add(BarChartGroupData(
+          x: i,
+          barRods: [
+            BarChartRodData(toY: avgA, color: color.withValues(alpha: 0.3), width: 10, borderRadius: const BorderRadius.vertical(top: Radius.circular(4))),
+            BarChartRodData(toY: avgB, color: color, width: 10, borderRadius: const BorderRadius.vertical(top: Radius.circular(4))),
+          ],
+        ));
       }
     }
 
-    // Der Durchschnittsbalken wird angezeigt, wenn "Gesamt" (letzter Index) ausgewählt ist
-    // Er basiert jetzt stabil auf countAll (allen Fragen)
-    if (widget.selectedQuestions.isNotEmpty && widget.selectedQuestions.last && countAll > 0) {
-      barGroups.add(
-        BarChartGroupData(
-          x: 100,
-          barRods: [
-            BarChartRodData(toY: sumAllA / countAll, color: Colors.red.withValues(alpha: 0.2), width: 14, borderRadius: const BorderRadius.vertical(top: Radius.circular(4))),
-            BarChartRodData(toY: sumAllB / countAll, color: Colors.red, width: 14, borderRadius: const BorderRadius.vertical(top: Radius.circular(4))),
-          ],
-        ),
-      );
+    if (widget.selectedQuestions.isNotEmpty && widget.selectedQuestions.last && totalValidQuestions > 0) {
+      barGroups.add(BarChartGroupData(
+        x: 100,
+        barRods: [
+          BarChartRodData(toY: totalAvgSumA / totalValidQuestions, color: Colors.red.withValues(alpha: 0.2), width: 14, borderRadius: const BorderRadius.vertical(top: Radius.circular(4))),
+          BarChartRodData(toY: totalAvgSumB / totalValidQuestions, color: Colors.red, width: 14, borderRadius: const BorderRadius.vertical(top: Radius.circular(4))),
+        ],
+      ));
     }
+
     return barGroups;
   }
 
-  double _calculateAverage(BuildContext context, List<AssessmentEntry> history, int idx) {
+  double _calculateAverageForQuestion(List<AssessmentEntry> history, int idx, bool isPositive) {
     if (history.isEmpty) return 0.0;
-    final localization = AppLocalizations.of(context)!;
-    double sum = 0; int count = 0;
+    double sum = 0;
+    int count = 0;
     for (var e in history) {
       if (idx < e.values.length && e.values[idx] != -1.0) {
-        final questionSet = localization.questionMap[e.questionSet];
-        bool isPositive = false;
-        if (questionSet != null && idx < questionSet.questions.length) {
-          isPositive = questionSet.questions[idx].isPositive;
-        }
         sum += AssessmentCalculator.getChartValue(e.values[idx], isPositive);
         count++;
       }
@@ -187,11 +203,10 @@ class _ComparisonChartWidgetState extends State<ComparisonChartWidget> {
     return count > 0 ? sum / count : 0.0;
   }
 
-  DateTime _getPeriodStart(DateTime d) => AssessmentCalculator.getPeriodStart(d, widget.currentTimeRange);
-  DateTime _getPeriodEnd(DateTime d) => AssessmentCalculator.getPeriodEnd(d, widget.currentTimeRange);
-
   Widget _buildPeriodSelectors(BuildContext context, AppLocalizations localization) {
     final periods = _getAvailablePeriods();
+    if (periods.isEmpty) return const SizedBox.shrink();
+    
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: Row(
@@ -242,21 +257,5 @@ class _ComparisonChartWidgetState extends State<ComparisonChartWidget> {
         )).toList(),
       ),
     );
-  }
-
-  Widget _bottomTitleWidgets(double value, TitleMeta meta, BuildContext context, AppLocalizations localization) {
-    const style = TextStyle(fontWeight: FontWeight.bold, fontSize: 10);
-    if (value == 100) return SideTitleWidget(meta: meta, child: Text(localization.total, style: style));
-    return SideTitleWidget(meta: meta, child: Text((value.toInt() + 1).toString(), style: style));
-  }
-
-  Widget _leftTitleWidgets(double value, TitleMeta meta, BuildContext context) => 
-      SideTitleWidget(meta: meta, child: Text("${(value * 100).toInt()}%", style: const TextStyle(fontSize: 8)));
-
-  BarTooltipItem? _buildCustomTooltipItem(BarChartGroupData group, int gi, BarChartRodData rod, int ri, BuildContext context, AppLocalizations localization) {
-    if (ri == 0 && group.barRods.length > 1) return null;
-    final valA = group.barRods[0].toY;
-    final valB = group.barRods.length > 1 ? group.barRods[1].toY : valA;
-    return BarTooltipItem("${(valA*100).round()}% -> ${(valB*100).round()}%", const TextStyle(color: Colors.white, fontWeight: FontWeight.bold));
   }
 }

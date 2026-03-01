@@ -80,6 +80,13 @@ class RadarChartWidget extends StatelessWidget {
       );
     }
 
+    // Optimization: Cache QuestionSet and polarity
+    final String currentSetKey = assessmentHistory.first.questionSet;
+    final questionSet = localization.questionMap[currentSetKey];
+    final List<bool> polarities = List.generate(assessmentHistory.first.values.length, (i) => 
+      (questionSet != null && i < questionSet.questions.length) ? questionSet.questions[i].isPositive : false
+    );
+
     return LayoutBuilder(
       builder: (context, constraints) {
         final double size = min(constraints.maxWidth, constraints.maxHeight);
@@ -94,7 +101,7 @@ class RadarChartWidget extends StatelessWidget {
               child: RadarChart(
                 RadarChartData(
                   radarBackgroundColor: Colors.white,
-                  dataSets: _buildDataSets(context, filteredHistory, activeIndices),
+                  dataSets: _buildDataSets(context, filteredHistory, activeIndices, polarities),
                   getTitle: (index, angle) => const RadarChartTitle(text: ""),
                   tickCount: 5,
                   ticksTextStyle: const TextStyle(fontSize: 8, color: Colors.grey),
@@ -102,20 +109,20 @@ class RadarChartWidget extends StatelessWidget {
                 ),
               ),
             ),
-            ..._buildCustomLabels(context, filteredHistory, activeIndices, radius),
+            ..._buildCustomLabels(context, filteredHistory, activeIndices, radius, polarities),
           ],
         );
       },
     );
   }
 
-  List<RadarDataSet> _buildDataSets(BuildContext context, List<AssessmentEntry> history, List<int> activeIndices) {
+  List<RadarDataSet> _buildDataSets(BuildContext context, List<AssessmentEntry> history, List<int> activeIndices, List<bool> polarities) {
     List<RadarEntry> entries = [];
     double totalSum = 0;
     int totalCount = 0;
 
     for (int originalIndex in activeIndices) {
-      double displayVal = _getDisplayValue(context, originalIndex, history);
+      double displayVal = _getDisplayValue(originalIndex, history, polarities[originalIndex]);
       entries.add(RadarEntry(value: displayVal));
       totalSum += displayVal;
       totalCount++;
@@ -142,7 +149,7 @@ class RadarChartWidget extends StatelessWidget {
     ];
   }
 
-  List<Widget> _buildCustomLabels(BuildContext context, List<AssessmentEntry> history, List<int> activeIndices, double radius) {
+  List<Widget> _buildCustomLabels(BuildContext context, List<AssessmentEntry> history, List<int> activeIndices, double radius, List<bool> polarities) {
     List<Widget> labels = [];
     final int count = activeIndices.length;
 
@@ -152,7 +159,7 @@ class RadarChartWidget extends StatelessWidget {
       final double x = cos(angle) * (radius + 25);
       final double y = sin(angle) * (radius + 20);
       final color = globalColorMap[originalIndex + 1] ?? Colors.grey;
-      final val = _getDisplayValue(context, originalIndex, history);
+      final val = _getDisplayValue(originalIndex, history, polarities[originalIndex]);
 
       labels.add(
         Transform.translate(
@@ -175,18 +182,12 @@ class RadarChartWidget extends StatelessWidget {
     return labels;
   }
 
-  double _getDisplayValue(BuildContext context, int questionIndex, List<AssessmentEntry> history) {
+  double _getDisplayValue(int questionIndex, List<AssessmentEntry> history, bool isPositive) {
     if (history.isEmpty) return 0.0;
-    final localization = AppLocalizations.of(context)!;
 
     if (currentTimeRange == TimeRange.twoDays) {
       final latest = history.last;
       if (questionIndex < latest.values.length) {
-        final questionSet = localization.questionMap[latest.questionSet];
-        bool isPositive = false;
-        if (questionSet != null && questionIndex < questionSet.questions.length) {
-          isPositive = questionSet.questions[questionIndex].isPositive;
-        }
         return AssessmentCalculator.getChartValue(latest.values[questionIndex], isPositive);
       }
       return 0.0;
@@ -195,11 +196,6 @@ class RadarChartWidget extends StatelessWidget {
       int count = 0;
       for (var entry in history) {
         if (questionIndex < entry.values.length && entry.values[questionIndex] != -1.0) {
-          final questionSet = localization.questionMap[entry.questionSet];
-          bool isPositive = false;
-          if (questionSet != null && questionIndex < questionSet.questions.length) {
-            isPositive = questionSet.questions[questionIndex].isPositive;
-          }
           sum += AssessmentCalculator.getChartValue(entry.values[questionIndex], isPositive);
           count++;
         }
