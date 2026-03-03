@@ -9,9 +9,9 @@ Diese Roadmap definiert den Weg von der Beta zur professionellen Multi-Plattform
 
 ### ✅ Bereits abgeschlossen (R1 Progress)
 *   **User Onboarding (#47 & #46)**: Vollständiger Einführungsprozess zur Erklärung von Slidern, Notizen und Analyse-Funktionen.
-*   **Sprachvielfalt (#24)**: Unterstützung für DE, EN, ES, KO, LT, PL, UK und RU (Russisch neu hinzugefügt).
+*   **Sprachvielfalt (#24)**: Unterstützung für DE, EN, ES, KO, LT, PL, UK und RU. Inklusive **In-App Sprachwahl** zur Laufzeit.
+*   **Performance Profiling (#54)**: Benchmark-Tests für SharedPreferences durchgeführt (1000 Einträge in < 20ms). Optimierung des Chart-Loading (Einmaliges Laden in initState).
 *   **Daten-Portabilität (#49)**: CSV-Export mit kontextbezogenen Headern (Fragentexte statt IDs).
-*   **Dynamic Language Support**: Umschalten der App-Sprache unabhängig von den Systemeinstellungen (via `--dart-define`).
 *   **Security Foundation**: Implementierung des Biometrie-Lock-Screens und der Security-Services.
 
 ### 🔥 Prio 1: Ausstehende Launch-Blocker
@@ -19,7 +19,6 @@ Diese Roadmap definiert den Weg von der Beta zur professionellen Multi-Plattform
 - [ ] **Web Version (#53)**: Deployment als Progressive Web App (PWA) inklusive Service-Worker-Konfiguration und Asset-Optimierung.
 - [ ] **App Store Release (#52)**: Vorbereitung der Apple-Metadaten, Screenshots (6.5"/5.5") und Einreichung zur Prüfung.
 - [ ] **Google Play Release (#51)**: Finalisierung des Store-Listings und Management des Produktions-Tracks in der Play Console.
-- [ ] **Performance Profiling (#54)**: Identifikation von Effizienz-Bottlenecks mittels Flutter DevTools (Fokus auf Speicherverbrauch und Chart-Rendering).
 
 ### ⚡ Prio 2: Qualitätssicherung & UX
 - [ ] **Stability Test Suite (#55)**: Implementierung von Unit-Tests für die Berechnungs-Logik und Integrationstests für die neuen Plattformen.
@@ -32,15 +31,10 @@ Diese Roadmap definiert den Weg von der Beta zur professionellen Multi-Plattform
 
 ### ⚡ Prio 2: Architektur & Content
 - [ ] **UI Landscape Optimization (#57)**: Refactoring des `ChartControlWidget` und ergonomische Anpassung für Querformat.
-- [ ] **Datenbank-Migration (#33)**: Wechsel von SharedPreferences zu SQLite. **Fokus Effizienz:** Selektives Laden von Daten (Date-Range Filtering) auf Datenbankebene.
+- [ ] **Datenbank-Migration (#33)**: Wechsel von SharedPreferences zu SQLite. (Bestätigt als nicht kritisch für R1, aber wichtig für langfristige Skalierbarkeit).
 - [ ] **Content Expansion (#48)**: Ausbau der Beschreibungen für John Wesley und William Booth Sets (DE, EN, RU).
 - [ ] **Push-Benachrichtigungen (#3)**: Implementierung lokaler Reminder.
 - [ ] **Accountability Partner (#45)**: Sicheres Teilen von Fortschritten mit Mentoren (Privacy-Filter für Notizen).
-
-### ☕ Prio 3: Individualität & Motivation
-- [ ] **Eigene Fragen-Sets (#41)**: Werkzeuge für Nutzer, um komplett eigene Reflexions-Strukturen anzulegen.
-- [ ] **Gamification (#35)**: Einführung von Streaks und Meilensteinen zur langfristigen Motivation.
-- [ ] **Data Cleanup (#37)**: Bereinigung der Beispieldaten im Heilsarmee-Set Chemnitz.
 
 ---
 
@@ -57,4 +51,4 @@ Diese Roadmap definiert den Weg von der Beta zur professionellen Multi-Plattform
 2.  **Performance-Kultur**: Wir raten nicht, wir messen (Profiling). Bottlenecks werden an der Wurzel (Datenbank/Algorithmus) behoben.
 3.  **Cross-Platform Consistency**: Die Erfahrung auf iOS, Android und Web muss sich nativ und hochwertig anfühlen.
 
-_Zuletzt aktualisiert am: 01. März 2025_
+_Zuletzt aktualisiert am: 03. März 2025_
