@@ -73,6 +73,7 @@ class AppLocalizationsKo extends AppLocalizations {
   @override String get settingsNoDataToExport => "내보낼 데이터가 없습니다.";
   @override String get settingsLanguage => '언어';
   @override String get chooseLanguage => '언어 선택';
+  @override String get systemDefault => '시스템 기본값';
 
   @override String get about => "앱 정보";
   @override String get aboutContent => "이 앱은 개인적인 성찰과 영적 성장을 위한 것입니다. William Booth와 John Wesley의 영감을 받았습니다.";
@@ -80,7 +81,7 @@ class AppLocalizationsKo extends AppLocalizations {
   @override String get imprint => "법적 고지";
   @override String get license => "라이선스";
   @override String get imprintContent => "책임자: Matthias Lindner\n연락처: ";
-  @override String get githubRepository => "GitHub 저장소 (버г 보고 및 기여)";
+  @override String get githubRepository => "GitHub 저장소 (버그 보고 및 기여)";
 
   @override String get onboardingSkip => "건너뛰기";
   @override String get onboardingNext => "다음";
@@ -183,7 +184,7 @@ class AppLocalizationsKo extends AppLocalizations {
           ),
           Question(
             text: "생각이나 말 또는 행동으로 타인에게 해를 끼치지 않으려고 얼마나 일관되게 노력합니까?",
-            description: "살인하지 말라! (출애굽기 20:13)",
+            description: "살인하지 말라! (출애itado 20:13)",
           ),
           Question(
             text: "간음을 멀리하고 결혼을 얼마나 거룩하게 유지하고 있습니까?",

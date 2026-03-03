@@ -74,6 +74,7 @@ class AppLocalizationsUk extends AppLocalizations {
   @override String get settingsNoDataToExport => "Немає даних для експорту.";
   @override String get settingsLanguage => 'Мова';
   @override String get chooseLanguage => 'Вибрати мову';
+  @override String get systemDefault => 'Системне значення';
 
   @override String get about => "Про додаток";
   @override String get aboutContent => "Цей додаток призначений для особистої рефлексії та духовного розвитку. Натхненний Вільямом Бутом та Джоном Веслі.";
@@ -220,7 +221,7 @@ class AppLocalizationsUk extends AppLocalizations {
             isPositive: true,
           ),
           Question(
-            text: "Чи тримаю я свої тілесні бажання під таким контролем, що не почуваюся винним? Чи даю я волю будь-якій схильності, яка шкодить моєму освяченню, моєму зростанню в пізнанні, моєму послуку та моїй корисності?",
+            text: "Чи тримаю я свої тілесні бажання під таким контролем, що не почуваюся винним? Чи даю я волю будь-якій схильності, яка шкодить моєму освяченню, моєму зростанню в пізнанні, моєму послуху та моїй корисності?",
           ),
           Question(
             text: "Чи всі мої думки та почуття такі, що мені не довелося б соромитися, якби вони відкрилися перед Богом?",
@@ -230,7 +231,7 @@ class AppLocalizationsUk extends AppLocalizations {
             isPositive: true,
           ),
           Question(
-            text: "Чи спонукає мене моя вдача відчувати, робити чи говорити щось, про що я згодом усвідомлюю, що это суперечить любові, яку я завжди повинен мати до своїх ближніх?",
+            text: "Чи спонукає мене моя вдача відчувати, робити чи говорити щось, про що я згодом усвідомлюю, що це суперечить любові, яку я завжди повинен мати до своїх ближніх?",
             isPositive: true,
           ),
           Question(
@@ -338,7 +339,7 @@ class AppLocalizationsUk extends AppLocalizations {
             isPositive: true,
           ),
           Question(
-            text: "Постійно я нарікаю або скаржуся?",
+            text: "Чи постійно я нарікаю або скаржуся?",
             isPositive: true,
           ),
           Question(

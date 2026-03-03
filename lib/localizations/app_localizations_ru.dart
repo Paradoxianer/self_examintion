@@ -73,6 +73,7 @@ class AppLocalizationsRu extends AppLocalizations {
   @override String get settingsNoDataToExport => "Нет данных для экспорта.";
   @override String get settingsLanguage => 'Язык';
   @override String get chooseLanguage => 'Выберите язык';
+  @override String get systemDefault => 'Системное значение';
 
   @override String get about => "О приложении";
   @override String get aboutContent => "Это приложение предназначено для личного размышления и духовного роста. Вдохновлено Уильямом Бутом и Джоном Уэсли.";

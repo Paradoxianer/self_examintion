@@ -73,6 +73,7 @@ class AppLocalizationsPl extends AppLocalizations {
   @override String get settingsNoDataToExport => "Brak danych do eksportu.";
   @override String get settingsLanguage => 'Język';
   @override String get chooseLanguage => 'Wybierz język';
+  @override String get systemDefault => 'Domyślne systemowe';
 
   @override String get about => "O aplikacji";
   @override String get aboutContent => "Ta aplikacja służy do osobistej refleksji i wzrostu duchowego. Zainspirowana przez Williama Bootha i Johna Wesleya.";
@@ -115,7 +116,7 @@ class AppLocalizationsPl extends AppLocalizations {
   @override String get onboarding2Step1Description =>
       "Przesuń suwak, aby ocenić dla siebie samego, "
           "jak odpowiedziałbyś dzisiaj na dane pytanie.\n\n"
-          "Jeśli czujesz, że twoja odpowiedź ist bardziej pozytywna, przesuń suwak w kierunku zielonym. "
+          "Jeśli czujesz, że twoja odpowiedź jest bardziej pozytywna, przesuń suwak w kierunku zielonym. "
           "Jeśli czujesz, że jest bardziej negatywna, przesuń go w kierunku czerwonym.\n\n"
           "Nad suwakiem wyświetli się twoja wybrana ocena w procentach.";
 
@@ -143,7 +144,7 @@ class AppLocalizationsPl extends AppLocalizations {
           "Opcjonalnie możesz je dodatkowo zabezpieczyć kodem PIN urządzenia lub zabezpieczeniami "
           "biometrycznymi (np. odciskiem palca lub rozpoznawaniem twarzy).\n\n"
           "W razie potrzeby możesz wyeksportować swoje dane z różnym stopniem szczegółowości jako plik CSV "
-          "i na Beispiel dalej analizować je w programie Excel.";
+          "i na przykład dalej analizować je w programie Excel.";
 
   @override String get appLocked => "Aplikacja zablokowana";
   @override String get unlock => "Odblokuj";

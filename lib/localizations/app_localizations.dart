@@ -115,6 +115,7 @@ abstract class AppLocalizations {
   String get settingsNoDataToExport;
   String get settingsLanguage;
   String get chooseLanguage;
+  String get systemDefault;
 
   // About and Legal strings
   String get about;

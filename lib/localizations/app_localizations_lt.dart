@@ -73,6 +73,7 @@ class AppLocalizationsLt extends AppLocalizations {
   @override String get settingsNoDataToExport => "Nėra duomenų eksportavimui.";
   @override String get settingsLanguage => 'Kalba';
   @override String get chooseLanguage => 'Pasirinkti kalbą';
+  @override String get systemDefault => 'Sistemos numatytasis';
 
   @override String get about => "Apie programėlę";
   @override String get aboutContent => "Ši programėlė skirta asmeninei refleksijai ir dvasiniam augimui. Įkvėpta William Booth ir John Wesley.";

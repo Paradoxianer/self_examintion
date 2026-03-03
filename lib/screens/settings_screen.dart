@@ -40,7 +40,7 @@ class SettingsScreen extends StatelessWidget {
             ),
           ),
           
-          _buildSectionHeader(context, localization.settingsTitle), // "General Settings" or similar
+          _buildSectionHeader(context, localization.settingsTitle), 
           _buildLanguageTile(context, localization),
 
           _buildSectionHeader(context, localization.settingsExportHeader),
@@ -89,12 +89,15 @@ class SettingsScreen extends StatelessWidget {
     return ListenableBuilder(
       listenable: localStorage.settingsNotifier,
       builder: (context, _) {
-        final currentLocale = localStorage.locale ?? Localizations.localeOf(context);
+        // If no locale is saved, show "System Default"
+        final String currentLanguageName = localStorage.locale == null 
+            ? localization.systemDefault 
+            : _getLanguageName(localStorage.locale!.languageCode);
         
         return ListTile(
           leading: const Icon(Icons.language),
           title: Text(localization.settingsLanguage),
-          subtitle: Text(_getLanguageName(currentLocale.languageCode)),
+          subtitle: Text(currentLanguageName),
           onTap: () => _showLanguageDialog(context),
         );
       },
@@ -130,7 +133,7 @@ class SettingsScreen extends StatelessWidget {
               itemBuilder: (context, index) {
                 if (index == 0) {
                   return ListTile(
-                    title: const Text("System Default"),
+                    title: Text(localization.systemDefault),
                     selected: localStorage.locale == null,
                     onTap: () {
                       localStorage.setLocale(null);

@@ -74,6 +74,7 @@ class AppLocalizationsEs extends AppLocalizations {
   @override String get settingsNoDataToExport => "No hay datos disponibles para exportar.";
   @override String get settingsLanguage => 'Idioma';
   @override String get chooseLanguage => 'Elegir idioma';
+  @override String get systemDefault => 'Predeterminado del sistema';
 
   @override String get about => "Acerca de la aplicación";
   @override String get aboutContent => "Esta aplicación es para la reflexión personal y el crecimiento espiritual. Inspirada por William Booth y John Wesley.";
@@ -101,7 +102,7 @@ class AppLocalizationsEs extends AppLocalizations {
           "y observar su evolución a lo largo de días, semanas, meses o años –\n"
           "en su conjunto o en áreas individuales.\n\n"
           "Como una ayuda para percibir dónde el amor de Dios le invita a seguir actuando –\n"
-          "und dónde el crecimiento todavía es posible.";
+          "y dónde el crecimiento todavía es posible.";
 
   @override
   String get onboarding1DescriptionBottom =>

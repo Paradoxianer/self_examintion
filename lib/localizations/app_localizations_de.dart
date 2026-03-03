@@ -74,6 +74,7 @@ class AppLocalizationsDe extends AppLocalizations {
   @override String get settingsNoDataToExport => "Keine Daten zum Exportieren vorhanden.";
   @override String get settingsLanguage => 'Sprache';
   @override String get chooseLanguage => 'Sprache wählen';
+  @override String get systemDefault => 'Systemstandard';
 
   @override String get about => "Über die App";
   @override String get aboutContent => "Diese App dient der persönlichen Reflexion und geistlichen Entwicklung. Inspiriert von William Booth und John Wesley.";
