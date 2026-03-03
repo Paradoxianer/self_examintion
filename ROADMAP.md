@@ -20,8 +20,21 @@ Diese Roadmap definiert den Weg von der Beta zur professionellen Multi-Plattform
 - [ ] **App Store Release (#52)**: Vorbereitung der Apple-Metadaten, Screenshots (6.5"/5.5") und Einreichung zur Prüfung.
 - [ ] **Google Play Release (#51)**: Finalisierung des Store-Listings und Management des Produktions-Tracks in der Play Console.
 
-### ⚡ Prio 2: Qualitätssicherung & UX
-- [ ] **Stability Test Suite (#55)**: Implementierung von Unit-Tests für die Berechnungs-Logik und Integrationstests für die neuen Plattformen.
+### ⚡ Prio 2: Qualitätssicherung & UX (Stability Test Suite #55)
+*Ziel: 100% Durchlaufquote der Kernfunktionen und Vermeidung von Regressionsfehlern durch Lokalisierung.*
+
+- [x] **Initial Fixes**: Integrationstest-Flow (Onboarding-Skip) und Lokalisierungs-Strings in Widget-Tests korrigiert.
+- [ ] **Core Unit Tests**:
+    - [ ] `AssessmentCalculator`: Validierung der Scoring-Logik (Edge-Cases 0/100%).
+    - [ ] `LocalStorage`: Test der Datenintegrität beim Speichern und Laden großer Mengen.
+- [ ] **UI & Widget Testing**:
+    - [ ] `Localization Coverage`: Sicherstellen, dass alle 8 Sprachen die korrekten Keys für alle Fragensets liefern.
+    - [ ] `Settings & Persistence`: Test der Sprachumstellung und deren Persistenz nach App-Neustart.
+    - [ ] `Chart-Interaktion`: Validierung der Filter-Logik und Zeitbereichs-Auswahl.
+- [ ] **Cross-Platform Integration**:
+    - [ ] Simulation von Biometrie-Fehlern (iOS/Android).
+    - [ ] Web-spezifische Tests (Routing & LocalStorage-Fallback).
+
 - [ ] **Navigation: Directional Arrows (#56)**: Implementierung von Pfeil-Navigation für Charts (optimiert für Web/Desktop).
 
 ---
@@ -51,4 +64,4 @@ Diese Roadmap definiert den Weg von der Beta zur professionellen Multi-Plattform
 2.  **Performance-Kultur**: Wir raten nicht, wir messen (Profiling). Bottlenecks werden an der Wurzel (Datenbank/Algorithmus) behoben.
 3.  **Cross-Platform Consistency**: Die Erfahrung auf iOS, Android und Web muss sich nativ und hochwertig anfühlen.
 
-_Zuletzt aktualisiert am: 03. März 2025_
+_Zuletzt aktualisiert am: 04. März 2025_
