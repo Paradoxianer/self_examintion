@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:self_examination/models/assessment_entry.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
@@ -12,6 +13,7 @@ class LocalStorage {
   static final LocalStorage _singleton = LocalStorage._internal();
   SharedPreferences? _prefs;
   String _currentAuthor = "none";
+  Locale? _currentLocale;
 
   final ActivityNotifier assessmentNotifier = ActivityNotifier();
   final ActivityNotifier settingsNotifier = ActivityNotifier();
@@ -25,6 +27,7 @@ class LocalStorage {
   Future<void> initialize() async {
     _prefs = await SharedPreferences.getInstance();
     await loadCurrentAutor();
+    _loadLocale();
   }
 
   void setCurrentAuthor(String authorName) {
@@ -48,6 +51,26 @@ class LocalStorage {
       // SET DEFAULT QUESTION SET TO WILLIAM BOOTH
       _currentAuthor = "William Booth";
     }
+  }
+
+  // --- Locale Management ---
+  void _loadLocale() {
+    String? languageCode = _prefs?.getString('languageCode');
+    if (languageCode != null) {
+      _currentLocale = Locale(languageCode);
+    }
+  }
+
+  Locale? get locale => _currentLocale;
+
+  Future<void> setLocale(Locale? locale) async {
+    _currentLocale = locale;
+    if (locale == null) {
+      await _prefs?.remove('languageCode');
+    } else {
+      await _prefs?.setString('languageCode', locale.languageCode);
+    }
+    settingsNotifier.notify();
   }
 
   // --- Hilfsmethoden für Einstellungen ---

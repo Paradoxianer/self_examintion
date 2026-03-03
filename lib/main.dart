@@ -21,15 +21,23 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-        localizationsDelegates: AppLocalizations.localizationsDelegates,
-        supportedLocales: AppLocalizations.supportedLocales,
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          useMaterial3: true,
-          colorSchemeSeed: Colors.blue,
-        ),
-        home: const AuthWrapper());
+    final localStorage = LocalStorage();
+    
+    return ListenableBuilder(
+      listenable: localStorage.settingsNotifier,
+      builder: (context, _) {
+        return MaterialApp(
+            localizationsDelegates: AppLocalizations.localizationsDelegates,
+            supportedLocales: AppLocalizations.supportedLocales,
+            locale: localStorage.locale,
+            debugShowCheckedModeBanner: false,
+            theme: ThemeData(
+              useMaterial3: true,
+              colorSchemeSeed: Colors.blue,
+            ),
+            home: const AuthWrapper());
+      }
+    );
   }
 }
 

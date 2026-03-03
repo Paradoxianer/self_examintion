@@ -22,6 +22,7 @@ class ChartScreen extends StatefulWidget {
 class _ChartScreenState extends State<ChartScreen> {
   final LocalStorage _localStorage = LocalStorage();
   late PageController _pageController;
+  Future<List<AssessmentEntry>>? _historyFuture;
 
   List<bool> _selectedQuestions = [];
   TimeRange _currentTimeRange = TimeRange.all;
@@ -34,6 +35,11 @@ class _ChartScreenState extends State<ChartScreen> {
     _currentPage = _localStorage.getInt('lastChartIndex', defaultValue: 0);
     _pageController = PageController(initialPage: _currentPage);
     _loadStoredFilters();
+    _loadHistory();
+  }
+
+  void _loadHistory() {
+    _historyFuture = _localStorage.loadAssessmentEntries();
   }
 
   void _loadStoredFilters() {
@@ -59,11 +65,20 @@ class _ChartScreenState extends State<ChartScreen> {
     return ListenableBuilder(
       listenable: _localStorage.assessmentNotifier,
       builder: (context, _) {
+        // Refresh future when assessment changes
+        _loadHistory();
+        
         return FutureBuilder<List<AssessmentEntry>>(
-          future: _localStorage.loadAssessmentEntries(),
+          future: _historyFuture,
           builder: (context, snapshot) {
             final history = snapshot.data ?? [];
             final localization = AppLocalizations.of(context)!;
+
+            if (snapshot.connectionState == ConnectionState.waiting && history.isEmpty) {
+              return const Scaffold(
+                body: Center(child: CircularProgressIndicator()),
+              );
+            }
 
             if (history.isEmpty) {
               return Scaffold(
@@ -78,7 +93,6 @@ class _ChartScreenState extends State<ChartScreen> {
             final String storageKey = 'chartSelectedQuestions_$authorKey';
             
             // Check if we need to switch or initialize the selection list
-            // We check the length to see if it matches the current set's structure
             if (_selectedQuestions.length != expectedLength) {
               List<bool>? savedSelection = _localStorage.getBoolList(storageKey);
               
@@ -172,43 +186,34 @@ class _ChartScreenState extends State<ChartScreen> {
               ),
             ],
           ),
-          // Left Navigation Arrow
+          // Navigation arrows remain the same...
           if (_currentPage > 0)
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Padding(
-                padding: const EdgeInsets.only(left: 4.0),
-                child: CircleAvatar(
-                  backgroundColor: Theme.of(context).colorScheme.surface.withOpacity(0.5),
-                  child: IconButton(
-                    icon: const Icon(Icons.chevron_left),
-                    onPressed: () => _pageController.previousPage(
-                      duration: const Duration(milliseconds: 300),
-                      curve: Curves.easeInOut,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          // Right Navigation Arrow
+            _buildNavArrow(Icons.chevron_left, Alignment.centerLeft, () => _pageController.previousPage(
+              duration: const Duration(milliseconds: 300),
+              curve: Curves.easeInOut,
+            )),
           if (_currentPage < 2)
-            Align(
-              alignment: Alignment.centerRight,
-              child: Padding(
-                padding: const EdgeInsets.only(right: 4.0),
-                child: CircleAvatar(
-                  backgroundColor: Theme.of(context).colorScheme.surface.withOpacity(0.5),
-                  child: IconButton(
-                    icon: const Icon(Icons.chevron_right),
-                    onPressed: () => _pageController.nextPage(
-                      duration: const Duration(milliseconds: 300),
-                      curve: Curves.easeInOut,
-                    ),
-                  ),
-                ),
-              ),
-            ),
+            _buildNavArrow(Icons.chevron_right, Alignment.centerRight, () => _pageController.nextPage(
+              duration: const Duration(milliseconds: 300),
+              curve: Curves.easeInOut,
+            )),
         ],
+      ),
+    );
+  }
+
+  Widget _buildNavArrow(IconData icon, Alignment alignment, VoidCallback onPressed) {
+     return Align(
+      alignment: alignment,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 4.0),
+        child: CircleAvatar(
+          backgroundColor: Theme.of(context).colorScheme.surface.withOpacity(0.5),
+          child: IconButton(
+            icon: Icon(icon),
+            onPressed: onPressed,
+          ),
+        ),
       ),
     );
   }

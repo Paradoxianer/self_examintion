@@ -40,6 +40,9 @@ class SettingsScreen extends StatelessWidget {
             ),
           ),
           
+          _buildSectionHeader(context, localization.settingsTitle), // "General Settings" or similar
+          _buildLanguageTile(context, localization),
+
           _buildSectionHeader(context, localization.settingsExportHeader),
           _buildExportTile(context, icon: Icons.download, title: localization.settingsExportAll, type: ExportType.all),
           _buildExportTile(context, icon: Icons.table_chart_outlined, title: localization.settingsExportValues, type: ExportType.valuesAndAverage),
@@ -79,6 +82,75 @@ class SettingsScreen extends StatelessWidget {
           fontSize: 12, fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.primary, letterSpacing: 1.2,
         ),
       ),
+    );
+  }
+
+  Widget _buildLanguageTile(BuildContext context, AppLocalizations localization) {
+    return ListenableBuilder(
+      listenable: localStorage.settingsNotifier,
+      builder: (context, _) {
+        final currentLocale = localStorage.locale ?? Localizations.localeOf(context);
+        
+        return ListTile(
+          leading: const Icon(Icons.language),
+          title: Text(localization.notification), // We might need a better key for "Language"
+          subtitle: Text(_getLanguageName(currentLocale.languageCode)),
+          onTap: () => _showLanguageDialog(context),
+        );
+      },
+    );
+  }
+
+  String _getLanguageName(String code) {
+    switch (code) {
+      case 'de': return 'Deutsch';
+      case 'en': return 'English';
+      case 'ko': return '한국어 (Korean)';
+      case 'es': return 'Español';
+      case 'pl': return 'Polski';
+      case 'lt': return 'Lietuvių';
+      case 'uk': return 'Українська';
+      case 'ru': return 'Русский';
+      default: return code;
+    }
+  }
+
+  void _showLanguageDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text("Select Language"),
+          content: SizedBox(
+            width: double.maxFinite,
+            child: ListView.builder(
+              shrinkWrap: true,
+              itemCount: AppLocalizations.supportedLocales.length + 1,
+              itemBuilder: (context, index) {
+                if (index == 0) {
+                  return ListTile(
+                    title: const Text("System Default"),
+                    selected: localStorage.locale == null,
+                    onTap: () {
+                      localStorage.setLocale(null);
+                      Navigator.pop(context);
+                    },
+                  );
+                }
+                final locale = AppLocalizations.supportedLocales[index - 1];
+                return ListTile(
+                  title: Text(_getLanguageName(locale.languageCode)),
+                  selected: localStorage.locale?.languageCode == locale.languageCode,
+                  onTap: () {
+                    localStorage.setLocale(locale);
+                    Navigator.pop(context);
+                  },
+                );
+              },
+            ),
+          ),
+        );
+      },
     );
   }
 
