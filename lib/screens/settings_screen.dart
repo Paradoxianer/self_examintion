@@ -93,7 +93,7 @@ class SettingsScreen extends StatelessWidget {
         
         return ListTile(
           leading: const Icon(Icons.language),
-          title: Text(localization.notification), // We might need a better key for "Language"
+          title: Text(localization.settingsLanguage),
           subtitle: Text(_getLanguageName(currentLocale.languageCode)),
           onTap: () => _showLanguageDialog(context),
         );
@@ -116,11 +116,12 @@ class SettingsScreen extends StatelessWidget {
   }
 
   void _showLanguageDialog(BuildContext context) {
+    final localization = AppLocalizations.of(context)!;
     showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: const Text("Select Language"),
+          title: Text(localization.chooseLanguage),
           content: SizedBox(
             width: double.maxFinite,
             child: ListView.builder(
