@@ -13,7 +13,8 @@ void main() {
     SharedPreferences.setMockInitialValues({
       'isSecurityEnabled': false, // Disable lock for test flow
       'agreedToDSGVO': true,      // Skip GDPR dialog
-      'currentAuthor': 'Willam Booth'
+      'onboardingCompleted': true, // Skip Onboarding
+      'currentAuthor': 'William Booth'
     });
     await LocalStorage().initialize();
   });
