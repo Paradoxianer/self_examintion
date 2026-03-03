@@ -71,6 +71,8 @@ class AppLocalizationsPl extends AppLocalizations {
   @override String get settingsSecurityLock => "Włącz blokadę aplikacji";
   @override String get settingsReminderHeader => "Przypomnienie";
   @override String get settingsNoDataToExport => "Brak danych do eksportu.";
+  @override String get settingsLanguage => 'Język';
+  @override String get chooseLanguage => 'Wybierz język';
 
   @override String get about => "O aplikacji";
   @override String get aboutContent => "Ta aplikacja służy do osobistej refleksji i wzrostu duchowego. Zainspirowana przez Williama Bootha i Johna Wesleya.";
@@ -106,52 +108,42 @@ class AppLocalizationsPl extends AppLocalizations {
           "Każdy zestaw zawiera inne pytania o innym punkcie ciężkości. "
           "Przegląd wszystkich pytań uzyskasz, dotykając symbolu informacji (i).";
 
-  @override
-  String get onboarding2Title => "Refleksja i Notatki";
+  @override String get onboarding2Title => "Refleksja i Notatki";
 
-  @override
-  String get onboarding2Step1Title => "Refleksja";
+  @override String get onboarding2Step1Title => "Refleksja";
 
-  @override
-  String get onboarding2Step1Description =>
+  @override String get onboarding2Step1Description =>
       "Przesuń suwak, aby ocenić dla siebie samego, "
           "jak odpowiedziałbyś dzisiaj na dane pytanie.\n\n"
-          "Jeśli czujesz, że twoja odpowiedź jest bardziej pozytywna, przesuń suwak w kierunku zielonym. "
+          "Jeśli czujesz, że twoja odpowiedź ist bardziej pozytywna, przesuń suwak w kierunku zielonym. "
           "Jeśli czujesz, że jest bardziej negatywna, przesuń go w kierunku czerwonym.\n\n"
           "Nad suwakiem wyświetli się twoja wybrana ocena w procentach.";
 
-  @override
-  String get onboarding2Step2Title => "Notatki";
+  @override String get onboarding2Step2Title => "Notatki";
 
-  @override
-  String get onboarding2Step2Description =>
+  @override String get onboarding2Step2Description =>
       "Dotknij ikony notatki (kartka z plusem), aby zapisać myśl, obserwację "
           "lub modlitwę. Notatka zostanie zapisana razem z pytaniem i odpowiednią datą.\n\n"
           "Dotknij ponownie ikony notatki, aby zamknąć pole notatki.";
 
-  @override
-  String get onboarding3Title => "Analiza i Bezpieczeństwo";
+  @override String get onboarding3Title => "Analiza i Bezpieczeństwo";
 
-  @override
-  String get onboarding3Step1Title => "Wykresy";
+  @override String get onboarding3Step1Title => "Wykresy";
 
-  @override
-  String get onboarding3Step1Description =>
+  @override String get onboarding3Step1Description =>
       "Po udzieleniu odpowiedzi na wszystkie pytania, przejdziesz do widoku wykresów "
           "za pomocą przycisku „Gotowe”.\n\n"
           "Przesuń po wykresie w lewo lub w prawo, aby przełączać się między różnymi widokami. "
           "Poniżej wykresów możesz wybrać, które pytania mają być uwzględnione w analizie.";
 
-  @override
-  String get onboarding3Step2Title => "Prywatność";
+  @override String get onboarding3Step2Title => "Prywatność";
 
-  @override
-  String get onboarding3Step2Description =>
+  @override String get onboarding3Step2Description =>
       "Twoje dane pozostają zapisane wyłącznie lokalnie na twoim urządzeniu.\n\n"
           "Opcjonalnie możesz je dodatkowo zabezpieczyć kodem PIN urządzenia lub zabezpieczeniami "
           "biometrycznymi (np. odciskiem palca lub rozpoznawaniem twarzy).\n\n"
           "W razie potrzeby możesz wyeksportować swoje dane z różnym stopniem szczegółowości jako plik CSV "
-          "i na przykład dalej analizować je w programie Excel.";
+          "i na Beispiel dalej analizować je w programie Excel.";
 
   @override String get appLocked => "Aplikacja zablokowana";
   @override String get unlock => "Odblokuj";

@@ -22,7 +22,7 @@ class AppLocalizationsDe extends AppLocalizations {
   @override String get settingsTitle => 'Einstellungen';
   @override String get chooseQuestionSet => 'Fragenset wählen';
   @override String get delete => 'Daten löschen';
-  @override String get notification => 'Erinnere mich daran';
+  @override String get notification => 'Erinnerung';
   @override String get notificationFrequency => 'Häufigkeit';
   @override String get daily => 'täglich';
   @override String get weekly => 'wöchentlich';
@@ -72,6 +72,8 @@ class AppLocalizationsDe extends AppLocalizations {
   @override String get settingsSecurityLock => "App-Sperre aktivieren";
   @override String get settingsReminderHeader => "Erinnerung";
   @override String get settingsNoDataToExport => "Keine Daten zum Exportieren vorhanden.";
+  @override String get settingsLanguage => 'Sprache';
+  @override String get chooseLanguage => 'Sprache wählen';
 
   @override String get about => "Über die App";
   @override String get aboutContent => "Diese App dient der persönlichen Reflexion und geistlichen Entwicklung. Inspiriert von William Booth und John Wesley.";

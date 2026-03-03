@@ -71,6 +71,8 @@ class AppLocalizationsRu extends AppLocalizations {
   @override String get settingsSecurityLock => "Включить блокировку приложения";
   @override String get settingsReminderHeader => "Напоминание";
   @override String get settingsNoDataToExport => "Нет данных для экспорта.";
+  @override String get settingsLanguage => 'Язык';
+  @override String get chooseLanguage => 'Выберите язык';
 
   @override String get about => "О приложении";
   @override String get aboutContent => "Это приложение предназначено для личного размышления и духовного роста. Вдохновлено Уильямом Бутом и Джоном Уэсли.";

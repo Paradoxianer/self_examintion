@@ -113,6 +113,8 @@ abstract class AppLocalizations {
   String get settingsSecurityLock;
   String get settingsReminderHeader;
   String get settingsNoDataToExport;
+  String get settingsLanguage;
+  String get chooseLanguage;
 
   // About and Legal strings
   String get about;

@@ -71,6 +71,8 @@ class AppLocalizationsLt extends AppLocalizations {
   @override String get settingsSecurityLock => "Įjungti programos užraktą";
   @override String get settingsReminderHeader => "Priminimas";
   @override String get settingsNoDataToExport => "Nėra duomenų eksportavimui.";
+  @override String get settingsLanguage => 'Kalba';
+  @override String get chooseLanguage => 'Pasirinkti kalbą';
 
   @override String get about => "Apie programėlę";
   @override String get aboutContent => "Ši programėlė skirta asmeninei refleksijai ir dvasiniam augimui. Įkvėpta William Booth ir John Wesley.";
@@ -92,7 +94,7 @@ class AppLocalizationsLt extends AppLocalizations {
       "William Booth ir John Wesley reguliariai skirdavo laiko savęs vertinimui.\n"
           "Kaip šiandien išgyvenau savo tikėjimą?\n"
           "Kur Dievo meilė galėjo tapti matoma per mane?\n"
-          "Ir kur ji dar nori mane keisti?\n\n"
+          "And kur ji dar nori mane keisti?\n\n"
           "Ši programėlė kviečia jus būtent tokiai nuoširdžiai refleksijai.\n"
           "Galite rinktis iš skirtingų klausimų rinkinių, fiksuoti savo atsakymus\n"
           "ir stebėti savo vystymąsi per dienas, savaites, mėnesius ar metus –\n"
@@ -126,7 +128,7 @@ class AppLocalizationsLt extends AppLocalizations {
   @override
   String get onboarding2Step2Description =>
       "Bakstelėkite užrašų piktogramą (lapas su pliusu), kad užfiksuotumėte mintį, pastebėjimą "
-          "ar maldą. Pastaba bus išsaugota kartu su klausimu ir atitinkama data.\n\n"
+          "ar maldą. Pastaba bus išsaugota kartu with klausimu ir atitinkama data.\n\n"
           "Dar kartą bakstelėkite užrašų piktogramą, kad vėl uždarytumėte užrašų lauką.";
 
   @override
@@ -181,7 +183,7 @@ class AppLocalizationsLt extends AppLocalizations {
           ),
           Question(
             text: "Kiek gerbiu savo tėvus ir rodau jiems pagarbą?",
-            description: "Gerbk savo tėvą ir motiną! (Išėjimo 20, 12)",
+            description: "Gerbk tavo tėvą ir motiną! (Išėjimo 20, 12)",
           ),
           Question(
             text: "Kaip nuosekliai vengiu kenkti kitiems žmonėms mintimis, žodžiais ar net darbais?",
@@ -196,7 +198,7 @@ class AppLocalizationsLt extends AppLocalizations {
             description: "Nevok! (Išėjimo 20, 15)",
           ),
           Question(
-            text: "Kiek vengiu skleisti melagingą informaciją apie kitus žmones ar apkalbinėti?",
+            text: "Kiek vengiau skleisti melagingą informaciją apie kitus žmones ar apkalbinėti?",
             description: "Neliudyk melagingai prieš savo artimą! (Išėjimo 20, 16)",
           ),
           Question(

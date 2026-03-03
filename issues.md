@@ -1,5 +1,5 @@
 # 📋 GitHub Issues Roadmap
-_Zuletzt aktualisiert am: 01.03.2026 19:22_
+_Zuletzt aktualisiert am: 03.03.2026 21:20_
 _Sortiert nach Release und Priorität (High > Medium > Low)_
 
 ## 🔥 🔴 #54: Performance Profiling & Bottleneck Analysis [bug, prio: 1] 🏁 [Release 1]
@@ -48,33 +48,6 @@ Content is the soul of the app. Task: Expand descriptions for John Wesley and Wi
 ---
 **Status / Description:**
 Improve ergonomics in landscape mode. Architectural Task: Decouple ChartControlWidget into two standalone widgets: 1. TimeSelectionBar (to be placed under charts in landscape) 2. QuestionFilterPanel (modular placement). Goal: Better use of horizontal space and clearer hierarchy.
-
----
-
-## ⚡ #45: Add a possibilty to add a accountable party [prio: 2] 🏁 [Release 2]
----
-**Status / Description:**
-As a user, I want to invite an Accountability Partner to view my self-assessment data so that I stay motivated and honest. I need to be able to control exactly what information is shared to protect my privacy.
-
-**Proposed Terminology:**
-
-- [ ] - Role: Accountability Partner / Guardian
-- [ ] - Settings: Transparency Levels
-
-**Requirements / Scope:**
-
-- [ ] - Invitation System: Invite a partner via email or link.
-  - [ ] - Visibility Toggles (The "Privacy Filter"):
-  - [ ] - Aggregate Data: Show only averages and trends (High-level).
-  - [ ] - Raw Scores: Show individual answers/values for each question.
-  - [ ] - Notes/Comments: Optional toggle to show or hide personal reflections.
-- [ ] - Status Indicators: Partner can see if an assessment was completed (Streaks) or missed.
-
-**Acceptance Criteria:**
-
-- [ ] User can revoke access at any time.
-- [ ] The partner view must strictly respect the selected "Visibility Level".
-- [ ] Notes must be hidden by default unless explicitly shared.
 
 ---
 
@@ -129,6 +102,33 @@ https://www.disciplebuilding.org/2022/07/28/30-questions-for-reflection/
 https://www.larissamarks.com/blog/6-simple-questions-for-self-reflection-plus-a-free-worksheet-for-you
 https://outreachmagazine.com/features/discipleship/63117-12-self-reflective-questions-to-ask-ourselves-every-month.html
 
+
+---
+
+## ⚡ #45: Add a possibilty to add a accountable party [prio: 2] 🏁 [Release 3]
+---
+**Status / Description:**
+As a user, I want to invite an Accountability Partner to view my self-assessment data so that I stay motivated and honest. I need to be able to control exactly what information is shared to protect my privacy.
+
+**Proposed Terminology:**
+
+- [ ] - Role: Accountability Partner / Guardian
+- [ ] - Settings: Transparency Levels
+
+**Requirements / Scope:**
+
+- [ ] - Invitation System: Invite a partner via email or link.
+  - [ ] - Visibility Toggles (The "Privacy Filter"):
+  - [ ] - Aggregate Data: Show only averages and trends (High-level).
+  - [ ] - Raw Scores: Show individual answers/values for each question.
+  - [ ] - Notes/Comments: Optional toggle to show or hide personal reflections.
+- [ ] - Status Indicators: Partner can see if an assessment was completed (Streaks) or missed.
+
+**Acceptance Criteria:**
+
+- [ ] User can revoke access at any time.
+- [ ] The partner view must strictly respect the selected "Visibility Level".
+- [ ] Notes must be hidden by default unless explicitly shared.
 
 ---
 

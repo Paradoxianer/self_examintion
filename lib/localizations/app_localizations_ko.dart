@@ -71,6 +71,8 @@ class AppLocalizationsKo extends AppLocalizations {
   @override String get settingsSecurityLock => "앱 잠금 활성화";
   @override String get settingsReminderHeader => "알림";
   @override String get settingsNoDataToExport => "내보낼 데이터가 없습니다.";
+  @override String get settingsLanguage => '언어';
+  @override String get chooseLanguage => '언어 선택';
 
   @override String get about => "앱 정보";
   @override String get aboutContent => "이 앱은 개인적인 성찰과 영적 성장을 위한 것입니다. William Booth와 John Wesley의 영감을 받았습니다.";
@@ -78,7 +80,7 @@ class AppLocalizationsKo extends AppLocalizations {
   @override String get imprint => "법적 고지";
   @override String get license => "라이선스";
   @override String get imprintContent => "책임자: Matthias Lindner\n연락처: ";
-  @override String get githubRepository => "GitHub 저장소 (버그 보고 및 기여)";
+  @override String get githubRepository => "GitHub 저장소 (버г 보고 및 기여)";
 
   @override String get onboardingSkip => "건너뛰기";
   @override String get onboardingNext => "다음";
@@ -255,7 +257,7 @@ class AppLocalizationsKo extends AppLocalizations {
         "존 웨슬리가 매일 자기성찰을 위해 자신에게 던졌던 22가지 질문입니다.",
         questions: [
           Question(
-            text: "의식적으로든 무의식적으로든 실제보다 더 나은 사람인 척하고 있지는 않습니까? 즉, 나는 위선자입니까?",
+            text: "의식적으로든 무의식적으로든 실제보다 더 나은 person인 척하고 있지는 않습니까? 즉, 나는 위선자입니까?",
             isPositive: true,
           ),
           Question(
