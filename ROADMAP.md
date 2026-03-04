@@ -13,6 +13,7 @@ Diese Roadmap definiert den Weg von der Beta zur professionellen Multi-Plattform
 *   **Performance Profiling (#54)**: Benchmark-Tests für SharedPreferences durchgeführt (1000 Einträge in < 20ms). Optimierung des Chart-Loading (Einmaliges Laden in initState).
 *   **Daten-Portabilität (#49)**: CSV-Export mit kontextbezogenen Headern (Fragentexte statt IDs).
 *   **Security Foundation**: Implementierung des Biometrie-Lock-Screens und der Security-Services.
+*   **Navigation: Directional Arrows (#56)**: Implementierung von Pfeil-Navigation für Charts (optimiert für Web/Desktop).
 
 ### 🔥 Prio 1: Ausstehende Launch-Blocker
 - [ ] **iOS Version (#50)**: Konfiguration der Biometrie-Berechtigungen (FaceID), Safe-Area-Anpassungen für moderne iPhones und Hardware-Tests.
@@ -21,21 +22,19 @@ Diese Roadmap definiert den Weg von der Beta zur professionellen Multi-Plattform
 - [ ] **Google Play Release (#51)**: Finalisierung des Store-Listings und Management des Produktions-Tracks in der Play Console.
 
 ### ⚡ Prio 2: Qualitätssicherung & UX (Stability Test Suite #55)
-*Ziel: 100% Durchlaufquote der Kernfunktionen und Vermeidung von Regressionsfehlern durch Lokalisierung.*
+*Ziel: Hohe Durchlaufquote der Kernfunktionen und Vermeidung von Regressionsfehlern.*
 
 - [x] **Initial Fixes**: Integrationstest-Flow (Onboarding-Skip) und Lokalisierungs-Strings in Widget-Tests korrigiert.
 - [ ] **Core Unit Tests**:
     - [ ] `AssessmentCalculator`: Validierung der Scoring-Logik (Edge-Cases 0/100%).
     - [ ] `LocalStorage`: Test der Datenintegrität beim Speichern und Laden großer Mengen.
 - [ ] **UI & Widget Testing**:
-    - [ ] `Localization Coverage`: Sicherstellen, dass alle 8 Sprachen die korrekten Keys für alle Fragensets liefern.
+    - [ ] `Localization Data Integrity`: Prüfung, ob die Fragenset-Keys ("William Booth" etc.) und Fragenanzahlen in allen Sprachen konsistent sind (da dies nicht vom Compiler geprüft wird).
     - [ ] `Settings & Persistence`: Test der Sprachumstellung und deren Persistenz nach App-Neustart.
-    - [ ] `Chart-Interaktion`: Validierung der Filter-Logik und Zeitbereichs-Auswahl.
+    - [ ] `Chart-Interaktion`: Validierung der Filter-Logik und Zeitbereichs-Auswahl im `ChartControlWidget`.
 - [ ] **Cross-Platform Integration**:
-    - [ ] Simulation von Biometrie-Fehlern (iOS/Android).
+    - [ ] Simulation von Biometrie-Fehlern (iOS/Android) im `AuthWrapper`.
     - [ ] Web-spezifische Tests (Routing & LocalStorage-Fallback).
-
-- [ ] **Navigation: Directional Arrows (#56)**: Implementierung von Pfeil-Navigation für Charts (optimiert für Web/Desktop).
 
 ---
 
