@@ -1,8 +1,17 @@
 # 🛡️ Self-Examination App
 
+<p align="left">
+  <img src="assets/icon/self_examination_light_blue.png" width="100" alt="Self-Examination Branding">
+</p>
+
 A powerful, private, and intuitive tool for spiritual and personal growth. Based on the traditions of William Booth and John Wesley, this app helps you track your journey of holiness through structured self-reflection.
 
-![Branding](assets/icon/self_examination_light_blue.png)
+## 📱 Screenshots
+
+<p align="center">
+  <img src="assets/screenshots/Screenshot_time_chart%20V1.0_landscape.png" width="400" alt="Timeline Chart">
+  <img src="assets/screenshots/Screenshot_radar_chart%20V1.0_landscape.png" width="400" alt="Radar Analysis">
+</p>
 
 ## 🌟 Key Features
 
@@ -55,6 +64,8 @@ The app is fully localized in:
 - 🇰🇷 Korean (ko)
 - 🇱🇹 Lithuanian (lt)
 - 🇵🇱 Polish (pl)
+- 🇺🇦 Ukrainian (uk)
+- 🇷🇺 Russian (ru)
 
 ## 🤝 Contributing
 Contributions to improve the app or add more localized question sets are welcome! Please follow modern Flutter standards and ensure all tests pass.
