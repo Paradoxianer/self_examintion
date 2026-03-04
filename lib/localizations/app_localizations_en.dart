@@ -217,7 +217,7 @@ class AppLocalizationsEn extends AppLocalizations {
             isPositive: true,
           ),
           Question(
-            text: "Am I so much the master of my bodily appetites as to exhibit no shameful behavior? Do I allow myself any indulgence which is injurious to my holiness, my growth in knowledge, my obedience and my usefulness?",
+            text: "Am I so the master of my bodily appetites as to have no condemnation, and free from any indulgence that is injurious to my holiness, growth in knowledge, obedience, or usefulness?",
           ),
           Question(
             text: "Are all my thoughts and feelings such as I should not be ashamed of if they were laid open before God?",
@@ -244,7 +244,7 @@ class AppLocalizationsEn extends AppLocalizations {
             isPositive: true,
           ),
           Question(
-            text: "Do I conform to the customs and fashions of the world or have I the courage to go against the stream?",
+            text: "Do I conform to the fashions and customs of the world rather than clearly showing by my life that I reject them?",
             isPositive: true,
           ),
           Question(
