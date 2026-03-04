@@ -32,8 +32,9 @@ Diese Roadmap definiert den Weg von der Beta zur professionellen Multi-Plattform
 - [x] **Phase 2: Deep Logic Unit Tests**:
     - [x] `AssessmentCalculator`: Inversions-Logik (Sünde vs. Tugend), CSV-Escaping von Sonderzeichen, ISO-Wochenberechnung.
     - [x] `LocalStorage`: Mocking SharedPreferences, Serialisierung von Notizen, Author-Filtering.
-- [ ] **Phase 3: Expanded Widget & Integration Tests**:
-    - [ ] `QuestionSetIntegrity`: Automatisierter Abgleich der Fragen-Anzahl über alle 8 Sprachen.
+- [x] **Phase 3: Automated Integrity**:
+    - [x] `QuestionSetIntegrity`: Automatisierter Abgleich der Fragen-Anzahl über alle 8 Sprachen.
+- [ ] **Phase 4: Expanded Widget & Integration Tests**:
     - [ ] `SettingsFlow`: Validierung der Sprachumstellung (Rebuild-Trigger) und Biometrie-Toggle Persistenz.
     - [ ] `AuthFlow Integration`: Simulation von Biometrie-Erfolg/Fehler im `AuthWrapper` (Mocking `local_auth`).
     - [ ] `Full Lifecycle Test`: Vollständiger Durchlauf: Start -> Slider -> Notiz -> Speichern -> Chart-Filterung.

@@ -2,7 +2,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:self_examination/utils/local_storage.dart';
 import 'package:self_examination/models/assessment_entry.dart';
-import 'dart:convert';
 
 void main() {
   group('LocalStorage Tests', () {
@@ -27,6 +26,7 @@ void main() {
       final timestamp = DateTime(2024, 3, 4, 12, 0);
       final entry = AssessmentEntry(
         timestamp: timestamp,
+        questionSet: 'Test Author',
         values: [0.5, 0.8],
         questionNotes: ['Note 1', 'Note 2'],
       );
@@ -37,6 +37,7 @@ void main() {
       final loadedEntries = await storage.loadAssessmentEntries();
       expect(loadedEntries.length, 1);
       expect(loadedEntries.first.timestamp, timestamp);
+      expect(loadedEntries.first.questionSet, 'Test Author');
       expect(loadedEntries.first.values, [0.5, 0.8]);
       expect(loadedEntries.first.questionNotes, ['Note 1', 'Note 2']);
     });
@@ -45,6 +46,7 @@ void main() {
       storage.setCurrentAuthor('Author A');
       await storage.saveAssessmentEntry(AssessmentEntry(
         timestamp: DateTime(2024, 1, 1),
+        questionSet: 'Author A',
         values: [0.1],
         questionNotes: ['A'],
       ));
@@ -52,6 +54,7 @@ void main() {
       storage.setCurrentAuthor('Author B');
       await storage.saveAssessmentEntry(AssessmentEntry(
         timestamp: DateTime(2024, 1, 2),
+        questionSet: 'Author B',
         values: [0.2],
         questionNotes: ['B'],
       ));
@@ -70,6 +73,7 @@ void main() {
       storage.setCurrentAuthor('Author A');
       await storage.saveAssessmentEntry(AssessmentEntry(
         timestamp: DateTime(2024, 1, 1),
+        questionSet: 'Author A',
         values: [0.1],
         questionNotes: ['A'],
       ));
@@ -77,6 +81,7 @@ void main() {
       storage.setCurrentAuthor('Author B');
       await storage.saveAssessmentEntry(AssessmentEntry(
         timestamp: DateTime(2024, 1, 2),
+        questionSet: 'Author B',
         values: [0.2],
         questionNotes: ['B'],
       ));
