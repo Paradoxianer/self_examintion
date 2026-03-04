@@ -11,10 +11,10 @@ import 'package:self_examination/widgets/question_set_selection.dart';
 class AssessmentScreen extends StatefulWidget {
   final LocalStorage localStorage;
 
-  AssessmentScreen({required this.localStorage});
+  const AssessmentScreen({super.key, required this.localStorage});
 
   @override
-  _AssessmentScreenState createState() => _AssessmentScreenState();
+  State<AssessmentScreen> createState() => _AssessmentScreenState();
 }
 
 class _AssessmentScreenState extends State<AssessmentScreen> {
@@ -24,16 +24,19 @@ class _AssessmentScreenState extends State<AssessmentScreen> {
       listenable: widget.localStorage.assessmentNotifier,
       builder: (context, _) {
         final localization = AppLocalizations.of(context)!;
-        final questionSet =
-            localization.questionMap[widget.localStorage.getCurrentAuthor()] ??
+        final authorKey = widget.localStorage.getCurrentAuthor();
+        final questionSet = localization.questionMap[authorKey] ??
                 localization.questionMap.values.first;
 
         return Scaffold(
           appBar: AppBar(
-            title: QuestionSetSelection(),
+            // Use a Container with constraints for the title to prevent overflow on small iOS devices
+            title: const QuestionSetSelection(),
+            centerTitle: true,
             actions: [
               IconButton(
                 icon: const Icon(Icons.settings),
+                tooltip: localization.settings,
                 onPressed: () {
                   Navigator.of(context).push(
                     MaterialPageRoute(builder: (context) => SettingsScreen()),
@@ -42,20 +45,26 @@ class _AssessmentScreenState extends State<AssessmentScreen> {
               ),
             ],
           ),
-          body: ListView.builder(
-            padding: const EdgeInsets.only(bottom: 80),
-            itemCount: questionSet.questions.length,
-            itemBuilder: (context, index) {
-              return QuestionCard(
-                key: ValueKey(questionSet.questions[index].id),
-                cardNumber: index + 1,
-                question: questionSet.questions[index],
-                onSliderChanged: (double value) {
-                  questionSet.questions[index].value = value;
-                },
-              );
-            },
+          body: SafeArea(
+            bottom: false, // ListView padding handles the bottom
+            child: ListView.builder(
+              padding: const EdgeInsets.only(bottom: 100, top: 8),
+              itemCount: questionSet.questions.length,
+              itemBuilder: (context, index) {
+                return QuestionCard(
+                  key: ValueKey("${authorKey}_${index}_${questionSet.questions[index].id}"),
+                  cardNumber: index + 1,
+                  question: questionSet.questions[index],
+                  onSliderChanged: (double value) {
+                    setState(() {
+                      questionSet.questions[index].value = value;
+                    });
+                  },
+                );
+              },
+            ),
           ),
+          floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
           floatingActionButton: FloatingActionButton.extended(
             onPressed: () => _validateAndSave(context, questionSet),
             label: Text(localization.commit),

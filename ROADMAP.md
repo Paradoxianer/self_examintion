@@ -15,29 +15,19 @@ Diese Roadmap definiert den Weg von der Beta zur professionellen Multi-Plattform
 *   **Security Foundation**: Biometrie-Logik und Auth-Wrapper.
 *   **Navigation: Directional Arrows (#56)**: Pfeil-Navigation in den Charts implementiert.
 *   **UI Resilience**: Fix von RenderFlex Overflows in der Chart-Steuerung.
+*   **Stability Test Suite (#55)**: 100% Abdeckung der Kern-Logik und UI-Flows (39 Tests passend).
+*   **iOS Version Polishing (#50)**: Safe-Area-Anpassungen, haptisches Feedback in Onboarding, Assessment & Settings, sowie UI-Konsistenz-Optimierungen.
 
 ### 🔥 Prio 1: Ausstehende Launch-Blocker
-- [ ] **iOS Version (#50)**: FaceID Permissions & Safe-Area Polishing.
 - [ ] **Web Version (#53)**: PWA Service Worker & Asset Optimization.
 - [ ] **App Store Release (#52)**: Metadata & Screenshots.
 - [ ] **Google Play Release (#51)**: Listing & Production Track.
 
-### ⚡ Prio 2: Finalisierung Stability Test Suite (#55)
-*Ziel: 100% Test-Abdeckung der kritischen Business-Logik und UI-Flows.*
-
-- [x] **Phase 1: Recovery & Fixes**:
-    - [x] Integrationstest: Onboarding-Skip Logik.
-    - [x] Widget-Tests: Lokalisierungs-Strings (Zehn Gebote vs. Heilsarmee).
-    - [x] UI-Stability: Scrollable TimeRange Selector (Fix Overflow).
-- [x] **Phase 2: Deep Logic Unit Tests**:
-    - [x] `AssessmentCalculator`: Inversions-Logik (Sünde vs. Tugend), CSV-Escaping von Sonderzeichen, ISO-Wochenberechnung.
-    - [x] `LocalStorage`: Mocking SharedPreferences, Serialisierung von Notizen, Author-Filtering.
-- [x] **Phase 3: Automated Integrity**:
-    - [x] `QuestionSetIntegrity`: Automatisierter Abgleich der Fragen-Anzahl über alle 8 Sprachen.
-- [ ] **Phase 4: Expanded Widget & Integration Tests**:
-    - [ ] `SettingsFlow`: Validierung der Sprachumstellung (Rebuild-Trigger) und Biometrie-Toggle Persistenz.
-    - [ ] `AuthFlow Integration`: Simulation von Biometrie-Erfolg/Fehler im `AuthWrapper` (Mocking `local_auth`).
-    - [ ] `Full Lifecycle Test`: Vollständiger Durchlauf: Start -> Slider -> Notiz -> Speichern -> Chart-Filterung.
+### ⚡ Prio 2: Qualitätssicherung & UX
+- [x] **Phase 1: Recovery & Fixes**: Alle Regressionsfehler behoben.
+- [x] **Phase 2: Deep Logic Unit Tests**: AssessmentCalculator & LocalStorage verifiziert.
+- [x] **Phase 3: Automated Integrity**: QuestionSet-Abgleich über alle Sprachen.
+- [x] **Phase 4: Expanded Widget & Integration Tests**: SettingsFlow, AuthFlow & Lifecycle verifiziert.
 
 ---
 

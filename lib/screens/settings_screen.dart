@@ -25,61 +25,66 @@ class SettingsScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(localization.settingsTitle),
+        centerTitle: true, // Typical for iOS
       ),
-      body: ListView(
-        children: [
-          _buildSectionHeader(context, localization.chooseQuestionSet),
-          ListTile(
-            title: const QuestionSetSelection(showDelete: true),
-            subtitle: Padding(
-              padding: const EdgeInsets.only(top: 8.0),
-              child: Text(
-                localization.settingsQuestionSetSubtitle,
-                style: TextStyle(fontSize: 12, color: Theme.of(context).colorScheme.outline),
+      body: SafeArea(
+        child: ListView(
+          padding: const EdgeInsets.symmetric(vertical: 8),
+          children: [
+            _buildSectionHeader(context, localization.chooseQuestionSet),
+            ListTile(
+              title: const QuestionSetSelection(showDelete: true),
+              subtitle: Padding(
+                padding: const EdgeInsets.only(top: 8.0, left: 4),
+                child: Text(
+                  localization.settingsQuestionSetSubtitle,
+                  style: TextStyle(fontSize: 12, color: Theme.of(context).colorScheme.outline),
+                ),
               ),
             ),
-          ),
-          
-          _buildSectionHeader(context, localization.settingsTitle), 
-          _buildLanguageTile(context, localization),
+            
+            _buildSectionHeader(context, localization.settingsLanguage), 
+            _buildLanguageTile(context, localization),
 
-          _buildSectionHeader(context, localization.settingsExportHeader),
-          _buildExportTile(context, icon: Icons.download, title: localization.settingsExportAll, type: ExportType.all),
-          _buildExportTile(context, icon: Icons.table_chart_outlined, title: localization.settingsExportValues, type: ExportType.valuesAndAverage),
-          _buildExportTile(context, icon: Icons.show_chart, title: localization.settingsExportAverage, type: ExportType.averageOnly),
+            _buildSectionHeader(context, localization.settingsExportHeader),
+            _buildExportTile(context, icon: Icons.file_download_outlined, title: localization.settingsExportAll, type: ExportType.all),
+            _buildExportTile(context, icon: Icons.table_chart_outlined, title: localization.settingsExportValues, type: ExportType.valuesAndAverage),
+            _buildExportTile(context, icon: Icons.show_chart, title: localization.settingsExportAverage, type: ExportType.averageOnly),
 
-          _buildSectionHeader(context, localization.settingsSecurityHeader),
-          _buildSecuritySwitch(context, localization),
-          
-          ListTile(
-            leading: const Icon(Icons.info_outline),
-            title: Text(localization.datasecurityDialog),
-            onTap: () => _dsgvoDialog.showDSGVODialog(context),
-          ),
+            _buildSectionHeader(context, localization.settingsSecurityHeader),
+            _buildSecuritySwitch(context, localization),
+            
+            ListTile(
+              leading: const Icon(Icons.privacy_tip_outlined),
+              title: Text(localization.datasecurityDialog),
+              onTap: () => _dsgvoDialog.showDSGVODialog(context),
+            ),
 
-          _buildSectionHeader(context, localization.about),
-          ListTile(
-            leading: const Icon(Icons.help_outline),
-            title: Text(localization.about),
-            onTap: () => _showAbout(context),
-          ),
-          ListTile(
-            leading: const Icon(Icons.gavel_outlined),
-            title: Text(localization.imprint),
-            onTap: () => _showImprint(context),
-          ),
-        ],
+            _buildSectionHeader(context, localization.about),
+            ListTile(
+              leading: const Icon(Icons.help_outline),
+              title: Text(localization.about),
+              onTap: () => _showAbout(context),
+            ),
+            ListTile(
+              leading: const Icon(Icons.gavel_outlined),
+              title: Text(localization.imprint),
+              onTap: () => _showImprint(context),
+            ),
+            const SizedBox(height: 32), // Bottom padding for iOS home indicator
+          ],
+        ),
       ),
     );
   }
 
   Widget _buildSectionHeader(BuildContext context, String title) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 24, 16, 8),
+      padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
       child: Text(
         title.toUpperCase(),
         style: TextStyle(
-          fontSize: 12, fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.primary, letterSpacing: 1.2,
+          fontSize: 11, fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.primary, letterSpacing: 1.1,
         ),
       ),
     );
@@ -89,15 +94,15 @@ class SettingsScreen extends StatelessWidget {
     return ListenableBuilder(
       listenable: localStorage.settingsNotifier,
       builder: (context, _) {
-        // If no locale is saved, show "System Default"
         final String currentLanguageName = localStorage.locale == null 
             ? localization.systemDefault 
             : _getLanguageName(localStorage.locale!.languageCode);
         
         return ListTile(
-          leading: const Icon(Icons.language),
+          leading: const Icon(Icons.language_outlined),
           title: Text(localization.settingsLanguage),
           subtitle: Text(currentLanguageName),
+          trailing: const Icon(Icons.chevron_right, size: 20),
           onTap: () => _showLanguageDialog(context),
         );
       },
@@ -160,15 +165,11 @@ class SettingsScreen extends StatelessWidget {
 
   Widget _buildExportTile(BuildContext context, {required IconData icon, required String title, required ExportType type}) {
     final bool isEnabled = !kIsWeb;
-    return Builder(
-      builder: (innerContext) {
-        return ListTile(
-          leading: Icon(icon, color: isEnabled ? null : Theme.of(context).disabledColor),
-          title: Text(title, style: TextStyle(color: isEnabled ? null : Theme.of(context).disabledColor)),
-          subtitle: isEnabled ? null : const Text("Nur auf Mobilgeräten verfügbar", style: TextStyle(fontSize: 10)),
-          onTap: isEnabled ? () => _handleExport(innerContext, type) : null,
-        );
-      }
+    return ListTile(
+      leading: Icon(icon, color: isEnabled ? null : Theme.of(context).disabledColor),
+      title: Text(title, style: TextStyle(color: isEnabled ? null : Theme.of(context).disabledColor)),
+      trailing: isEnabled ? const Icon(Icons.chevron_right, size: 20) : null,
+      onTap: isEnabled ? () => _handleExport(context, type) : null,
     );
   }
 
@@ -177,7 +178,6 @@ class SettingsScreen extends StatelessWidget {
       return ListTile(
         leading: Icon(Icons.lock_outline, color: Theme.of(context).disabledColor),
         title: Text(localization.settingsSecurityLock, style: TextStyle(color: Theme.of(context).disabledColor)),
-        subtitle: const Text("Biometrie nicht im Web verfügbar", style: TextStyle(fontSize: 10)),
       );
     }
 
@@ -185,7 +185,7 @@ class SettingsScreen extends StatelessWidget {
       listenable: localStorage.settingsNotifier,
       builder: (context, _) {
         return SwitchListTile(
-          secondary: const Icon(Icons.lock_outline),
+          secondary: const Icon(Icons.fingerprint_outlined),
           title: Text(localization.settingsSecurityLock), 
           value: securityService.isSecurityEnabled(),
           onChanged: (bool value) async {
@@ -299,7 +299,6 @@ class SettingsScreen extends StatelessWidget {
       return;
     }
 
-    // Identify the origin for iPad popover
     final RenderBox? box = context.findRenderObject() as RenderBox?;
     final Rect? sharePositionOrigin = box != null 
         ? box.localToGlobal(Offset.zero) & box.size 

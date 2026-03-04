@@ -1,5 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:self_examination/localizations/app_localizations.dart';
 import 'package:self_examination/models/question.dart';
 import 'package:self_examination/utils/globals.dart';
@@ -138,6 +139,7 @@ class _QuestionCardState extends State<QuestionCard> {
                                       size: 20, 
                                       color: _showNote ? Theme.of(context).primaryColor : null),
                                   onPressed: () {
+                                    HapticFeedback.lightImpact(); // iOS feel
                                     setState(() {
                                       _showNote = !_showNote;
                                     });
@@ -165,6 +167,15 @@ class _QuestionCardState extends State<QuestionCard> {
                             Slider(
                               value: _sliderValue,
                               onChanged: (newValue) {
+                                // Add haptic feedback for end points
+                                if ((newValue == 0.0 && _sliderValue > 0.0) || 
+                                    (newValue == 1.0 && _sliderValue < 1.0)) {
+                                  HapticFeedback.heavyImpact();
+                                } else if ((newValue * 10).round() != (_sliderValue * 10).round()) {
+                                  // Subtle feedback for every 10%
+                                  HapticFeedback.selectionClick();
+                                }
+
                                 setState(() {
                                   _sliderValue = newValue;
                                   widget.onSliderChanged(newValue);
