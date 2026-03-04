@@ -7,7 +7,18 @@
     "theme_color": "#2196F3",
     "description": "A powerful tool for spiritual and personal growth based on the traditions of William Booth and John Wesley.",
     "orientation": "portrait-primary",
-    "prefer_related_applications": false,
+    "prefer_related_applications": true,
+    "related_applications": [
+        {
+            "platform": "play",
+            "id": "de.heilsarmee.self_examination",
+            "url": "https://play.google.com/store/apps/details?id=de.heilsarmee.self_examination"
+        },
+        {
+            "platform": "itunes",
+            "url": "https://apps.apple.com/app/self-examination/id6477382210"
+        }
+    ],
     "icons": [
         {
             "src": "icons/Icon-192.png",
