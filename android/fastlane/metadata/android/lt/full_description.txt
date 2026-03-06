@@ -1,1 +1,0 @@
-Savęs patikrinimas programėlė yra įkvėpta Viljamo Būto, Gelbėjimo armijos įkūrėjo, savaitinių savęs analizės klausimų. Ši programėlė padeda vartotojams analizuoti jų dvasinę būseną krikščioniškame gyvenime ir užfiksuoti asmeninę raidą. Vartotojai gali rinktis iš trijų skirtingų klausimų rinkinių, o visi duomenys saugomi išimtinai jų pačių įrenginyje.
