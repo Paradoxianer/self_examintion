@@ -1,5 +1,5 @@
-# Initialisiert die Store-Metadaten Struktur für alle Sprachen
-# Basierend auf dem Fastlane Standard
+# Cross-Platform Metadata Initializer (Android & iOS)
+# Erstellt und synchronisiert die Store-Metadaten Struktur
 
 $languages = @{
     "en-US" = "English";
@@ -12,26 +12,39 @@ $languages = @{
     "uk-UA" = "Ukrainian"
 }
 
-$basePath = "metadata/android"
+# Pfade definieren
+$androidBase = "android/fastlane/metadata/android"
+$iosBase = "ios/fastlane/metadata"
 
-Write-Host "Erstelle Metadaten-Struktur für Android..." -ForegroundColor Cyan
+Write-Host "--- Metadata Architect ---" -ForegroundColor Cyan
 
 foreach ($lang in $languages.Keys) {
-    $path = Join-Path $ProjectFileDir$ "$basePath/$lang"
-    if (-not (Test-Path $path)) {
-        New-Item -ItemType Directory -Force -Path $path
+    # 1. Android Pfad prüfen/erstellen
+    $aPath = "$androidBase/$lang"
+    if (-not (Test-Path $aPath)) {
+        New-Item -ItemType Directory -Force -Path $aPath
+        Write-Host "  [+] Android: $lang angelegt." -ForegroundColor Green
+    }
 
-        # Standard-Dateien für Google Play
-        New-Item "$path/title.txt" -Value "Self-Examination ($($languages[$lang]))"
-        New-Item "$path/short_description.txt" -Value "Spiritual and personal growth tool."
-        New-Item "$path/full_description.txt" -Value "Structured self-reflection based on the traditions of William Booth and John Wesley."
-        New-Item "$path/whats_new.txt" -Value "Initial release with 8 languages and onboarding."
+    # 2. iOS Pfad prüfen/erstellen (Fastlane Deliver Standard)
+    $iPath = "$iosBase/$lang"
+    if (-not (Test-Path $iPath)) {
+        New-Item -ItemType Directory -Force -Path $iPath
+        Write-Host "  [+] iOS: $lang angelegt." -ForegroundColor Green
+    }
 
-        Write-Host "  [+] $lang ($($languages[$lang])) angelegt." -ForegroundColor Green
-    } else {
-        Write-Host "  [.] $lang existiert bereits." -ForegroundColor Yellow
+    # 3. Basis-Dateien (wenn noch nicht vorhanden)
+    $files = @("title.txt", "short_description.txt", "full_description.txt")
+    foreach ($file in $files) {
+        $aFile = "$aPath/$file"
+        $iFile = "$iPath/$file"
+
+        # Wenn Android die Datei hat, aber iOS nicht -> Kopieren (Synchronisation)
+        if ((Test-Path $aFile) -and (-not (Test-Path $iFile))) {
+            Copy-Item $aFile $iFile
+            Write-Host "    [Synced] $file -> iOS" -ForegroundColor Gray
+        }
     }
 }
 
-Write-Host "`nFertig! Du kannst die Texte jetzt in den jeweiligen .txt Dateien anpassen." -ForegroundColor Cyan
-Write-Host "Nutze 'fastlane supply' (Android) oder 'fastlane deliver' (iOS) zum Hochladen."
+Write-Host "`nFertig! Android und iOS Metadaten sind jetzt synchronisiert." -ForegroundColor Cyan
