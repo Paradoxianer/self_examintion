@@ -1,6 +1,19 @@
-# 📋 GitHub Issues Roadmap
-_Zuletzt aktualisiert am: 03.03.2026 21:20_
+﻿# 📋 GitHub Issues Roadmap
 _Sortiert nach Release und Priorität (High > Medium > Low)_
+
+## 🔥 ✨ #50: need to create a iOS Version [prio: 1, feature] 🏁 [Release 1]
+---
+**Status / Description:**
+Crucial for multi-platform launch. Task: Verify local_auth and share_plus configurations for iOS, fix safe area issues on iPhones with notches, and test on physical iOS hardware.
+
+---
+
+## 🔥 🔴 #51: Release Process: Google Play Store [prio: 1, critical] 🏁 [Release 1]
+---
+**Status / Description:**
+Prepare Store Listing (Short/Long description), generate production app bundle (AAB), and manage the closed testing track.
+
+---
 
 ## 🔥 🔴 #54: Performance Profiling & Bottleneck Analysis [bug, prio: 1] 🏁 [Release 1]
 ---
@@ -16,20 +29,6 @@ High Priority. Task: Setup Apple Developer Account, create App ID and provisioni
 
 ---
 
-## 🔥 🔴 #51: Release Process: Google Play Store [prio: 1, critical] 🏁 [Release 1]
----
-**Status / Description:**
-Prepare Store Listing (Short/Long description), generate production app bundle (AAB), and manage the closed testing track.
-
----
-
-## 🔥 ✨ #50: need to create a iOS Version [prio: 1, feature] 🏁 [Release 1]
----
-**Status / Description:**
-Crucial for multi-platform launch. Task: Verify local_auth and share_plus configurations for iOS, fix safe area issues on iPhones with notches, and test on physical iOS hardware.
-
----
-
 ## ⚡ ✨ #55: Test Suite: Stability & Regression [enhancement, prio: 2] 🏁 [Release 1]
 ---
 **Status / Description:**
@@ -41,13 +40,6 @@ Ensure core features dont break. Task: Implement Unit Tests for data processing 
 ---
 **Status / Description:**
 Content is the soul of the app. Task: Expand descriptions for John Wesley and William Booth sets to provide spiritual depth. Add small biblical context where appropriate (DE, EN, RU).
-
----
-
-## ⚡ ✨ #57: UI Optimization: Landscape Mode & Widget Refactoring [enhancement, prio: 2] 🏁 [Release 2]
----
-**Status / Description:**
-Improve ergonomics in landscape mode. Architectural Task: Decouple ChartControlWidget into two standalone widgets: 1. TimeSelectionBar (to be placed under charts in landscape) 2. QuestionFilterPanel (modular placement). Goal: Better use of horizontal space and clearer hierarchy.
 
 ---
 
@@ -72,10 +64,18 @@ Daily reminders are key for engagement. Implement local notifications that respe
 
 ---
 
-## ☕ ✨ #41: Add the posibility that the userr can create there own questionsets [enhancement, prio: 3] 🏁 [Release 2]
+## ⚡ ✨ #57: UI Optimization: Landscape Mode & Widget Refactoring [enhancement, prio: 2] 🏁 [Release 2]
 ---
 **Status / Description:**
-_Keine Beschreibung_
+Improve ergonomics in landscape mode. Architectural Task: Decouple ChartControlWidget into two standalone widgets: 1. TimeSelectionBar (to be placed under charts in landscape) 2. QuestionFilterPanel (modular placement). Goal: Better use of horizontal space and clearer hierarchy.
+
+---
+
+## ☕ ✨ #35: Add Gamification  [enhancement, prio: 3] 🏁 [Release 2]
+---
+**Status / Description:**
+* Streak (finished in your given time)
+* Medals / Achivements
 
 ---
 
@@ -86,11 +86,10 @@ Eg. Question 1 for salvation Army Chemnitz contains dummy data for information t
 
 ---
 
-## ☕ ✨ #35: Add Gamification  [enhancement, prio: 3] 🏁 [Release 2]
+## ☕ ✨ #41: Add the posibility that the userr can create there own questionsets [enhancement, prio: 3] 🏁 [Release 2]
 ---
 **Status / Description:**
-* Streak (finished in your given time)
-* Medals / Achivements
+_Keine Beschreibung_
 
 ---
 
@@ -138,3 +137,4 @@ As a user, I want to invite an Accountability Partner to view my self-assessment
 This would help to check the development eg. from the whole salvation army germany.. or / also from some salvation army korps.. but then you need a way to "group" data and also make shure that only anoymized data is transmitted
 
 ---
+

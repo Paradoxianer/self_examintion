@@ -1,4 +1,3 @@
-gitignore
 # Miscellaneous
 *.class
 *.log
@@ -50,6 +49,9 @@ android/app/build/
 # android/.gradle/ # Abgedeckt durch generelle Build-Ordner Regeln, aber explizit ist auch ok
 # android/local.properties # Sollte immer ignoriert werden, da es lokale Pfade enthält
 
+# Google Play Service Account Key (Fastlane)
+android/*.json
+
 # iOS
 ios/Flutter/Generated.xcconfig
 ios/Flutter/FlutterPluginRegistrant/Classes/GeneratedPluginRegistrant.[hm]
@@ -100,4 +102,3 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
-
