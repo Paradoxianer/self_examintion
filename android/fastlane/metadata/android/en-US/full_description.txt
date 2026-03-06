@@ -1,0 +1,1 @@
+The Self Examination App is inspired by the weekly self-examination questions of William Booth, the founder of The Salvation Army. This app helps users to analyze their spiritual state in Christian life and record their personal development. Users can choose from three different sets of questions, with all data stored exclusively on their own device.

@@ -1,0 +1,2 @@
+json_key_file("fastlane/google-play-key.json")
+package_name("de.heilsarmee.self_examination")
