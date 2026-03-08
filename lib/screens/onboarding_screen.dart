@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:self_examination/localizations/app_localizations.dart';
 import 'package:self_examination/utils/local_storage.dart';
 
@@ -16,6 +17,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   @override
   Widget build(BuildContext context) {
     final localization = AppLocalizations.of(context)!;
+    final theme = Theme.of(context);
 
     // 3-Screen-Structure based on AppLocalizations
     final List<OnboardingPageData> pages = [
@@ -67,7 +69,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     ];
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: theme.colorScheme.surface,
       body: SafeArea(
         child: Stack(
           children: [
@@ -75,6 +77,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               controller: _pageController,
               itemCount: pages.length,
               onPageChanged: (index) {
+                HapticFeedback.selectionClick();
                 setState(() => _currentPage = index);
               },
               itemBuilder: (context, index) {
@@ -83,45 +86,53 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             ),
             Positioned(
               bottom: 20,
-              left: 20,
-              right: 20,
+              left: 24,
+              right: 24,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   TextButton(
                     onPressed: _finishOnboarding,
-                    child: Text(localization.onboardingSkip, style: const TextStyle(color: Colors.grey)),
+                    child: Text(localization.onboardingSkip, 
+                        style: TextStyle(color: theme.colorScheme.outline, fontWeight: FontWeight.w500)),
                   ),
                   Row(
                     children: List.generate(
                       pages.length,
-                      (index) => Container(
+                      (index) => AnimatedContainer(
+                        duration: const Duration(milliseconds: 300),
                         margin: const EdgeInsets.symmetric(horizontal: 4),
-                        width: 8,
+                        width: _currentPage == index ? 12 : 8,
                         height: 8,
                         decoration: BoxDecoration(
-                          shape: BoxShape.circle,
+                          borderRadius: BorderRadius.circular(4),
                           color: _currentPage == index
-                              ? Theme.of(context).primaryColor
-                              : Colors.grey.shade300,
+                              ? theme.primaryColor
+                              : theme.colorScheme.outlineVariant,
                         ),
                       ),
                     ),
                   ),
                   ElevatedButton(
                     onPressed: () {
+                      HapticFeedback.lightImpact();
                       if (_currentPage < pages.length - 1) {
                         _pageController.nextPage(
-                          duration: const Duration(milliseconds: 300),
-                          curve: Curves.easeInOut,
+                          duration: const Duration(milliseconds: 400),
+                          curve: Curves.easeInOutCubic,
                         );
                       } else {
                         _finishOnboarding();
                       }
                     },
+                    style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                    ),
                     child: Text(_currentPage == pages.length - 1
                         ? localization.onboardingStart
-                        : localization.onboardingNext),
+                        : localization.onboardingNext,
+                        style: const TextStyle(fontWeight: FontWeight.bold)),
                   ),
                 ],
               ),
@@ -137,68 +148,80 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       padding: const EdgeInsets.symmetric(horizontal: 24.0),
       child: Column(
         children: [
-          const SizedBox(height: 30),
+          const SizedBox(height: 40),
           Text(
             page.title,
-            style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold, color: Theme.of(context).primaryColor),
+            style: TextStyle(
+              fontSize: 28, 
+              fontWeight: FontWeight.w800, 
+              color: Theme.of(context).primaryColor,
+              letterSpacing: -0.5
+            ),
             textAlign: TextAlign.center,
           ),
           if (page.description != null) ...[
             const SizedBox(height: 16),
             Text(
               page.description!,
-              style: const TextStyle(fontSize: 15, fontStyle: FontStyle.italic),
+              style: TextStyle(
+                fontSize: 15, 
+                height: 1.5,
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
+                fontStyle: FontStyle.italic
+              ),
               textAlign: TextAlign.center,
             ),
           ],
-          const SizedBox(height: 24),
+          const SizedBox(height: 32),
           Expanded(
             child: SingleChildScrollView(
+              physics: const BouncingScrollPhysics(),
               child: Column(
                 children: page.steps.map((step) => _buildStep(step)).toList(),
               ),
             ),
           ),
-          const SizedBox(height: 80),
+          const SizedBox(height: 100),
         ],
       ),
     );
   }
 
   Widget _buildStep(OnboardingStep step) {
+    final theme = Theme.of(context);
     return Padding(
-      padding: const EdgeInsets.only(bottom: 24.0),
+      padding: const EdgeInsets.only(bottom: 32.0),
       child: Column(
         children: [
           if (step.title != null)
             Padding(
-              padding: const EdgeInsets.only(bottom: 4.0),
+              padding: const EdgeInsets.only(bottom: 8.0),
               child: Text(
                 step.title!,
-                style: const TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
+                style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 textAlign: TextAlign.center,
               ),
             ),
           Text(
             step.description,
-            style: const TextStyle(fontSize: 14, color: Colors.black87),
+            style: TextStyle(fontSize: 15, color: theme.colorScheme.onSurface, height: 1.4),
             textAlign: TextAlign.center,
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 16),
           Container(
-            height: 120,
+            height: 160,
             width: double.infinity,
             decoration: BoxDecoration(
-              color: Colors.grey.shade50,
-              borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: Colors.grey.shade200),
+              color: theme.colorScheme.surfaceContainerLow,
+              borderRadius: BorderRadius.circular(16),
+              border: Border.all(color: theme.colorScheme.outlineVariant.withOpacity(0.5)),
             ),
             clipBehavior: Clip.antiAlias,
             child: Image.asset(
               step.assetPath,
               fit: BoxFit.contain,
               errorBuilder: (context, error, stackTrace) {
-                return Center(child: Icon(step.icon, size: 48, color: Colors.grey.shade300));
+                return Center(child: Icon(step.icon, size: 48, color: theme.colorScheme.outlineVariant));
               },
             ),
           ),
@@ -208,6 +231,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   }
 
   void _finishOnboarding() {
+    HapticFeedback.mediumImpact();
     LocalStorage().setBool('onboardingCompleted', true);
     Navigator.of(context).pop();
   }

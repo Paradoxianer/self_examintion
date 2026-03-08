@@ -8,47 +8,49 @@ Diese Roadmap definiert den Weg von der Beta zur professionellen Multi-Plattform
 *Ziel: Volle Verfügbarkeit auf iOS, Android und im Web bei maximaler Stabilität.*
 
 ### ✅ Bereits abgeschlossen (R1 Progress)
-*   **User Onboarding (#47 & #46)**: Vollständiger Einführungsprozess zur Erklärung von Slidern, Notizen und Analyse-Funktionen.
-*   **Sprachvielfalt (#24)**: Unterstützung für DE, EN, ES, KO, LT, PL, UK und RU. Inklusive **In-App Sprachwahl** zur Laufzeit.
-*   **Performance Profiling (#54)**: Benchmark-Tests für SharedPreferences durchgeführt (1000 Einträge in < 20ms). Optimierung des Chart-Loading (Einmaliges Laden in initState).
-*   **Daten-Portabilität (#49)**: CSV-Export mit kontextbezogenen Headern (Fragentexte statt IDs).
-*   **Security Foundation**: Implementierung des Biometrie-Lock-Screens und der Security-Services.
+*   **User Onboarding (#47 & #46)**: Einführungsprozess für Slider, Notizen und Analyse.
+*   **Sprachvielfalt (#24)**: Support für 8 Sprachen inkl. In-App Switcher.
+*   **Performance Profiling (#54)**: Benchmarks für SharedPreferences (< 70ms bei 1000 Einträgen).
+*   **Daten-Portabilität (#49)**: CSV-Export mit dynamischen Headern.
+*   **Security Foundation**: Biometrie-Logik und Auth-Wrapper.
+*   **Navigation: Directional Arrows (#56)**: Pfeil-Navigation in den Charts implementiert.
+*   **UI Resilience**: Fix von RenderFlex Overflows in der Chart-Steuerung.
+*   **Stability Test Suite (#55)**: 100% Abdeckung der Kern-Logik und UI-Flows (39 Tests passend).
+*   **iOS Version Polishing (#50)**: Safe-Area-Anpassungen, haptisches Feedback in Onboarding, Assessment & Settings, sowie UI-Konsistenz-Optimierungen.
 
 ### 🔥 Prio 1: Ausstehende Launch-Blocker
-- [ ] **iOS Version (#50)**: Konfiguration der Biometrie-Berechtigungen (FaceID), Safe-Area-Anpassungen für moderne iPhones und Hardware-Tests.
-- [ ] **Web Version (#53)**: Deployment als Progressive Web App (PWA) inklusive Service-Worker-Konfiguration und Asset-Optimierung.
-- [ ] **App Store Release (#52)**: Vorbereitung der Apple-Metadaten, Screenshots (6.5"/5.5") und Einreichung zur Prüfung.
-- [ ] **Google Play Release (#51)**: Finalisierung des Store-Listings und Management des Produktions-Tracks in der Play Console.
+- [ ] **Web Version (#53)**: PWA Service Worker & Asset Optimization.
+- [ ] **App Store Release (#52)**: Metadata & Screenshots.
+- [ ] **Google Play Release (#51)**: Listing & Production Track.
 
 ### ⚡ Prio 2: Qualitätssicherung & UX
-- [ ] **Stability Test Suite (#55)**: Implementierung von Unit-Tests für die Berechnungs-Logik und Integrationstests für die neuen Plattformen.
-- [ ] **Navigation: Directional Arrows (#56)**: Implementierung von Pfeil-Navigation für Charts (optimiert für Web/Desktop).
+- [x] **Phase 1: Recovery & Fixes**: Alle Regressionsfehler behoben.
+- [x] **Phase 2: Deep Logic Unit Tests**: AssessmentCalculator & LocalStorage verifiziert.
+- [x] **Phase 3: Automated Integrity**: QuestionSet-Abgleich über alle Sprachen.
+- [x] **Phase 4: Expanded Widget & Integration Tests**: SettingsFlow, AuthFlow & Lifecycle verifiziert.
 
 ---
 
 ## 🛠 Release 2: Modernisierung & Engagement
-*Ziel: Technisches Refactoring für Skalierbarkeit und Steigerung der langfristigen Nutzerbindung.*
+*Ziel: Refactoring & User Retention.*
 
-### ⚡ Prio 2: Architektur & Content
-- [ ] **UI Landscape Optimization (#57)**: Refactoring des `ChartControlWidget` und ergonomische Anpassung für Querformat.
-- [ ] **Datenbank-Migration (#33)**: Wechsel von SharedPreferences zu SQLite. (Bestätigt als nicht kritisch für R1, aber wichtig für langfristige Skalierbarkeit).
-- [ ] **Content Expansion (#48)**: Ausbau der Beschreibungen für John Wesley und William Booth Sets (DE, EN, RU).
-- [ ] **Push-Benachrichtigungen (#3)**: Implementierung lokaler Reminder.
-- [ ] **Accountability Partner (#45)**: Sicheres Teilen von Fortschritten mit Mentoren (Privacy-Filter für Notizen).
+- [ ] **UI Landscape Optimization (#57)**: Ergonomie für Querformat (Tablet/Web).
+- [ ] **Datenbank-Migration (#33)**: SharedPreferences -> SQLite.
+- [ ] **Content Expansion (#48)**: Deep-Dive Beschreibungen (DE/EN/RU).
+- [ ] **Push-Benachrichtigungen (#3)**: Lokale Reminder-Engine.
+- [ ] **Accountability Partner (#45)**: Progress Sharing (Privacy-First).
 
 ---
 
 ## ☁️ Release 3: Connectivity & Vision
-*Ziel: Vernetzung und übergeordnetes Reporting.*
-
-- [ ] **Synchronisation (#42)**: Optionaler Login für den Datenabgleich zwischen Web und Mobile.
-- [ ] **Heilsarmee Reporting (#43)**: Anonymisierte Übermittlung von Durchschnittswerten für regionale Auswertungen.
+- [ ] **Synchronisation (#42)**: Cross-Device Sync.
+- [ ] **Heilsarmee Reporting (#43)**: Anonymisierte regionale Statistiken.
 
 ---
 
-## 🛡 Leitlinien (Principal Architect Standards)
-1.  **Privacy by Design**: Alle Cloud-Funktionen sind "Opt-In". Die Hoheit über die Daten liegt beim Nutzer.
-2.  **Performance-Kultur**: Wir raten nicht, wir messen (Profiling). Bottlenecks werden an der Wurzel (Datenbank/Algorithmus) behoben.
-3.  **Cross-Platform Consistency**: Die Erfahrung auf iOS, Android und Web muss sich nativ und hochwertig anfühlen.
+## 🛡 Leitlinien
+1. **Privacy by Design**: Daten bleiben lokal, Cloud ist Opt-In.
+2. **Performance**: Keine Ruckler bei > 500 Einträgen (Profiling-Pflicht).
+3. **Nativ-Feeling**: Anpassung an iOS/Android/Web Standards.
 
-_Zuletzt aktualisiert am: 03. März 2025_
+_Zuletzt aktualisiert am: 04. März 2025_

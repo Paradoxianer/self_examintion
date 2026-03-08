@@ -36,8 +36,8 @@ void main() {
       ));
       await tester.pumpAndSettle();
 
-      // Wir suchen nach dem Text im Dropdown
-      expect(find.text('Heilsarmee Chemnitz'), findsOneWidget);
+      // Wir suchen nach dem Text im Dropdown (AuthorName für "ten commandments" auf Deutsch ist "Zehn Gebote")
+      expect(find.text('Zehn Gebote'), findsOneWidget);
 
       await tester.binding.setSurfaceSize(null);
     });

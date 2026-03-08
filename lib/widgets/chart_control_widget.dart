@@ -257,55 +257,65 @@ class ChartControlWidget extends StatelessWidget {
 
   Widget _buildTimeRangeSelector(BuildContext context, AppLocalizations localization) {
     return Container(
-      height: 44,
-      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          // Today Button - Compact
-          _buildCompactIconButton(
-            icon: Icons.today,
-            onPressed: onTodayPressed,
-            color: Theme.of(context).primaryColor,
-            tooltip: localization.today,
-          ),
-          const SizedBox(width: 2), // Minimal lücke
-          // Left Button - Compact
-          _buildCompactIconButton(
-            icon: Icons.chevron_left,
-            onPressed: () => onNavigateTime(false),
-          ),
-          const SizedBox(width: 4),
-          // Chips
-          ...TimeRange.values.map((range) {
-            final isSelected = range == currentTimeRange;
-            return Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 1.0),
-              child: ChoiceChip(
-                label: Text(
-                  localization.timeRangeShort[range.index], 
-                  style: const TextStyle(fontSize: 10)
-                ),
-                selected: isSelected,
-                onSelected: (_) => onTimeRangeChange(range),
-                visualDensity: const VisualDensity(horizontal: -4, vertical: -4),
-                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                padding: const EdgeInsets.symmetric(horizontal: 4),
-                selectedColor: Theme.of(context).primaryColor,
-                labelStyle: TextStyle(
-                  color: isSelected ? Colors.white : null,
-                  fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-                ),
+      height: 48,
+      padding: const EdgeInsets.symmetric(horizontal: 4.0),
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          return SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: ConstrainedBox(
+              constraints: BoxConstraints(minWidth: constraints.maxWidth),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  _buildCompactIconButton(
+                    icon: Icons.today,
+                    onPressed: onTodayPressed,
+                    color: Theme.of(context).primaryColor,
+                    tooltip: localization.today,
+                  ),
+                  const SizedBox(width: 2),
+                  _buildCompactIconButton(
+                    icon: Icons.chevron_left,
+                    onPressed: () => onNavigateTime(false),
+                  ),
+                  const SizedBox(width: 4),
+                  // Wrap chips in a row without too much spacing
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: TimeRange.values.map((range) {
+                      final isSelected = range == currentTimeRange;
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 1.0),
+                        child: ChoiceChip(
+                          label: Text(
+                            localization.timeRangeShort[range.index], 
+                            style: const TextStyle(fontSize: 10)
+                          ),
+                          selected: isSelected,
+                          onSelected: (_) => onTimeRangeChange(range),
+                          visualDensity: const VisualDensity(horizontal: -4, vertical: -4),
+                          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                          padding: const EdgeInsets.symmetric(horizontal: 4),
+                          selectedColor: Theme.of(context).primaryColor,
+                          labelStyle: TextStyle(
+                            color: isSelected ? Colors.white : null,
+                            fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                          ),
+                        ),
+                      );
+                    }).toList(),
+                  ),
+                  const SizedBox(width: 4),
+                  _buildCompactIconButton(
+                    icon: Icons.chevron_right,
+                    onPressed: () => onNavigateTime(true),
+                  ),
+                ],
               ),
-            );
-          }).toList(),
-          const SizedBox(width: 4),
-          // Right Button - Compact
-          _buildCompactIconButton(
-            icon: Icons.chevron_right,
-            onPressed: () => onNavigateTime(true),
-          ),
-        ],
+            ),
+          );
+        },
       ),
     );
   }
@@ -320,7 +330,7 @@ class ChartControlWidget extends StatelessWidget {
       onTap: onPressed,
       borderRadius: BorderRadius.circular(20),
       child: Padding(
-        padding: const EdgeInsets.all(6.0), // Kontrolliertes Padding
+        padding: const EdgeInsets.all(6.0),
         child: Icon(icon, size: 24, color: color),
       ),
     );
