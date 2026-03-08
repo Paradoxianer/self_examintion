@@ -246,7 +246,7 @@ class AppLocalizationsDe extends AppLocalizations {
           ),
           Question(
             text:
-            "Habe ich mein körperliches Verlangen so unter Kontrolle, dass ich mich nicht schuldig mache? Lasse ich irgendeiner Neigung freien Lauf, die meine Heiligung, mein Wachstum in Erkenntnis, meinen Gehorsam und meine Brauchbarkeit beeinträchtigt?",
+            "Habe ich meine körperlichen Bedürfnisse und Begierden so unter Kontrolle, dass sie meinem geistlichen Leben nicht schaden – weder meiner Heiligung noch meinem Wachstum an Erkenntnis, Gehorsam oder Nützlichkeit?",
           ),
           Question(
             text:
@@ -281,7 +281,7 @@ class AppLocalizationsDe extends AppLocalizations {
           ),
           Question(
             text:
-            "Richte ich mich nach den Sitten und Gebräuchen der Welt oder habe ich den Mut, gegen den Strom zu schwimmen?",
+            "Übernehme ich die Weltanschauung, Werte und Gewohnheiten dieser Welt – oder zeige ich durch mein Denken und Handeln klar, dass nur Christus mein Maßstab ist und nicht der Zeitgeist?",
             isPositive: true,
           ),
           Question(
