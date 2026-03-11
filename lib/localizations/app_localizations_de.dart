@@ -12,12 +12,12 @@ class AppLocalizationsDe extends AppLocalizations {
   @override String get settings => 'Einstellungen';
   @override String get examinTitle => 'Selbst-Prüfung';
   @override String get noteHint => 'Notizen hinzufügen..';
-  @override String get pleasAnswer => 'Bitte beantworten sie alle Fragen.';
+  @override String get pleasAnswer => 'Es sind noch Fragen offen. Möchtest du diese jetzt noch beantworten oder die Auswertung mit den vorhandenen Daten erstellen?';
   @override String get commit => 'Fertig';
   @override String get saved => 'Daten gespeichert';
   @override String get chartTitle => 'Entwicklungsdiagramm';
-  @override String get noHistory => 'Keine Daten gefunden. Bitte füllle die Fragen aus.';
-  @override String get warningTitle => 'Warnung';
+  @override String get noHistory => 'Keine Daten gefunden. Bitte fülle die Fragen aus.';
+  @override String get warningTitle => 'Unvollständige Selbstprüfung';
   @override String warningDel(String autor, Object author) => 'Alle Fortschritte für $autor werden gelöscht. Fortfahren?';
   @override String get settingsTitle => 'Einstellungen';
   @override String get chooseQuestionSet => 'Fragenset wählen';
@@ -30,8 +30,8 @@ class AppLocalizationsDe extends AppLocalizations {
   @override String get datasecurityDialog => 'Datenschutz & DSGVO';
   @override String get dsgvoNo => 'Zustimmung verweigert';
   @override String get dsgvoNoInfo => 'Die App kann leider nur funktionieren, wenn Sie zustimmen.';
-  @override String get ok => 'OK';
-  @override String get cancel => 'Abbrechen';
+  @override String get ok => 'Auswertung erstellen';
+  @override String get cancel => 'Bearbeitung fortsetzen';
   @override String get dsgvoTitle => 'Datenschutz und Zustimmung';
   @override String get dsgvo1 => 'Um Ihre persönliche geistliche Entwicklung zu verfolgen, speichern wir Ihre Antworten lokal auf Ihrem Gerät.';
   @override String get dsgvo2 => 'Es werden keine Daten in die Cloud übertragen. Ihre Privatsphäre bleibt zu 100% auf Ihrem Telefon.';
@@ -390,7 +390,7 @@ class AppLocalizationsDe extends AppLocalizations {
           ),
           Question(
             text:
-            "Grolle ich gegen jemanden?",
+            "Grolle gegen jemanden?",
             isPositive: true,
           ),
           Question(
