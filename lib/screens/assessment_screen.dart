@@ -26,11 +26,10 @@ class _AssessmentScreenState extends State<AssessmentScreen> {
         final localization = AppLocalizations.of(context)!;
         final authorKey = widget.localStorage.getCurrentAuthor();
         final questionSet = localization.questionMap[authorKey] ??
-                localization.questionMap.values.first;
+            localization.questionMap.values.first;
 
         return Scaffold(
           appBar: AppBar(
-            // Use a Container with constraints for the title to prevent overflow on small iOS devices
             title: const QuestionSetSelection(),
             centerTitle: true,
             actions: [
@@ -46,19 +45,17 @@ class _AssessmentScreenState extends State<AssessmentScreen> {
             ],
           ),
           body: SafeArea(
-            bottom: false, // ListView padding handles the bottom
+            bottom: false,
             child: ListView.builder(
               padding: const EdgeInsets.only(bottom: 100, top: 8),
               itemCount: questionSet.questions.length,
               itemBuilder: (context, index) {
                 return QuestionCard(
-                  key: ValueKey("${authorKey}_${index}_${questionSet.questions[index].id}"),
+                  key: ValueKey("${authorKey}_$index"),
                   cardNumber: index + 1,
                   question: questionSet.questions[index],
                   onSliderChanged: (double value) {
-                    setState(() {
-                      questionSet.questions[index].value = value;
-                    });
+                    questionSet.questions[index].value = value;
                   },
                 );
               },
@@ -102,20 +99,19 @@ class _AssessmentScreenState extends State<AssessmentScreen> {
       if (proceed != true) return;
     }
 
-    // Unbeantwortete Fragen auf 0.0 setzen vor dem Speichern
     for (var q in questionSet.questions) {
       if (q.value == -1.0) q.value = 0.0;
     }
 
-    await saveAssessmentResults(questionSet);
+    await _saveAssessmentResults(questionSet);
     if (mounted) {
       Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => ChartScreen()),
+        MaterialPageRoute(builder: (context) => const ChartScreen()),
       );
     }
   }
 
-  Future<void> saveAssessmentResults(
+  Future<void> _saveAssessmentResults(
       SelfAssessmentQuestionSet questionSet) async {
     AssessmentEntry assessmentEntry = AssessmentEntry(
         timestamp: DateTime.now(),
