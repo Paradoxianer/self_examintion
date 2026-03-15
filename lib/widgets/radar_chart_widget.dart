@@ -80,7 +80,6 @@ class RadarChartWidget extends StatelessWidget {
       );
     }
 
-    // Optimization: Cache QuestionSet and polarity
     final String currentSetKey = assessmentHistory.first.questionSet;
     final questionSet = localization.questionMap[currentSetKey];
     final List<bool> polarities = List.generate(assessmentHistory.first.values.length, (i) => 
@@ -104,6 +103,7 @@ class RadarChartWidget extends StatelessWidget {
                   dataSets: _buildDataSets(context, filteredHistory, activeIndices, polarities),
                   getTitle: (index, angle) => const RadarChartTitle(text: ""),
                   tickCount: 5,
+                  radarShape: RadarShape.circle, 
                   ticksTextStyle: const TextStyle(fontSize: 8, color: Colors.grey),
                   gridBorderData: BorderSide(color: Colors.grey.withValues(alpha: 0.3), width: 1),
                 ),
@@ -131,6 +131,13 @@ class RadarChartWidget extends StatelessWidget {
     final double overallAvg = totalCount > 0 ? totalSum / totalCount : 0.0;
 
     return [
+      // FIX: Helper dataset to force 100% scale (fl_chart 1.1.1 doesn't have maxValue)
+      RadarDataSet(
+        borderColor: Colors.transparent,
+        fillColor: Colors.transparent,
+        entryRadius: 0,
+        dataEntries: List.generate(activeIndices.length, (index) => const RadarEntry(value: 1.0)),
+      ),
       if (selectedQuestions.last)
         RadarDataSet(
           borderColor: Colors.red.withValues(alpha: 0.6),
