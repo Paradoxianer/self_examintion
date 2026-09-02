@@ -62,8 +62,8 @@ void main() {
     await tester.pumpAndSettle();
 
     // Handle "Please answer all" if it appears (we only moved one slider)
-    if (find.text('OK').evaluate().isNotEmpty) {
-      await tester.tap(find.text('OK'));
+    if (find.text('Auswertung erstellen').evaluate().isNotEmpty) {
+      await tester.tap(find.text('Auswertung erstellen'));
       await tester.pumpAndSettle();
     }
 

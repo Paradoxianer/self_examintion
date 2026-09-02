@@ -54,7 +54,7 @@ void main() {
       await tester.pumpAndSettle();
 
       // 5. Handle Unanswered Warning (if it appears)
-      final okButtonFinder = find.text('OK');
+      final okButtonFinder = find.text('Auswertung erstellen');
       if (tester.any(okButtonFinder)) {
         await tester.tap(okButtonFinder);
         await tester.pumpAndSettle();

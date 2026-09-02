@@ -37,7 +37,7 @@ void main() {
       // We look for the "Settings" title.
       
       // 2. Open Language Dialog
-      final languageTile = find.byIcon(Icons.language);
+      final languageTile = find.byIcon(Icons.language_outlined);
       expect(languageTile, findsOneWidget);
       await tester.tap(languageTile);
       await tester.pumpAndSettle();
@@ -53,7 +53,7 @@ void main() {
       expect(find.text('Einstellungen'), findsOneWidget);
       
       // 5. Change back to English
-      await tester.tap(find.byIcon(Icons.language));
+      await tester.tap(find.byIcon(Icons.language_outlined));
       await tester.pumpAndSettle();
       
       final englishOption = find.text('English');
@@ -69,7 +69,7 @@ void main() {
       await tester.pumpWidget(makeTestableWidget());
       await tester.pumpAndSettle();
 
-      await tester.tap(find.byIcon(Icons.language));
+      await tester.tap(find.byIcon(Icons.language_outlined));
       await tester.pumpAndSettle();
       await tester.tap(find.text('Deutsch'));
       await tester.pumpAndSettle();
