@@ -78,7 +78,9 @@ class ExportService {
     }
     
     if (type != ExportType.averageOnly) {
-      buffer.write("Total Average\n");
+      buffer.write("Total Average;");
+      if (type == ExportType.all) buffer.write("General Note");
+      buffer.write("\n");
     } else {
       buffer.write("\n");
     }
@@ -120,7 +122,16 @@ class ExportService {
       }
 
       double avg = count > 0 ? (sum / count) * 100 : 0;
-      buffer.write("${avg.round()}%\n");
+      if (type == ExportType.averageOnly) {
+        buffer.write("${avg.round()}%\n");
+      } else {
+        buffer.write("${avg.round()}%;");
+        if (type == ExportType.all) {
+          final String generalNote = entry.note ?? "";
+          buffer.write(generalNote.replaceAll(';', ',').replaceAll('\n', ' '));
+        }
+        buffer.write("\n");
+      }
     }
 
     return buffer.toString();

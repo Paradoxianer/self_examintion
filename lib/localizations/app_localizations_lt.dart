@@ -11,6 +11,8 @@ class AppLocalizationsLt extends AppLocalizations {
   @override String get settings => 'Nustatymai';
   @override String get examinTitle => 'Savęs Vertinimas';
   @override String get noteHint => 'Pridėti pastabas..';
+  @override String get generalNoteLabel => 'Bendra pastaba';
+  @override String get generalNoteHint => 'Kokia tavo bendra dvasinė būklė šiandien? (neprivaloma)';
   @override String get pleasAnswer => 'Prašome atsakyti į visus klausimus.';
   @override String get commit => 'Baigta';
   @override String get saved => 'Duomenys išsaugoti';

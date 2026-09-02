@@ -11,6 +11,8 @@ class AppLocalizationsKo extends AppLocalizations {
   @override String get settings => '설정';
   @override String get examinTitle => '자가평가';
   @override String get noteHint => '메모 추가...';
+  @override String get generalNoteLabel => '전체 메모';
+  @override String get generalNoteHint => '오늘의 전반적인 영적 상태는 어떤가요? (선택 사항)';
   @override String get pleasAnswer => '모든 질문에 답해주세요.';
   @override String get commit => '완료';
   @override String get saved => '데이터가 저장되었습니다';

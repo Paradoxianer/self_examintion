@@ -11,6 +11,8 @@ class AppLocalizationsRu extends AppLocalizations {
   @override String get settings => 'Настройки';
   @override String get examinTitle => 'Самоанализ';
   @override String get noteHint => 'Добавить заметку...';
+  @override String get generalNoteLabel => 'Общая заметка';
+  @override String get generalNoteHint => 'Каково твоё общее духовное состояние сегодня? (необязательно)';
   @override String get pleasAnswer => 'Пожалуйста, ответьте на все вопросы.';
   @override String get commit => 'Завершить';
   @override String get saved => 'Данные сохранены';

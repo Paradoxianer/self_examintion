@@ -11,6 +11,8 @@ class AppLocalizationsPl extends AppLocalizations {
   @override String get settings => 'Ustawienia';
   @override String get examinTitle => 'Autoocena';
   @override String get noteHint => 'Dodaj notatki...';
+  @override String get generalNoteLabel => 'Notatka ogólna';
+  @override String get generalNoteHint => 'Jaki jest Twój ogólny stan duchowy dzisiaj? (opcjonalnie)';
   @override String get pleasAnswer => 'Proszę odpowiedzieć na wszystkie pytania.';
   @override String get commit => 'Gotowe';
   @override String get saved => 'Dane zapisane';

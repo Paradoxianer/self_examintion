@@ -12,6 +12,8 @@ class AppLocalizationsEs extends AppLocalizations {
   @override String get settings => 'Configuraciones';
   @override String get examinTitle => 'Autoevaluación';
   @override String get noteHint => 'Agregar notas...';
+  @override String get generalNoteLabel => 'Nota general';
+  @override String get generalNoteHint => '¿Cómo está tu estado espiritual general hoy? (opcional)';
   @override String get pleasAnswer => 'Por favor, responda todas las preguntas.';
   @override String get commit => 'Finalizar';
   @override String get saved => 'Datos guardados';

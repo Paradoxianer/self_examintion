@@ -207,19 +207,30 @@ class ChartControlWidget extends StatelessWidget {
     final bool isSelected = avgIndex < selectedQuestions.length ? selectedQuestions[avgIndex] : false;
     const color = Colors.red;
 
+    final generalNotes = assessmentHistory
+        .where((entry) => entry.note != null && entry.note!.isNotEmpty)
+        .map((entry) => {
+              'date': entry.timestamp,
+              'note': entry.note!,
+            })
+        .toList();
+
     return Card(
       clipBehavior: Clip.antiAlias,
       margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
       elevation: isSelected ? 2 : 0,
       color: isSelected ? color.withValues(alpha: 0.1) : Theme.of(context).disabledColor.withValues(alpha: 0.05),
-      child: Row(
+      child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            width: 50,
-            decoration: BoxDecoration(
-              color: isSelected ? color.withValues(alpha: 0.5) : Colors.grey.withValues(alpha: 0.2),
-              borderRadius: const BorderRadius.only(bottomRight: Radius.circular(20)),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                width: 50,
+                decoration: BoxDecoration(
+                  color: isSelected ? color.withValues(alpha: 0.5) : Colors.grey.withValues(alpha: 0.2),
+                  borderRadius: const BorderRadius.only(bottomRight: Radius.circular(20)),
                 ),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
@@ -252,8 +263,12 @@ class ChartControlWidget extends StatelessWidget {
               ),
             ],
           ),
-        );
-      }
+          if (isSelected && generalNotes.isNotEmpty)
+            _buildNotesCarousel(context, generalNotes, color, 62),
+        ],
+      ),
+    );
+  }
 
   Widget _buildTimeRangeSelector(BuildContext context, AppLocalizations localization) {
     return Container(

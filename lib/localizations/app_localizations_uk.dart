@@ -12,6 +12,8 @@ class AppLocalizationsUk extends AppLocalizations {
   @override String get settings => 'Налаштування';
   @override String get examinTitle => 'Самоперевірка';
   @override String get noteHint => 'Додати замітки...';
+  @override String get generalNoteLabel => 'Загальна нотатка';
+  @override String get generalNoteHint => "Який твій загальний духовний стан сьогодні? (необов'язково)";
   @override String get pleasAnswer => 'Будь ласка, дайте відповідь на всі запитання.';
   @override String get commit => 'Готово';
   @override String get saved => 'Дані збережено';

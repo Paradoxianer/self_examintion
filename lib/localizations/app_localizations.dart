@@ -50,6 +50,8 @@ abstract class AppLocalizations {
   String get settings;
   String get examinTitle;
   String get noteHint;
+  String get generalNoteLabel;
+  String get generalNoteHint;
   String get pleasAnswer;
   String get commit;
   String get saved;

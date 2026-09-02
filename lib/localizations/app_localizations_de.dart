@@ -12,6 +12,8 @@ class AppLocalizationsDe extends AppLocalizations {
   @override String get settings => 'Einstellungen';
   @override String get examinTitle => 'Selbst-Prüfung';
   @override String get noteHint => 'Notizen hinzufügen..';
+  @override String get generalNoteLabel => 'Allgemeine Notiz';
+  @override String get generalNoteHint => 'Wie ist dein allgemeiner geistlicher Zustand heute? (optional)';
   @override String get pleasAnswer => 'Es sind noch Fragen offen. Möchtest du diese jetzt noch beantworten oder die Auswertung mit den vorhandenen Daten erstellen?';
   @override String get commit => 'Fertig';
   @override String get saved => 'Daten gespeichert';

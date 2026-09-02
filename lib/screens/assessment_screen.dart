@@ -5,6 +5,7 @@ import 'package:self_examination/models/assessment_entry.dart';
 import 'package:self_examination/screens/chart_screen.dart';
 import 'package:self_examination/screens/settings_screen.dart';
 import 'package:self_examination/utils/local_storage.dart';
+import 'package:self_examination/widgets/general_note_card.dart';
 import 'package:self_examination/widgets/question_card.dart';
 import 'package:self_examination/widgets/question_set_selection.dart';
 
@@ -18,6 +19,14 @@ class AssessmentScreen extends StatefulWidget {
 }
 
 class _AssessmentScreenState extends State<AssessmentScreen> {
+  final TextEditingController _generalNoteController = TextEditingController();
+
+  @override
+  void dispose() {
+    _generalNoteController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return ListenableBuilder(
@@ -48,8 +57,11 @@ class _AssessmentScreenState extends State<AssessmentScreen> {
             bottom: false,
             child: ListView.builder(
               padding: const EdgeInsets.only(bottom: 100, top: 8),
-              itemCount: questionSet.questions.length,
+              itemCount: questionSet.questions.length + 1,
               itemBuilder: (context, index) {
+                if (index == questionSet.questions.length) {
+                  return GeneralNoteCard(controller: _generalNoteController);
+                }
                 return QuestionCard(
                   key: ValueKey("${authorKey}_$index"),
                   cardNumber: index + 1,
@@ -113,12 +125,13 @@ class _AssessmentScreenState extends State<AssessmentScreen> {
 
   Future<void> _saveAssessmentResults(
       SelfAssessmentQuestionSet questionSet) async {
+    final String generalNote = _generalNoteController.text.trim();
     AssessmentEntry assessmentEntry = AssessmentEntry(
         timestamp: DateTime.now(),
         questionSet: widget.localStorage.getCurrentAuthor(),
         values: questionSet.questions.map((q) => q.value).toList(),
         questionNotes: questionSet.questions.map((q) => q.note).toList(),
-        note: null);
+        note: generalNote.isEmpty ? null : generalNote);
     await widget.localStorage.saveAssessmentEntry(assessmentEntry);
   }
 }
