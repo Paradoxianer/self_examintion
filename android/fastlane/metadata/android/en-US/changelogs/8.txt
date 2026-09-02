@@ -1,0 +1,8 @@
+What's new:
+• Now available in 8 languages (including Ukrainian, Russian, Polish)
+• Guided onboarding for sliders, notes and analysis
+• Arrow navigation in the charts
+• Radar analysis now scales correctly to a constant 100% axis
+• Numerous stability and UI improvements
+
+Thank you for joining the beta!

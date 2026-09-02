@@ -1,0 +1,8 @@
+Neu in diesem Update:
+• Jetzt in 8 Sprachen verfügbar (u.a. Ukrainisch, Russisch, Polnisch)
+• Geführtes Onboarding für Slider, Notizen und Analyse
+• Pfeil-Navigation in den Diagrammen
+• Radar-Analyse jetzt mit korrekt skalierter 100%-Achse
+• Zahlreiche Stabilitäts- und UI-Verbesserungen
+
+Vielen Dank, dass du die Beta-Phase mit uns gehst!
