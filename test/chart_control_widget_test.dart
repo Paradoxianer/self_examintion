@@ -32,6 +32,7 @@ void main() {
           assessmentHistory: history,
           selectedQuestions: selected,
           currentTimeRange: TimeRange.all,
+          referenceDate: DateTime.now(),
           onQuestionToggle: (_, __) {},
           onToggleAll: (_) {},
           onTimeRangeChange: (_) {},
@@ -67,6 +68,7 @@ void main() {
           assessmentHistory: const [],
           selectedQuestions: List.generate(11, (index) => true),
           currentTimeRange: TimeRange.all,
+          referenceDate: DateTime.now(),
           onQuestionToggle: (index, val) {
             toggledIndex = index;
             newValue = val;
@@ -87,6 +89,50 @@ void main() {
 
       expect(toggledIndex, 0);
       expect(newValue, false);
+    });
+
+    testWidgets('Notes outside the selected time range are not shown (#59)', (WidgetTester tester) async {
+      // Reference "today" for the week filter (a Wednesday, so the day
+      // before it still falls inside the same Mon-Sun week).
+      final referenceDate = DateTime(2026, 6, 17);
+      final history = [
+        AssessmentEntry(
+          timestamp: DateTime(2026, 6, 16), // inside the reference week
+          questionSet: 'William Booth',
+          values: List.generate(11, (_) => 0.5),
+          questionNotes: [
+            'In-range note',
+            ...List<String?>.generate(10, (_) => null),
+          ],
+        ),
+        AssessmentEntry(
+          timestamp: DateTime(2026, 1, 1), // months outside the reference week
+          questionSet: 'William Booth',
+          values: List.generate(11, (_) => 0.5),
+          questionNotes: [
+            'Out-of-range note',
+            ...List<String?>.generate(10, (_) => null),
+          ],
+        ),
+      ];
+
+      await tester.pumpWidget(makeTestableWidget(
+        child: ChartControlWidget(
+          assessmentHistory: history,
+          selectedQuestions: List.generate(12, (index) => true),
+          currentTimeRange: TimeRange.week,
+          referenceDate: referenceDate,
+          onQuestionToggle: (_, __) {},
+          onToggleAll: (_) {},
+          onTimeRangeChange: (_) {},
+          onNavigateTime: (_) {},
+          onTodayPressed: () {},
+        ),
+      ));
+      await tester.pumpAndSettle();
+
+      expect(find.text('In-range note'), findsOneWidget);
+      expect(find.text('Out-of-range note'), findsNothing);
     });
   });
 }

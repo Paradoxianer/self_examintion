@@ -87,6 +87,7 @@ void main() {
             assessmentHistory: history,
             selectedQuestions: List.generate(12, (index) => true),
             currentTimeRange: TimeRange.all,
+            referenceDate: DateTime.now(),
             onQuestionToggle: (_, __) {},
             onToggleAll: (_) {},
             onTimeRangeChange: (_) {},

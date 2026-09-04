@@ -242,6 +242,7 @@ class _ChartScreenState extends State<ChartScreen> {
       assessmentHistory: history,
       selectedQuestions: _selectedQuestions,
       currentTimeRange: _currentTimeRange,
+      referenceDate: _referenceDate,
       showAverage: true,
       onQuestionToggle: (index, value) {
         setState(() => _selectedQuestions[index] = value);

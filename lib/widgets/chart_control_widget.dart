@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:self_examination/localizations/app_localizations.dart';
 import 'package:self_examination/models/assessment_entry.dart';
+import 'package:self_examination/utils/assessment_calculator.dart';
 import 'package:self_examination/utils/globals.dart';
 import 'package:self_examination/utils/local_storage.dart';
 
@@ -14,6 +15,7 @@ class ChartControlWidget extends StatelessWidget {
   final List<AssessmentEntry> assessmentHistory;
   final List<bool> selectedQuestions;
   final TimeRange currentTimeRange;
+  final DateTime referenceDate;
   final Function(int, bool) onQuestionToggle;
   final Function(bool) onToggleAll;
   final Function(TimeRange) onTimeRangeChange;
@@ -26,6 +28,7 @@ class ChartControlWidget extends StatelessWidget {
     required this.assessmentHistory,
     required this.selectedQuestions,
     required this.currentTimeRange,
+    required this.referenceDate,
     required this.onQuestionToggle,
     required this.onToggleAll,
     required this.onTimeRangeChange,
@@ -33,6 +36,18 @@ class ChartControlWidget extends StatelessWidget {
     required this.onTodayPressed,
     this.showAverage = false,
   });
+
+  /// The subset of [assessmentHistory] that falls within the currently
+  /// selected time range/reference date — the same window the charts
+  /// themselves render, so the notes shown here don't contradict it.
+  List<AssessmentEntry> get _visibleHistory {
+    if (currentTimeRange == TimeRange.all) return assessmentHistory;
+    final start = AssessmentCalculator.getPeriodStart(referenceDate, currentTimeRange);
+    final end = AssessmentCalculator.getPeriodEnd(referenceDate, currentTimeRange);
+    return assessmentHistory
+        .where((entry) => !entry.timestamp.isBefore(start) && !entry.timestamp.isAfter(end))
+        .toList();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -133,7 +148,7 @@ class ChartControlWidget extends StatelessWidget {
     final color = globalColorMap[qIndex + 1] ?? Colors.grey;
     final isSelected = qIndex < selectedQuestions.length ? selectedQuestions[qIndex] : false;
 
-    final questionNotes = assessmentHistory
+    final questionNotes = _visibleHistory
         .where((entry) =>
             qIndex < entry.questionNotes.length &&
             entry.questionNotes[qIndex] != null &&
@@ -207,7 +222,7 @@ class ChartControlWidget extends StatelessWidget {
     final bool isSelected = avgIndex < selectedQuestions.length ? selectedQuestions[avgIndex] : false;
     const color = Colors.red;
 
-    final generalNotes = assessmentHistory
+    final generalNotes = _visibleHistory
         .where((entry) => entry.note != null && entry.note!.isNotEmpty)
         .map((entry) => {
               'date': entry.timestamp,
