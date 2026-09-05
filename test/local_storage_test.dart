@@ -10,7 +10,7 @@ void main() {
     setUp(() async {
       SharedPreferences.setMockInitialValues({});
       storage = LocalStorage();
-      await storage.initialize();
+      await storage.initialize(assessmentDatabasePath: ':memory:');
     });
 
     test('Initial author should be William Booth if none is set', () async {
@@ -94,6 +94,36 @@ void main() {
       storage.setCurrentAuthor('Author A');
       final entriesA = await storage.loadAssessmentEntries();
       expect(entriesA.length, 1);
+    });
+
+    test('loadAssessmentEntriesInRange filters at the storage layer (#33)', () async {
+      storage.setCurrentAuthor('Range Author');
+      await storage.saveAssessmentEntry(AssessmentEntry(
+        timestamp: DateTime(2026, 1, 1),
+        questionSet: 'Range Author',
+        values: [0.1],
+        questionNotes: ['before range'],
+      ));
+      await storage.saveAssessmentEntry(AssessmentEntry(
+        timestamp: DateTime(2026, 6, 15),
+        questionSet: 'Range Author',
+        values: [0.2],
+        questionNotes: ['inside range'],
+      ));
+      await storage.saveAssessmentEntry(AssessmentEntry(
+        timestamp: DateTime(2026, 12, 31),
+        questionSet: 'Range Author',
+        values: [0.3],
+        questionNotes: ['after range'],
+      ));
+
+      final inRange = await storage.loadAssessmentEntriesInRange(
+        DateTime(2026, 6, 1),
+        DateTime(2026, 6, 30),
+      );
+
+      expect(inRange.length, 1);
+      expect(inRange.first.questionNotes.first, 'inside range');
     });
 
     test('Setting and getting bool list', () async {

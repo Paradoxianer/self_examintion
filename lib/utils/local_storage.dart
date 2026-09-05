@@ -1,8 +1,13 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:self_examination/data/assessment_repository.dart';
+import 'package:self_examination/data/prefs_assessment_repository.dart';
+import 'package:self_examination/data/sqlite_assessment_repository.dart';
 import 'package:self_examination/models/assessment_entry.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
+
+const String _sqliteMigrationDoneKey = 'assessmentSqliteMigrationDone';
 
 // Kleiner Helper, um notifyListeners() von außen aufrufbar zu machen
 class ActivityNotifier extends ChangeNotifier {
@@ -14,6 +19,7 @@ class LocalStorage {
   SharedPreferences? _prefs;
   String _currentAuthor = "none";
   Locale? _currentLocale;
+  AssessmentRepository? _assessmentRepository;
 
   final ActivityNotifier assessmentNotifier = ActivityNotifier();
   final ActivityNotifier settingsNotifier = ActivityNotifier();
@@ -24,10 +30,39 @@ class LocalStorage {
 
   LocalStorage._internal();
 
-  Future<void> initialize() async {
+  /// [assessmentDatabasePath] overrides where the SQLite database lives —
+  /// used by tests to get an isolated database (e.g. `':memory:'`) instead
+  /// of the real app file. Ignored on web, which has no SQLite backend.
+  Future<void> initialize({String? assessmentDatabasePath}) async {
     _prefs = await SharedPreferences.getInstance();
     await loadCurrentAutor();
     _loadLocale();
+    await _initializeAssessmentRepository(assessmentDatabasePath);
+  }
+
+  /// Sets up the assessment storage backend: SQLite on mobile/desktop (#33,
+  /// so charts can filter by date range at the query level instead of
+  /// loading everything into memory), plain SharedPreferences on web (no
+  /// SQLite there). On first run on mobile/desktop, migrates any history
+  /// from the old SharedPreferences format into SQLite.
+  Future<void> _initializeAssessmentRepository(String? assessmentDatabasePath) async {
+    if (kIsWeb) {
+      _assessmentRepository = PrefsAssessmentRepository(_prefs!);
+      return;
+    }
+
+    final sqliteRepo = SqliteAssessmentRepository(databasePathOverride: assessmentDatabasePath);
+    if (!getBool(_sqliteMigrationDoneKey)) {
+      final legacyEntries = PrefsAssessmentRepository(_prefs!).loadEverythingForMigration();
+      for (final entry in legacyEntries) {
+        await sqliteRepo.save(entry);
+      }
+      // Legacy SharedPreferences entries are intentionally left in place
+      // (harmless, tiny) rather than deleted — this flag just prevents
+      // re-importing them (and duplicating rows) on every future launch.
+      await setBool(_sqliteMigrationDoneKey, true);
+    }
+    _assessmentRepository = sqliteRepo;
   }
 
   void setCurrentAuthor(String authorName) {
@@ -119,39 +154,23 @@ class LocalStorage {
 
   // --- Assessment Methoden ---
   Future<void> saveAssessmentEntry(AssessmentEntry entry) async {
-    final key = '$_currentAuthor${entry.timestamp.millisecondsSinceEpoch}';
-    final entryJson = jsonEncode(entry.toMap());
-    await _prefs?.setString(key, entryJson);
+    await _assessmentRepository?.save(entry);
     assessmentNotifier.notify();
   }
 
   Future<List<AssessmentEntry>> loadAssessmentEntries() async {
-    final keys = _prefs?.getKeys();
-    final entries = <AssessmentEntry>[];
-    if (keys != null) {
-      for (final key in keys) {
-        if (key.startsWith('$_currentAuthor')) {
-          final entryJson = _prefs?.getString(key);
-          if (entryJson != null) {
-            final entryMap = jsonDecode(entryJson);
-            entries.add(AssessmentEntry.fromMap(entryMap));
-          }
-        }
-      }
-    }
-    entries.sort((a, b) => a.timestamp.compareTo(b.timestamp));
-    return entries;
+    return await _assessmentRepository?.loadAll(_currentAuthor) ?? [];
+  }
+
+  /// Loads only the entries within [start]..[end] (inclusive) for the
+  /// current author. On mobile/desktop this is a real indexed SQL query
+  /// (#33) rather than loading the whole history and filtering in Dart.
+  Future<List<AssessmentEntry>> loadAssessmentEntriesInRange(DateTime start, DateTime end) async {
+    return await _assessmentRepository?.loadInRange(_currentAuthor, start, end) ?? [];
   }
 
   Future<void> clearAllAssesmentEntries() async {
-    final keys = _prefs?.getKeys();
-    if (keys != null) {
-      for (final key in keys) {
-        if (key.startsWith('$_currentAuthor')) {
-          _prefs!.remove(key);
-        }
-      }
-      assessmentNotifier.notify();
-    }
+    await _assessmentRepository?.clearAll(_currentAuthor);
+    assessmentNotifier.notify();
   }
 }

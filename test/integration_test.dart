@@ -16,7 +16,7 @@ void main() {
       'onboardingCompleted': true, // Skip Onboarding
       'currentAuthor': 'William Booth'
     });
-    await LocalStorage().initialize();
+    await LocalStorage().initialize(assessmentDatabasePath: ':memory:');
   });
 
   group('End-to-End Integration Flow', () {

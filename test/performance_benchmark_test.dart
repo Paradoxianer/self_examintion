@@ -14,7 +14,7 @@ void main() {
       // Mocking SharedPreferences to start with a clean state for each test
       SharedPreferences.setMockInitialValues({});
       storage = LocalStorage();
-      await storage.initialize();
+      await storage.initialize(assessmentDatabasePath: ':memory:');
       storage.setCurrentAuthor("BenchmarkAuthor");
     });
 
@@ -42,7 +42,7 @@ void main() {
       }
 
       // Output results in a readable format
-      print('\n--- LOADING PERFORMANCE RESULTS (SharedPreferences) ---');
+      print('\n--- LOADING PERFORMANCE RESULTS (SQLite, #33) ---');
       print('Entries | Time (ms) | Avg per Entry');
       print('----------------------------------------------------');
       results.forEach((size, time) {
@@ -50,10 +50,9 @@ void main() {
         print('${size.toString().padRight(7)} | ${time.toString().padRight(9)}ms | ${avg.toStringAsFixed(3)}ms');
       });
       print('----------------------------------------------------\n');
-      
-      // Architectural Recommendation based on results
+
       if (results[1000]! > 100) {
-        print('ADVICE: Loading 1000 entries takes > 100ms. Consider SQLite migration (#33) for Release 1.');
+        print('ADVICE: Loading 1000 entries still takes > 100ms even on SQLite — investigate indexing.');
       } else {
         print('ADVICE: Performance is within acceptable limits for Release 1.');
       }

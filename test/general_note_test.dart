@@ -27,7 +27,7 @@ void main() {
         'onboardingCompleted': true,
         'currentAuthor': 'William Booth',
       });
-      await LocalStorage().initialize();
+      await LocalStorage().initialize(assessmentDatabasePath: ':memory:');
     });
 
     testWidgets('AssessmentScreen shows a GeneralNoteCard below the questions and persists it', (WidgetTester tester) async {

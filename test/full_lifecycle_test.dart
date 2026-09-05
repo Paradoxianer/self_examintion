@@ -17,7 +17,7 @@ void main() {
       'currentAuthor': 'William Booth'
     });
     final storage = LocalStorage();
-    await storage.initialize();
+    await storage.initialize(assessmentDatabasePath: ':memory:');
   });
 
   Widget makeTestableWidget() {
