@@ -26,6 +26,8 @@ class AppLocalizationsDe extends AppLocalizations {
   @override String get delete => 'Daten löschen';
   @override String get notification => 'Erinnerung';
   @override String get notificationFrequency => 'Häufigkeit';
+  @override String get notificationReminderBody => 'Zeit für deine tägliche Selbstprüfung.';
+  @override String get notificationPermissionDenied => 'Ohne Benachrichtigungs-Berechtigung kann keine Erinnerung gesendet werden. Bitte erlaube Benachrichtigungen in den Systemeinstellungen.';
   @override String get daily => 'täglich';
   @override String get weekly => 'wöchentlich';
   @override String get monthly => 'monatlich';

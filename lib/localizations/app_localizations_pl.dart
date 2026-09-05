@@ -25,6 +25,8 @@ class AppLocalizationsPl extends AppLocalizations {
   @override String get delete => 'Usuń dane';
   @override String get notification => 'Przypomnij mi';
   @override String get notificationFrequency => 'Częstotliwość';
+  @override String get notificationReminderBody => 'Czas na Twoją codzienną autoocenę.';
+  @override String get notificationPermissionDenied => 'Przypomnienia wymagają uprawnień do powiadomień. Włącz powiadomienia w ustawieniach systemowych.';
   @override String get daily => 'codziennie';
   @override String get weekly => 'tygodniowo';
   @override String get monthly => 'miesięcznie';

@@ -25,6 +25,8 @@ class AppLocalizationsRu extends AppLocalizations {
   @override String get delete => 'Удалить данные';
   @override String get notification => 'Напомнить мне';
   @override String get notificationFrequency => 'Частота';
+  @override String get notificationReminderBody => 'Время для твоего ежедневного самоанализа.';
+  @override String get notificationPermissionDenied => 'Для напоминаний нужно разрешение на уведомления. Разреши уведомления в настройках системы.';
   @override String get daily => 'ежедневно';
   @override String get weekly => 'еженедельно';
   @override String get monthly => 'ежемесячно';

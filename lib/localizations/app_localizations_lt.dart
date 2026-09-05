@@ -25,6 +25,8 @@ class AppLocalizationsLt extends AppLocalizations {
   @override String get delete => 'Ištrinti duomenis';
   @override String get notification => 'Priminti man';
   @override String get notificationFrequency => 'Dažnumas';
+  @override String get notificationReminderBody => 'Laikas savo kasdieniam savęs vertinimui.';
+  @override String get notificationPermissionDenied => 'Priminimams reikalingas pranešimų leidimas. Įjunk pranešimus sistemos nustatymuose.';
   @override String get daily => 'kasdien';
   @override String get weekly => 'kas savaitę';
   @override String get monthly => 'kas mėnesį';

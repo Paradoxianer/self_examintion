@@ -26,6 +26,8 @@ class AppLocalizationsUk extends AppLocalizations {
   @override String get delete => 'Видалити дані';
   @override String get notification => 'Нагадати мені';
   @override String get notificationFrequency => 'Частота';
+  @override String get notificationReminderBody => 'Час для твоєї щоденної самоперевірки.';
+  @override String get notificationPermissionDenied => 'Для нагадувань потрібен дозвіл на сповіщення. Дозволь сповіщення в налаштуваннях системи.';
   @override String get daily => 'щодня';
   @override String get weekly => 'щотижня';
   @override String get monthly => 'щомісяця';

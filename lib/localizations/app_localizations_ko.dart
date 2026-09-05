@@ -25,6 +25,8 @@ class AppLocalizationsKo extends AppLocalizations {
   @override String get delete => '데이터 삭제';
   @override String get notification => '알림 받기';
   @override String get notificationFrequency => '주기';
+  @override String get notificationReminderBody => '오늘의 자가평가를 할 시간입니다.';
+  @override String get notificationPermissionDenied => '알림을 보내려면 알림 권한이 필요합니다. 시스템 설정에서 알림을 허용해 주세요.';
   @override String get daily => '매일';
   @override String get weekly => '매주';
   @override String get monthly => '매월';

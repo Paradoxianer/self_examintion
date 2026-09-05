@@ -25,6 +25,8 @@ class AppLocalizationsEn extends AppLocalizations {
   @override String get delete => 'Delete data';
   @override String get notification => 'Remind me';
   @override String get notificationFrequency => 'Frequency';
+  @override String get notificationReminderBody => 'Time for your daily self-examination.';
+  @override String get notificationPermissionDenied => 'Reminders need notification permission. Please allow notifications in your system settings.';
   @override String get daily => 'daily';
   @override String get weekly => 'weekly';
   @override String get monthly => 'monthly';

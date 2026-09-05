@@ -26,6 +26,8 @@ class AppLocalizationsEs extends AppLocalizations {
   @override String get delete => 'Eliminar datos';
   @override String get notification => 'Recordarme';
   @override String get notificationFrequency => 'Frecuencia';
+  @override String get notificationReminderBody => 'Es hora de tu autoevaluación diaria.';
+  @override String get notificationPermissionDenied => 'Los recordatorios necesitan permiso de notificaciones. Actívalas en los ajustes del sistema.';
   @override String get daily => 'diario';
   @override String get weekly => 'semanal';
   @override String get monthly => 'mensual';

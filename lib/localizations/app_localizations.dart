@@ -64,6 +64,8 @@ abstract class AppLocalizations {
   String get delete;
   String get notification;
   String get notificationFrequency;
+  String get notificationReminderBody;
+  String get notificationPermissionDenied;
   String get daily;
   String get weekly;
   String get monthly;

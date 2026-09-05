@@ -8,6 +8,7 @@ import 'package:self_examination/utils/local_storage.dart';
 import 'package:self_examination/utils/security_service.dart';
 import 'package:self_examination/utils/export_service.dart';
 import 'package:self_examination/widgets/dsgvo_dialog.dart';
+import 'package:self_examination/widgets/notification_settings_section.dart';
 import 'package:self_examination/widgets/question_set_selection.dart';
 
 class SettingsScreen extends StatelessWidget {
@@ -51,9 +52,12 @@ class SettingsScreen extends StatelessWidget {
             _buildExportTile(context, icon: Icons.table_chart_outlined, title: localization.settingsExportValues, type: ExportType.valuesAndAverage),
             _buildExportTile(context, icon: Icons.show_chart, title: localization.settingsExportAverage, type: ExportType.averageOnly),
 
+            _buildSectionHeader(context, localization.notification),
+            const NotificationSettingsSection(),
+
             _buildSectionHeader(context, localization.settingsSecurityHeader),
             _buildSecuritySwitch(context, localization),
-            
+
             ListTile(
               leading: const Icon(Icons.privacy_tip_outlined),
               title: Text(localization.datasecurityDialog),
